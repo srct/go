@@ -1,5 +1,4 @@
 import re
-import urllib
 import MySQLdb
 import ldap
 import site
@@ -23,6 +22,9 @@ def application(environ, start_response):
     data = environ['wsgi.input']
     data = library.parse_post_data( data )
     library.trim_noise( data, fields )
+    
+    usr = data['usr']
+    psw = data['pass']
     
     body = ["Hello, world!"]
   
