@@ -1,0 +1,91 @@
+/*
+ * ########################################################################
+ * ########################################################################
+ * ########                                                        ########
+ * ########                                                        ########
+ * ########  Project: GO - URL Shorterner                          ########
+ * ########  File: style.css                                       ########
+ * ########  Date: 2013.04.04                                      ########
+ * ########  Author: Michel Rouly                                  ########
+ * ########                                                        ########
+ * ########  Style sheet for entire web application. Modify        ########
+ * ########  any design changes here.                              ########
+ * ########                                                        ########
+ * ########                                                        ########
+ * ########################################################################
+ * ########################################################################
+ */
+
+body { 
+  background: #EFEFEF;
+}
+
+h1 { 
+  font-size: 3em; 
+  color: #006633;
+}
+
+h1 a { 
+  color: inherit;
+  text-decoration: none;
+}
+
+hr { 
+  color: #006633;
+  background-color: #006633;
+  height: 2px;
+  width: 50%;
+  border: 0px;
+}
+
+#box {
+  color: #383838;
+  width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #EFEF88;
+  text-align: center;
+  font-family: 'Carrois Gothic', sans-serif;
+}
+
+#signoff { 
+  color: #000000;
+  text-align: center;
+  font-size: .6em;
+  font-style: italic;
+}
+
+label { 
+  color: #565656;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+p { 
+  font-size: .8em;
+}
+
+input { 
+  color: #9a9a9a;
+  cursor: pointer;
+  border: 0px solid #343434;
+  border-radius: 5px;
+  background-color: #FDFDB8;
+  padding: 5px;
+}
+
+input:focus { 
+  color: #000000;
+}
+
+input[type="submit"] { 
+  color: #000000;
+  background-color: #E86847;
+  border: 0px;
+}
+
+a { 
+  text-decoration: none;
+}
