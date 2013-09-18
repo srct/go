@@ -1,5 +1,3 @@
-import re
-import MySQLdb
 import ldap
 import site
 
@@ -16,19 +14,25 @@ def application(environ, start_response):
   # If the page was requested via POST, that means the URL-input 
   # form was submitted. Scan over the input data, parse it, validate
   # it, and then finally connect to the DB and store it. Then output.
-  while environ["REQUEST_METHOD"] == "POST":
+  if environ["REQUEST_METHOD"] == "POST":
     
     # Grab user data, cut off non-relevant fields.
     data = environ['wsgi.input']
-    #data = library.parse_post_data( data )
-    #fields = ['usr', 'pass']
-    #library.trim_noise( data, fields )
+    data = library.parse_post_data( data )
+    fields = ['usr', 'pass']
+    library.trim_noise( data, fields )
     
-    #usr = data['usr']
-    #psw = data['pass']
+    # Determine the user credentials to authenticate.
+    usr = data['usr']
+    psw = data['pass']
     
-    #body = [usr]
-    body = [ data ]
+    body = [usr]
+    #body = [ data ]
+    
+    # Try to talk with the LDAP server.
+    #ld = ldap.initialize( goconfig.ldap_domain )
+    #ld.simple_bind_s()
+    #ld.unbind_s()
   
   # Read and store in memory the header and footer sections 
   # of the page display.
