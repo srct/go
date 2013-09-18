@@ -5,7 +5,7 @@ import site
 
 # Determine if a user is appropriately validated through LDAP.
 def user_logged_in():
-  return True
+  return False
 
 
 # Given a dictionary and a set of relevant entries, this procedure 

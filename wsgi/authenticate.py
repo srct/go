@@ -20,13 +20,15 @@ def application(environ, start_response):
     
     # Grab user data, cut off non-relevant fields.
     data = environ['wsgi.input']
-    data = library.parse_post_data( data )
-    library.trim_noise( data, fields )
+    #data = library.parse_post_data( data )
+    #fields = ['usr', 'pass']
+    #library.trim_noise( data, fields )
     
-    usr = data['usr']
-    psw = data['pass']
+    #usr = data['usr']
+    #psw = data['pass']
     
-    body = ["Hello, world!"]
+    #body = [usr]
+    body = [ data ]
   
   # Read and store in memory the header and footer sections 
   # of the page display.
