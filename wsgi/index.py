@@ -35,7 +35,7 @@ def application(environ, start_response):
   f.close()
   
   login_form = """
-    <form action="" method="post">
+    <form action="/exec/lg" method="post">
       <label for="usr">username</label>
       <p>Your administrator username (MasonID).</p>
       <input type="text" id="usr" name="usr" value="" />
