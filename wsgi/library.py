@@ -88,7 +88,7 @@ def connect_to_mysql():
   sql = """CREATE TABLE IF NOT EXISTS `%s`(
   id INT NOT NULL AUTO_INCREMENT, 
   PRIMARY KEY(id), 
-  longurl VARCHAR(100), 
+  longurl VARCHAR(1000), 
   shorturl VARCHAR(100),
   expiration INT(50),
   clicks INT(10));"""
