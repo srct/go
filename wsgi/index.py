@@ -49,15 +49,15 @@ def application(environ, start_response):
   url_form = """
     <form action="/exec/rg" method="post" target="_self">
       <br />
-      <label for="long-url">long URL</label>
+      <label for="long-url">Long URL</label>
       <br />
       <input type="text" id="long-url" name="long-url" value="http://" />
       <br /><br />
-      <label for="short-url">identifier (optional)</label>
+      <label for="short-url">Short URL (Optional)</label>
       <br />
       <input type="text" id="short-url" name="short-url" value="" />
       <br /><br />
-      <label>expiration (optional)</label>
+      <label>Expiration (Optional)</label>
       <br />
       <input type="radio" name="expiration" value="day" id="day" /> 1 Day
       <input type="radio" name="expiration" value="week" /> 1 Week
