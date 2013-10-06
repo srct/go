@@ -29,9 +29,8 @@ def application(environ, start_response):
     mdb,cursor = library.connect_to_mysql()
     
     # Query the database for the short_url value.
-    query = cursor.execute( 
-    """ SELECT * from """ + goconfig.sql_url_table +
-    """ WHERE shorturl = %s """, (target))
+    sql = """SELECT * FROM `%s` WHERE `shorturl` = %s;"""
+    query = cursor.execute( sql, (goconfig.sql_url_table, target) )
     
     # If at least one row has been found, then grab its short_url.
     # If no rows are found, though, then don't do anything more!
@@ -40,8 +39,13 @@ def application(environ, start_response):
       selection = cursor.fetchall()
       row = selection[0]  # we are only interested in the first result
       url = row[1]        # this is the index of the longurl field
+      uid = row[0]        # this is the index of the ID field
+      
+      sql = """UPDATE `%s` SET `clicks`=`clicks`+1 WHERE `id`=%s;"""
+      query = cursor.execute( sql, (goconfig.sql_url_table, uid) )
     
     # Close the connection to the mySQL database.
+    mdb.commit()
     mdb.close()
     
   except MySQLdb.OperationalError:

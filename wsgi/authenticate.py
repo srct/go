@@ -21,8 +21,6 @@ def application(environ, start_response):
     # Grab user data, cut off non-relevant fields.
     data = environ['wsgi.input']
     data = library.parse_post_data( data )
-    fields = ['usr', 'pass']
-    library.trim_noise( data, fields )
     
     # Determine the user credentials to authenticate.
     usr = data['usr']
@@ -33,7 +31,7 @@ def application(environ, start_response):
     #ld.simple_bind_s()
     #ld.unbind_s()
     
-    success = False
+    success = True
     
     if( success ):
       # create a hashed cookie

@@ -9,27 +9,28 @@ import hashlib
 site.addsitedir('/srv/http/wsgi')
 import goconfig
 
+
 # Determine if a user is appropriately validated through LDAP.
 def user_logged_in( environ ):
   cookie = Cookie.SimpleCookie()
   
   # if the environment contains a cookie, check it out
   if environ.has_key('HTTP_COOKIE'):
+    # load the cookie we found
+    cookie.load(environ['HTTP_COOKIE']);
     if cookie.has_key('user'):
-      # load the cookie we found
-      cookie.load(environ['HTTP_COOKIE']);
       user_hash = cookie['user'].value
+      
       # see if it's in the database
       mdb,cursor = connect_to_mysql()
-      cursor.execute("""SELECT count(*) FROM `%s` WHERE `user_hash`='%s';""" % 
-        (goconfig.sql_usr_table, user_hash) )
+      sql = """SELECT count(*) FROM `%s` WHERE `user_hash`=%s;"""
+      cursor.execute( sql, (goconfig.sql_usr_table, user_hash) )
       ((num_rows,),) = cursor.fetchall()
       
       mdb.commit()
       mdb.close()
       
       return num_rows > 0
-      
   
   return False
 
@@ -48,8 +49,8 @@ def generate_cookie( user ):
 # Register the user in the table of active users.
 def activate_user( hash_value ):
   mdb,cursor = connect_to_mysql()
-  cursor.execute( """INSERT INTO `%s` (user_hash) VALUES ('%s');""" %
-    (goconfig.sql_usr_table, hash_value) )
+  sql = """INSERT INTO `%s` (`user_hash`) VALUES (%s);"""
+  cursor.execute( sql, (goconfig.sql_usr_table, hash_value) )
   mdb.commit()
   mdb.close()
 
@@ -57,8 +58,8 @@ def activate_user( hash_value ):
 # Unregister the user in the table of active users.
 def deactivate_user( hash_value ):
   mdb, cursor = connect_to_mysql()
-  cursor.execute( """DELETE FROM `%s` WHERE `user_hash`='%s';""" %
-    (goconfig.sql_usr_table, hash_value) )
+  sql = """DELETE FROM `%s` WHERE `user_hash`=%s;"""
+  cursor.execute( sql, (goconfig.sql_usr_table, hash_value) )
   mdb.commit()
   mdb.close()
 
@@ -74,31 +75,21 @@ def connect_to_mysql():
   cursor = mdb.cursor()
   
   # If we need to create the urls table, then construct it.
-  cursor.execute("""CREATE TABLE IF NOT EXISTS %s(
+  sql = """CREATE TABLE IF NOT EXISTS `%s`(
   id INT NOT NULL AUTO_INCREMENT, 
   PRIMARY KEY(id), 
   longurl VARCHAR(100), 
   shorturl VARCHAR(100),
-  clicks INT(10))""" % goconfig.sql_url_table)
-
-  cursor.execute("""CREATE TABLE IF NOT EXISTS %s(
+  clicks INT(10));"""
+  cursor.execute( sql, (goconfig.sql_url_table) )
+  
+  sql = """CREATE TABLE IF NOT EXISTS `%s`(
   id INT NOT NULL AUTO_INCREMENT, 
   PRIMARY KEY(id), 
-  user_hash VARCHAR(500))""" % goconfig.sql_usr_table)
+  user_hash VARCHAR(500));"""
+  cursor.execute( sql, (goconfig.sql_usr_table) )
   
   return mdb, cursor
-
-
-# Given a dictionary and a set of relevant entries, this procedure 
-# removes all irrelevant entries, effectively trimming the noise level
-def trim_noise( dictionary, relevant_keys ):
-  marked_for_removal = []
-  
-  for key in dictionary:
-    if key not in relevant_keys:
-      marked_for_removal.append( key )
-  for item in marked_for_removal:
-    del dictionary[item]
 
 
 # Parse post data submitted to this function. That is, split it up as a
@@ -106,19 +97,12 @@ def trim_noise( dictionary, relevant_keys ):
 def parse_post_data( post_data ):
   delimiter = "&"
   subdelimiter = "="
-  
-  # read stream to a list
   data = post_data.read()
-  
   if len( data ) > 0:
-    
     # create a dictionary as {field:val, field:val, ... }
     data = dict( item.split(subdelimiter) for item in data.split( delimiter ) )
-    
-    # return the dictionary of data
     return data
   
-  # if there is no data, return an empty result
   return None
 
 
@@ -152,19 +136,18 @@ def generate_short_url( long_url ):
 # already exists in the mySQL database. This prevents overlapping.
 def short_url_exists( short_url ):
   mdb, cursor = connect_to_mysql()
-  output = cursor.execute( 
-  """ SELECT * from """ + goconfig.sql_url_table +
-  """ WHERE shorturl = %s """, (short_url))
-  output = True if output > 0 else False
+  sql = """SELECT * FROM `%s` WHERE `shorturl` = %s;"""
+  output = cursor.execute( sql, (goconfig.sql_url_table, short_url) )
   mdb.commit()
   mdb.close()
-  return output
+  return True if output > 0 else False
 
 
 # Inserts a short-url, long-url pairing into the database.
 def register_url( longurl, shorturl ):
   mdb, cursor = connect_to_mysql()
-  cursor.execute("""INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `clicks`) VALUES
-  (NULL, '%s', '%s', '0')""" % (goconfig.sql_url_table, longurl, shorturl))
+  sql = """INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `clicks`) VALUES
+  (NULL, %s, %s, '0')"""
+  cursor.execute( sql, (goconfig.sql_url_table, longurl, shorturl) )
   mdb.commit()
   mdb.close()
