@@ -2,6 +2,7 @@ import re
 import urllib
 import MySQLdb
 import ldap
+import time
 import site
 
 site.addsitedir('/srv/http/wsgi')
@@ -47,6 +48,7 @@ def application(environ, start_response):
     # Store parsed user data in these handy variables.
     long_url = data["long-url"]
     short_url = data["short-url"]
+    expiration = data["expiration"]
     if not (long_url.startswith("http") or long_url.startswith("ftp")):
       long_url = "http://" + long_url
     long_url = urllib.unquote( long_url )
@@ -59,6 +61,18 @@ def application(environ, start_response):
       while library.short_url_exists( short_url ):
         short_url = library.generate_short_url( long_url )
     
+    # Parse the expiration date.
+    today = int(time.time())
+    if expiration == "never":
+      end_stamp = -1
+    elif expiration == "month":
+      end_stamp = today + 2629740
+    elif expiration == "week":
+      end_stamp = today + 604800
+    elif expiration == "day":
+      end_stamp = today + 86400
+    else:
+      end_stamp = today
     
     # Check each possible error case and set flags accordingly.
     # 1) Check that long_url is a valid URL
@@ -94,7 +108,7 @@ def application(environ, start_response):
     # ie. Display the long and short URLs.
     if not (INV_LU or INV_SU or SU_TS or SU_EX):
       # insert the longurl-shorturl pairing in the database.
-      library.register_url( long_url, short_url )
+      library.register_url( long_url, short_url, end_stamp )
       
       body.append(
         '<p><em>Original URL:</em> <a href="%s">%s</a></p>' % 

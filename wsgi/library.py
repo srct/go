@@ -89,6 +89,7 @@ def connect_to_mysql():
   PRIMARY KEY(id), 
   longurl VARCHAR(100), 
   shorturl VARCHAR(100),
+  expiration INT(50),
   clicks INT(10));"""
   cursor.execute( sql, (goconfig.sql_url_table) )
   
@@ -153,10 +154,10 @@ def short_url_exists( short_url ):
 
 
 # Inserts a short-url, long-url pairing into the database.
-def register_url( longurl, shorturl ):
+def register_url( longurl, shorturl, expiration ):
   mdb, cursor = connect_to_mysql()
-  sql = """INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `clicks`) VALUES
-  (NULL, %s, %s, '0')"""
-  cursor.execute( sql, (goconfig.sql_url_table, longurl, shorturl) )
+  sql = """INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `expiration`, `clicks`)
+  VALUES (NULL, %s, %s, %s, '0')"""
+  cursor.execute( sql, (goconfig.sql_url_table, longurl, shorturl, expiration) )
   mdb.commit()
   mdb.close()
