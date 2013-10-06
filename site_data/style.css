@@ -61,6 +61,7 @@ label {
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
+  display: block;
 }
 
 p { 
