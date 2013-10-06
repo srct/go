@@ -33,11 +33,11 @@ def application(environ, start_response):
     <form action="/exec/lg" method="post">
       <br />
       <label for="usr">username</label>
-      <br />
+      <br /><br />
       <input type="text" id="usr" name="usr" value="" />
       <br /><br />
       <label for="pass">password</label>
-      <br />
+      <br /><br />
       <input type="password" id="pass" name="pass" value="" />
       <br /><br />
       <input type="submit" name="submit" value="LOGIN" />
@@ -50,20 +50,24 @@ def application(environ, start_response):
     <form action="/exec/rg" method="post" target="_self">
       <br />
       <label for="long-url">Long URL</label>
-      <br />
+      <br /><br />
       <input type="text" id="long-url" name="long-url" value="http://" />
       <br /><br />
       <label for="short-url">Short URL (Optional)</label>
-      <br />
+      <br /><br />
       <input type="text" id="short-url" name="short-url" value="" />
       <br /><br />
       <label>Expiration (Optional)</label>
-      <br />
-      <input type="radio" name="expiration" value="day" id="day" /> 1 Day
-      <input type="radio" name="expiration" value="week" /> 1 Week
-      <input type="radio" name="expiration" value="month" /> 1 Month
-      <input type="radio" name="expiration" value="never"
-        checked="checked" /> Never
+      <br /><br />
+      <input type="radio" name="expiration" value="day" id="day" />
+      <label for="day">1 Day</label>
+      <input type="radio" name="expiration" value="week" id="week" />
+      <label for="week">1 Week</label>
+      <input type="radio" name="expiration" value="month" id="month" />
+      <label for="month">1 Month</label>
+      <input type="radio" name="expiration" value="never" id="never"
+        checked="checked" />
+      <label for="never">Never</label>
       <br /><br />
       <input type="submit" name="submit" value="SHORTEN" />
       <br /><br />

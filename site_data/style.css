@@ -17,6 +17,7 @@
  */
 
 body { 
+  //background: #FFCC33;
   background: #EFEFEF;
 }
 
@@ -45,6 +46,8 @@ hr {
   padding: 20px;
   border-radius: 15px;
   background-color: #EFEF88;
+  //background-color: #FFCC33;
+  //background-color: #EFEFEF;
   text-align: center;
   font-family: 'Carrois Gothic', sans-serif;
 }
@@ -61,7 +64,6 @@ label {
   cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
-  display: block;
 }
 
 p { 
@@ -74,6 +76,7 @@ input {
   border: 0px solid #343434;
   border-radius: 5px;
   background-color: #FDFDB8;
+  //background-color: #FFCC33;
   padding: 5px;
 }
 
