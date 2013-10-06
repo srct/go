@@ -53,25 +53,18 @@ def application(environ, start_response):
       <br />
       <input type="text" id="long-url" name="long-url" value="http://" />
       <br /><br />
-      <label for="short-url" onClick="expand('identifier-div');">
-        identifier (optional)
-      </label>
+      <label for="short-url">identifier (optional)</label>
       <br />
-      <div style="display:none;" id="identifier-div" class="expands">
-        <input type="text" id="short-url" name="short-url" value="" />
-      </div>
+      <input type="text" id="short-url" name="short-url" value="" />
+      <br /><br />
+      <label>expiration (optional)</label>
       <br />
-      <label onClick="expand('expiration-div');">expiration (optional)</label>
-      <br />
-      <div style="display:none;" id="expiration-div">
-        <input type="radio" name="expiration" value="day" id="day"> 1
-        Day</input>
-        <input type="radio" name="expiration" value="week" /> 1 Week
-        <input type="radio" name="expiration" value="month" /> 1 Month
-        <input type="radio" name="expiration" value="never"
-          checked="checked" /> Never
-      </div>
-      <br />
+      <input type="radio" name="expiration" value="day" id="day" /> 1 Day
+      <input type="radio" name="expiration" value="week" /> 1 Week
+      <input type="radio" name="expiration" value="month" /> 1 Month
+      <input type="radio" name="expiration" value="never"
+        checked="checked" /> Never
+      <br /><br />
       <input type="submit" name="submit" value="SHORTEN" />
       <br /><br />
     </form>
