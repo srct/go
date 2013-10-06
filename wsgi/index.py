@@ -51,7 +51,7 @@ def application(environ, start_response):
       <p>Make sure to include http:// in front.</p>
       <input type="text" id="long-url" name="long-url" value="http://" />
       <br /><br />
-      <label for="short-url">identifier</label>
+      <label for="short-url">identifier (optional)</label>
       <p>What your want your URL to look like. This is optional.</p>
       <p>Identifier must be at least 5 characters, and only 
       contain letters and numbers.</p>
@@ -59,6 +59,7 @@ def application(environ, start_response):
       <br /><br />
       <input type="submit" name="submit" value="SHORTEN" />
       <br />
+      <p><a href="/exec/out">(logout)</a></p>
     </form>
   """
   #body.append( url_form )

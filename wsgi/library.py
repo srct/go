@@ -46,6 +46,15 @@ def generate_cookie( user ):
   return cookie
 
 
+# Generate an expired cookie in order to remove any preexisting cookie.
+def eat_cookie():
+  cookie = Cookie.SimpleCookie()
+  cookie["user"] = "goodbye"
+  cookie["user"]["expires"] = "Thu, 01 Jan 1970 00:00:00 GMT"
+  cookie["user"]["path"] = "/"
+  return cookie
+
+
 # Register the user in the table of active users.
 def activate_user( hash_value ):
   mdb,cursor = connect_to_mysql()

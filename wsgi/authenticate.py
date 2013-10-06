@@ -25,13 +25,24 @@ def application(environ, start_response):
     # Determine the user credentials to authenticate.
     usr = data['usr']
     psw = data['pass']
+    bind = 'uid='+usr+',ou=people,o=gmu.edu'
     
+    success = False # authentication success
+
     # Try to talk with the LDAP server.
-    #ld = ldap.initialize( goconfig.ldap_domain )
-    #ld.simple_bind_s()
-    #ld.unbind_s()
-    
-    success = True
+    ldap.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND)
+    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+    try:
+      ld = ldap.initialize( goconfig.ldap_domain )
+      result = ld.simple_bind_s( bind, psw )
+      if result is not None:
+        success = True
+    except ldap.INVALID_CREDENTIALS:
+      pass
+    except ldap.INAPPROPRIATE_AUTH:
+      pass
+    except ldap.NO_SUCH_OBJECT:
+      pass
     
     if( success ):
       # create a hashed cookie

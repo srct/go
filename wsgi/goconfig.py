@@ -35,7 +35,7 @@ sql_url_table  = "urls"
 sql_usr_table = "usrs"
 
 #ldap_domain: The location of the LDAP database to connect to.
-ldap_domain = "ldap://ldap.gmu.edu"
+ldap_domain = "ldaps://directory.gmu.edu:636"
 
 
 
