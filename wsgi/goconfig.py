@@ -7,6 +7,9 @@
 # doc_root: Describes where the website's root directory is.
 doc_root = "/srv/http"
 
+# domain: This is the domain the website is being hosted at.
+domain = "go.gmu.edu"
+
 
 
 ##############################

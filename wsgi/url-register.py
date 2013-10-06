@@ -115,13 +115,14 @@ def application(environ, start_response):
     if not (INV_LU or INV_SU or SU_TS or SU_EX):
       # insert the longurl-shorturl pairing in the database.
       library.register_url( long_url, short_url, end_stamp )
+      display_short = goconfig.domain + "/" + short_url
       
       body.append(
         '<p><em>Original URL:</em> <a href="%s">%s</a></p>' % 
         (long_url, long_url))
       body.append(
         '<p><em>Shortened URL:</em> <a href="/%s">%s</a></p>' % 
-        (short_url, short_url))
+        (short_url, display_short))
     else:
       body.append(
         '<input type="submit" value="BACK" ' +
