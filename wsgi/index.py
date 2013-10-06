@@ -60,14 +60,14 @@ def application(environ, start_response):
       <label>Expiration (Optional)</label>
       <br /><br />
       <input type="radio" name="expiration" value="day" id="day" />
-      <label for="day">1 Day</label>
+      <label for="day" class="sublabel">1 Day</label>
       <input type="radio" name="expiration" value="week" id="week" />
-      <label for="week">1 Week</label>
+      <label for="week" class="sublabel">1 Week</label>
       <input type="radio" name="expiration" value="month" id="month" />
-      <label for="month">1 Month</label>
+      <label for="month" class="sublabel">1 Month</label>
       <input type="radio" name="expiration" value="never" id="never"
         checked="checked" />
-      <label for="never">Never</label>
+      <label for="never" class="sublabel">Never</label>
       <br /><br />
       <input type="submit" name="submit" value="SHORTEN" />
       <br /><br />

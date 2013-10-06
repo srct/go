@@ -66,6 +66,10 @@ label {
   text-transform: uppercase;
 }
 
+.sublabel { 
+  font-size: .8em;
+}
+
 p { 
   font-size: .8em;
 }
