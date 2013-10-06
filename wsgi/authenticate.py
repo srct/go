@@ -1,5 +1,7 @@
 import ldap
 import site
+import Cookie
+import cookielib
 
 site.addsitedir('/srv/http/wsgi')
 import library
@@ -7,7 +9,7 @@ import goconfig
 
 
 def application(environ, start_response):
-  
+
   # Set default "empty page" text.
   body = ["<p>Nothing here.</p>"]
 
@@ -26,13 +28,33 @@ def application(environ, start_response):
     usr = data['usr']
     psw = data['pass']
     
-    body = [usr]
-    #body = [ data ]
-    
     # Try to talk with the LDAP server.
     #ld = ldap.initialize( goconfig.ldap_domain )
     #ld.simple_bind_s()
     #ld.unbind_s()
+    
+    success = False
+    
+    if( success ):
+      # create a hashed cookie
+      cookie = library.generate_cookie(usr)
+      cookie_value = cookie["user"].OutputString()
+      hash_value = cookie["user"].value
+      
+      # unregister the user, in case they're already in
+      library.deactivate_user( hash_value )
+      # register the hashed user with the SQL database
+      library.activate_user( hash_value )
+      
+      # push the cookie to the user and redirect
+      status = '303 See Other'
+      response_headers = [('Set-Cookie', cookie_value),
+                          ('Location', '/'),
+                          ('Content-type', 'text/plain')]
+      start_response(status, response_headers)
+      return [ str(cookie) ]
+    else:
+      body = ["<p>Error: invalid username or password.</p>"]
   
   # Read and store in memory the header and footer sections 
   # of the page display.

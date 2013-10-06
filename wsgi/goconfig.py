@@ -26,10 +26,13 @@ sql_usr    = "go-user"
 sql_pasw   = "georgemasonsrct"
 
 # sql_db: The SQL database or schema name to which to connect.
-sql_db     = "srctgo"
+sql_db     = "go"
 
-# sql_table: The SQL table storing the URL listing.
-sql_table  = "urls"
+# sql_url_table: The SQL table storing the URL listing.
+sql_url_table  = "urls"
+
+# sql_usr_table: The SQL table storing the active users.
+sql_usr_table = "usrs"
 
 #ldap_domain: The location of the LDAP database to connect to.
 ldap_domain = "ldap://ldap.gmu.edu"
@@ -47,3 +50,5 @@ ldap_domain = "ldap://ldap.gmu.edu"
 #   a "short url" or url identifier.
 min_url_len = 5
 
+# hash_salt: This is the private salt used to salt cookie hashing.
+hash_salt = "salty"

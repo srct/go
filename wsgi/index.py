@@ -20,11 +20,6 @@ def application(environ, start_response):
   ##  sends the user back here, the user should remain logged in and 
   ##  have no issues travelling back and forth.
   
-  ## IDEAS FOR LOGGING-IN USERS:
-  ##  store active users in a database somewhere
-  ##  look for an existing framework to integrate with
-  ##  cookies / sessions (a la PHP)
-  
   # Construct the default body, along with its header/footer wrapper.
   body = []
   f = open(goconfig.doc_root + "/site_data/top.part", "r")
@@ -68,7 +63,7 @@ def application(environ, start_response):
   """
   #body.append( url_form )
   
-  if( library.user_logged_in() ):
+  if( library.user_logged_in( environ ) ):
     body.append( url_form )
   else:
     body.append( login_form )

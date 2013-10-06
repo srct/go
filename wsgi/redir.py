@@ -26,23 +26,11 @@ def application(environ, start_response):
   
   try:
     # Connect to and choose the database.
-    mdb = MySQLdb.connect(
-      goconfig.sql_domain,
-      goconfig.sql_usr,
-      goconfig.sql_pasw,
-      goconfig.sql_db )
-    cursor = mdb.cursor()
-    
-    # If we need to create the urls table, then construct it.
-    cursor.execute("""CREATE TABLE IF NOT EXISTS %s(
-    id INT NOT NULL AUTO_INCREMENT, 
-    PRIMARY KEY(id), 
-    longurl VARCHAR(100), 
-    shorturl VARCHAR(100))""" % goconfig.sql_table)
+    mdb,cursor = library.connect_to_mysql()
     
     # Query the database for the short_url value.
     query = cursor.execute( 
-    """ SELECT * from """ + goconfig.sql_table +
+    """ SELECT * from """ + goconfig.sql_url_table +
     """ WHERE shorturl = %s """, (target))
     
     # If at least one row has been found, then grab its short_url.
@@ -72,12 +60,9 @@ def application(environ, start_response):
     return [response]
     
   else:
-    response = "here we go!"
-    
     status = '303 See other'
-    response_headers = [('Location', url),
-                        ('Content-Length', str(len(response)))]
+    response_headers = [('Location', url)]
     start_response(status, response_headers)
     
-    return [response]
+    return ['Redirecting to url . . .']
     
