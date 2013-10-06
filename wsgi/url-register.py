@@ -46,9 +46,13 @@ def application(environ, start_response):
     data = library.parse_post_data( data )
     
     # Store parsed user data in these handy variables.
-    long_url = data["long-url"]
-    short_url = data["short-url"]
-    expiration = data["expiration"]
+    try:
+      long_url = data["long-url"]
+      short_url = data["short-url"]
+      expiration = data["expiration"]
+    except KeyError:
+      pass
+    
     if not (long_url.startswith("http") or long_url.startswith("ftp")):
       long_url = "http://" + long_url
     long_url = urllib.unquote( long_url )
@@ -63,8 +67,10 @@ def application(environ, start_response):
     
     # Parse the expiration date.
     today = int(time.time())
-    if expiration == "never":
-      end_stamp = -1
+    if expiration is None:
+      end_stamp = today
+    elif expiration == "never":
+      end_stamp = 0
     elif expiration == "month":
       end_stamp = today + 2629740
     elif expiration == "week":

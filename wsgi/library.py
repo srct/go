@@ -168,7 +168,7 @@ def register_url( longurl, shorturl, expiration ):
 def remove_expired_urls():
   mdb, cursor = connect_to_mysql()
   today = int(time.time())
-  sql = """DELETE FROM `%s` WHERE `expiration` > 0 AND `expiration` < %d;"""
+  sql = """DELETE FROM `%s` WHERE `expiration` > 0 AND `expiration` < %s;"""
   cursor.execute( sql, (goconfig.sql_url_table, today) )
   mdb.commit()
   mdb.close()
