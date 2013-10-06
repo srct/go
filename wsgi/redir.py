@@ -6,6 +6,8 @@ import library
 import goconfig
 
 def application(environ, start_response):
+  # First things first - clear any old URL entries.
+  library.remove_expired_urls()
   
   # Construct the default body, along with its header/footer wrapper.
   body = ["<p>Nothing here.</p>"]

@@ -1,4 +1,5 @@
 import random
+import time
 import math
 import site
 import MySQLdb
@@ -159,5 +160,15 @@ def register_url( longurl, shorturl, expiration ):
   sql = """INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `expiration`, `clicks`)
   VALUES (NULL, %s, %s, %s, '0')"""
   cursor.execute( sql, (goconfig.sql_url_table, longurl, shorturl, expiration) )
+  mdb.commit()
+  mdb.close()
+
+
+# Removes any expired urls in the url table.
+def remove_expired_urls():
+  mdb, cursor = connect_to_mysql()
+  today = int(time.time())
+  sql = """DELETE FROM `%s` WHERE `expiration` > 0 AND `expiration` < %d;"""
+  cursor.execute( sql, (goconfig.sql_url_table, today) )
   mdb.commit()
   mdb.close()
