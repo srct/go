@@ -37,6 +37,9 @@ sql_url_table  = "urls"
 # sql_usr_table: The SQL table storing the active users.
 sql_usr_table = "usrs"
 
+# sql_registration_table: The SQL table storing registered users.
+sql_registration_table = "registered"
+
 #ldap_domain: The location of the LDAP database to connect to.
 ldap_domain = "ldaps://directory.gmu.edu:636"
 

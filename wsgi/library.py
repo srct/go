@@ -36,6 +36,12 @@ def user_logged_in( environ ):
   return False
 
 
+# Determine if the user has posting permissions via the registration
+# datbase.
+def user_registered( username ):
+  pass
+
+
 # Log in a user by placing a cookie on their machine and entering
 # the related hash in a SQL database.
 def generate_cookie( user ):
@@ -104,9 +110,15 @@ def connect_to_mysql():
   
   sql = """CREATE TABLE IF NOT EXISTS `%s`(
   id INT NOT NULL AUTO_INCREMENT, 
+  user_name VARCHAR(500),
   PRIMARY KEY(id), 
   user_hash VARCHAR(500));"""
   cursor.execute( sql, (goconfig.sql_usr_table) )
+  
+  sql = """CREATE TABLE IF NOT EXISTS `%s`(
+  user VARCHAR(500),
+  PRIMARY KEY(user));"""
+  cursor.execute( sql, (goconfig.sql_registration_table) )
   
   return mdb, cursor
 
