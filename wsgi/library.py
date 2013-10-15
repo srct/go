@@ -141,6 +141,8 @@ def connect_to_mysql():
   
   # ACTIVE USER TABLE
   sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
+  id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY(id),
   user_hash VARCHAR(500) CHARACTER SET 'utf8' NOT NULL,
   user VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
   CONSTRAINT `fk_active_user` FOREIGN KEY (`user`)
