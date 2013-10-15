@@ -39,7 +39,15 @@ def user_logged_in( environ ):
 # Log in a user by placing a cookie on their machine and entering
 # the related hash in a SQL database.
 def generate_cookie( user ):
-  hashed_value = hashlib.sha512( user + goconfig.hash_salt ).hexdigest()
+  # generate a random 32-character salt
+  ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  chars=[]
+  for i in range(32):
+    chars.append( random.choice(ALPHABET) )
+  salt = "".join(chars)
+  
+  # generate a randomized hash for this user
+  hashed_value = hashlib.sha512( user + salt ).hexdigest()
   cookie = Cookie.SimpleCookie()
   cookie["user"] = hashed_value
   cookie["user"]["expires"] = ""

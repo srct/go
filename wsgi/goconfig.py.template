@@ -52,6 +52,3 @@ ldap_domain = "ldaps://directory.gmu.edu:636"
 # min_url_len: This is the minimum required length of
 #   a "short url" or url identifier.
 min_url_len = 5
-
-# hash_salt: This is the private salt used to salt cookie hashing.
-hash_salt = "salty"
