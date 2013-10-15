@@ -11,8 +11,8 @@ site.addsitedir('/srv/http/wsgi')
 import goconfig
 
 
-# Determine if a user is appropriately validated through LDAP.
-def user_logged_in( environ ):
+# Extract the value of the cookie if one is set.
+def get_cookie_value( environ ):
   cookie = Cookie.SimpleCookie()
   
   # if the environment contains a cookie, check it out
@@ -21,23 +21,42 @@ def user_logged_in( environ ):
     cookie.load(environ['HTTP_COOKIE']);
     if cookie.has_key('user'):
       user_hash = cookie['user'].value
-      
-      # see if it's in the database
-      mdb,cursor = connect_to_mysql()
-      sql = """SELECT count(*) FROM `%s` WHERE `user_hash`=%s;"""
-      cursor.execute( sql, (goconfig.sql_usr_table, user_hash) )
-      ((num_rows,),) = cursor.fetchall()
-      
-      mdb.commit()
-      mdb.close()
-      
-      return num_rows > 0
+      return user_hash
+
+  return None
+
+
+# Determine if a user is appropriately validated through LDAP.
+def user_logged_in( environ ):
+  user_hash = get_cookie_value(environ)
+  if( user_hash is not None ):
+    # see if it's in the database
+    mdb,cursor = connect_to_mysql()
+    sql = """SELECT count(*) FROM `%s` WHERE `user_hash`=%s;"""
+    cursor.execute( sql, (goconfig.sql_usr_table, user_hash) )
+    ((num_rows,),) = cursor.fetchall()
+    
+    mdb.commit()
+    mdb.close()
+    
+    return num_rows > 0
   
   return False
 
 
 def get_username( environ ):
-  pass
+  user_hash = get_cookie_value( environ )
+  username = None
+  if( user_hash is not None ):
+    mdb,cursor = connect_to_mysql()
+    try:
+      sql = """SELECT `user` FROM `%s` WHERE `user_hash`=%s;"""
+      cursor.execute( sql, (goconfig.sql_usr_table, user_hash ) )
+      ((username,),) = cursor.fetchall()
+      mdb.commit()
+    finally:
+      mdb.close()
+  return username
 
 
 # Determine if the user has posting permissions via the registration
@@ -84,18 +103,11 @@ def eat_cookie():
 
 # Register the user in the table of active users.
 def activate_user( hash_value, user ):
-  output = False
   mdb,cursor = connect_to_mysql()
-  try:
-    sql = """INSERT INTO `%s` (`user_hash`,`user`) VALUES (%s,%s);"""
-    cursor.execute( sql, (goconfig.sql_usr_table, hash_value, user) )
-    mdb.commit()
-    output = True
-  except MySQLdb.IntegrityError:
-    output = False
-  finally:
-    mdb.close()
-  return True
+  sql = """INSERT INTO `%s` (`user_hash`,`user`) VALUES (%s,%s);"""
+  cursor.execute( sql, (goconfig.sql_usr_table, hash_value, user) )
+  mdb.commit()
+  mdb.close()
 
 
 # Unregister the user in the table of active users.
@@ -218,11 +230,12 @@ def short_url_exists( short_url ):
 
 
 # Inserts a short-url, long-url pairing into the database.
-def register_url( longurl, shorturl, expiration ):
+def register_url( longurl, shorturl, expiration, environ ):
+  username = get_username( environ )
   mdb, cursor = connect_to_mysql()
-  sql = """INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `expiration`, `clicks`)
-  VALUES (NULL, %s, %s, %s, '0')"""
-  cursor.execute( sql, (goconfig.sql_url_table, longurl, shorturl, expiration) )
+  sql = """INSERT INTO `%s`(`id`, `longurl`, `shorturl`, `expiration`, `user`, `clicks`)
+  VALUES (NULL, %s, %s, %s, %s, '0')"""
+  cursor.execute( sql, (goconfig.sql_url_table, longurl, shorturl, expiration, username) )
   mdb.commit()
   mdb.close()
 

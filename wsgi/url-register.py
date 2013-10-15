@@ -114,7 +114,7 @@ def application(environ, start_response):
     # ie. Display the long and short URLs.
     if not (INV_LU or INV_SU or SU_TS or SU_EX):
       # insert the longurl-shorturl pairing in the database.
-      library.register_url( long_url, short_url, end_stamp )
+      library.register_url( long_url, short_url, end_stamp, environ )
       display_short = goconfig.domain + "/" + short_url
       
       body.append(
