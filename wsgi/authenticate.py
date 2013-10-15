@@ -51,10 +51,10 @@ def application(environ, start_response):
       cookie_value = cookie["user"].OutputString()
       hash_value = cookie["user"].value
       
-      # unregister the user, in case they're already in
-      #library.deactivate_user( hash_value )
       if( library.user_registered( usr ) ):
-      # register the hashed user with the SQL database
+        # unregister the user, in case they're already in
+        ###library.deactivate_user( hash_value )
+        # register the hashed user with the SQL database
         library.activate_user( hash_value, usr )
         # push the cookie to the user and redirect
         status = '303 See Other'
