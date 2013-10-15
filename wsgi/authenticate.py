@@ -63,9 +63,13 @@ def application(environ, start_response):
                             ('Content-type', 'text/plain')]
         start_response(status, response_headers)
         return [ str(cookie) ]
-      else: body = ["<p>Error: You are not registered to use this service.</p>"]
+      else:
+        body = ["<p>Help! I need an adult!.</p>"]
+        body.append("<p>You're not registered to use this service. ")
+        body.append("Please contact a <a href=\"http://srct.gmu.edu\">SRCT</a> ")
+        body.append("SysAdmin.</p>")
     else:
-      body = ["<p>Error: invalid username or password.</p>"]
+      body = ["<p>Error: Invalid username or password.</p>"]
   
   # Read and store in memory the header and footer sections 
   # of the page display.
