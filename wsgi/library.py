@@ -36,6 +36,10 @@ def user_logged_in( environ ):
   return False
 
 
+def get_username( environ ):
+  pass
+
+
 # Determine if the user has posting permissions via the registration
 # datbase.
 def user_registered( username ):
@@ -80,11 +84,18 @@ def eat_cookie():
 
 # Register the user in the table of active users.
 def activate_user( hash_value, user ):
+  output = False
   mdb,cursor = connect_to_mysql()
-  sql = """INSERT INTO `%s` (`user_hash`,`user`) VALUES (%s,%s);"""
-  cursor.execute( sql, (goconfig.sql_usr_table, hash_value, user) )
-  mdb.commit()
-  mdb.close()
+  try:
+    sql = """INSERT INTO `%s` (`user_hash`,`user`) VALUES (%s,%s);"""
+    cursor.execute( sql, (goconfig.sql_usr_table, hash_value, user) )
+    mdb.commit()
+    output = True
+  except MySQLdb.IntegrityError:
+    output = False
+  finally:
+    mdb.close()
+  return True
 
 
 # Unregister the user in the table of active users.
