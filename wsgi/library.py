@@ -133,7 +133,8 @@ def connect_to_mysql():
   # REGISTERED USER TABLE
   sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
   user VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
-  PRIMARY KEY(user)
+  PRIMARY KEY(user),
+  comment VARCHAR(500) CHARACTER SET 'utf8' NOT NULL
   )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = latin1;""" % ( goconfig.sql_registration_table )
