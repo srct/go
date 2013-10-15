@@ -79,10 +79,10 @@ def eat_cookie():
 
 
 # Register the user in the table of active users.
-def activate_user( hash_value ):
+def activate_user( hash_value, user ):
   mdb,cursor = connect_to_mysql()
-  sql = """INSERT INTO `%s` (`user_hash`) VALUES (%s);"""
-  cursor.execute( sql, (goconfig.sql_usr_table, hash_value) )
+  sql = """INSERT INTO `%s` (`user_hash`,`user`) VALUES (%s,%s);"""
+  cursor.execute( sql, (goconfig.sql_usr_table, hash_value, user) )
   mdb.commit()
   mdb.close()
 
