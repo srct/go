@@ -29,20 +29,21 @@ def application(environ, start_response):
     
     success = False # authentication success
 
-    # Try to talk with the LDAP server.
-    ldap.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND)
-    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-    try:
-      ld = ldap.initialize( goconfig.ldap_domain )
-      result = ld.simple_bind_s( bind, psw )
-      if result is not None:
-        success = True
-    except ldap.INVALID_CREDENTIALS:
-      pass
-    except ldap.INAPPROPRIATE_AUTH:
-      pass
-    except ldap.NO_SUCH_OBJECT:
-      pass
+    if( len(usr) > 0 and len(psw) > 0):
+      # Try to talk with the LDAP server.
+      ldap.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND)
+      ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+      try:
+        ld = ldap.initialize( goconfig.ldap_domain )
+        result = ld.simple_bind_s( bind, psw )
+        if result is not None:
+          success = True
+      except ldap.INVALID_CREDENTIALS:
+        pass
+      except ldap.INAPPROPRIATE_AUTH:
+        pass
+      except ldap.NO_SUCH_OBJECT:
+        pass
     
     if( success ):
       # create a hashed cookie
@@ -51,17 +52,18 @@ def application(environ, start_response):
       hash_value = cookie["user"].value
       
       # unregister the user, in case they're already in
-      library.deactivate_user( hash_value )
+      #library.deactivate_user( hash_value )
       # register the hashed user with the SQL database
-      library.activate_user( hash_value, usr )
-      
-      # push the cookie to the user and redirect
-      status = '303 See Other'
-      response_headers = [('Set-Cookie', cookie_value),
-                          ('Location', '/'),
-                          ('Content-type', 'text/plain')]
-      start_response(status, response_headers)
-      return [ str(cookie) ]
+      registered = library.activate_user( hash_value, usr )
+      if( registered ):
+        # push the cookie to the user and redirect
+        status = '303 See Other'
+        response_headers = [('Set-Cookie', cookie_value),
+                            ('Location', '/'),
+                            ('Content-type', 'text/plain')]
+        start_response(status, response_headers)
+        return [ str(cookie) ]
+      else: body = ["<p>Error: you are not registered to use this service.</p>"]
     else:
       body = ["<p>Error: invalid username or password.</p>"]
   
