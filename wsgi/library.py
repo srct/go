@@ -39,7 +39,15 @@ def user_logged_in( environ ):
 # Determine if the user has posting permissions via the registration
 # datbase.
 def user_registered( username ):
-  pass
+  mdb,cursor = connect_to_mysql()
+  sql = """SELECT count(*) FROM `%s` WHERE `user`=%s;"""
+  cursor.execute( sql, (goconfig.sql_registration_table, username) )
+  ((num_rows,),) = cursor.fetchall()
+  
+  mdb.commit()
+  mdb.close()
+  
+  return num_rows > 0
 
 
 # Log in a user by placing a cookie on their machine and entering
@@ -98,27 +106,51 @@ def connect_to_mysql():
     goconfig.sql_db )
   cursor = mdb.cursor()
   
-  # If we need to create the urls table, then construct it.
-  sql = """CREATE TABLE IF NOT EXISTS `%s`(
-  id INT NOT NULL AUTO_INCREMENT, 
-  PRIMARY KEY(id), 
-  longurl VARCHAR(1000), 
-  shorturl VARCHAR(100),
-  expiration INT(50),
-  clicks INT(10));"""
-  cursor.execute( sql, (goconfig.sql_url_table) )
+  # If we need to create the table, then construct it.
+  # REGISTERED USER TABLE
+  sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
+  user VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY(user)
+  )
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = latin1;""" % ( goconfig.sql_registration_table )
+  cursor.execute( sql )
   
-  sql = """CREATE TABLE IF NOT EXISTS `%s`(
-  id INT NOT NULL AUTO_INCREMENT, 
-  user_name VARCHAR(500),
-  PRIMARY KEY(id), 
-  user_hash VARCHAR(500));"""
-  cursor.execute( sql, (goconfig.sql_usr_table) )
+  # ACTIVE USER TABLE
+  sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
+  user_hash VARCHAR(500) CHARACTER SET 'utf8' NOT NULL,
+  user VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
+  CONSTRAINT `fk_active_user` FOREIGN KEY (`user`)
+    REFERENCES `%s`.`'%s'`(`user`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+  )
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = latin1;""" % (
+    goconfig.sql_usr_table,
+    goconfig.sql_db,
+    goconfig.sql_registration_table
+  )
+  cursor.execute( sql )
   
-  sql = """CREATE TABLE IF NOT EXISTS `%s`(
-  user VARCHAR(500),
-  PRIMARY KEY(user));"""
-  cursor.execute( sql, (goconfig.sql_registration_table) )
+  sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
+  id INT NOT NULL AUTO_INCREMENT, 
+  PRIMARY KEY(id),
+  longurl VARCHAR(1000) CHARACTER SET 'utf8' NOT NULL,
+  shorturl VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
+  expiration INT(50) UNSIGNED NOT NULL,
+  user VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
+  clicks INT(10) UNSIGNED NOT NULL,
+  CONSTRAINT `fk_url_user` FOREIGN KEY (`user`)
+    REFERENCES `%s`.`'%s'`(`user`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+  )
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = latin1;""" % ( 
+    goconfig.sql_url_table,
+    goconfig.sql_db,
+    goconfig.sql_registration_table
+  )
+  cursor.execute( sql )
   
   return mdb, cursor
 
