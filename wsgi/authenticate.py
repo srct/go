@@ -53,9 +53,9 @@ def application(environ, start_response):
       
       # unregister the user, in case they're already in
       #library.deactivate_user( hash_value )
+      if( library.user_registered( usr ) ):
       # register the hashed user with the SQL database
-      registered = library.activate_user( hash_value, usr )
-      if( registered ):
+        library.activate_user( hash_value, usr )
         # push the cookie to the user and redirect
         status = '303 See Other'
         response_headers = [('Set-Cookie', cookie_value),
@@ -63,7 +63,7 @@ def application(environ, start_response):
                             ('Content-type', 'text/plain')]
         start_response(status, response_headers)
         return [ str(cookie) ]
-      else: body = ["<p>Error: you are not registered to use this service.</p>"]
+      else: body = ["<p>Error: You are not registered to use this service.</p>"]
     else:
       body = ["<p>Error: invalid username or password.</p>"]
   
