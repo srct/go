@@ -7,7 +7,7 @@ import Cookie
 import cookielib
 import hashlib
 
-site.addsitedir('/srv/http/wsgi')
+site.addsitedir('/srv/http/go/wsgi')
 import goconfig
 
 

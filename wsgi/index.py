@@ -1,7 +1,7 @@
 import ldap
 import site
 
-site.addsitedir('/srv/http/wsgi')
+site.addsitedir('/srv/http/go/wsgi')
 import library
 import goconfig
 
