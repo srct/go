@@ -32,6 +32,9 @@ def application(environ, start_response):
   login_form = """
     <form action="/exec/lg" method="post">
       <br />
+      You must be pre-approved by a SRCT <a
+      href="mailto:exec@srct.gmu.edu">SysAdmin</a> to use this service.
+      <br /><br />
       <label for="usr">username</label>
       <br /><br />
       <input type="text" id="usr" name="usr" value="" />

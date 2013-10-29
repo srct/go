@@ -66,8 +66,7 @@ def application(environ, start_response):
       else:
         body = ["<p>Help! I need an adult!.</p>"]
         body.append("<p>You're not registered to use this service. ")
-        body.append("Please contact a <a href=\"http://srct.gmu.edu\">SRCT</a> ")
-        body.append("SysAdmin.</p>")
+        body.append("Please contact a SRCT <a href=\"mailto:exec@srct.gmu.edu\">SysAdmin</a>.</p> ")
     else:
       body = ["<p>Error: Invalid username or password.</p>"]
   
