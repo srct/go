@@ -30,7 +30,7 @@ def application(environ, start_response):
 
     if len(user) > 0 and len(name) > 0 and len(desc) > 0:
       if library.register_user( user, name, desc ):
-        body = ["<h3>~Apply for Use~</h3>"]
+        body = ["<h3>~Sign-Up for Use~</h3>"]
         body.append("<p>Application success! Please wait for moderator ")
         body.append("approval before using this service.<br/><br/></p>")
       else:
