@@ -16,24 +16,34 @@ def application(environ, start_response):
   bottom_part = f.read()
   f.close()
 
+  if environ["REQUEST_METHOD"] == "POST":
+    
+    # Grab user data, cut off non-relevant fields.
+    data = environ['wsgi.input']
+    data = library.parse_post_data( data )
+    
+    user = data['user']
+    name = data['name']
+    desc = data['desc']
+
+
   apply_form = """
     <form action="" method="post">
-      <p>This form allows you to apply for registered access to the George
-      Mason Student-Run Computing and Technology's Go URL shortening
-      service. Access to this computing resource is governed by the <a
-      href="http://srct.gmu.edu/usage-policy">SRCT Usage Policy</a>.
-      Submitting an application indicates implicit acceptance of these
-      terms. Misuse of this service will be handled strictly.</p>
       <br />
-      <label for="usr">username</label>
+      <label for="user">username (NetID)</label>
       <br /><br />
-      <input type="text" id="usr" name="usr" value="" />
+      <input type="text" id="user" name="user" value="" />
       <br /><br />
-      <label for="pass">password</label>
+      <label for="name">full name</label>
       <br /><br />
-      <input type="password" id="pass" name="pass" value="" />
+      <input type="text" id="name" name="name" value="" />
       <br /><br />
-      <input type="submit" name="submit" value="LOGIN" />
+      <label for="desc">user description</label>
+      <br /><br />
+      <textarea id="desc" name="desc"></textarea>
+      <p>Submitting an application indicates implicit acceptance of the
+      <a href="http://srct.gmu.edu/usage-policy">SRCT Usage Policy</a>.</p>
+      <input type="submit" name="submit" value="APPLY" />
       <br /><br />
     </form>
   """
