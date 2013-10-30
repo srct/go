@@ -30,7 +30,7 @@ def application(environ, start_response):
 
     if len(user) > 0 and len(name) > 0 and len(desc) > 0:
       if library.register_user( user, name, desc ):
-        body = ["<h3>~Sign-Up for Use~</h3>"]
+        body = ["<h3>~Sign Up for Use~</h3>"]
         body.append("<p>Application success! Please wait for moderator ")
         body.append("approval before using this service.<br/><br/></p>")
       else:
@@ -41,7 +41,7 @@ def application(environ, start_response):
       body.append("<p>Please complete all forms before submitting.<br/><br/></p>")
   else:
     body = ["""
-      <h3>~Apply for Use~</h3>
+      <h3>~Sign-Up for Use~</h3>
       <form action="" method="post">
 
         <label for="user">username (NetID)</label>
@@ -58,13 +58,13 @@ def application(environ, start_response):
         <p>Provide a brief description of the user and why they require
         access to Go.</p>
         <textarea id="desc" name="desc"></textarea>
+        <br /><br />
+
+        <input type="submit" name="submit" value="APPLY" />
 
         <p>Submitting an application indicates acceptance of the
         <a href="http://srct.gmu.edu/usage-policy">SRCT Usage Policy</a>.</p>
 
-        <input type="submit" name="submit" value="APPLY" />
-
-        <br /><br />
       </form>
     """]
 
