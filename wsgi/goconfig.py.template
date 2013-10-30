@@ -8,7 +8,7 @@
 doc_root = "/srv/http"
 
 # domain: This is the domain the website is being hosted at.
-domain = "go.gmu.edu"
+domain = "www.example.com"
 
 
 
@@ -26,7 +26,7 @@ sql_domain = "localhost"
 sql_usr    = "go-user"
 
 # sql_pasw: The plaintext password used to connec to the SQL database.
-sql_pasw   = "georgemasonsrct"
+sql_pasw   = "go-password"
 
 # sql_db: The SQL database or schema name to which to connect.
 sql_db     = "go"
@@ -41,7 +41,7 @@ sql_usr_table = "usrs"
 sql_registration_table = "registered"
 
 #ldap_domain: The location of the LDAP database to connect to.
-ldap_domain = "ldaps://directory.gmu.edu:636"
+ldap_domain = "ldaps://lda.example.com:port"
 
 
 
