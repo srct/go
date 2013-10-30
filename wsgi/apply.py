@@ -30,20 +30,27 @@ def application(environ, start_response):
   apply_form = """
     <form action="" method="post">
       <br />
+
       <label for="user">username (NetID)</label>
       <br /><br />
       <input type="text" id="user" name="user" value="" />
       <br /><br />
+
       <label for="name">full name</label>
       <br /><br />
       <input type="text" id="name" name="name" value="" />
       <br /><br />
+
       <label for="desc">user description</label>
-      <br /><br />
+      <p>Provide a brief description of the user and why they require
+      access to Go.</p>
       <textarea id="desc" name="desc"></textarea>
-      <p>Submitting an application indicates implicit acceptance of the
+
+      <p>Submitting an application indicates acceptance of the
       <a href="http://srct.gmu.edu/usage-policy">SRCT Usage Policy</a>.</p>
+
       <input type="submit" name="submit" value="APPLY" />
+
       <br /><br />
     </form>
   """
