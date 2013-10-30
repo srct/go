@@ -6,7 +6,7 @@ import library
 import goconfig
 
 def application(environ, start_response):
-  
+
   ## This application should display two the user one of two
   ##  screens, depending on the situation. 
   ## 
@@ -19,7 +19,7 @@ def application(environ, start_response):
   ##  allow it to verify submission content. If the url-register script
   ##  sends the user back here, the user should remain logged in and 
   ##  have no issues travelling back and forth.
-  
+ 
   # Construct the default body, along with its header/footer wrapper.
   body = []
   f = open(goconfig.doc_root + "/site_data/top.part", "r")
@@ -28,10 +28,10 @@ def application(environ, start_response):
   f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
   bottom_part = f.read()
   f.close()
-  
+
   login_form = """
+    <h3>~Login~</h3>
     <form action="/exec/lg" method="post">
-      <br />
       <label for="usr">username</label>
       <br /><br />
       <input type="text" id="usr" name="usr" value="" />
@@ -50,10 +50,10 @@ def application(environ, start_response):
     </form>
   """
   #body.append( login_form )
-  
+ 
   url_form = """
+    <h3>~Shorten URL~</h3>
     <form action="/exec/rg" method="post" target="_self">
-      <br />
       <label for="long-url">Long URL</label>
       <br /><br />
       <input type="text" id="long-url" name="long-url" value="http://" />
@@ -79,7 +79,7 @@ def application(environ, start_response):
     </form>
   """
   #body.append( url_form )
-  
+ 
   if( library.user_logged_in( environ ) ):
     body.append( url_form )
   else:
@@ -87,10 +87,10 @@ def application(environ, start_response):
 
   body = ''.join( body )
   response = top_part + body + bottom_part
-  
+ 
   status = '200 OK'
   response_headers = [('Content-type', 'text/html'),
                       ('Content-Length', str(len(response)))]
   start_response(status, response_headers)
-  
+
   return [response]
