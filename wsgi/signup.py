@@ -41,7 +41,7 @@ def application(environ, start_response):
       body.append("<p>Please complete all forms before submitting.<br/><br/></p>")
   else:
     body = ["""
-      <h3>~Sign-Up for Use~</h3>
+      <h3>~Sign Up for Use~</h3>
       <form action="" method="post">
 
         <label for="user">username (NetID)</label>
