@@ -37,6 +37,11 @@ body { /* HTML body */
   font-family: 'Carrois Gothic', sans-serif;
 }
 
+#tagline { 
+/*  text-align: right; */
+  font-size: .81em;
+}
+
 #signoff { /* Footer of the page */
   color: #000000;
   text-align: center;
@@ -44,22 +49,6 @@ body { /* HTML body */
   font-style: italic;
 }
 
-/*
-.left { 
-  float: left;
-  width: 49%;
-}
-
-.right { 
-  float: right;
-  width: 49%;
-}
-
-.block { 
-  clear: both;
-  display: block;
-}
-*/
 
 
 
@@ -83,6 +72,7 @@ a {
 
 h1 { /* Main page title */
   font-size: 3em; 
+  margin-bottom: 0px;
   color: #006633;
 }
 
