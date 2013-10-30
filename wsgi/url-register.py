@@ -117,6 +117,7 @@ def application(environ, start_response):
       library.register_url( long_url, short_url, end_stamp, environ )
       display_short = goconfig.domain + "/" + short_url
       
+      body = ["<h3>~Success~</h3>"]
       body.append(
         '<p><em>Original URL:</em> <a href="%s">%s</a></p>' % 
         (long_url, long_url))
