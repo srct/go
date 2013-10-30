@@ -95,7 +95,7 @@ def application(environ, start_response):
       SU_EX = True        # short url uniqueness
     
     # Reset body of output to prepare for possible error/success msg.
-    body = []
+    body = ["<h3>~Error~</h3>"]
     
     # Depending on the values of error flags, display an appropriate
     # message to the user.
@@ -104,8 +104,8 @@ def application(environ, start_response):
     if INV_SU:
       body.append("<p>The identifier can contain only letters and numbers.</p>")
     if SU_TS:
-      body.append("<p>The identifier must be at least " +
-      str(goconfig.min_url_len) + " characters.</p>")
+      body.append("<p>The identifier must be at least ")
+      body.append(str(goconfig.min_url_len) + " characters.</p>")
     if SU_EX:
       body.append("<p>The identifier already exists in the database!</p>")
     
@@ -124,9 +124,8 @@ def application(environ, start_response):
         '<p><em>Shortened URL:</em> <a href="/%s">%s</a></p>' % 
         (short_url, display_short))
     else:
-      body.append(
-        '<input type="submit" value="BACK" ' +
-        'onclick="history.back()" />')
+      body.append('<input type="submit" value="BACK" ')
+      body.append('onclick="history.back()" /><br /><br />')
   
   # Read and store in memory the header and footer sections 
   # of the page display.
