@@ -28,8 +28,8 @@ def application(environ, start_response):
 
 
   apply_form = """
+    <h3>~Apply for Use~</h3>
     <form action="" method="post">
-      <br />
 
       <label for="user">username (NetID)</label>
       <br /><br />
