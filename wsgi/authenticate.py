@@ -66,7 +66,7 @@ def application(environ, start_response):
       else:
         body = [""]
         body.append("<p>You do not currently have permission to use this ")
-        body.append("service. Please <a href=\"/exec/reg\">apply</a> for access.</p>")
+        body.append("service. Please <a href=\"/exec/apply\">apply</a> for access.</p>")
         body.append("<p>If you believe this message is in error, please contact ")
         body.append("a SRCT <a href=\"mailto:exec@srct.gmu.edu\">SysAdmin</a>.</p>")
     else:
