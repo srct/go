@@ -86,6 +86,22 @@ def user_registered( username ):
   return num_rows > 0
 
 
+# Register a user --- that is, enter them in the registered database with a 
+# false (default=0) approval flag.
+def register_user( user, name, desc ):
+  mdb,cursor = connect_to_mysql()
+  output = False
+  try:
+    sql = """INSERT INTO `%s`(`user`, `name`, `comment`) VALUES (%s, %s, %s)"""
+    cursor.execute( sql, (goconfig.sql_registration_table, user, name, desc) )
+    output = True
+  except MySQLdb.IntegrityError:
+    pass
+  mdb.commit()
+  mdb.close()
+  return output
+
+
 # Log in a user by placing a cookie on their machine and entering
 # the related hash in a SQL database.
 def generate_cookie( user ):
