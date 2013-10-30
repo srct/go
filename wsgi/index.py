@@ -43,7 +43,7 @@ def application(environ, start_response):
       <input type="submit" name="submit" value="LOGIN" />
       <p>
         <br />
-        You must be <a href="/exec/apply">registered</a> in
+        You must be <a href="/sign-up">registered</a> in
         order to use this service.
         <br /><br />
       </p>
