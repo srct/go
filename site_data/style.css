@@ -5,7 +5,7 @@
  * ########                                                        ########
  * ########  Project: GO - URL Shorterner                          ########
  * ########  File: style.css                                       ########
- * ########  Date: 2013.04.04                                      ########
+ * ########  Date: 2013.10.29                                      ########
  * ########  Author: Michel Rouly                                  ########
  * ########                                                        ########
  * ########  Style sheet for entire web application. Modify        ########
@@ -16,12 +16,72 @@
  * ########################################################################
  */
 
-body { 
-  //background: #FFCC33;
+
+/**** CONTAINER STYLES ****/
+
+body { /* HTML body */
+  /* background: #FFCC33; */
   background: #EFEFEF;
 }
 
-h1 { 
+#box { /* Main content holder */
+  color: #383838;
+  width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #EFEF88;
+  /* background-color: #FFCC33; */
+  /* background-color: #EFEFEF; */
+  text-align: center;
+  font-family: 'Carrois Gothic', sans-serif;
+}
+
+#signoff { /* Footer of the page */
+  color: #000000;
+  text-align: center;
+  font-size: .6em;
+  font-style: italic;
+}
+
+/*
+.left { 
+  float: left;
+  width: 49%;
+}
+
+.right { 
+  float: right;
+  width: 49%;
+}
+
+.block { 
+  clear: both;
+  display: block;
+}
+*/
+
+
+
+
+/**** PAGE COMPONENT STYLES ****/
+
+p { 
+  font-size: .8em;
+}
+
+a { 
+  text-decoration: none;
+}
+
+
+
+
+
+
+/**** HEADER STYLES ****/
+
+h1 { /* Main page title */
   font-size: 3em; 
   color: #006633;
 }
@@ -31,7 +91,12 @@ h1 a {
   text-decoration: none;
 }
 
-hr { 
+h2 { /* Per-page headings  */
+  color: inherit;
+  font-size: 1.5em;
+}
+
+hr { /* Page title and footer seperators */
   color: #006633;
   background-color: #006633;
   height: 2px;
@@ -39,26 +104,12 @@ hr {
   border: 0px;
 }
 
-#box {
-  color: #383838;
-  width: 500px;
-  margin: auto;
-  padding: 20px;
-  border-radius: 15px;
-  background-color: #EFEF88;
-  //background-color: #FFCC33;
-  //background-color: #EFEFEF;
-  text-align: center;
-  font-family: 'Carrois Gothic', sans-serif;
-}
 
-#signoff { 
-  color: #000000;
-  text-align: center;
-  font-size: .6em;
-  font-style: italic;
-}
 
+
+
+
+/**** FORM COMPONENT STYLES ****/
 label { 
   color: #565656;
   cursor: pointer;
@@ -70,18 +121,19 @@ label {
   font-size: .8em;
 }
 
-p { 
-  font-size: .8em;
-}
-
-input { 
+input, textarea { 
   color: #9a9a9a;
   cursor: pointer;
   border: 0px solid #343434;
   border-radius: 5px;
   background-color: #FDFDB8;
-  //background-color: #FFCC33;
+  /* background-color: #FFCC33; */
   padding: 5px;
+}
+
+textarea { 
+  width: 75%;
+  height: 75px;
 }
 
 input:focus { 
@@ -94,6 +146,3 @@ input[type="submit"] {
   border: 0px;
 }
 
-a { 
-  text-decoration: none;
-}
