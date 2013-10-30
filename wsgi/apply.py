@@ -27,6 +27,7 @@ def application(environ, start_response):
     desc = data['desc']
 
 
+
   apply_form = """
     <h3>~Apply for Use~</h3>
     <form action="" method="post">
