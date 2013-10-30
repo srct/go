@@ -41,10 +41,12 @@ def application(environ, start_response):
       <input type="password" id="pass" name="pass" value="" />
       <br /><br />
       <input type="submit" name="submit" value="LOGIN" />
-      <br /><br />
-      You must be <a href="/exec/reg">registered</a> in order to
-      use this service.
-      <br /><br />
+      <p>
+        <br />
+        You must be <a href="/exec/reg">registered</a> in
+        order to use this service.
+        <br /><br />
+      </p>
     </form>
   """
   #body.append( login_form )

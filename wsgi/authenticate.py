@@ -65,11 +65,10 @@ def application(environ, start_response):
         return [ str(cookie) ]
       else:
         body = [""]
-        body.append("<p>You're not registered to use this service.<br />")
-        body.append("If this is in error, please contact a SRCT <a ")
-        body.append("href=\"mailto:exec@srct.gmu.edu\">SysAdmin</a>.<br />")
-        body.append("Alternatively, you may <a href=\"/exec/reg\">")
-        body.append("apply for registration</a>.</p>")
+        body.append("<p>You do not currently have permission to use this ")
+        body.append("service. Please <a href=\"/exec/reg\">apply</a> for access.</p>")
+        body.append("<p>If you believe this message is in error, please contact ")
+        body.append("a SRCT <a href=\"mailto:exec@srct.gmu.edu\">SysAdmin</a>.</p>")
     else:
       body = ["<p>Error: Invalid username or password.</p>"]
   
