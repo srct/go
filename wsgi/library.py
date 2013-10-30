@@ -59,6 +59,19 @@ def get_username( environ ):
   return username
 
 
+def user_approved( username ):
+  mdb,cursor = connect_to_mysql()
+  sql = """SELECT `approved` FROM `%s` WHERE `user`=%s;"""
+  cursor.execute( sql, (goconfig.sql_registration_table, username) )
+  ((approved,),) = cursor.fetchall()
+  mdb.commit()
+  mdb.close()
+  if approved == 1:
+    return True
+  else:
+    return False
+
+
 # Determine if the user has posting permissions via the registration
 # datbase.
 def user_registered( username ):
@@ -134,7 +147,9 @@ def connect_to_mysql():
   sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
   user VARCHAR(50) CHARACTER SET 'utf8' NOT NULL,
   PRIMARY KEY(user),
-  comment VARCHAR(500) CHARACTER SET 'utf8' NOT NULL
+  name VARCHAR(100) CHARACTER SET 'utf8' NOT NULL,
+  comment VARCHAR(500) CHARACTER SET 'utf8' NOT NULL,
+  approved INT(1) NOT NULL DEFAULT '0'
   )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = latin1;""" % ( goconfig.sql_registration_table )
