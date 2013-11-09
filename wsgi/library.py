@@ -276,6 +276,15 @@ def register_url( longurl, shorturl, expiration, environ ):
   mdb.close()
 
 
+# Deletes a URL from the registered URL table.
+def delete_url( url_id ):
+  mdb, cursor = connect_to_mysql()
+  sql = """DELETE FROM `%s` WHERE `id`=%s;"""
+  cursor.execute( sql, (goconfig.sql_url_table, url_id) )
+  mdb.commit()
+  mdb.close()
+
+
 # Removes any expired urls in the url table.
 def remove_expired_urls():
   mdb, cursor = connect_to_mysql()
