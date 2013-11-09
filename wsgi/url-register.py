@@ -1,7 +1,5 @@
 import re
 import urllib
-import MySQLdb
-import ldap
 import time
 import site
 
