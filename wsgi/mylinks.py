@@ -30,7 +30,7 @@ def application(environ, start_response):
       link_text = '<a href="%s">%s</a>'
       short_url_link = link_text % (short_url, short_url)
       long_url_link = link_text % (long_url, long_url)
-      delete_link = link_text % ("#", "Delete")
+      delete_link = link_text % ("#", "<strong>Delete</strong>")
 
       if expiration <= 0:
         expiration = "never"
@@ -38,13 +38,13 @@ def application(environ, start_response):
         expiration = datetime.fromtimestamp( int(expiration) )
         expiration = expiration.strftime('%m/%d/%Y')
 
-      body.append("<p>Long: ")
+      body.append("<p><strong>Long</strong>: ")
       body.append(long_url_link)
-      body.append("<br />Short: ")
+      body.append("<br /><strong>Short</strong>: ")
       body.append(short_url_link)
-      body.append("<br />Clicks: ")
+      body.append("<br /><strong>Clicks</strong>: ")
       body.append(str(clicks))
-      body.append("<br />Expires: ")
+      body.append("<br /><strong>Expires</strong>: ")
       body.append(str(expiration))
       body.append("<br />")
       body.append(delete_link)
