@@ -30,7 +30,8 @@ def application(environ, start_response):
       link_text = '<a href="%s">%s</a>'
       short_url_link = link_text % (short_url, short_url)
       long_url_link = link_text % (long_url, long_url)
-      delete_link = link_text % ("#", "<strong>Delete</strong>")
+      delete_link = "/delete?u=%s" % short_url
+      delete_link = link_text % (delete_link, "<strong>Delete</strong>")
 
       if expiration <= 0:
         expiration = "never"
