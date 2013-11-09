@@ -56,9 +56,16 @@ ldap_domain = "ldap://ldap.example.com:port"
 # min_url_len: This is the minimum required length of
 #   a "short url" or url identifier.
 min_url_len = 5
-#
+
 # piwik: Enable piwik analytics & tracking.
 piwik = False
 
-# piwik_url: If Piwik is enabled, point this to the tracking server.
-piwik_url = "http://www.example.com/analytics"
+# piwik_tracking_api_url: If Piwik is enabled, point this to the tracking server.
+piwik_tracking_api_url = "http://www.example.com/analytics/piwik.php"
+
+# piwik_site_id: The Piwik SITE_ID global variable.
+piwik_site_id = 1
+
+# piwik_token_auth: The private Piwik tracking token auth. Currently
+# disabled.
+piwik_token_auth = ""
