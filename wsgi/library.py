@@ -375,3 +375,28 @@ def get_links( username ):
   mdb.commit()
   mdb.close()
   return result
+
+def piwik_track( environ ):
+  from piwikapi.tracking import PiwikTracker
+  from piwikapi.tests.request import FakeRequest
+
+  headers = {
+    'HTTP_USER_AGENT': environ['HTTP_USER_AGENT'],
+    'REMOTE_ADDR': environ['REMOTE_ADDR'],
+    'HTTP_REFERER': environ['HTTP_REFERER'],
+    'HTTP_ACCEPT_LANGUAGE': environ['HTTP_ACCEPT_LANGUAGE'],
+    'SERVER_NAME': environ['SERVER_NAME'],
+    'PATH_INFO': environ['PATH_INFO'],
+    'QUERY_STRING': environ['QUERY_STRING'],
+    'HTTPS': False,
+  }
+
+  request = FakeRequest(headers)
+  piwiktracker = PiwikTracker(goconfig.piwik_site_id, request)
+  piwiktracker.set_api_url(goconfig.piwik_tracking_api_url)
+
+  piwiktracker.set_ip(headers['REMOTE_ADDR'])
+  #piwiktracker.set_token_auth(PIWIK_TOKEN_AUTH)
+
+  # submit tracking entry
+  piwiktracker.do_track_page_view('My Page Title')
