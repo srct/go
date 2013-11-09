@@ -16,5 +16,8 @@ Go Url Shortener
 <div id="box">
   
   <h1><a href="/">Go (URL Shortener)</a></h1>
-  <p id="tagline"><a href="/about">What is Go?</a></p>
+  <p id="tagline">
+    [ <a href="/about">What is Go?</a> ]
+    %{mylinks}%
+  </p>
   <hr/>
