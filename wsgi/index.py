@@ -1,4 +1,3 @@
-import ldap
 import site
 
 site.addsitedir('/srv/http/go/wsgi')
