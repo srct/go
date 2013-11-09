@@ -6,6 +6,7 @@ import MySQLdb
 import Cookie
 import cookielib
 import hashlib
+import ldap
 
 site.addsitedir('/srv/http/go/wsgi')
 import goconfig
@@ -306,3 +307,27 @@ def get_redirect_target( short_url ):
   mdb.close()
 
   return target
+
+
+def ldap_authenticate( usr, psw ):
+  bind = 'uid='+usr+',ou=people,o=gmu.edu'
+
+  if( len(usr) > 0 and len(psw) > 0):
+
+    # Try to talk with the LDAP server.
+    ldap.set_option(ldap.OPT_X_TLS, ldap.OPT_X_TLS_DEMAND)
+    ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+
+    try:
+      ld = ldap.initialize( goconfig.ldap_domain )
+      result = ld.simple_bind_s( bind, psw )
+      if result is not None:
+        return True
+    except ldap.INVALID_CREDENTIALS:
+      pass
+    except ldap.INAPPROPRIATE_AUTH:
+      pass
+    except ldap.NO_SUCH_OBJECT:
+      pass
+
+  return False
