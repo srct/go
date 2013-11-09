@@ -37,7 +37,7 @@ def application(environ, start_response):
   else:
 
     if goconfig.piwik:
-      library.piwik_track( environ )
+      library.piwik_track( environ, "Redirect: '%s'" % short_url )
 
     status = '303 See other'
     response_headers = [('Location', target)]
