@@ -338,6 +338,12 @@ def get_top( logged_in=False ):
   top = f.read()
   f.close()
 
+  myaccount = """| [ <a href="/account">My Account</a> ]"""
+  if logged_in:
+    top = top.replace( "%{myaccount}%", myaccount )
+  else:
+    top = top.replace( "%{myaccount}%", "" )
+
   mylinks = """| [ <a href="/mylinks">My Links</a> ]"""
   if logged_in:
     top = top.replace( "%{mylinks}%", mylinks )
@@ -351,6 +357,12 @@ def get_bottom( logged_in=False ):
   f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
   bottom = f.read()
   f.close()
+
+  logout = """<a href="/logout">Log Out</a>"""
+  if logged_in:
+    bottom = bottom.replace( "%{logout}%", logout )
+  else:
+    bottom = bottom.replace( "%{logout}%", "" )
 
   return bottom
 
