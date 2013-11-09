@@ -36,7 +36,8 @@ def application(environ, start_response):
 
   else:
 
-    ## incorporate piwik python api thing HERE
+    if goconfig.piwik:
+      library.piwik_track( environ )
 
     status = '303 See other'
     response_headers = [('Location', target)]
