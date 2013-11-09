@@ -282,3 +282,27 @@ def remove_expired_urls():
   cursor.execute( sql, (goconfig.sql_url_table, today) )
   mdb.commit()
   mdb.close()
+
+def get_redirect_target( short_url ):
+  mdb,cursor = connect_to_mysql()
+  sql = """SELECT * FROM `%s` WHERE `shorturl` = %s;"""
+  output = cursor.execute( sql, (goconfig.sql_url_table, short_url) )
+
+  selection = cursor.fetchall()
+  target = None
+
+  # If at least one row has been found, then grab its long_url.
+  # If no rows are found, though, then don't do anything more!
+  if len(selection) > 0:
+    row = selection[0]  # we are only interested in the first result
+    target = row[1]     # this is the index of the longurl field
+    uid = row[0]        # this is the index of the ID field
+
+    sql = """UPDATE `%s` SET `clicks`=`clicks`+1 WHERE `id`=%s;"""
+    cursor.execute( sql, (goconfig.sql_url_table, uid) )
+
+  # Close the connection to the mySQL database.
+  mdb.commit()
+  mdb.close()
+
+  return target
