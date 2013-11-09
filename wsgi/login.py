@@ -91,12 +91,9 @@ def application(environ, start_response):
       body = ["<p>Error: Invalid username or password.</p>"]
 
 
-  f = open(goconfig.doc_root + "/site_data/top.part", "r")
-  top = f.read()
-  f.close()
-  f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
-  bottom = f.read()
-  f.close()
+  user_logged_in = library.user_logged_in( environ )
+  top = library.get_top( user_logged_in )
+  bottom = library.get_bottom( user_logged_in )
 
   body = ''.join( body )
   response = top + body + bottom

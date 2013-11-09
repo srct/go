@@ -19,19 +19,13 @@ def application(environ, start_response):
   target = library.get_redirect_target( short_url )
 
   if target is None:
-    f = open(goconfig.doc_root + "/site_data/top.part", "r")
-    top = f.read()
-    f.close()
-    f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
-    bottom = f.read()
-    f.close()
 
-    response = []
-    response.append( top )
-    response.append( "<p>Nothing here.</p>" )
-    response.append( bottom )
+    user_logged_in = library.user_logged_in( environ )
+    top = library.get_top( user_logged_in )
+    bottom = library.get_bottom( user_logged_in )
+    body = "<p>Nothing here.</p>"
 
-    response = ''.join( response )
+    response = top + body + bottom
 
     status = '200 OK'
     response_headers = [('Content-type', 'text/html'),
