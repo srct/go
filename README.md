@@ -13,6 +13,7 @@ The host or virtualhost being used for Go must have certain WSGIScriptAlias dire
 ```
 WSGIScriptAlias /rd /srv/http/go/wsgi/redir.py
 WSGIScriptAlias /index.html /srv/http/go/wsgi/index.py
+WSGIScriptAlias /mylinks /srv/http/go/wsgi/mylinks.py
 WSGIScriptAlias /login /srv/http/go/wsgi/login.py
 WSGIScriptAlias /logout /srv/http/go/wsgi/logout.py
 WSGIScriptAlias /signup /srv/http/go/wsgi/signup.py
