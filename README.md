@@ -4,7 +4,7 @@ This is the Go (Python) repository! Welcome!
 
 A project of [GMU SRCT](http://srct.gmu.edu).
 
-See [wsgi/goconfig.py.template] for configuration variables. Relocate this to `/wsgi/goconfig.py` when configured properly.
+See [../wsgi/goconfig.py.template] for configuration variables. Relocate this to `/wsgi/goconfig.py` when configured properly.
 
 ## Apache Configuration
 
