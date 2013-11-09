@@ -59,6 +59,8 @@ body { /* HTML body */
 }
 
 #mylinks p { 
+  /* border-left: 5px solid #464646; */
+  border: 1px dashed #000000;
   text-align: left;
   padding-bottom: 5px;
   padding-top: 5px;
@@ -67,6 +69,14 @@ body { /* HTML body */
   word-wrap: break-word;
   white-space: normal;
 }
+
+#mylinks p:hover { 
+  background-color: #FDFDB8;
+  /* border-left: 5px solid #898989; */
+}
+
+
+
 
 
 /**** PAGE COMPONENT STYLES ****/
