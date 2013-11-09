@@ -49,13 +49,29 @@ body { /* HTML body */
   font-style: italic;
 }
 
+#mylinks { 
+  width: inherit;
+  margin: auto;
+  table-layout: fixed;
+  /*height: 500px;
+  border: 1px solid #000000;
+  overflow-y: auto;*/
+}
 
-
+#mylinks p { 
+  text-align: left;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  word-wrap: break-word;
+  white-space: normal;
+}
 
 
 /**** PAGE COMPONENT STYLES ****/
 
-p { 
+p, tr { 
   font-size: .8em;
 }
 
