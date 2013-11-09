@@ -7,53 +7,17 @@ import goconfig
 
 def application(environ, start_response):
 
-  ## This application should display two the user one of two
-  ##  screens, depending on the situation. 
-  ## 
-  ## Given an unverified user, display the login screen. 
-  ##  On login, authenticate the user's credentials. If the credentials
-  ##  are good, then consider the user logged in.
-  ##
-  ## Given a logged in user, display the URL register screen. On
-  ##  submission, transfer control to the url-register script and 
-  ##  allow it to verify submission content. If the url-register script
-  ##  sends the user back here, the user should remain logged in and 
-  ##  have no issues travelling back and forth.
- 
-  # Construct the default body, along with its header/footer wrapper.
-  body = []
-  f = open(goconfig.doc_root + "/site_data/top.part", "r")
-  top_part = f.read()
-  f.close()
-  f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
-  bottom_part = f.read()
-  f.close()
+  if( not library.user_logged_in( environ ) ):
+    status = '303 See other'
+    response_headers = [('Location', '/login')]
+    start_response(status, response_headers)
+    return ['Redirecting to login . . .']
 
-  login_form = """
-    <h3>~Login~</h3>
-    <form action="/exec/lg" method="post">
-      <label for="usr">username</label>
-      <br /><br />
-      <input type="text" id="usr" name="usr" value="" />
-      <br /><br />
-      <label for="pass">password</label>
-      <br /><br />
-      <input type="password" id="pass" name="pass" value="" />
-      <br /><br />
-      <input type="submit" name="submit" value="LOGIN" />
-      <p>
-        <br />
-        You must be <a href="/signup">registered</a> in
-        order to use this service.
-        <br /><br />
-      </p>
-    </form>
-  """
-  #body.append( login_form )
- 
+  body = []
+
   url_form = """
     <h3>~Shorten URL~</h3>
-    <form action="/exec/rg" method="post" target="_self">
+    <form action="/register-url" method="post" target="_self">
       <label for="long-url">Long URL</label>
       <br /><br />
       <input type="text" id="long-url" name="long-url" value="http://" />
@@ -78,16 +42,19 @@ def application(environ, start_response):
       <br /><br />
     </form>
   """
-  #body.append( url_form )
- 
-  if( library.user_logged_in( environ ) ):
-    body.append( url_form )
-  else:
-    body.append( login_form )
+
+  body.append( url_form )
+
+  f = open(goconfig.doc_root + "/site_data/top.part", "r")
+  top = f.read()
+  f.close()
+  f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
+  bottom = f.read()
+  f.close()
 
   body = ''.join( body )
-  response = top_part + body + bottom_part
- 
+  response = top + body + bottom
+
   status = '200 OK'
   response_headers = [('Content-type', 'text/html'),
                       ('Content-Length', str(len(response)))]
