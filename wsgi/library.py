@@ -376,18 +376,18 @@ def get_links( username ):
   mdb.close()
   return result
 
-def piwik_track( environ ):
+def piwik_track( environ, page ):
   from piwikapi.tracking import PiwikTracker
   from piwikapi.tests.request import FakeRequest
 
   headers = {
-    'HTTP_USER_AGENT': environ['HTTP_USER_AGENT'],
-    'REMOTE_ADDR': environ['REMOTE_ADDR'],
-    'HTTP_REFERER': environ['HTTP_REFERER'],
-    'HTTP_ACCEPT_LANGUAGE': environ['HTTP_ACCEPT_LANGUAGE'],
-    'SERVER_NAME': environ['SERVER_NAME'],
-    'PATH_INFO': environ['PATH_INFO'],
-    'QUERY_STRING': environ['QUERY_STRING'],
+    'HTTP_USER_AGENT': environ.get('HTTP_USER_AGENT'),
+    'REMOTE_ADDR': environ.get('REMOTE_ADDR'),
+    'HTTP_REFERER': environ.get('HTTP_REFERER'),
+    'HTTP_ACCEPT_LANGUAGE': environ.get('HTTP_ACCEPT_LANGUAGE'),
+    'SERVER_NAME': environ.get('SERVER_NAME'),
+    'PATH_INFO': environ.get('PATH_INFO'),
+    'QUERY_STRING': environ.get('QUERY_STRING'),
     'HTTPS': False,
   }
 
@@ -399,4 +399,4 @@ def piwik_track( environ ):
   #piwiktracker.set_token_auth(PIWIK_TOKEN_AUTH)
 
   # submit tracking entry
-  piwiktracker.do_track_page_view('My Page Title')
+  piwiktracker.do_track_page_view( str(page) )
