@@ -47,7 +47,7 @@ def application(environ, start_response):
     # Grab user data, cut off non-relevant fields.
     data = environ['wsgi.input']
     data = library.parse_post_data( data )
-    
+
     user = data['user'].strip().replace('+',' ').lower()
     name = data['name'].strip().replace('+',' ')
     desc = data['desc'].strip().replace('+',' ')

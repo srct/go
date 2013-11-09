@@ -15,7 +15,7 @@ import goconfig
 # Extract the value of the cookie if one is set.
 def get_cookie_value( environ ):
   cookie = Cookie.SimpleCookie()
-  
+
   # if the environment contains a cookie, check it out
   if environ.has_key('HTTP_COOKIE'):
     # load the cookie we found
@@ -36,12 +36,12 @@ def user_logged_in( environ ):
     sql = """SELECT count(*) FROM `%s` WHERE `user_hash`=%s;"""
     cursor.execute( sql, (goconfig.sql_usr_table, user_hash) )
     ((num_rows,),) = cursor.fetchall()
-    
+
     mdb.commit()
     mdb.close()
-    
+
     return num_rows > 0
-  
+
   return False
 
 
@@ -80,10 +80,10 @@ def user_registered( username ):
   sql = """SELECT count(*) FROM `%s` WHERE `user`=%s;"""
   cursor.execute( sql, (goconfig.sql_registration_table, username) )
   ((num_rows,),) = cursor.fetchall()
-  
+
   mdb.commit()
   mdb.close()
-  
+
   return num_rows > 0
 
 
@@ -112,7 +112,7 @@ def generate_cookie( user ):
   for i in range(32):
     chars.append( random.choice(ALPHABET) )
   salt = "".join(chars)
-  
+
   # generate a randomized hash for this user
   hashed_value = hashlib.sha512( user + salt ).hexdigest()
   cookie = Cookie.SimpleCookie()
@@ -158,7 +158,7 @@ def connect_to_mysql():
     goconfig.sql_pasw,
     goconfig.sql_db )
   cursor = mdb.cursor()
-  
+
   # If we need to create the table, then construct it.
   # REGISTERED USER TABLE
   sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
@@ -171,7 +171,7 @@ def connect_to_mysql():
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = latin1;""" % ( goconfig.sql_registration_table )
   cursor.execute( sql )
-  
+
   # ACTIVE USER TABLE
   sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
   id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -189,7 +189,7 @@ def connect_to_mysql():
     goconfig.sql_registration_table
   )
   cursor.execute( sql )
-  
+
   sql = """CREATE TABLE IF NOT EXISTS `'%s'`(
   id INT NOT NULL AUTO_INCREMENT, 
   PRIMARY KEY(id),
@@ -209,7 +209,7 @@ def connect_to_mysql():
     goconfig.sql_registration_table
   )
   cursor.execute( sql )
-  
+
   return mdb, cursor
 
 
@@ -223,7 +223,7 @@ def parse_post_data( post_data ):
     # create a dictionary as {field:val, field:val, ... }
     data = dict( item.split(subdelimiter) for item in data.split( delimiter ) )
     return data
-  
+
   return None
 
 
@@ -232,24 +232,24 @@ def parse_post_data( post_data ):
 def generate_short_url( long_url ):
   decimal = 10
   encoding = 62
-  
+
   # determine the range of possible values (set by goconfig.min_url_len)
   min_val = encoding ** (goconfig.min_url_len - 1)
   max_val = (encoding ** goconfig.min_url_len) - 1
-  
+
   # generate the short url (some val between min and max)
   value = random.randint( min_val, max_val )
-  
+
   # Encode the short url value in the most appropriate base.
   short = []
-  
+
   # define the list of possible characters
   charlist = list("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-  
+
   while value > 0:
     short.append(charlist[ int(value % encoding) ])
     value = math.floor( value / encoding )
-  
+
   return ''.join( short )
 
 

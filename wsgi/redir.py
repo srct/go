@@ -14,7 +14,7 @@ def application(environ, start_response):
   # the initial forward slash.
   request = environ["REQUEST_URI"]
   short_url = request.strip()[1:]
-  
+
   # Find the target in the database if possible.
   target = library.get_redirect_target( short_url )
 
