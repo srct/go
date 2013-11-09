@@ -331,3 +331,25 @@ def ldap_authenticate( usr, psw ):
       pass
 
   return False
+
+
+def get_top( logged_in=False ):
+  f = open(goconfig.doc_root + "/site_data/top.part", "r")
+  top = f.read()
+  f.close()
+
+  mylinks = """| [ <a href="/mylinks">My Links</a> ]"""
+  if logged_in:
+    top = top.replace( "%{mylinks}%", mylinks )
+  else:
+    top = top.replace( "%{mylinks}%", "" )
+
+  return top
+
+
+def get_bottom( logged_in=False ):
+  f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
+  bottom = f.read()
+  f.close()
+
+  return bottom
