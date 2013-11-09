@@ -46,7 +46,7 @@ def application(environ, start_response):
 
     # Grab user data, cut off non-relevant fields.
     data = environ['wsgi.input']
-    data = library.parse_post_data( data )
+    data = library.parse_data( data )
 
     # Determine the user credentials to authenticate.
     usr = data['usr']

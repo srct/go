@@ -215,10 +215,10 @@ def connect_to_mysql():
 
 # Parse post data submitted to this function. That is, split it up as a
 # dictionary and return that readable dictionary.
-def parse_post_data( post_data ):
+def parse_data( datastring ):
   delimiter = "&"
   subdelimiter = "="
-  data = post_data.read()
+  data = datastring.read()
   if len( data ) > 0:
     # create a dictionary as {field:val, field:val, ... }
     data = dict( item.split(subdelimiter) for item in data.split( delimiter ) )

@@ -66,7 +66,7 @@ def application(environ, start_response):
 
     # Grab user data, cut off non-relevant fields.
     data = environ['wsgi.input']
-    data = library.parse_post_data( data )
+    data = library.parse_data( data )
 
     # Store parsed user data in these handy variables.
     long_url = data["long-url"]
