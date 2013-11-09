@@ -33,4 +33,10 @@ WSGIScriptAlias /about /srv/http/go/wsgi/about.py
 Piwik analytics are optionally enabled. See `/wsgi/goconfig.py.template`
 for relevant configuration values. In order to use Piwik with this service,
 you will need the
-[Piwik Python API](https://github.com/piwik/piwik-python-api)
+[Piwik Python API](https://github.com/piwik/piwik-python-api) installed.
+Use one of the following for easy setup:
+
+```
+pip install piwikapi
+pip2 install piwikapi
+```
