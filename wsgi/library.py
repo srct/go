@@ -353,3 +353,13 @@ def get_bottom( logged_in=False ):
   f.close()
 
   return bottom
+
+
+def get_links( username ):
+  mdb,cursor = connect_to_mysql()
+  sql = """SELECT * FROM `%s` WHERE `user`=%s;"""
+  cursor.execute( sql, (goconfig.sql_url_table, username) )
+  result = cursor.fetchall()
+  mdb.commit()
+  mdb.close()
+  return result
