@@ -66,6 +66,9 @@ def application(environ, start_response):
     return [response]
     
   else:
+
+    ## incorporate piwik python api thing HERE
+
     status = '303 See other'
     response_headers = [('Location', url)]
     start_response(status, response_headers)
