@@ -8,6 +8,7 @@
 doc_root = "/srv/http"
 
 # domain: This is the domain the website is being hosted at.
+# do not include a final slash.
 domain = "www.example.com"
 
 
@@ -41,7 +42,7 @@ sql_usr_table = "usrs"
 sql_registration_table = "registered"
 
 #ldap_domain: The location of the LDAP database to connect to.
-ldap_domain = "ldaps://lda.example.com:port"
+ldap_domain = "ldap://ldap.example.com:port"
 
 
 
@@ -55,3 +56,9 @@ ldap_domain = "ldaps://lda.example.com:port"
 # min_url_len: This is the minimum required length of
 #   a "short url" or url identifier.
 min_url_len = 5
+#
+# piwik: Enable piwik analytics & tracking.
+piwik = False
+
+# piwik_url: If Piwik is enabled, point this to the tracking server.
+piwik_url = "http://www.example.com/analytics"
