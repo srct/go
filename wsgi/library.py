@@ -382,13 +382,13 @@ def piwik_track( environ, page ):
   from piwikapi.tests.request import FakeRequest
 
   headers = {
-    'HTTP_USER_AGENT': escape(environ.get('HTTP_USER_AGENT')),
-    'REMOTE_ADDR': escape(environ.get('REMOTE_ADDR')),
-    'HTTP_REFERER': escape(environ.get('HTTP_REFERER')),
-    'HTTP_ACCEPT_LANGUAGE': escape(environ.get('HTTP_ACCEPT_LANGUAGE')),
-    'SERVER_NAME': escape(environ.get('SERVER_NAME')),
-    'PATH_INFO': escape(environ.get('PATH_INFO')),
-    'QUERY_STRING': escape(environ.get('QUERY_STRING')),
+    'HTTP_USER_AGENT': environ.get('HTTP_USER_AGENT'),
+    'REMOTE_ADDR': environ.get('REMOTE_ADDR'),
+    'HTTP_REFERER': environ.get('HTTP_REFERER'),
+    'HTTP_ACCEPT_LANGUAGE': environ.get('HTTP_ACCEPT_LANGUAGE'),
+    'SERVER_NAME': environ.get('SERVER_NAME'),
+    'PATH_INFO': environ.get('PATH_INFO'),
+    'QUERY_STRING': environ.get('QUERY_STRING'),
     'HTTPS': False,
   }
 
