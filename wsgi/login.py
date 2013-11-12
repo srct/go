@@ -73,7 +73,7 @@ def application(environ, start_response):
                               ('Location', '/'),
                               ('Content-type', 'text/plain')]
           start_response(status, response_headers)
-          return [ str(cookie) ]
+          return ['Redirecting to index . . .']
 
         else:
           body = [""]
