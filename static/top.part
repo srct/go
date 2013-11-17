@@ -8,9 +8,9 @@ Go Url Shortener
 </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="http://fonts.googleapis.com/css?family=Carrois+Gothic" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="/site_data/style.css" />
-<link rel="icon" type="image/jpg" href="/site_data/favicon.ico" />
-<script type="text/javascript" src="/site_data/go.js"></script>
+<link rel="stylesheet" href="/static/style.css" />
+<link rel="icon" type="image/jpg" href="/static/favicon.ico" />
+<script type="text/javascript" src="/static/go.js"></script>
 </head>
 <body>
 

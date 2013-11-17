@@ -11,7 +11,7 @@ def application(environ, start_response):
   top = library.get_top( user_logged_in )
   bottom = library.get_bottom( user_logged_in )
 
-  f = open(goconfig.doc_root + "/site_data/about.part", "r")
+  f = open(goconfig.doc_root + "/static/about.part", "r")
   about = f.read()
   f.close()
 

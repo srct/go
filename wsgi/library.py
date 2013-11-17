@@ -344,7 +344,7 @@ def ldap_authenticate( usr, psw ):
 
 
 def get_top( logged_in=False ):
-  f = open(goconfig.doc_root + "/site_data/top.part", "r")
+  f = open(goconfig.doc_root + "/static/top.part", "r")
   top = f.read()
   f.close()
 
@@ -364,7 +364,7 @@ def get_top( logged_in=False ):
 
 
 def get_bottom( logged_in=False ):
-  f = open(goconfig.doc_root + "/site_data/bottom.part", "r")
+  f = open(goconfig.doc_root + "/static/bottom.part", "r")
   bottom = f.read()
   f.close()
 
