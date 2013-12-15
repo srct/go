@@ -1,0 +1,164 @@
+/*
+ * ########################################################################
+ * ########################################################################
+ * ########                                                        ########
+ * ########                                                        ########
+ * ########  Project: GO - URL Shorterner                          ########
+ * ########  File: style.css                                       ########
+ * ########  Date: 2013.10.29                                      ########
+ * ########  Author: Michel Rouly                                  ########
+ * ########                                                        ########
+ * ########  Style sheet for entire web application. Modify        ########
+ * ########  any design changes here.                              ########
+ * ########                                                        ########
+ * ########                                                        ########
+ * ########################################################################
+ * ########################################################################
+ */
+
+
+/**** CONTAINER STYLES ****/
+
+body { /* HTML body */
+  /* background: #FFCC33; */
+  background: #EFEFEF;
+}
+
+#box { /* Main content holder */
+  color: #383838;
+  width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #EFEF88;
+  /* background-color: #FFCC33; */
+  /* background-color: #EFEFEF; */
+  text-align: center;
+  font-family: 'Carrois Gothic', sans-serif;
+}
+
+#tagline { 
+/*  text-align: right; */
+  font-size: .81em;
+}
+
+#signoff { /* Footer of the page */
+  color: #000000;
+  text-align: center;
+  font-size: .6em;
+  font-style: italic;
+}
+
+#mylinks { 
+  width: inherit;
+  margin: auto;
+  table-layout: fixed;
+  /*height: 500px;
+  border: 1px solid #000000;
+  overflow-y: auto;*/
+}
+
+#mylinks p { 
+  /* border-left: 5px solid #464646; */
+  border: 1px dashed #000000;
+  text-align: left;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+#mylinks p:hover { 
+  background-color: #FDFDB8;
+  /* border-left: 5px solid #898989; */
+}
+
+
+
+
+
+/**** PAGE COMPONENT STYLES ****/
+
+p, tr { 
+  font-size: .8em;
+}
+
+a { 
+  text-decoration: none;
+}
+
+
+
+
+
+
+/**** HEADER STYLES ****/
+
+h1 { /* Main page title */
+  font-size: 3em; 
+  margin-bottom: 0px;
+  color: #006633;
+}
+
+h1 a { 
+  color: inherit;
+  text-decoration: none;
+}
+
+h2 { /* Per-page headings  */
+  color: inherit;
+  font-size: 1.5em;
+}
+
+hr { /* Page title and footer seperators */
+  color: #006633;
+  background-color: #006633;
+  height: 2px;
+  width: 50%;
+  border: 0px;
+}
+
+
+
+
+
+
+/**** FORM COMPONENT STYLES ****/
+label { 
+  color: #565656;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.sublabel { 
+  font-size: .8em;
+}
+
+input, textarea { 
+  color: #9a9a9a;
+  cursor: pointer;
+  border: 0px solid #343434;
+  border-radius: 5px;
+  background-color: #FDFDB8;
+  /* background-color: #FFCC33; */
+  padding: 5px;
+}
+
+textarea { 
+  width: 75%;
+  height: 75px;
+}
+
+input:focus { 
+  color: #000000;
+}
+
+input[type="submit"] { 
+  color: #000000;
+  background-color: #E86847;
+  border: 0px;
+}
+
