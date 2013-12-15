@@ -1,0 +1,6 @@
+<p id="tagline">
+  [ <a href="{% url 'about' %}">What is Go?</a>  ]
+  {% if user.is_authenticated %}
+  [ <a href="{% url 'my_links' %}">My Links</a> ]
+  {% endif %}
+</p>
