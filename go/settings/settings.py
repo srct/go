@@ -168,3 +168,48 @@ LOGGING = {
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
+
+
+# Authentication
+# http://pythonhosted.org/django-auth-ldap
+
+import ldap
+# Baseline configuration
+
+# Keep ModelBackend around for per-user permissions and maybe a local
+# superuser.
+AUTHENTICATION_BACKENDS = (
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_LDAP_SERVER_URI = "ldaps://directory.gmu.edu:636"  # server url
+
+AUTH_LDAP_BIND_DN = "ou=people,o=gmu.edu"               # bind DN
+
+AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True            # use the user
+
+AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=people,o=gmu.edu"
+
+AUTH_LDAP_GLOBAL_OPTIONS = {                            # ignore UAC cert.
+    ldap.OPT_X_TLS : ldap.OPT_X_TLS_DEMAND,
+    ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER,
+}
+
+# Populate the Django user from the LDAP directory.
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail"
+}
+#AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+#    "is_active": "cn=active,ou=django,ou=groups,dc=example,dc=com",
+#    "is_staff": "cn=staff,ou=django,ou=groups,dc=example,dc=com",
+#    "is_superuser": "cn=superuser,ou=django,ou=groups,dc=example,dc=com"
+#}
+#AUTH_LDAP_PROFILE_FLAGS_BY_GROUP = {
+#    "is_awesome": "cn=awesome,ou=django,ou=groups,dc=example,dc=com",
+#}
+
+# This is the default, but I like to be explicit.
+AUTH_LDAP_ALWAYS_UPDATE_USER = True
