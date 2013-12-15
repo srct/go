@@ -1,13 +1,29 @@
 from go.models import URL
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 # Homepage view.
+@login_required
 def index(request):
     return render(request, 'index.html', {
 
     },
     )
+
+# My-Links page.
+@login_required
+def my_links(request):
+    links = URL.objects.filter( owner = request.user )
+
+    return render(request, 'my_links.html', {
+        'links' : links,
+    },
+    )
+
+# Delete link page.
+def delete(request, short):
+    return redirect('index')
 
 # About page, static.
 def about(request):
