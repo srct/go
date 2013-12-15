@@ -1,4 +1,6 @@
 *~
 *.swp
+*.pyc
 .virtualenv
 /wsgi/goconfig.py
+/go/settings/secret.py
