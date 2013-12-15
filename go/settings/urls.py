@@ -11,6 +11,9 @@ urlpatterns = patterns('go.views',
     # /about - About page.
     url(r'^about/?$', 'about', name = 'about'),
 
+    # /signup - Signup page for access.
+    url(r'^signup/?$', 'signup', name = 'signup'),
+
     # /admin - Administrator interface.
     url(r'^admin/', include(admin.site.urls)),
 )
