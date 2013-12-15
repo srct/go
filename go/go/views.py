@@ -15,3 +15,10 @@ def about(request):
 
     },
     )
+
+# Signup page.
+def signup(request):
+    return render(request, 'signup.html', {
+
+    },
+    )
