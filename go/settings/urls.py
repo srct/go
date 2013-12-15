@@ -14,6 +14,9 @@ urlpatterns = patterns('go.views',
     # /signup - Signup page for access.
     url(r'^signup/?$', 'signup', name = 'signup'),
 
+    # /my - My-Links page, view and review links.
+    url(r'^my/?$', 'my_links', name = 'my_links'),
+
     # /admin - Administrator interface.
     url(r'^admin/', include(admin.site.urls)),
 )
@@ -22,7 +25,7 @@ urlpatterns += patterns('django.contrib.auth.views',
 
     # Auth pages
     url(r'^login$', 'login', {'template_name' : 'login.html'},
-        name='website_login'),
+        name='go_login'),
     url(r'^logout$', 'logout', {'next_page' : '/'},
-        name='website_logout'),
+        name='go_logout'),
 )
