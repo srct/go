@@ -10,4 +10,4 @@ class URL( models.Model ):
     target = models.CharField( max_length = 1000 )
     short = models.CharField( max_length = 50 )
     clicks = models.IntegerField( default = 0 )
-
+    expires = models.DateTimeField( blank = True, null = True )
