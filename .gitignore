@@ -4,3 +4,4 @@
 .virtualenv
 /wsgi/goconfig.py
 /go/settings/secret.py
+/go/static/admin
