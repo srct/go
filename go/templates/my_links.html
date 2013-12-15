@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - A URL Shortener
+{% endblock %}
+
+
+{% block content %}
+
+<div id="mylinks">
+
+  {% for link in links %}
+    <p>
+      <strong>Long:</strong> <a href="{{link.target}}">{{link.target}}</a>
+      <br />
+
+      <strong>Short:</strong> <a href="/{{link.short}}">{{link.short}}</a>
+      <br />
+
+      <strong>Clicks:</strong> {{link.clicks}}
+      <br />
+
+      <strong>Expires:</strong> {{link.expires}}
+      <br />
+
+      <strong><a href="{%url 'delete' link.short%}">Delete</a></strong>
+
+    </p>
+  {% endfor %}
+
+</div>
+
+{% endblock %}
