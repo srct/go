@@ -4,13 +4,13 @@ from django.utils import timezone
 
 # Create your models here.
 class URL( models.Model ):
-    owner = models.OneToOneField( User )
+    owner = models.ForeignKey( User )
     date_created = models.DateTimeField( default=timezone.now() )
 
-    target = models.CharField( max_length = 1000 )
-    short = models.CharField( primary_key = True, max_length = 50 )
+    target = models.URLField( max_length = 1000 )
+    short = models.CharField( primary_key = True, max_length = 10 )
     clicks = models.IntegerField( default = 0 )
-    expires = models.DateTimeField( blank = True, null = True )
+    expires = models.DateTimeField( null = True )
 
     def __unicode__(self):
         return '<URL: %s>' % self.short
