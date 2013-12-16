@@ -10,12 +10,12 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding model 'URL'
         db.create_table(u'go_url', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('owner', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
-            ('date_created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 12, 14, 0, 0))),
-            ('target', self.gf('django.db.models.fields.CharField')(max_length=1000)),
-            ('short', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('owner', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('date_created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2013, 12, 16, 0, 0))),
+            ('target', self.gf('django.db.models.fields.URLField')(max_length=1000)),
+            ('short', self.gf('django.db.models.fields.CharField')(max_length=10, primary_key=True)),
             ('clicks', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('expires', self.gf('django.db.models.fields.DateTimeField')(null=True)),
         ))
         db.send_create_signal(u'go', ['URL'])
 
@@ -63,13 +63,13 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'go.url': {
-            'Meta': {'object_name': 'URL'},
+            'Meta': {'ordering': "['short']", 'object_name': 'URL'},
             'clicks': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'date_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 12, 14, 0, 0)'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'owner': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
-            'short': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'target': ('django.db.models.fields.CharField', [], {'max_length': '1000'})
+            'date_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2013, 12, 16, 0, 0)'}),
+            'expires': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
+            'owner': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"}),
+            'short': ('django.db.models.fields.CharField', [], {'max_length': '10', 'primary_key': 'True'}),
+            'target': ('django.db.models.fields.URLField', [], {'max_length': '1000'})
         }
     }
 
