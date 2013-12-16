@@ -8,8 +8,12 @@ Go - A URL Shortener
 
 {% block content %}
 
-<div id="mylinks">
+{% if not permission %}
+  <p class="error">That link does not belong to you!</p>
+{% endif %}
 
+{% if links %}
+  <div id="mylinks">
   {% for link in links %}
     <p>
       <strong>Long:</strong> <a href="{{link.target}}">{{link.target}}</a>
@@ -24,11 +28,17 @@ Go - A URL Shortener
       <strong>Expires:</strong> {{link.expires}}
       <br />
 
-      <strong><a href="{%url 'delete' link.short%}">Delete</a></strong>
-
+      <strong>
+        <a href="{%url 'delete' link.short%}"
+        onclick="return confirm('Are you sure you want to delete this link?');">
+          Delete
+        </a>
+      </strong>
     </p>
   {% endfor %}
-
-</div>
+  </div>
+{% else %}
+  <p>None found.</p>
+{% endif %}
 
 {% endblock %}

@@ -13,11 +13,12 @@ def index(request):
 
 # My-Links page.
 @login_required
-def my_links(request):
+def my_links(request, permission = True):
     links = URL.objects.filter( owner = request.user )
 
     return render(request, 'my_links.html', {
         'links' : links,
+        'permission' : permission,
     },
     )
 
@@ -27,7 +28,9 @@ def delete(request, short):
     url = URL.objects.get( short = short )
     if url.owner == request.user:
         url.delete()
-    return redirect('my_links')
+        return redirect('my_links')
+    else:
+        return my_links(request, permission = False)
 
 # About page, static.
 def about(request):
