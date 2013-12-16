@@ -22,8 +22,12 @@ def my_links(request):
     )
 
 # Delete link page.
+@login_required
 def delete(request, short):
-    return redirect('index')
+    url = URL.objects.get( short = short )
+    if url.owner == request.user:
+        url.delete()
+    return redirect('my_links')
 
 # About page, static.
 def about(request):
