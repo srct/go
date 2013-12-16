@@ -11,3 +11,9 @@ class URL( models.Model ):
     short = models.CharField( primary_key = True, max_length = 50 )
     clicks = models.IntegerField( default = 0 )
     expires = models.DateTimeField( blank = True, null = True )
+
+    def __unicode__(self):
+        return '<URL: %s>' % self.short
+
+    class Meta:
+        ordering = ['short']
