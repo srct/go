@@ -1,4 +1,5 @@
 from go.models import URL
+from django.http import Http404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -45,3 +46,15 @@ def signup(request):
 
     },
     )
+
+# Redirection view.
+def redirection(request, short):
+    try:
+        url = URL.objects.get( short = short )
+    except URL.DoesNotExist:
+        raise Http404("Target URL not found.")
+
+    target = url.target
+    url.clicks = url.clicks + 1
+    url.save()
+    return redirect( target )

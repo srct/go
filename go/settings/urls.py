@@ -32,3 +32,8 @@ urlpatterns += patterns('django.contrib.auth.views',
     url(r'^logout$', 'logout', {'next_page' : '/'},
         name='go_logout'),
 )
+
+urlpatterns += patterns('go.views',
+    # Redirection regex.
+    url(r'^(?P<short>\w+)$', 'redirection', name = 'redirection'),
+)
