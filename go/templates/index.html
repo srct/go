@@ -7,5 +7,52 @@ Go - A URL Shortener
 
 
 {% block content %}
-Hello, world.
+<h3>~Shorten URL~</h3>
+
+{% for error in form.non_field_errors %}
+  <p class="error">{{ error }}
+{% endfor %}
+
+<form method="post" action="{%url 'index'%}">
+{% csrf_token %}
+
+  <label for="{{ form.target.id_for_label }}">{{ form.target.label }}</label>
+  <br/>
+  {% for error in form.target.errors %}
+    <p class="error">{{error}}</p>
+  {% empty %}
+  <br />
+  {% endfor %}
+  {{ form.target }}
+  <br/><br/>
+
+  <label for="{{ form.short.id_for_label }}">{{ form.short.label }}</label>
+  <br/>
+  {% for error in form.short.errors %}
+    <p class="error">{{error}}</p>
+  {% empty %}
+  <br />
+  {% endfor %}
+  {{ form.short }}
+  <br/><br/>
+
+  <div class="radio-container">
+    <label for="{{ form.expires.id_for_label }}">{{ form.expires.label }}</label>
+    <br/>
+    {% for error in form.expires.errors %}
+      <p class="error">{{error}}</p>
+    {% empty %}
+    <br/>
+    {% endfor %}
+    {% for option in form.expires %}
+      {{ option }}
+    {% endfor %}
+    <br/><br/>
+  </div>
+
+  <input type="submit" value="Shorten" />
+  <br/><br/>
+
+</form>
+
 {% endblock %}
