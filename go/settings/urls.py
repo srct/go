@@ -21,7 +21,7 @@ urlpatterns = patterns('go.views',
     url(r'^delete/(?P<short>\w+)$', 'delete', name = 'delete'),
 
     # /admin - Administrator interface.
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/?', include(admin.site.urls)),
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
