@@ -22,7 +22,10 @@ def index(request):
             url = url_form.save(commit=False)
             url.owner = request.user
 
-            expires = url_form.cleaned_data['expires']
+            short = url_form.cleaned_data.get('short')
+            url.short = short
+
+            expires = url_form.cleaned_data.get('expires')
 
             if expires == URLForm.DAY:
                 url.expires = timezone.now() + timedelta(days=1)
