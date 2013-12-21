@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - Success
+{% endblock %}
+
+
+{% block content %}
+
+{% if url %}
+  <div id="mylinks">
+    <p>
+      <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
+      <br />
+
+      <strong>Short:</strong> <a href="/{{url.short}}">{{url.short}}</a>
+      <br />
+
+      {% if url.owner = request.user %}
+      <strong>Clicks:</strong> {{url.clicks}}
+      <br />
+
+      <strong>Expires:</strong> {{url.expires}}
+      <br />
+
+      <strong>
+        <a href="{%url 'delete' url.short%}"
+        onclick="return confirm('Are you sure you want to delete this link?');">
+          Delete
+        </a>
+      </strong>
+      {% endif %}
+    </p>
+  </div>
+{% else %}
+<p>Nothing here.</p>
+{% endif %}
+
+{% endblock %}
