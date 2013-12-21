@@ -22,7 +22,7 @@ def index(request):
             url = url_form.save(commit=False)
             url.owner = request.user
 
-            short = url_form.cleaned_data.get('short')
+            short = url_form.cleaned_data.get('short').strip()
             url.short = short
 
             expires = url_form.cleaned_data.get('expires')
