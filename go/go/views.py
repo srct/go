@@ -97,7 +97,8 @@ def signup(request):
 # Redirection view.
 def redirection(request, short):
     try:
-        url = URL.objects.get( short = short )
+        # case insensitive matching
+        url = URL.objects.get( short__iexact = short )
     except URL.DoesNotExist:
         raise Http404("Target URL not found.")
 
