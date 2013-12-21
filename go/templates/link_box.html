@@ -10,7 +10,7 @@
     <strong>Clicks:</strong> {{url.clicks}}
     <br />
 
-    <strong>Expires:</strong> {{url.expires}}
+    <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
     <br />
 
     <strong>
