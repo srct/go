@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'go',
     'south',
+    'piwik',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -213,3 +214,8 @@ AUTH_LDAP_USER_ATTR_MAP = {
 
 # This is the default, but I like to be explicit.
 AUTH_LDAP_ALWAYS_UPDATE_USER = True
+
+
+# Piwik settings.
+PIWIK_SITE_ID = secret.PIWIK_SITE_ID
+PIWIK_URL = secret.PIWIK_URL
