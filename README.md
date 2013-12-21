@@ -8,35 +8,22 @@ information without unnecessarily outsourcing branding.
 
 ## Configuration
 
-### GoConfig
+### settings.py
 
-See `/wsgi/goconfig.py.template` for configuration variables. Relocate this
-to `/wsgi/goconfig.py` when configured properly.
+The settings file should already be configured acceptably. You may need to
+add a different authentication backend or database engine.
 
-### Apache
+### nginx / Apache
 
-The host or virtualhost being used for Go must have certain WSGIScriptAlias
-directives.
+You must configure an outside web server to properly host the static file
+required to run this Django app.
 
-```
-WSGIScriptAlias /rd /srv/http/go/wsgi/redir.py
-WSGIScriptAlias /index.html /srv/http/go/wsgi/index.py
-WSGIScriptAlias /mylinks /srv/http/go/wsgi/mylinks.py
-WSGIScriptAlias /login /srv/http/go/wsgi/login.py
-WSGIScriptAlias /logout /srv/http/go/wsgi/logout.py
-WSGIScriptAlias /signup /srv/http/go/wsgi/signup.py
-WSGIScriptAlias /about /srv/http/go/wsgi/about.py
-```
+### Python
 
-### Piwik
-
-Piwik analytics are optionally enabled. See `/wsgi/goconfig.py.template`
-for relevant configuration values. In order to use Piwik with this service,
-you will need the
-[Piwik Python API](https://github.com/piwik/piwik-python-api) installed.
-Use one of the following for easy setup:
+To install the required Python modules, simply execute
 
 ```
-pip install piwikapi
-pip2 install piwikapi
+$ pip install -r requirements.txt
 ```
+
+and you should be good to go.
