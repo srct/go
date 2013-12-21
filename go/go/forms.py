@@ -25,11 +25,13 @@ class URLForm( forms.ModelForm ):
         widget = forms.RadioSelect(),
     )
 
-    # Add a custom short field for validation.
+    # Short field must be only letters.
     alphanumeric = RegexValidator(
         r'^[a-zA-Z]*$',
         'Only letters are allowed.'
     )
+
+    # Custom short-url field with validators.
     short = forms.CharField(
         required = False,
         label = 'Short URL (Optional)',
