@@ -1,6 +1,7 @@
 from django import forms
 from go.models import URL
 from django.core.validators import MinLengthValidator, MinValueValidator, RegexValidator
+from django.core.exceptions import ValidationError
 
 class URLForm( forms.ModelForm ):
 
@@ -31,12 +32,19 @@ class URLForm( forms.ModelForm ):
         'Only letters are allowed.'
     )
 
+    def unique_short( value ):
+        try:
+            URL.objects.get(short__iexact=value)
+        except URL.DoesNotExist:
+            return
+        raise ValidationError('Short url already exists.')
+
     # Custom short-url field with validators.
     short = forms.CharField(
         required = False,
         label = 'Short URL (Optional)',
         widget = forms.TextInput(attrs={}),
-        validators = [alphanumeric],
+        validators = [alphanumeric,unique_short],
         max_length = 20,
         min_length = 3,
     )
