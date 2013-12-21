@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+import random, string
+
 # Create your models here.
 class URL( models.Model ):
     owner = models.ForeignKey( User )
@@ -17,3 +19,18 @@ class URL( models.Model ):
 
     class Meta:
         ordering = ['short']
+
+    @staticmethod
+    def generate_valid_short():
+        selection = string.ascii_lowercase + string.digits
+        tries = 0
+        while True:
+            short = ''.join(random.choice(selection) for i in range(5))
+            try:
+                urls = URL.objects.get( short__iexact = short )
+                tries += 1
+            except URL.DoesNotExist:
+                return short
+            if tries > 100:
+                return None
+
