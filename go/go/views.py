@@ -23,7 +23,10 @@ def index(request):
             url.owner = request.user
 
             short = url_form.cleaned_data.get('short').strip()
-            url.short = short
+            if len(short) > 0:
+                url.short = short
+            else:
+                url.short = URL.generate_valid_short()
 
             expires = url_form.cleaned_data.get('expires')
 
