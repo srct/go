@@ -8,6 +8,9 @@ urlpatterns = patterns('go.views',
     # / - Homepage url.
     url(r'^$', 'index', name = 'index'),
 
+    # / - Successful url registration page.
+    url(r'^success$', 'success', name = 'success'),
+
     # /about - About page.
     url(r'^about/?$', 'about', name = 'about'),
 

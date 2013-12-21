@@ -35,10 +35,25 @@ def index(request):
 
             url.full_clean()
             url.save()
-            return redirect('success', url.target, url.short)
+            return redirect('success')
 
     return render(request, 'index.html', {
         'form': url_form,
+    },
+    )
+
+# Sucessful url registration page.
+@login_required
+def success(request):
+
+    url = None
+    try:
+        url = URL.objects.filter(owner=request.user).latest('date_created')
+    except URL.DoesNotExist:
+        pass
+
+    return render(request, 'success.html', {
+        'url': url,
     },
     )
 
