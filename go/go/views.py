@@ -41,24 +41,19 @@ def index(request):
 
             url.full_clean()
             url.save()
-            return redirect('success')
+            return redirect('view', url.short)
 
     return render(request, 'index.html', {
         'form': url_form,
     },
     )
 
-# Sucessful url registration page.
-@login_required
-def success(request):
+# Preview a link.
+def view(request, short):
 
-    url = None
-    try:
-        url = URL.objects.filter(owner=request.user).latest('date_created')
-    except URL.DoesNotExist:
-        pass
+    url = get_object_or_404(URL, short__iexact = short)
 
-    return render(request, 'success.html', {
+    return render(request, 'view.html', {
         'url': url,
     },
     )
@@ -76,7 +71,7 @@ def my_links(request):
 # Delete link page.
 @login_required
 def delete(request, short):
-    url = get_object_or_404(URL, short = short )
+    url = get_object_or_404(URL, short__iexact = short )
     if url.owner == request.user:
         url.delete()
         return redirect('my_links')
