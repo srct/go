@@ -9,7 +9,7 @@ Go - Login
 {% block content %}
 <h3>~Login~</h3>
 
-{% for error in form.errors %}
+{% for error in form.non_field_errors %}
   <p class="error">{{ error }}</p>
 {% endfor %}
 
@@ -18,13 +18,23 @@ action="{% url 'django.contrib.auth.views.login' %}">
 {% csrf_token %}
 
   <label for="username">Username</label>
-  <br/><br/>
+  <br/>
+  {% for error in form.username.errors %}
+  <p class="error">{{ error }}</p>
+  {% empty %}
+  <br/>
+  {% endfor %}
   <input type="text" id="username" name="username" placeholder="Username"
   {% if form.username.errors %} class="error"{% endif %} />
   <br/><br/>
 
   <label for="password">Password</label>
-  <br/><br/>
+  <br/>
+  {% for error in form.password.errors %}
+  <p class="error">{{ error }}</p>
+  {% empty %}
+  <br/>
+  {% endfor %}
   <input type="password" id="password" name="password" placeholder="Password"
   {% if form.password.errors %} class="error"{% endif %} />
   <br/><br/>
