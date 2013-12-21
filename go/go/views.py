@@ -97,7 +97,13 @@ def redirection(request, short):
     except URL.DoesNotExist:
         raise Http404("Target URL not found.")
 
-    target = url.target
     url.clicks = url.clicks + 1
     url.save()
-    return redirect( target )
+
+    from piwikapi.tracking import PiwikTracker
+    from django.conf import settings
+    piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
+    piwiktracker.set_api_url(settings.PIWIK_URL)
+    piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+
+    return redirect( url.target )
