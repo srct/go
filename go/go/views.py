@@ -4,7 +4,7 @@ from datetime import timedelta
 from django.http import Http404
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -59,24 +59,23 @@ def success(request):
 
 # My-Links page.
 @login_required
-def my_links(request, permission = True):
+def my_links(request):
     links = URL.objects.filter( owner = request.user )
 
     return render(request, 'my_links.html', {
         'links' : links,
-        'permission' : permission,
     },
     )
 
 # Delete link page.
 @login_required
 def delete(request, short):
-    url = URL.objects.get( short = short )
+    url = get_object_or_404(URL, short = short )
     if url.owner == request.user:
         url.delete()
         return redirect('my_links')
     else:
-        return my_links(request, permission = False)
+        raise PermissionDenied()
 
 # About page, static.
 def about(request):

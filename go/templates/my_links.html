@@ -8,10 +8,6 @@ Go - A URL Shortener
 
 {% block content %}
 
-{% if not permission %}
-  <p class="error">That link does not belong to you!</p>
-{% endif %}
-
 {% if links %}
   <div id="mylinks">
   {% for link in links %}
