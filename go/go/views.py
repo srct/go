@@ -50,9 +50,7 @@ def index(request):
 
 # Preview a link.
 def view(request, short):
-
     url = get_object_or_404(URL, short__iexact = short)
-
     return render(request, 'view.html', {
         'url': url,
     },
@@ -61,10 +59,9 @@ def view(request, short):
 # My-Links page.
 @login_required
 def my_links(request):
-    links = URL.objects.filter( owner = request.user )
-
+    urls = URL.objects.filter( owner = request.user )
     return render(request, 'my_links.html', {
-        'links' : links,
+        'urls' : urls,
     },
     )
 

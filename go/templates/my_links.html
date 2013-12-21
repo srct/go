@@ -8,33 +8,12 @@ Go - A URL Shortener
 
 {% block content %}
 
-{% if links %}
-  <div id="mylinks">
-  {% for link in links %}
-    <p>
-      <strong>Long:</strong> <a href="{{link.target}}">{{link.target}}</a>
-      <br />
+<h3>~My Links~</h3>
 
-      <strong>Short:</strong> <a href="/{{link.short}}">{{link.short}}</a>
-      <br />
-
-      <strong>Clicks:</strong> {{link.clicks}}
-      <br />
-
-      <strong>Expires:</strong> {{link.expires}}
-      <br />
-
-      <strong>
-        <a href="{%url 'delete' link.short%}"
-        onclick="return confirm('Are you sure you want to delete this link?');">
-          Delete
-        </a>
-      </strong>
-    </p>
-  {% endfor %}
-  </div>
-{% else %}
+{% for url in urls %}
+  {% include 'link_box.html' %}
+{% empty %}
   <p>None found.</p>
-{% endif %}
+{% endfor %}
 
 {% endblock %}
