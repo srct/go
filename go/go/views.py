@@ -8,9 +8,16 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+# Check if user is registered.
+def is_registered(user):
+    return user.groups.filter(name="Registered").exists()
+
 # Homepage view.
 @login_required
 def index(request):
+
+    if not is_registered(request.user):
+        return render(request, 'not_registered.html')
 
     url_form = URLForm() # unbound form
     errors = []
@@ -59,6 +66,8 @@ def view(request, short):
 # My-Links page.
 @login_required
 def my_links(request):
+    if not is_registered(request.user):
+        return render(request, 'not_registered.html')
     urls = URL.objects.filter( owner = request.user )
     return render(request, 'my_links.html', {
         'urls' : urls,
@@ -68,6 +77,8 @@ def my_links(request):
 # Delete link page.
 @login_required
 def delete(request, short):
+    if not is_registered(request.user):
+        return render(request, 'not_registered.html')
     url = get_object_or_404(URL, short__iexact = short )
     if url.owner == request.user:
         url.delete()
