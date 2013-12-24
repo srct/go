@@ -8,10 +8,6 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-# Check if user is registered.
-def is_registered(user):
-    return user.groups.filter(name="Registered").exists()
-
 # Homepage view.
 @login_required
 def index(request):
