@@ -1,3 +1,5 @@
+{% load go_extras %}
+
 <div class="link-box">
   <p>
     <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
@@ -6,7 +8,7 @@
     <strong>Short:</strong> <a href="/{{url.short}}">{{url.short}}</a>
     <br />
 
-    {% if url.owner = request.user %}
+    {% if url.owner = request.user and request.user|is_registered %}
     <strong>Clicks:</strong> {{url.clicks}}
     <br />
 
