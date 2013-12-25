@@ -35,9 +35,13 @@ class URL( models.Model ):
                 return None
 
 class RegisteredUser( models.Model ):
-    user = models.ForeignKey( User, primary_key = True )
+    username = models.CharField(
+        blank = False,
+        max_length = 30,
+        primary_key = True
+    )
     description = models.TextField( blank=True )
 
     def __unicode__(self):
-        return '<Registered User: %s>' % self.user.username
+        return '<Registered User: %s>' % self.username
 
