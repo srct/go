@@ -10,7 +10,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 def is_registered( user ):
     try:
-        registered = RegisteredUser.objects.get( user=user )
+        registered = RegisteredUser.objects.get( username=user.username )
         return True
     except RegisteredUser.DoesNotExist:
         return False
