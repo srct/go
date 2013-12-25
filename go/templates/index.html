@@ -10,7 +10,7 @@ Go - A URL Shortener
 <h3>~Shorten URL~</h3>
 
 {% for error in form.non_field_errors %}
-  <p class="error">{{ error }}
+  <p class="error">{{ error }}</p>
 {% endfor %}
 
 <form method="post" action="{%url 'index'%}">
