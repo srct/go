@@ -1,4 +1,4 @@
-from go.models import URL
+from go.models import URL, RegisteredUser
 from go.forms import URLForm
 from datetime import timedelta
 from django.http import Http404
@@ -7,6 +7,13 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+
+def is_registered( user ):
+    try:
+        registered = RegisteredUser.objects.get( user=user )
+        return True
+    except RegisteredUser.DoesNotExist:
+        return False
 
 # Homepage view.
 @login_required
