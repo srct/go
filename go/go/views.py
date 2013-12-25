@@ -1,5 +1,5 @@
 from go.models import URL, RegisteredUser
-from go.forms import URLForm
+from go.forms import URLForm, SignupForm
 from datetime import timedelta
 from django.http import Http404
 from django.utils import timezone
@@ -110,8 +110,19 @@ def about(request):
 
 # Signup page.
 def signup(request):
-    return render(request, 'signup.html', {
+    form = SignupForm()
 
+    if request.method == 'POST':
+        form = SignupForm( request.POST )
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            full_name = form.cleaned_data.get('full_name')
+            description = form.cleaned_data.get('description')
+            pass
+            return redirect('index')
+
+    return render(request, 'signup.html', {
+        'form': form,
     },
     )
 
