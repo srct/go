@@ -36,6 +36,7 @@ class URL( models.Model ):
 
 class RegisteredUser( models.Model ):
     user = models.ForeignKey( User, primary_key = True )
+    description = models.TextField()
 
     def __unicode__(self):
         return '<Registered User: %s>' % self.user.username
