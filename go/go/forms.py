@@ -61,3 +61,27 @@ class URLForm( forms.ModelForm ):
                 'placeholder': 'http://',
             }),
         }
+
+
+class SignupForm( forms.Form ):
+    username = forms.CharField(
+        required = True,
+        label = 'Username',
+        max_length = 30,
+        widget = forms.TextInput(attrs={
+        }),
+    )
+    full_name = forms.CharField(
+        required = True,
+        label = 'Full Name',
+        max_length = 100,
+        widget = forms.TextInput(attrs={
+        }),
+    )
+    description = forms.CharField(
+        required = False,
+        label = 'Description (Optional)',
+        max_length = 200,
+        widget = forms.Textarea(attrs={
+        }),
+    )
