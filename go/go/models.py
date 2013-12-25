@@ -34,3 +34,9 @@ class URL( models.Model ):
             if tries > 100:
                 return None
 
+class RegisteredUser( models.Model ):
+    user = models.ForeignKey( User, primary_key = True )
+
+    def __unicode__(self):
+        return '<Registered User: %s>' % self.user.username
+
