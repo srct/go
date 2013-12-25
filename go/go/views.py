@@ -1,12 +1,14 @@
 from go.models import URL, RegisteredUser
 from go.forms import URLForm, SignupForm
 from datetime import timedelta
+from django.conf import settings
 from django.http import Http404
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+import os
 
 def is_registered( user ):
     try:
@@ -118,7 +120,18 @@ def signup(request):
             username = form.cleaned_data.get('username')
             full_name = form.cleaned_data.get('full_name')
             description = form.cleaned_data.get('description')
-            pass
+
+            f = open(os.path.join(settings.MEDIA_ROOT, 'registrations.txt'), 'a')
+            f.write( str(timezone.now()) )
+            f.write( str('\n') )
+            f.write( str(username) )
+            f.write( str('\n') )
+            f.write( str(full_name) )
+            f.write( str('\n') )
+            f.write( str(description) )
+            f.write( str('\n\n\n') )
+            f.close()
+
             return redirect('index')
 
     return render(request, 'signup.html', {
