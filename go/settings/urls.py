@@ -3,6 +3,9 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+handle404 = "error_404"
+handle500 = "error_500"
+
 urlpatterns = patterns('go.views',
 
     # / - Homepage url.

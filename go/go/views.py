@@ -15,6 +15,18 @@ def is_registered( user ):
     except RegisteredUser.DoesNotExist:
         return False
 
+# Error 404
+def error_404(request):
+    return render(request, '404.html', {
+    },
+    )
+
+# Error 500
+def error_500(request):
+    return render(request, '500.html', {
+    },
+    )
+
 # Homepage view.
 @login_required
 def index(request):
