@@ -40,6 +40,10 @@ class RegisteredUser( models.Model ):
         max_length = 30,
         primary_key = True
     )
+    full_name = models.CharField(
+        blank = False,
+        max_length = 100,
+    )
     description = models.TextField( blank=True )
 
     def __unicode__(self):
