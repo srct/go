@@ -29,6 +29,10 @@ def error_500(request):
     },
     )
 
+def qrcode(url):
+    img = qrcode.make(url)
+    return img
+
 # Homepage view.
 @login_required
 def index(request):
@@ -75,8 +79,12 @@ def index(request):
 # Preview a link.
 def view(request, short):
     url = get_object_or_404(URL, short__iexact = short)
+
+    qrcode = qrcode(url)
+
     return render(request, 'view.html', {
         'url': url,
+        'qrcode' : qrcode,
     },
     )
 
