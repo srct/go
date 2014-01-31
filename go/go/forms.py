@@ -32,22 +32,48 @@ class URLForm( forms.ModelForm ):
         'Only letters are allowed.'
     )
 
-    def unique_short( value ):
-        try:
-            URL.objects.get(short__iexact=value)
-        except URL.DoesNotExist:
-            return
-        raise ValidationError('Short url already exists.')
-
     # Custom short-url field with validators.
     short = forms.CharField(
         required = False,
         label = 'Short URL (Optional)',
         widget = forms.TextInput(attrs={}),
-        validators = [alphanumeric,unique_short],
+        validators = [alphanumeric],
         max_length = 20,
         min_length = 3,
     )
+
+    def clean(self):
+        """
+        Override the default clean method to check if the entered short
+        exists, or if none is entered, to generate a new one.
+        """
+
+        cleaned_data = super(URLForm, self).clean()
+        short = cleaned_data.get('short').strip()
+
+        # If the user has entered a value for short, then verify that it's
+        # unique.
+        if len(short) > 0:
+            try:
+                URL.objects.get(short__iexact=short)
+            except URL.DoesNotExist:
+                return cleaned_data
+            raise ValidationError('Short URL already exists.')
+
+        # If the user did not enter a value for short, then attempt to
+        # generate a ranomd url. If a random URL cannot be generated in 100
+        # attempts, raise an error.
+        else:
+            short = URL.generate_valid_short()
+            if short is None:
+                raise ValidationError('Unable to generate identifier. Try again.')
+            else:
+                # Set the new, randomly generated short value
+                cleaned_data['short'] = short
+                return cleaned_data
+
+        # This should never happen.
+        raise ValidationError('Server error. Try again.')
 
     class Meta:
         model = URL
