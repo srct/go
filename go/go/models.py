@@ -1,11 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
 import random, string
 
-# Create your models here.
+
 class URL( models.Model ):
+    """
+    This model represents a stored URL redirection rule. Each URL has an
+    owner, target url, short identifier, click counter, and expiration
+    date.
+    """
+
     owner = models.ForeignKey( User )
     date_created = models.DateTimeField( default=timezone.now() )
 
@@ -34,16 +39,24 @@ class URL( models.Model ):
             if tries > 100:
                 return None
 
+
 class RegisteredUser( models.Model ):
+    """
+    This is simply a wrapper model which, if an object exists, indicates
+    that that user is registered.
+    """
+
     username = models.CharField(
         blank = False,
         max_length = 30,
         primary_key = True
     )
+
     full_name = models.CharField(
         blank = False,
         max_length = 100,
     )
+
     description = models.TextField( blank=True )
 
     def __unicode__(self):
