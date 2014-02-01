@@ -87,9 +87,13 @@ def index(request):
             url.owner = request.user
 
             # If the user entered a short url, it's already been validated,
-            # so accept it.
+            # so accept it. If they did not, however, then generate a
+            # random one and use that instead.
             short = url_form.cleaned_data.get('short').strip()
-            url.short = short
+            if len(short) > 0:
+                url.short = short
+            else:
+                url.short = URL.generate_valid_short()
 
             # Grab the expiration field value. It's currently an unsable
             # string value, so we need to parse it into a datetime object
