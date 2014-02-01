@@ -2,7 +2,7 @@ from go.models import URL, RegisteredUser
 from go.forms import URLForm, SignupForm
 from datetime import timedelta
 from django.conf import settings
-from django.http import Http404
+from django.http import Http404, HttpResponseServerError
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -93,7 +93,16 @@ def index(request):
             if len(short) > 0:
                 url.short = short
             else:
-                url.short = URL.generate_valid_short()
+                # If the user didn't enter a short url, generate a random
+                # one. However, if a random one can't be generated, return
+                # a 500 server error.
+                random_short = URL.generate_valid_short()
+                if random_short is None:
+                    return HttpResponseServerError(
+                        render(request, '500.html', {})
+                    )
+                else:
+                    url.short = random_short
 
             # Grab the expiration field value. It's currently an unsable
             # string value, so we need to parse it into a datetime object
