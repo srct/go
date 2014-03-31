@@ -1,4 +1,5 @@
 {% load go_extras %}
+{% load qr_tags %}
 
 <div class="link-box">
   <p>
@@ -15,7 +16,7 @@
     <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
     <br />
 
-    <strong>QR Code:</strong> {{qrcode}}
+    <strong>QR Code:</strong> {{qr_from_text url.short 150}}
     <br />
 
     <strong>
