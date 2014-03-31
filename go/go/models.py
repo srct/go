@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
 import random, string
 
 
@@ -24,6 +25,9 @@ class URL( models.Model ):
 
     class Meta:
         ordering = ['short']
+
+    def get_absolute_url(self):
+        return "%s/%s" % (settings.SERVERURL, self.short)
 
     @staticmethod
     def generate_valid_short():

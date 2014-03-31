@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'piwik',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'qrcode',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -219,3 +220,6 @@ AUTH_LDAP_ALWAYS_UPDATE_USER = True
 # Piwik settings.
 PIWIK_SITE_ID = secret.PIWIK_SITE_ID
 PIWIK_URL = secret.PIWIK_URL
+
+
+SERVERURL = secret.SERVERURL

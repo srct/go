@@ -54,7 +54,6 @@ def error_500(request):
     },
     )
 
-
 ##############################################################################
 """
 Define user views here.
@@ -137,6 +136,7 @@ def view(request, short):
     """
 
     url = get_object_or_404(URL, short__iexact = short)
+
     return render(request, 'view.html', {
         'url': url,
     },
