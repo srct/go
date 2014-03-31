@@ -53,10 +53,14 @@ body { /* HTML body */
   width: inherit;
   margin: auto;
   table-layout: fixed;
+
+  /* Margin wasn't previously a thing. */
+  margin-bottom: 10px;
+  /* This border call was previously in the next chunk. */
+  border: 1px dashed #000000;
 }
 
 .link-box p { 
-  border: 1px dashed #000000;
   text-align: left;
   padding-bottom: 5px;
   padding-top: 5px;
