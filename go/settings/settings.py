@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'piwik',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'qrcode',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
