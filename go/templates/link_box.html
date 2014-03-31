@@ -2,7 +2,8 @@
 {% load qr_tags %}
 
 <div class="link-box">
-  <p>
+
+  <p class="link">
     <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
     <br />
 
@@ -16,9 +17,6 @@
     <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
     <br />
 
-    <strong>QR Code:</strong> <br/> {%qr_from_text url.get_absolute_url 90%}
-    <br />
-
     <strong>
       <a href="{%url 'delete' url.short%}"
       onclick="return confirm('Are you sure you want to delete this link?');">
@@ -27,4 +25,9 @@
     </strong>
     {% endif %}
   </p>
+
+  <p class="qr">
+    {% qr_from_text url.get_absolute_url 100 %}
+  </p>
+
 </div>
