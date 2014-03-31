@@ -16,7 +16,7 @@
     <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
     <br />
 
-    <strong>QR Code:</strong> {{qr_from_text url.short 150}}
+    <strong>QR Code:</strong> <br/> {%qr_from_text url.get_absolute_url 90%}
     <br />
 
     <strong>
