@@ -54,11 +54,6 @@ def error_500(request):
     },
     )
 
-def qrcode(url):
-    img = qrcode.make(url)
-    return img
-
-
 ##############################################################################
 """
 Define user views here.
@@ -142,11 +137,8 @@ def view(request, short):
 
     url = get_object_or_404(URL, short__iexact = short)
 
-    qrcode = qrcode(url)
-
     return render(request, 'view.html', {
         'url': url,
-        'qrcode' : qrcode,
     },
     )
 
