@@ -27,7 +27,10 @@ class URL( models.Model ):
         ordering = ['short']
 
     def get_absolute_url(self):
-        return "%s/%s" % (settings.SERVERURL, self.short)
+        from django.contrib.sites.models import Site
+        current_site = Site.objects.get_current()
+        site_url = current_site.domain
+        return "%s/%s" % (site_url, self.short)
 
     @staticmethod
     def generate_valid_short():
