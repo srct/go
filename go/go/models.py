@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
 import random, string
 
 
@@ -20,10 +21,13 @@ class URL( models.Model ):
     expires = models.DateTimeField( blank = True, null = True )
 
     def __unicode__(self):
-        return '<URL: %s>' % self.short
+        return '<%s : %s>' % (self.owner.username, self.target)
 
     class Meta:
         ordering = ['short']
+
+    def get_absolute_url(self):
+        return "%s/%s" % (settings.SERVERURL, self.short)
 
     @staticmethod
     def generate_valid_short():

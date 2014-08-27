@@ -1,8 +1,9 @@
 Django==1.6.1
-MySQL-python==1.2.4
+MySQL-python==1.2.5
 South==0.8.4
 django-auth-ldap==1.1.7
 django-piwik==0.1
+django-qrcode==0.3
 gunicorn==18.0
 piwikapi==0.3
 python-ldap==2.4.13

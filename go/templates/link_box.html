@@ -1,7 +1,9 @@
 {% load go_extras %}
+{% load qr_tags %}
 
 <div class="link-box">
-  <p>
+
+  <p class="link">
     <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
     <br />
 
@@ -23,4 +25,9 @@
     </strong>
     {% endif %}
   </p>
+
+  <p class="qr">
+    {% qr_from_text url.get_absolute_url 100 %}
+  </p>
+
 </div>
