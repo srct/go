@@ -19,6 +19,7 @@ information without unnecessarily outsourcing branding.
 * Update the documentation on Go to include a setup guide
 * Update the interface to bootswatch, perhaps? Maybe the same stylesheet as
     is used on SRCTWeb. (ie. complete HTML overhaul)
+* Remove all Mason-specific branding.
 
 ## Configuration
 
