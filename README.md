@@ -6,7 +6,7 @@ Go is a drop-in URL shortening service. It aims to provide an easily
 branded service for institutions that wish to widely disseminate
 information without unnecessarily outsourcing branding.
 
-## To D0
+## To Do
 * qr codes on links view-- need to save the pictures somewhere, render
     inline as well as in different formats and sizes for download, and be
     deleted along with the links
