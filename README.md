@@ -7,7 +7,18 @@ branded service for institutions that wish to widely disseminate
 information without unnecessarily outsourcing branding.
 
 ## To D0
-* qr codes on links view-- need to save the pictures somewhere, render inline as well as in different formats and sizes for download, and be deleted along with the links
+* qr codes on links view-- need to save the pictures somewhere, render
+    inline as well as in different formats and sizes for download, and be
+    deleted along with the links
+* Update the user authentication system (ie. port it to CAS to play nicely
+    with GMU)
+* Update the user registration system. Make it more intuitive to first time
+    users, also update the connection between registered users and actual
+    user auth accounts on the database.
+* Set up Piwik to work with Go.
+* Update the documentation on Go to include a setup guide
+* Update the interface to bootswatch, perhaps? Maybe the same stylesheet as
+    is used on SRCTWeb. (ie. complete HTML overhaul)
 
 ## Configuration
 
