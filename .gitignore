@@ -2,6 +2,7 @@
 *.swp
 *.pyc
 .virtualenv
+/go/settings/settings.py
 /go/settings/secret.py
 /go/static/admin
 /go/media
