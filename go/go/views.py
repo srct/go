@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponseServerError
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 import os
@@ -183,8 +184,6 @@ def signup(request):
     This view presents the user with a registration form. You can register
     yourself, or another person.
 
-    TODO: Add email notification to sysadmin that a new registration has
-    occurred.
     """
 
     form = SignupForm()
@@ -197,23 +196,13 @@ def signup(request):
             description = form.cleaned_data.get('description')
 
 
-            """
-            This code simply writes out to a file the registration.
-            Ideally, we will be sending an administrator an email instead.
-            But we need an email account to do that.
-            """
-            f = open(os.path.join(settings.MEDIA_ROOT, 'registrations.txt'), 'a')
-            f.write( str(timezone.now()) )
-            f.write( str('\n') )
-            f.write( str(username) )
-            f.write( str('\n') )
-            f.write( str(full_name) )
-            f.write( str('\n') )
-            f.write( str(description) )
-            f.write( str('\n\n\n') )
-            f.close()
+            send_mail('Signup from %s' % (username), '%s signed up at %s\n'
+                'Username: %s\nMessage: %s\nPlease attend to this request at '
+                'your earliest convenience.' % (str(full_name),
+                str(timezone.now()).strip(), str(username), str(description)),
+                settings.EMAIL_FROM, [settings.EMAIL_TO])
 
-            return redirect('index')
+            return redirect('registered')
 
     return render(request, 'signup.html', {
         'form': form,
@@ -255,3 +244,7 @@ def about(request):
     },
     )
 
+def registered(request):
+    return render(request, 'registered.html', {
+    },
+    )

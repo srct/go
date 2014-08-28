@@ -26,6 +26,9 @@ urlpatterns = patterns('go.views',
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>\w+)$', 'delete', name = 'delete'),
 
+    # /registered - registration complete page
+    url(r'^registered/?$', 'registered', name = 'registered'),
+
     # /admin - Administrator interface.
     url(r'^admin/?', include(admin.site.urls)),
 )
