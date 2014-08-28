@@ -82,6 +82,9 @@ INSTALLED_APPS = (
     'piwik',
     'django.contrib.admin',
     'qrcode',
+    'captcha',
+    # Uncomment the next line to enable admin documentation:
+    # 'django.contrib.admindocs',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

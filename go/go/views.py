@@ -195,7 +195,6 @@ def signup(request):
             full_name = form.cleaned_data.get('full_name')
             description = form.cleaned_data.get('description')
 
-
             send_mail('Signup from %s' % (username), '%s signed up at %s\n'
                 'Username: %s\nMessage: %s\nPlease attend to this request at '
                 'your earliest convenience.' % (str(full_name),

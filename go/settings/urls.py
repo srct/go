@@ -46,3 +46,8 @@ urlpatterns += patterns('go.views',
     # Redirection regex.
     url(r'^(?P<short>\w+)$', 'redirection', name = 'redirection'),
 )
+
+# Captcha support
+urlpatterns += patterns('',
+    url(r'^captcha/', include('captcha.urls')),
+)

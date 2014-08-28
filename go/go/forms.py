@@ -2,6 +2,7 @@ from django import forms
 from go.models import URL
 from django.core.validators import MinLengthValidator, MinValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
+from captcha.fields import CaptchaField
 
 class URLForm( forms.ModelForm ):
 
@@ -85,3 +86,4 @@ class SignupForm( forms.Form ):
         widget = forms.Textarea(attrs={
         }),
     )
+    captcha = CaptchaField()
