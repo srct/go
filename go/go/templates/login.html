@@ -17,14 +17,14 @@ Go - Login
 action="{% url 'django.contrib.auth.views.login' %}">
 {% csrf_token %}
 
-  <label for="username">Username</label>
+  <label for="username">Mason NetID</label>
   <br/>
   {% for error in form.username.errors %}
   <p class="error">{{ error }}</p>
   {% empty %}
   <br/>
   {% endfor %}
-  <input type="text" id="username" name="username" placeholder="Username"
+  <input type="text" id="username" name="username" placeholder="Mason NetID"
   {% if form.username.errors %} class="error"{% endif %} />
   <br/><br/>
 
