@@ -69,5 +69,5 @@ class RegisteredUser( models.Model ):
     approved = models.BooleanField()
 
     def __unicode__(self):
-        return '<Registered User: %s>' % self.username
+        return '<Registered User: %s - Approval Status: %s>' % (self.username, self.approved)
 
