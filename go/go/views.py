@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.mail import send_mail
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
 import os
 
@@ -239,6 +240,39 @@ def redirection(request, short):
             pass
 
     return redirect( url.target )
+
+
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='about'):
+    """
+    Decorator for views that checks that the user is logged in and is a staff
+    member, displaying the login page if necessary.
+    """
+    return user_passes_test(
+        lambda u: u.is_active and u.is_staff,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )(view_func)
+
+
+@staff_member_required
+def adminpanel(request):
+    """
+    This view is a simplified admin panel, so that staff don't need to log in
+    to approve links
+    """
+    if request.POST:
+        if '_approve' in request.POST:
+            toapprove = RegisteredUser.objects.get(username=request.POST['username'])
+            toapprove.approved = True
+            toapprove.save()
+        elif '_deny' in request.POST:
+            todeny = RegisteredUser.objects.get(username=request.POST['username'])
+            todeny.delete()
+    need_approval = RegisteredUser.objects.filter(approved=False)
+    return render(request, 'adminpanel.html',{
+        'need_approval': need_approval
+    },
+    )
 
 
 ##############################################################################
