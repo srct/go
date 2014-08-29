@@ -17,8 +17,17 @@ ULife groups, and student organizations. Access is moderated by SRCT
 administrators.
 </p>
 
+{% if user.is_authenticated %}
 <p>
 You can <a href="{% url 'signup' %}">sign up</a> for use.
 <br/><br/>
 </p>
+{% else %}
+<p>
+Please <a href="{% url 'go_login' %}">log in</a> in order to submit an access
+request.
+<br/><br/>
+</p>
+{% endif %}
+
 {% endblock %}

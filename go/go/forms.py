@@ -1,5 +1,5 @@
 from django import forms
-from go.models import URL
+from go.models import URL, RegisteredUser
 from django.core.validators import MinLengthValidator, MinValueValidator, RegexValidator
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
@@ -64,11 +64,20 @@ class URLForm( forms.ModelForm ):
         }
 
 
-class SignupForm( forms.Form ):
+class SignupForm( forms.ModelForm ):
+
+    def validate_username(username):
+        try:
+            registered = RegisteredUser.objects.get(username=username)
+            raise ValidationError('Username "%s" is already in use.' % username)
+        except RegisteredUser.DoesNotExist:
+            return
+
     username = forms.CharField(
         required = True,
-        label = 'Username',
+        label = 'Mason NetID',
         max_length = 30,
+        validators=[validate_username],
         widget = forms.TextInput(attrs={
         }),
     )
@@ -87,3 +96,6 @@ class SignupForm( forms.Form ):
         }),
     )
     captcha = CaptchaField()
+
+    class Meta:
+        model = RegisteredUser
