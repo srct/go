@@ -66,6 +66,8 @@ class RegisteredUser( models.Model ):
 
     description = models.TextField( blank=True )
 
+    approved = models.BooleanField()
+
     def __unicode__(self):
         return '<Registered User: %s>' % self.username
 

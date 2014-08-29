@@ -5,7 +5,7 @@ from django.conf import settings
 from django.http import Http404, HttpResponseServerError
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -26,7 +26,7 @@ def is_registered( user ):
 
     try:
         registered = RegisteredUser.objects.get( username=user.username )
-        return True
+        return registered.approved
     except RegisteredUser.DoesNotExist:
         return False
 
@@ -186,14 +186,14 @@ def signup(request):
 
     """
 
-    form = SignupForm()
+    signup_form = SignupForm()
 
     if request.method == 'POST':
-        form = SignupForm( request.POST )
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            full_name = form.cleaned_data.get('full_name')
-            description = form.cleaned_data.get('description')
+        signup_form = SignupForm(request.POST, initial={'approved': False})
+        if signup_form.is_valid():
+            username = signup_form.cleaned_data.get('username')
+            full_name = signup_form.cleaned_data.get('full_name')
+            description = signup_form.cleaned_data.get('description')
 
             send_mail('Signup from %s' % (username), '%s signed up at %s\n'
                 'Username: %s\nMessage: %s\nPlease attend to this request at '
@@ -201,10 +201,12 @@ def signup(request):
                 str(timezone.now()).strip(), str(username), str(description)),
                 settings.EMAIL_FROM, [settings.EMAIL_TO])
 
+            signup_form.save()
+
             return redirect('registered')
 
     return render(request, 'signup.html', {
-        'form': form,
+        'form': signup_form,
     },
     )
 
