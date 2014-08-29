@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - Administration Panel
+{% endblock %}
+
+
+{% block content %}
+</p>
+Users awaiting moderation:
+{% for unapproved in need_approval %}
+    <p>
+    Username: {{ unapproved.username }} 
+    <br />
+    Full name: {{ unapproved.full_name }}
+    <br />
+    Description: {{ unapproved.description|default_if_none:"No description provided" }}
+    </p>
+    <form method="post" action="adminpanel">{% csrf_token %}
+    	<input type="hidden" name="username" value={{ unapproved.username }}>
+        <input type="submit" name="_approve" value="Approve">
+        <input type="submit" name="_deny" value="Deny">
+    </form>
+{% empty %}
+    <p>
+    No users awaiting moderation.
+    </p>
+{% endfor %}
+
+{% endblock %}
