@@ -179,6 +179,7 @@ def delete(request, short):
         raise PermissionDenied()
 
 
+@login_required
 def signup(request):
     """
     This view presents the user with a registration form. You can register
