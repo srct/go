@@ -225,9 +225,15 @@ def redirection(request, short):
 
     from piwikapi.tracking import PiwikTracker
     from django.conf import settings
-    piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
-    piwiktracker.set_api_url(settings.PIWIK_URL)
-    piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+    # First, if PIWIK variables are undefined, don't try to push
+    if settings.PIWIK_SITE_ID is not "" and settings.PIWIK_URL is not "":
+        try:
+            piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
+            piwiktracker.set_api_url(settings.PIWIK_URL)
+            piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+        # Second, if we do get an error, don't let that keep us from redirecting
+        except:
+            pass
 
     return redirect( url.target )
 
