@@ -19,7 +19,7 @@ Define useful helper methods here.
 """
 
 
-def is_registered( user ):
+def is_approved( user ):
     """
     This function checks if a user account has a corresponding RegisteredUser,
     thus checking if the user is registered.
@@ -73,7 +73,7 @@ def index(request):
     """
 
     # If the user isn't registered, don't give them any leeway.
-    if not is_registered(request.user):
+    if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
     url_form = URLForm() # unbound form
@@ -152,7 +152,7 @@ def my_links(request):
     obviously need to be logged in to view your URLs.
     """
 
-    if not is_registered(request.user):
+    if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
     urls = URL.objects.filter( owner = request.user )
@@ -169,7 +169,7 @@ def delete(request, short):
     logged in and registered, and must also be the owner of the URL.
     """
 
-    if not is_registered(request.user):
+    if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
     url = get_object_or_404(URL, short__iexact = short )
