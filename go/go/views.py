@@ -5,9 +5,10 @@ from django.conf import settings
 from django.http import Http404, HttpResponseServerError
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.mail import send_mail
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
 import os
 
@@ -26,7 +27,7 @@ def is_registered( user ):
 
     try:
         registered = RegisteredUser.objects.get( username=user.username )
-        return True
+        return registered.approved
     except RegisteredUser.DoesNotExist:
         return False
 
@@ -179,6 +180,7 @@ def delete(request, short):
         raise PermissionDenied()
 
 
+@login_required
 def signup(request):
     """
     This view presents the user with a registration form. You can register
@@ -186,14 +188,14 @@ def signup(request):
 
     """
 
-    form = SignupForm()
+    signup_form = SignupForm()
 
     if request.method == 'POST':
-        form = SignupForm( request.POST )
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            full_name = form.cleaned_data.get('full_name')
-            description = form.cleaned_data.get('description')
+        signup_form = SignupForm(request.POST, initial={'approved': False})
+        if signup_form.is_valid():
+            username = signup_form.cleaned_data.get('username')
+            full_name = signup_form.cleaned_data.get('full_name')
+            description = signup_form.cleaned_data.get('description')
 
             send_mail('Signup from %s' % (username), '%s signed up at %s\n'
                 'Username: %s\nMessage: %s\nPlease attend to this request at '
@@ -201,10 +203,12 @@ def signup(request):
                 str(timezone.now()).strip(), str(username), str(description)),
                 settings.EMAIL_FROM, [settings.EMAIL_TO])
 
+            signup_form.save()
+
             return redirect('registered')
 
     return render(request, 'signup.html', {
-        'form': form,
+        'form': signup_form,
     },
     )
 
@@ -225,11 +229,50 @@ def redirection(request, short):
 
     from piwikapi.tracking import PiwikTracker
     from django.conf import settings
-    piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
-    piwiktracker.set_api_url(settings.PIWIK_URL)
-    piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+    # First, if PIWIK variables are undefined, don't try to push
+    if settings.PIWIK_SITE_ID is not "" and settings.PIWIK_URL is not "":
+        try:
+            piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
+            piwiktracker.set_api_url(settings.PIWIK_URL)
+            piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+        # Second, if we do get an error, don't let that keep us from redirecting
+        except:
+            pass
 
     return redirect( url.target )
+
+
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='about'):
+    """
+    Decorator for views that checks that the user is logged in and is a staff
+    member, displaying the login page if necessary.
+    """
+    return user_passes_test(
+        lambda u: u.is_active and u.is_staff,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )(view_func)
+
+
+@staff_member_required
+def adminpanel(request):
+    """
+    This view is a simplified admin panel, so that staff don't need to log in
+    to approve links
+    """
+    if request.POST:
+        if '_approve' in request.POST:
+            toapprove = RegisteredUser.objects.get(username=request.POST['username'])
+            toapprove.approved = True
+            toapprove.save()
+        elif '_deny' in request.POST:
+            todeny = RegisteredUser.objects.get(username=request.POST['username'])
+            todeny.delete()
+    need_approval = RegisteredUser.objects.filter(approved=False)
+    return render(request, 'adminpanel.html',{
+        'need_approval': need_approval
+    },
+    )
 
 
 ##############################################################################
