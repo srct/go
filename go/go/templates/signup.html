@@ -10,6 +10,7 @@ Go - Signup
 
 <h3>~Signup~</h3>
 
+{% if not registered %}
 <p>
 In order to succesfully provide this service, users must be manually
 approved. This prevents misuse of the URL shortener. Please indicate below
@@ -69,5 +70,8 @@ if you are interested.
   <br/><br/>
 
 </form>
-
+{% else %}
+<p>You are already signed up for Go.</p>
+<br/>
+{% endif %}
 {% endblock %}

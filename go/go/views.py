@@ -32,6 +32,19 @@ def is_approved( user ):
         return False
 
 
+def is_registered(user):
+    """
+    This function checks if a user account has a corresponding RegisteredUser,
+    thus checking if the user is registered.
+    """
+
+    try:
+        registered = RegisteredUser.objects.get( username=user.username )
+        return True
+    except RegisteredUser.DoesNotExist:
+        return False
+
+
 ##############################################################################
 """
 Define error page handling here.
@@ -187,13 +200,30 @@ def signup(request):
     yourself, or another person.
 
     """
+    if is_registered(request.user) and not request.user.is_staff:
+        return render(request, 'signup.html', {
+            'registered': True,
+        },
+        )
 
-    signup_form = SignupForm()
+    signup_form = SignupForm(initial={'username': request.user.username})
+    # Non-staff have the username field read-only and pre-filled
+    if request.user.is_staff:
+        signup_form = SignupForm()
+    else:
+        signup_form = SignupForm(initial={'username': request.user.username})
+        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
-        signup_form = SignupForm(request.POST, initial={'approved': False})
+        signup_form = SignupForm(request.POST, initial={'approved': False,
+            'username': request.user.username})
+
         if signup_form.is_valid():
-            username = signup_form.cleaned_data.get('username')
+            # Prevent hax: if not staff, force the username back to the request username.
+            if not request.user.is_staff:
+                username = request.user.username
+            else:
+                username = signup_form.cleaned_data.get('username')
             full_name = signup_form.cleaned_data.get('full_name')
             description = signup_form.cleaned_data.get('description')
 
@@ -209,6 +239,7 @@ def signup(request):
 
     return render(request, 'signup.html', {
         'form': signup_form,
+        'registered': False,
     },
     )
 
