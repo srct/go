@@ -152,8 +152,6 @@ PIWIK_SITE_ID = secret.PIWIK_SITE_ID
 PIWIK_URL = secret.PIWIK_URL
 
 
-SERVERURL = secret.SERVERURL
-
 # Mail settings
 EMAIL_HOST = secret.EMAIL_HOST
 EMAIL_PORT = secret.EMAIL_PORT
