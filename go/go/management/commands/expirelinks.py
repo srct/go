@@ -8,5 +8,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for toexpire in URL.objects.filter(expires__lte=timezone.now()):
-            self.stdout.write("Removed URL %s (%s), expires %s" % (toexpire.target, toexpire.short, toexpire.expires))
             toexpire.delete()
