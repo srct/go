@@ -42,3 +42,11 @@ $ pip install -r requirements.txt
 ```
 
 and you should be good to go.
+
+### Cron
+
+In order to expire links, you need to set up a cron job to run the manage.py
+expirelinks command regularly. A sample cron script is available in the
+repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
+change the paths so that they point to the virtualenv activate script and
+manage.py.
