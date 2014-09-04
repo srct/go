@@ -9,3 +9,11 @@ def is_registered( user ):
         return True
     except RegisteredUser.DoesNotExist:
         return False
+
+@register.filter
+def is_approved(user):
+    try:
+        registered = RegisteredUser.objects.get( username=user.username )
+        return registered.approved
+    except RegisteredUser.DoesNotExist:
+        return False 
