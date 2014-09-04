@@ -30,21 +30,17 @@
 
   <body>
 
-    <div id="wrap">
+    {% include 'navigation.html' %}
 
-      {% include 'navigation.html' %}
+    <div class="container">
 
-      <div class="container">
+      {% block content %}
 
-        {% block content %}
+      {% endblock %}
 
-        {% endblock %}
-
-      </div>
+      {% include 'footer.html' %}
 
     </div>
-
-    {% include 'footer.html' %}
 
     {% tracking_code %}
 
