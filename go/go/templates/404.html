@@ -1,39 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <title>404</title>
-  <style>
-    body {
-      text-align: center;
-      display: -webkit-box;
-      display: -moz-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      height: 100%;
-    }
-    .container {
-      margin: auto;
-    }
-    h1 {
-      font-family: "Helvetica Neue", "Helvetica", sans-serif;
-      margin-top: ;
-    }
-    #squirrels {
-      width: 100%;
-    }
-    #acorn {
-    width: 52px;
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
+{% extends 'base.html' %}
+
+{% block title %}
+404 Error - Page Not Found
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 text-center">
     <h1>404 Error - Page Not Found</h1>
+
     <img id="squirrels" src="/static/img/squirrels.png">
+
+    <a href="/"><img src="/static/img/acorn.png" style="width:10vw;"></a>
+
   </div>
-  <a href="/"><img id="acorn" src="/static/img/acorn.png"></a>
-</body>
-</html>
+</div>
+{% endblock %}

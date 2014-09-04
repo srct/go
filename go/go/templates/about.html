@@ -7,27 +7,38 @@ Go - About
 
 
 {% block content %}
-<h3>~About~</h3>
 
-<p>
-Mason Go is a product of the George Mason University
-<a href="http://srct.gmu.edu">Student-Run Computing and Technology</a>
-organization. Go provides Mason-branded URL shortening for administration,
-ULife groups, and student organizations. Access is moderated by SRCT
-administrators.
-</p>
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
 
-{% if user.is_authenticated %}
-<p>
-You can <a href="{% url 'signup' %}">sign up</a> for use.
-<br/><br/>
-</p>
-{% else %}
-<p>
-Please <a href="{% url 'go_login' %}">log in</a> in order to submit an access
-request.
-<br/><br/>
-</p>
-{% endif %}
+      <h1><strong>About</strong></h1>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <p>
+    Mason Go is a product of the George Mason University
+    <a href="http://srct.gmu.edu">Student-Run Computing and Technology</a>
+    organization. Go provides Mason-branded URL shortening for administration,
+    ULife groups, and student organizations. Access is moderated by SRCT
+    administrators.
+    </p>
+
+    <p>
+    {% if user.is_authenticated %}
+    You can <a href="{% url 'signup' %}">sign up</a> for use.
+    {% else %}
+    Please <a href="{% url 'go_login' %}">log in</a> in order to submit an access
+    request.
+    {% endif %}
+    </p>
+
+  </div>
+</div>
 
 {% endblock %}
