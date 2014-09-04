@@ -7,47 +7,43 @@ a.share:visited {color:#000000;}
 a.share:hover {color:#000000;}
 </style>
 
-<div class="link-box">
+<div class="col-md-8">
+  <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
+  <br />
 
-  <p class="link">
-    <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
-    <br />
+  <strong>Short:</strong> <a href="/{{url.short}}">{{url.short}}</a>
+  <br />
 
-    <strong>Short:</strong> <a href="/{{url.short}}">{{url.short}}</a>
-    <br />
+  {% if url.owner = request.user and request.user|is_registered %}
+  <strong>Clicks:</strong> {{url.clicks}}
+  <br />
 
-    {% if url.owner = request.user and request.user|is_registered %}
-    <strong>Clicks:</strong> {{url.clicks}}
-    <br />
+  <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
+  <br />
 
-    <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
-    <br />
+  <strong>
+    <a href="{%url 'delete' url.short%}"
+    onclick="return confirm('Are you sure you want to delete this link?');">
+      Delete
+    </a>
+  </strong>
+  {% endif %}
+</div>
 
-    <strong>
-      <a href="{%url 'delete' url.short%}"
-      onclick="return confirm('Are you sure you want to delete this link?');">
-        Delete
-      </a>
-    </strong>
-    {% endif %}
-  </p>
-
-  <p class="qr">
-    {% qr_from_text url.get_absolute_url 100 %}
-  </p>
-  <p>
+<div class="col-md-4">
+  {% qr_from_text url.get_absolute_url 's' %}
   <a class="share" href="http://twitter.com/share?url={{ url.get_absolute_url }}" target="_blank" title="Share via Twitter">
     <i class="fa fa-twitter-square fa-3x"></i>
   </a>
-
+  
   <a class="share" href="http://www.facebook.com/share.php?u={{ url.get_absolute_url }}" target="_blank" title="Share via Facebook">
     <i class="fa fa-facebook-square fa-3x"></i>
   </a>
-
+  
   <a class="share" href="https://plus.google.com/share?url={{ url.get_absolute_url }}" target="_blank" title="Share via Google+">
     <i class="fa fa-google-plus-square fa-3x"></i>
   </a>
-
+  
   <a class="share" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url.get_absolute_url }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="Share via LinkedIn">
     <i class="fa fa-linkedin-square fa-3x"></i>
   </a>
