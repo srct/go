@@ -7,25 +7,65 @@ Go - Administration Panel
 
 
 {% block content %}
-</p>
-Users awaiting moderation:
-{% for unapproved in need_approval %}
-    <p>
-    Username: {{ unapproved.username }} 
-    <br />
-    Full name: {{ unapproved.full_name }}
-    <br />
-    Description: {{ unapproved.description|default_if_none:"No description provided" }}
-    </p>
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1><strong>Moderation Panel</strong></h1>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <h2>Users awaiting moderation</h2>
+
     <form method="post" action="adminpanel">{% csrf_token %}
-    	<input type="hidden" name="username" value={{ unapproved.username }}>
-        <input type="submit" name="_approve" value="Approve">
-        <input type="submit" name="_deny" value="Deny">
+
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>Approve</th>
+          <th>Username</th>
+          <th>Full Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for unapproved in need_approval %}
+        <tr>
+          <td><input type="checkbox" name="username" value={{ unapproved.username }}></td>
+          <td>{{ unapproved.username }}</td>
+          <td>{{ unapproved.full_name }}</td>
+          <td>{{ unapproved.description|default_if_none:"No description provided" }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+    <div class="form-group">
+
+      <input type="submit" name="_approve" value="Approve" class="btn btn-primary">
+      <input type="submit" name="_deny" value="Deny" class="btn btn-default">
+
+    </div>
+
     </form>
-{% empty %}
-    <p>
-    No users awaiting moderation.
-    </p>
-{% endfor %}
+
+  </div>
+</div>
+
 
 {% endblock %}
