@@ -13,7 +13,7 @@
       {% if user.is_authenticated %}
       <li><a href="{% url 'my_links' %}">My Links</a></li>
       {% if user.is_staff %}
-      <li><a href="{% url 'adminpanel' %}">Administration</a></li>
+      <li><a href="{% url 'useradmin' %}">Administration</a></li>
       {% endif %}
       <li><a href="{% url 'go_logout' %}">Log Out</a></li>
       {% else %}

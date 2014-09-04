@@ -32,8 +32,8 @@ urlpatterns = patterns('go.views',
     # /admin - Administrator interface.
     url(r'^admin/?', include(admin.site.urls)),
 
-    # /adminpanel - light admin interface
-    url(r'^adminpanel/?$', 'adminpanel', name='adminpanel'),
+    # /useradmin - user approval interface
+    url(r'^useradmin/?$', 'useradmin', name='useradmin'),
 )
 
 urlpatterns += patterns('django.contrib.auth.views',

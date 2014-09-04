@@ -286,7 +286,7 @@ def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, lo
 
 
 @staff_member_required
-def adminpanel(request):
+def useradmin(request):
     """
     This view is a simplified admin panel, so that staff don't need to log in
     to approve links
@@ -300,7 +300,7 @@ def adminpanel(request):
             todeny = RegisteredUser.objects.get(username=request.POST['username'])
             todeny.delete()
     need_approval = RegisteredUser.objects.filter(approved=False)
-    return render(request, 'adminpanel.html',{
+    return render(request, 'useradmin.html',{
         'need_approval': need_approval
     },
     )
