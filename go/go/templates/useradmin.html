@@ -41,7 +41,7 @@ Go - Administration Panel
           <td><input type="checkbox" name="username" value={{ unapproved.username }}></td>
           <td>{{ unapproved.username }}</td>
           <td>{{ unapproved.full_name }}</td>
-          <td>{{ unapproved.description|default_if_none:"No description provided" }}</td>
+          <td>{{ unapproved.description|default:"No description provided" }}</td>
         </tr>
       {% empty %}
         <tr>
