@@ -292,13 +292,16 @@ def useradmin(request):
     to approve links
     """
     if request.POST:
+        userlist = request.POST.getlist('username')
         if '_approve' in request.POST:
-            toapprove = RegisteredUser.objects.get(username=request.POST['username'])
-            toapprove.approved = True
-            toapprove.save()
+            for name in userlist:
+                toapprove = RegisteredUser.objects.get(username=name)
+                toapprove.approved = True
+                toapprove.save()
         elif '_deny' in request.POST:
-            todeny = RegisteredUser.objects.get(username=request.POST['username'])
-            todeny.delete()
+            for name in userlist:
+                todeny = RegisteredUser.objects.get(username=name)
+                todeny.delete()
     need_approval = RegisteredUser.objects.filter(approved=False)
     return render(request, 'useradmin.html',{
         'need_approval': need_approval
