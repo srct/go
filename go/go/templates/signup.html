@@ -7,71 +7,136 @@ Go - Signup
 
 
 {% block content %}
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
 
-<h3>~Signup~</h3>
+      <h1><strong>Signup</strong></h1>
 
+    </div>
+  </div>
+</div>
+
+<div class="row">
 {% if not registered %}
-<p>
-In order to succesfully provide this service, users must be manually
-approved. This prevents misuse of the URL shortener. Please indicate below
-if you are interested.
-<br/><br/>
-</p>
+  <div class="col-md-12">
+    <p>
+      In order to succesfully provide this service, users must be manually
+      approved. This prevents misuse of the URL shortener. Please indicate below
+      if you are interested.
+    <br/><br/>
+    </p>
+  </div>
 
-{% for error in form.non_field_errors %}
-  <p class="error">{{ error }}</p>
-{% endfor %}
+  <div class="col-md-8">
+    <div class="well">
 
-<form method="post" action="{% url 'signup' %}">
-{% csrf_token %}
+      <form class="form-horizontal" method="post" action="{% url 'signup' %}">
+      {% csrf_token %}
+        <fieldset>
 
-  <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-  <br/>
-  {% for error in form.username.errors %}
-    <p class="error">{{error}}</p>
-  {% empty %}
-    <br/>
-  {% endfor %}
-  {{ form.username }}
-  <br/><br/>
+          {% if form.non_field_errors %}
+          <div class="form-group has-error">
+            <div class="col-md-12">
+            {% for error in form.non_field_errors %}
+              <span class="help-block">{{ error }}</p>
+            {% endfor %}
+            </div>
+          </div>
+          {% endif %}
 
-  <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
-  <br/>
-  {% for error in form.full_name.errors %}
-    <p class="error">{{error}}</p>
-  {% empty %}
-    <br/>
-  {% endfor %}
-  {{ form.full_name }}
-  <br/><br/>
+          {% if form.username.errors %}
+          <div class="form-group has-error">
+          {% else %}
+          <div class="form-group">
+          {% endif %}
+            <div class="col-md-4">
+              <label class="control-label" for="{{ form.username.id_for_label }}">
+              {{ form.username.label }}</label>
+            </div>
 
-  <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-  <br/>
-  {% for error in form.description.errors %}
-    <p class="error">{{error}}</p>
-  {% empty %}
-    <br/>
-  {% endfor %}
-  {{ form.description }}
-  <br/><br/>
+            <div class="col-md-8">
+              {{ form.username }}
 
-  <label for="{{ form.captcha.id_for_label }}">{{ form.captcha.label }}</label>
-  <br/>
-  {% for error in form.captcha.errors %}
-    <p class="error">{{error}}</p>
-  {% empty %}
-    <br/>
-  {% endfor %}
-  {{ form.captcha }}
-  <br/><br/>
+              {% for error in form.username.errors %}
+              <span class="help-block">{{error}}</span>
+              {% endfor %}
+            </div>
+          </div>
 
+          {% if form.full_name.errors %}
+          <div class="form-group has-error">
+          {% else %}
+          <div class="form-group">
+          {% endif %}
+            <div class="col-md-4">
+              <label class="control-label" for="{{ form.full_name.id_for_label }}">
+              {{ form.full_name.label }}</label>
+            </div>
 
-  <input type="submit" value="Sign Up" />
-  <br/><br/>
+            <div class="col-md-8">
+              {{ form.full_name }}
 
-</form>
+              {% for error in form.full_name.errors %}
+              <span class="help-block">{{error}}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          {% if form.description.errors %}
+          <div class="form-group has-error">
+          {% else %}
+          <div class="form-group">
+          {% endif %}
+            <div class="col-md-4">
+              <label class="control-label" for="{{ form.description.id_for_label }}">
+              {{ form.description.label }}</label>
+            </div>
+
+            <div class="col-md-8">
+              {{ form.description }}
+
+              {% for error in form.description.errors %}
+              <span class="help-block">{{error}}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          {% if form.captcha.errors %}
+          <div class="form-group has-error">
+          {% else %}
+          <div class="form-group">
+          {% endif %}
+            <div class="col-md-4">
+              <label class="control-label" for="{{ form.captcha.id_for_label }}">
+              {{ form.captcha.label }}</label>
+            </div>
+
+            <div class="col-md-8">
+              {{ form.captcha }}
+
+              {% for error in form.captcha.errors %}
+              <span class="help-block">{{error}}</span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-12">
+              <input type="submit" value="Submit"
+              class="btn btn-primary btn-lg btn-block" />
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+    </div>
+  </div>  
+
 {% else %}
-<p>You are already signed up for Go.</p>
-<br/>
+  <div class="col-md-12">
+    <p>You are already signed up for Go.</p>
+  </div>
 {% endif %}
+</div>
 {% endblock %}
