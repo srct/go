@@ -2,27 +2,38 @@
 
 
 {% block title %}
-Go - About
+Go - Account Not Approved
 {% endblock %}
 
 
 {% block content %}
-<h3>~Account Not Approved~</h3>
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
 
-<p>
-If you have not done so, you may <a href="{% url 'signup' %}">sign up</a>
-for an account.
-</p>
+      <h1><strong>Account Not Approved</strong></h1>
 
-<p>
-Because Go allows users to represent their group or organization with
-George Mason branding, user accounts must be manually approved by a Go
-official.
-</p>
+    </div>
+  </div>
+</div>
 
-<p>
-This process takes time. Please be patient.
-<br/><br/>
-</p>
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      If you have not done so, you may <a href="{% url 'signup' %}">sign up</a>
+      for an account.
+    </p>
 
+    <p>
+      Because Go allows users to represent their group or organization with
+      George Mason branding, user accounts must be manually approved by a Go
+      official.
+    </p>
+
+    <p>
+      This process takes time. Please be patient.
+    </p>
+    <br/><br/>
+  </div>
+</div>
 {% endblock %}
