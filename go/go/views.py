@@ -227,11 +227,13 @@ def signup(request):
             full_name = signup_form.cleaned_data.get('full_name')
             description = signup_form.cleaned_data.get('description')
 
-            send_mail('Signup from %s' % (username), '%s signed up at %s\n'
-                'Username: %s\nMessage: %s\nPlease attend to this request at '
-                'your earliest convenience.' % (str(full_name),
-                str(timezone.now()).strip(), str(username), str(description)),
-                settings.EMAIL_FROM, [settings.EMAIL_TO])
+            # Only send mail if we've defined the mailserver
+            if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                send_mail('Signup from %s' % (username), '%s signed up at %s\n'
+                    'Username: %s\nMessage: %s\nPlease attend to this request at '
+                    'your earliest convenience.' % (str(full_name),
+                    str(timezone.now()).strip(), str(username), str(description)),
+                    settings.EMAIL_FROM, [settings.EMAIL_TO])
 
             signup_form.save()
 
