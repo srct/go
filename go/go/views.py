@@ -169,8 +169,12 @@ def my_links(request):
         return render(request, 'not_registered.html')
 
     urls = URL.objects.filter( owner = request.user )
+
+    domain = request.META.get('HTTP_HOST') + "/"
+
     return render(request, 'my_links.html', {
         'urls' : urls,
+        'domain' : domain,
     },
     )
 

@@ -26,12 +26,6 @@ class URL( models.Model ):
     class Meta:
         ordering = ['short']
 
-    def get_absolute_url(self):
-        from django.contrib.sites.models import Site
-        current_site = Site.objects.get_current()
-        site_url = current_site.domain
-        return "%s/%s" % (site_url, self.short)
-
     @staticmethod
     def generate_valid_short():
         selection = string.ascii_lowercase + string.digits

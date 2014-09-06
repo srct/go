@@ -32,21 +32,22 @@
 </div>
 
 <div class="col-md-4">
-  {% qr_from_text url.get_absolute_url 's' %}
-  <a class="share" href="http://twitter.com/share?url={{ url.get_absolute_url }}" target="_blank" title="Share via Twitter">
+{% with domain|add:url.short as the_url %}
+  {% qr_from_text the_url 's' %}
+  <a class="share" href="http://twitter.com/share?url={{ the_url }}" target="_blank" title="Share via Twitter">
     <i class="fa fa-twitter-square fa-3x"></i>
   </a>
   
-  <a class="share" href="http://www.facebook.com/share.php?u={{ url.get_absolute_url }}" target="_blank" title="Share via Facebook">
+  <a class="share" href="http://www.facebook.com/share.php?u={{ the_url }}" target="_blank" title="Share via Facebook">
     <i class="fa fa-facebook-square fa-3x"></i>
   </a>
   
-  <a class="share" href="https://plus.google.com/share?url={{ url.get_absolute_url }}" target="_blank" title="Share via Google+">
+  <a class="share" href="https://plus.google.com/share?url={{ the_url }}" target="_blank" title="Share via Google+">
     <i class="fa fa-google-plus-square fa-3x"></i>
   </a>
   
-  <a class="share" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url.get_absolute_url }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="Share via LinkedIn">
+  <a class="share" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ the_url }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="Share via LinkedIn">
     <i class="fa fa-linkedin-square fa-3x"></i>
   </a>
-  </p>
+{% endwith %}
 </div>
