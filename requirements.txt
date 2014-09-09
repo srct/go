@@ -6,6 +6,7 @@ django-auth-ldap==1.1.7
 django-piwik==0.1
 django-qrcode==0.3
 django-simple-captcha==0.4.2
+hashids==1.0.1
 gunicorn==18.0
 piwikapi==0.3
 python-ldap==2.4.13

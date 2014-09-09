@@ -4,6 +4,9 @@ from django.utils import timezone
 from django.conf import settings
 import random, string
 
+from hashids import Hashids
+hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
+hashids_counter = None
 
 class URL( models.Model ):
     """
@@ -20,6 +23,8 @@ class URL( models.Model ):
     clicks = models.IntegerField( default = 0 )
     expires = models.DateTimeField( blank = True, null = True )
 
+
+
     def __unicode__(self):
         return '<%s : %s>' % (self.owner.username, self.target)
 
@@ -28,17 +33,21 @@ class URL( models.Model ):
 
     @staticmethod
     def generate_valid_short():
-        selection = string.ascii_lowercase + string.digits
-        tries = 0
-        while True:
-            short = ''.join(random.choice(selection) for i in range(5))
-            try:
-                urls = URL.objects.get( short__iexact = short )
-                tries += 1
-            except URL.DoesNotExist:
-                return short
-            if tries > 100:
-                return None
+        global hashids_counter
+        hashids_counter += 1
+        short = hashids.encrypt(hashids_counter)
+        tries = 1
+        try:
+            urls = URL.objects.get( short__iexact = short )
+            tries += 1
+            hashids_counter += 1
+        except URL.DoesNotExist:
+            return short
+        if tries > 100:
+            return None
+
+# this needs to be here instead of at the top because the model's manager must be available before this line
+hashids_counter = URL.objects.count()
 
 
 class RegisteredUser( models.Model ):
