@@ -13,7 +13,7 @@ class URL( models.Model ):
     """
 
     owner = models.ForeignKey( User )
-    date_created = models.DateTimeField( default=timezone.now() )
+    date_created = models.DateTimeField( default=timezone.now )
 
     target = models.URLField( max_length = 1000 )
     short = models.CharField( primary_key = True, max_length = 20 )
