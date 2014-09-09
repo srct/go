@@ -77,7 +77,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.comments',
     'go',
-    'south',
     'piwik',
     'django.contrib.admin',
     'qrcode',
