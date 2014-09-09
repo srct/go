@@ -37,14 +37,14 @@ class URL( models.Model ):
         hashids_counter += 1
         short = hashids.encrypt(hashids_counter)
         tries = 1
-        try:
-            urls = URL.objects.get( short__iexact = short )
-            tries += 1
-            hashids_counter += 1
-        except URL.DoesNotExist:
-            return short
-        if tries > 100:
-            return None
+        while tries < 100:
+            try:
+                urls = URL.objects.get( short__iexact = short )
+                tries += 1
+                hashids_counter += 1
+            except URL.DoesNotExist:
+                return short
+        return None
 
 # this needs to be here instead of at the top because the model's manager must be available before this line
 hashids_counter = URL.objects.count()
