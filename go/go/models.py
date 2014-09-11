@@ -21,9 +21,11 @@ class URL( models.Model ):
     target = models.URLField( max_length = 1000 )
     short = models.CharField( primary_key = True, max_length = 20 )
     clicks = models.IntegerField( default = 0 )
+
+    qrclicks = models.IntegerField(default=0)
+    socialclicks = models.IntegerField(default=0)
+
     expires = models.DateTimeField( blank = True, null = True )
-
-
 
     def __unicode__(self):
         return '<%s : %s>' % (self.owner.username, self.target)

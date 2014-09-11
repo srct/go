@@ -257,6 +257,13 @@ def redirection(request, short):
 
     url = get_object_or_404( URL, short__iexact = short )
     url.clicks = url.clicks + 1
+
+    if 'qr' in request.GET:
+        url.qrclicks += 1
+
+    if 'social' in request.GET:
+        url.socialclicks += 1
+
     url.save()
 
     """
