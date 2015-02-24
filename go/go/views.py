@@ -150,10 +150,13 @@ def view(request, short):
     do not need to be logged in to view info.
     """
 
+    domain = request.META.get('HTTP_HOST') + "/"
+
     url = get_object_or_404(URL, short__iexact = short)
 
     return render(request, 'view.html', {
         'url': url,
+        'domain' : domain,
     },
     )
 
