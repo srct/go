@@ -150,7 +150,7 @@ def view(request, short):
     do not need to be logged in to view info.
     """
 
-    domain = request.META.get('HTTP_HOST') + "/"
+    domain = "http://%s" % request.META.get('HTTP_HOST') + "/"
 
     url = get_object_or_404(URL, short__iexact = short)
 
@@ -173,7 +173,7 @@ def my_links(request):
 
     urls = URL.objects.filter( owner = request.user )
 
-    domain = request.META.get('HTTP_HOST') + "/"
+    domain = "http://%s" % request.META.get('HTTP_HOST') + "/"
 
     return render(request, 'my_links.html', {
         'urls' : urls,
