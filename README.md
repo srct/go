@@ -50,3 +50,8 @@ expirelinks command regularly. A sample cron script is available in the
 repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
 change the paths so that they point to the virtualenv activate script and
 manage.py.
+
+
+# Troubleshooting
+
+If your CAPTCHA is messing up, try checking that your system has `libfreetype6-dev` installed. If not, install it and remove + reinstall `pillow` in your virtuale environment.
