@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - Link View
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+      <h1><strong>Link View</strong></h1>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+    {% if url %}
+      {% include 'link_box.html' %}
+    {% else %}
+      <div class="col-md-12">
+        <p>Nothing here.</p>
+      </div>
+    {% endif %}
+{% endblock %}

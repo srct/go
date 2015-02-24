@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - Administration Panel
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1><strong>Moderation Panel</strong></h1>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <h2>Users awaiting moderation</h2>
+
+    <form method="post" action="useradmin">{% csrf_token %}
+
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>Selected</th>
+          <th>Username</th>
+          <th>Full Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for unapproved in need_approval %}
+        <tr>
+          <td><input type="checkbox" name="username" value={{ unapproved.username }}></td>
+          <td>{{ unapproved.username }}</td>
+          <td>{{ unapproved.full_name }}</td>
+          <td>{{ unapproved.description|default:"No description provided" }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+    <div class="form-group">
+
+      <input type="submit" name="_approve" value="Approve" class="btn btn-primary">
+      <input type="submit" name="_deny" value="Deny" class="btn btn-default">
+
+    </div>
+
+    </form>
+
+  </div>
+</div>
+
+
+{% endblock %}

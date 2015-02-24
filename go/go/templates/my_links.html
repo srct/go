@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - My Links
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1><strong>My Links</strong></h1>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    {% for url in urls %}
+      {% include 'link_box.html' %}
+    {% empty %}
+      <p>None found.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -26,8 +26,14 @@ urlpatterns = patterns('go.views',
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>\w+)$', 'delete', name = 'delete'),
 
+    # /registered - registration complete page
+    url(r'^registered/?$', 'registered', name = 'registered'),
+
     # /admin - Administrator interface.
     url(r'^admin/?', include(admin.site.urls)),
+
+    # /useradmin - user approval interface
+    url(r'^useradmin/?$', 'useradmin', name='useradmin'),
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
@@ -42,4 +48,9 @@ urlpatterns += patterns('django.contrib.auth.views',
 urlpatterns += patterns('go.views',
     # Redirection regex.
     url(r'^(?P<short>\w+)$', 'redirection', name = 'redirection'),
+)
+
+# Captcha support
+urlpatterns += patterns('',
+    url(r'^captcha/', include('captcha.urls')),
 )

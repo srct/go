@@ -5,8 +5,10 @@ from django.conf import settings
 from django.http import Http404, HttpResponseServerError
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
-from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.mail import send_mail
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
 import os
 
@@ -17,7 +19,20 @@ Define useful helper methods here.
 """
 
 
-def is_registered( user ):
+def is_approved( user ):
+    """
+    This function checks if a user account has a corresponding RegisteredUser,
+    thus checking if the user is registered.
+    """
+
+    try:
+        registered = RegisteredUser.objects.get( username=user.username )
+        return registered.approved
+    except RegisteredUser.DoesNotExist:
+        return False
+
+
+def is_registered(user):
     """
     This function checks if a user account has a corresponding RegisteredUser,
     thus checking if the user is registered.
@@ -71,7 +86,7 @@ def index(request):
     """
 
     # If the user isn't registered, don't give them any leeway.
-    if not is_registered(request.user):
+    if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
     url_form = URLForm() # unbound form
@@ -150,12 +165,16 @@ def my_links(request):
     obviously need to be logged in to view your URLs.
     """
 
-    if not is_registered(request.user):
+    if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
     urls = URL.objects.filter( owner = request.user )
+
+    domain = request.META.get('HTTP_HOST') + "/"
+
     return render(request, 'my_links.html', {
         'urls' : urls,
+        'domain' : domain,
     },
     )
 
@@ -167,7 +186,7 @@ def delete(request, short):
     logged in and registered, and must also be the owner of the URL.
     """
 
-    if not is_registered(request.user):
+    if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
     url = get_object_or_404(URL, short__iexact = short )
@@ -178,45 +197,55 @@ def delete(request, short):
         raise PermissionDenied()
 
 
+@login_required
 def signup(request):
     """
     This view presents the user with a registration form. You can register
     yourself, or another person.
 
-    TODO: Add email notification to sysadmin that a new registration has
-    occurred.
     """
+    if is_registered(request.user) and not request.user.is_staff:
+        return render(request, 'signup.html', {
+            'registered': True,
+        },
+        )
 
-    form = SignupForm()
+    signup_form = SignupForm(initial={'username': request.user.username})
+    # Non-staff have the username field read-only and pre-filled
+    if request.user.is_staff:
+        signup_form = SignupForm()
+    else:
+        signup_form = SignupForm(initial={'username': request.user.username})
+        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
-        form = SignupForm( request.POST )
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            full_name = form.cleaned_data.get('full_name')
-            description = form.cleaned_data.get('description')
+        signup_form = SignupForm(request.POST, initial={'approved': False,
+            'username': request.user.username})
 
+        if signup_form.is_valid():
+            # Prevent hax: if not staff, force the username back to the request username.
+            if not request.user.is_staff:
+                username = request.user.username
+            else:
+                username = signup_form.cleaned_data.get('username')
+            full_name = signup_form.cleaned_data.get('full_name')
+            description = signup_form.cleaned_data.get('description')
 
-            """
-            This code simply writes out to a file the registration.
-            Ideally, we will be sending an administrator an email instead.
-            But we need an email account to do that.
-            """
-            f = open(os.path.join(settings.MEDIA_ROOT, 'registrations.txt'), 'a')
-            f.write( str(timezone.now()) )
-            f.write( str('\n') )
-            f.write( str(username) )
-            f.write( str('\n') )
-            f.write( str(full_name) )
-            f.write( str('\n') )
-            f.write( str(description) )
-            f.write( str('\n\n\n') )
-            f.close()
+            # Only send mail if we've defined the mailserver
+            if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                send_mail('Signup from %s' % (username), '%s signed up at %s\n'
+                    'Username: %s\nMessage: %s\nPlease attend to this request at '
+                    'your earliest convenience.' % (str(full_name),
+                    str(timezone.now()).strip(), str(username), str(description)),
+                    settings.EMAIL_FROM, [settings.EMAIL_TO])
 
-            return redirect('index')
+            signup_form.save()
+
+            return redirect('registered')
 
     return render(request, 'signup.html', {
-        'form': form,
+        'form': signup_form,
+        'registered': False,
     },
     )
 
@@ -228,6 +257,13 @@ def redirection(request, short):
 
     url = get_object_or_404( URL, short__iexact = short )
     url.clicks = url.clicks + 1
+
+    if 'qr' in request.GET:
+        url.qrclicks += 1
+
+    if 'social' in request.GET:
+        url.socialclicks += 1
+
     url.save()
 
     """
@@ -237,11 +273,53 @@ def redirection(request, short):
 
     from piwikapi.tracking import PiwikTracker
     from django.conf import settings
-    piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
-    piwiktracker.set_api_url(settings.PIWIK_URL)
-    piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+    # First, if PIWIK variables are undefined, don't try to push
+    if settings.PIWIK_SITE_ID is not "" and settings.PIWIK_URL is not "":
+        try:
+            piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
+            piwiktracker.set_api_url(settings.PIWIK_URL)
+            piwiktracker.do_track_page_view('Redirect to %s' % url.target)
+        # Second, if we do get an error, don't let that keep us from redirecting
+        except:
+            pass
 
     return redirect( url.target )
+
+
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='about'):
+    """
+    Decorator for views that checks that the user is logged in and is a staff
+    member, displaying the login page if necessary.
+    """
+    return user_passes_test(
+        lambda u: u.is_active and u.is_staff,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )(view_func)
+
+
+@staff_member_required
+def useradmin(request):
+    """
+    This view is a simplified admin panel, so that staff don't need to log in
+    to approve links
+    """
+    if request.POST:
+        userlist = request.POST.getlist('username')
+        if '_approve' in request.POST:
+            for name in userlist:
+                toapprove = RegisteredUser.objects.get(username=name)
+                toapprove.approved = True
+                toapprove.save()
+        elif '_deny' in request.POST:
+            for name in userlist:
+                todeny = RegisteredUser.objects.get(username=name)
+                todeny.delete()
+    need_approval = RegisteredUser.objects.filter(approved=False)
+    return render(request, 'useradmin.html',{
+        'need_approval': need_approval
+    },
+    )
 
 
 ##############################################################################
@@ -255,3 +333,7 @@ def about(request):
     },
     )
 
+def registered(request):
+    return render(request, 'registered.html', {
+    },
+    )
