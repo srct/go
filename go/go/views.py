@@ -274,7 +274,7 @@ def redirection(request, short):
     from piwikapi.tracking import PiwikTracker
     from django.conf import settings
     # First, if PIWIK variables are undefined, don't try to push
-    if settings.PIWIK_SITE_ID is not "" and settings.PIWIK_URL is not "":
+    if settings.PIWIK_SITE_ID != "" and settings.PIWIK_URL != "":
         try:
             piwiktracker = PiwikTracker(settings.PIWIK_SITE_ID, request)
             piwiktracker.set_api_url(settings.PIWIK_URL)
