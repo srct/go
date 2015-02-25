@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Go - Welcome
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1><strong>Go</strong></h1>
+      <p class="lead">University-branded URL shortening.</p>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <h3>What is Go?</h3>
+    <p>
+    Mason Go is a product of the George Mason University
+    <a href="http://srct.gmu.edu">Student-Run Computing and Technology</a>
+    organization. Go provides University-branded URL shortening for administration,
+    ULife groups, and student organizations. Access is moderated by SRCT
+    administrators. Please log in in order to submit an access request.
+    </p>
+
+    <a href="{% url 'go_login' %}" class="btn btn-success">Log In</a>
+
+  </div>
+</div>
+
+{% endblock %}

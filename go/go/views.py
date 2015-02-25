@@ -75,7 +75,6 @@ Define user views here.
 """
 
 
-@login_required
 def index(request):
     """
     This view handles the homepage that the user is presented with when
@@ -84,6 +83,10 @@ def index(request):
     not_registered error page. If they are logged in AND registered, they
     get the URL registration form.
     """
+
+    # If the user is not authenticated, show them a public landing page.
+    if not request.user.is_authenticated():
+        return render(request, 'public_landing.html')
 
     # If the user isn't registered, don't give them any leeway.
     if not is_approved(request.user):
