@@ -39,8 +39,7 @@ urlpatterns = patterns('go.views',
 urlpatterns += patterns('django.contrib.auth.views',
 
     # Auth pages
-    url(r'^login$', 'login', {'template_name' : 'login.html'},
-        name='go_login'),
+    url(r'^login$', 'login', name='go_login'),
     url(r'^logout$', 'logout', {'next_page' : '/'},
         name='go_logout'),
 )

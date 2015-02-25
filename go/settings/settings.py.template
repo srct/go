@@ -1,6 +1,8 @@
 import secret
 import os
 
+AUTH_MODE="CAS"
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = False
@@ -62,6 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'cas.middleware.CASMiddleware',
 )
 
 ROOT_URLCONF = 'settings.urls'
@@ -116,35 +119,45 @@ LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
 
-
-import ldap
-
 AUTHENTICATION_BACKENDS = (
-    'django_auth_ldap.backend.LDAPBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-AUTH_LDAP_SERVER_URI = "ldaps://directory.gmu.edu:636"  # server url
 
-AUTH_LDAP_BIND_DN = "ou=people,o=gmu.edu"               # bind DN
+if AUTH_MODE.lower() == 'ldap':
+    import ldap
 
-AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True            # use the user
+    AUTHENTICATION_BACKENDS += (
+        'django_auth_ldap.backend.LDAPBackend',
+    )
 
-AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=people,o=gmu.edu"
+    AUTH_LDAP_SERVER_URI = "ldaps://directory.gmu.edu:636"  # server url
+    AUTH_LDAP_BIND_DN = "ou=people,o=gmu.edu"               # bind DN
+    AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True            # use the user
+    AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=people,o=gmu.edu"
+    AUTH_LDAP_GLOBAL_OPTIONS = {                            # ignore UAC cert.
+        ldap.OPT_X_TLS : ldap.OPT_X_TLS_DEMAND,
+        ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER,
+    }
+    AUTH_LDAP_USER_ATTR_MAP = {
+        "first_name": "givenName",
+        "last_name": "sn",
+        "email": "mail"
+    }
+    AUTH_LDAP_ALWAYS_UPDATE_USER = True
 
-AUTH_LDAP_GLOBAL_OPTIONS = {                            # ignore UAC cert.
-    ldap.OPT_X_TLS : ldap.OPT_X_TLS_DEMAND,
-    ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER,
-}
+elif AUTH_MODE.lower() == 'cas':
+    CAS_SERVER_URL = "https://login.gmu.edu"
+    CAS_LOGOUT_COMPLETELY = True
+    CAS_PROVIDE_URL_TO_LOGOUT = True
 
-AUTH_LDAP_USER_ATTR_MAP = {
-    "first_name": "givenName",
-    "last_name": "sn",
-    "email": "mail"
-}
+    AUTHENTICATION_BACKENDS += (
+        'cas.backends.CASBackend',
+    )
 
-AUTH_LDAP_ALWAYS_UPDATE_USER = True
-
+    CAS_RESPONSE_CALLBACKS = (
+        'go.cas_callbacks.create_user',
+    )
 
 PIWIK_SITE_ID = secret.PIWIK_SITE_ID
 PIWIK_URL = secret.PIWIK_URL
