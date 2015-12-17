@@ -1,7 +1,7 @@
 import secret
 import os
 
-AUTH_MODE="CAS"
+AUTH_MODE = "CAS"
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -136,8 +136,8 @@ if AUTH_MODE.lower() == 'ldap':
     AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True            # use the user
     AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=people,o=gmu.edu"
     AUTH_LDAP_GLOBAL_OPTIONS = {                            # ignore UAC cert.
-        ldap.OPT_X_TLS : ldap.OPT_X_TLS_DEMAND,
-        ldap.OPT_X_TLS_REQUIRE_CERT : ldap.OPT_X_TLS_NEVER,
+        ldap.OPT_X_TLS: ldap.OPT_X_TLS_DEMAND,
+        ldap.OPT_X_TLS_REQUIRE_CERT: ldap.OPT_X_TLS_NEVER,
     }
     AUTH_LDAP_USER_ATTR_MAP = {
         "first_name": "givenName",

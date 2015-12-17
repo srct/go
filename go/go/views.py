@@ -2,15 +2,15 @@ from go.models import URL, RegisteredUser
 from go.forms import URLForm, SignupForm
 from datetime import timedelta
 from django.conf import settings
-from django.http import Http404, HttpResponseServerError
+from django.http import HttpResponseServerError  # Http404
 from django.utils import timezone
-from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied, ValidationError
+# from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied  # ValidationError
 from django.core.mail import send_mail
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
-import os
+# import os
 
 
 ##############################################################################
@@ -19,14 +19,14 @@ Define useful helper methods here.
 """
 
 
-def is_approved( user ):
+def is_approved(user):
     """
     This function checks if a user account has a corresponding RegisteredUser,
     thus checking if the user is registered.
     """
 
     try:
-        registered = RegisteredUser.objects.get( username=user.username )
+        registered = RegisteredUser.objects.get(username=user.username)
         return registered.approved
     except RegisteredUser.DoesNotExist:
         return False
@@ -39,7 +39,7 @@ def is_registered(user):
     """
 
     try:
-        registered = RegisteredUser.objects.get( username=user.username )
+        registered = RegisteredUser.objects.get(username=user.username)
         return True
     except RegisteredUser.DoesNotExist:
         return False
@@ -59,6 +59,7 @@ def error_404(request):
     return render(request, '404.html', {
     },
     )
+
 
 def error_500(request):
     """
@@ -92,10 +93,10 @@ def index(request):
     if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
-    url_form = URLForm() # unbound form
+    url_form = URLForm()  # unbound form
 
     if request.method == 'POST':
-        url_form = URLForm( request.POST ) # bind dat form
+        url_form = URLForm(request.POST)  # bind dat form
         if url_form.is_valid():
 
             # We don't commit the url object yet because we need to add its
@@ -133,7 +134,7 @@ def index(request):
             elif expires == URLForm.MONTH:
                 url.expires = timezone.now() + timedelta(weeks=3)
             else:
-                pass # leave the field NULL
+                pass  # leave the field NULL
 
             # Make sure that our new URL object is clean, then save it and
             # let's redirect to view this baby.
@@ -155,11 +156,11 @@ def view(request, short):
 
     domain = "//%s" % request.META.get('HTTP_HOST') + "/"
 
-    url = get_object_or_404(URL, short__iexact = short)
+    url = get_object_or_404(URL, short__iexact=short)
 
     return render(request, 'view.html', {
         'url': url,
-        'domain' : domain,
+        'domain': domain,
     },
     )
 
@@ -174,13 +175,13 @@ def my_links(request):
     if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
-    urls = URL.objects.filter( owner = request.user )
+    urls = URL.objects.filter(owner=request.user)
 
     domain = "//%s" % request.META.get('HTTP_HOST') + "/"
 
     return render(request, 'my_links.html', {
-        'urls' : urls,
-        'domain' : domain,
+        'urls': urls,
+        'domain': domain,
     },
     )
 
@@ -195,7 +196,7 @@ def delete(request, short):
     if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
-    url = get_object_or_404(URL, short__iexact = short )
+    url = get_object_or_404(URL, short__iexact=short)
     if url.owner == request.user:
         url.delete()
         return redirect('my_links')
@@ -226,7 +227,7 @@ def signup(request):
 
     if request.method == 'POST':
         signup_form = SignupForm(request.POST, initial={'approved': False,
-            'username': request.user.username})
+                                 'username': request.user.username})
 
         if signup_form.is_valid():
             # Prevent hax: if not staff, force the username back to the request username.
@@ -240,10 +241,10 @@ def signup(request):
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
                 send_mail('Signup from %s' % (username), '%s signed up at %s\n'
-                    'Username: %s\nMessage: %s\nPlease attend to this request at '
-                    'your earliest convenience.' % (str(full_name),
-                    str(timezone.now()).strip(), str(username), str(description)),
-                    settings.EMAIL_FROM, [settings.EMAIL_TO])
+                          'Username: %s\nMessage: %s\nPlease attend to this request at '
+                          'your earliest convenience.' % (str(full_name),
+                          str(timezone.now()).strip(), str(username), str(description)),
+                          settings.EMAIL_FROM, [settings.EMAIL_TO])
 
             signup_form.save()
 
@@ -261,7 +262,7 @@ def redirection(request, short):
     This view redirects a user based on the short URL they requested.
     """
 
-    url = get_object_or_404( URL, short__iexact = short )
+    url = get_object_or_404(URL, short__iexact=short)
     url.clicks = url.clicks + 1
 
     if 'qr' in request.GET:
@@ -289,7 +290,7 @@ def redirection(request, short):
         except:
             pass
 
-    return redirect( url.target )
+    return redirect(url.target)
 
 
 def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='about'):
@@ -322,7 +323,7 @@ def useradmin(request):
                 todeny = RegisteredUser.objects.get(username=name)
                 todeny.delete()
     need_approval = RegisteredUser.objects.filter(approved=False)
-    return render(request, 'useradmin.html',{
+    return render(request, 'useradmin.html', {
         'need_approval': need_approval
     },
     )
@@ -338,6 +339,7 @@ def about(request):
     return render(request, 'about.html', {
     },
     )
+
 
 def registered(request):
     return render(request, 'registered.html', {
