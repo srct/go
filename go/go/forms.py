@@ -1,10 +1,11 @@
 from django import forms
 from go.models import URL, RegisteredUser
-from django.core.validators import MinLengthValidator, MinValueValidator, RegexValidator
+from django.core.validators import RegexValidator  # MinLengthValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
 
-class URLForm( forms.ModelForm ):
+
+class URLForm(forms.ModelForm):
 
     DAY = '1 Day'
     WEEK = '1 Week'
@@ -20,11 +21,11 @@ class URLForm( forms.ModelForm ):
 
     # Add a custom expiration choice field.
     expires = forms.ChoiceField(
-        required = True,
-        label = 'Expiration',
-        choices = EXPIRATION_CHOICES,
-        initial = NEVER,
-        widget = forms.RadioSelect(),
+        required=True,
+        label='Expiration',
+        choices=EXPIRATION_CHOICES,
+        initial=NEVER,
+        widget=forms.RadioSelect(),
     )
 
     # Short field must be only letters.
@@ -33,7 +34,7 @@ class URLForm( forms.ModelForm ):
         'Only letters are allowed.'
     )
 
-    def unique_short( value ):
+    def unique_short(value):
         try:
             URL.objects.get(short__iexact=value)
         except URL.DoesNotExist:
@@ -42,12 +43,12 @@ class URLForm( forms.ModelForm ):
 
     # Custom short-url field with validators.
     short = forms.CharField(
-        required = False,
-        label = 'Short URL (Optional)',
-        widget = forms.TextInput(attrs={}),
-        validators = [alphanumeric,unique_short],
-        max_length = 20,
-        min_length = 3,
+        required=False,
+        label='Short URL (Optional)',
+        widget=forms.TextInput(attrs={}),
+        validators=[alphanumeric, unique_short],
+        max_length=20,
+        min_length=3,
     )
 
     class Meta:
@@ -64,7 +65,7 @@ class URLForm( forms.ModelForm ):
         }
 
 
-class SignupForm( forms.ModelForm ):
+class SignupForm(forms.ModelForm):
 
     def validate_username(username):
         try:
@@ -74,25 +75,25 @@ class SignupForm( forms.ModelForm ):
             return
 
     username = forms.CharField(
-        required = True,
-        label = 'Mason NetID',
-        max_length = 30,
+        required=True,
+        label='Mason NetID',
+        max_length=30,
         validators=[validate_username],
-        widget = forms.TextInput(attrs={
+        widget=forms.TextInput(attrs={
         }),
     )
     full_name = forms.CharField(
-        required = True,
-        label = 'Full Name',
-        max_length = 100,
-        widget = forms.TextInput(attrs={
+        required=True,
+        label='Full Name',
+        max_length=100,
+        widget=forms.TextInput(attrs={
         }),
     )
     description = forms.CharField(
-        required = False,
-        label = 'Description (Optional)',
-        max_length = 200,
-        widget = forms.Textarea(attrs={
+        required=False,
+        label='Description (Optional)',
+        max_length=200,
+        widget=forms.Textarea(attrs={
         }),
     )
     captcha = CaptchaField()

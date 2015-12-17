@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.conf import settings
 
+
 def create_user(tree):
 
     username = tree[0][0].text
