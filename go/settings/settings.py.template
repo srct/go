@@ -1,3 +1,4 @@
+# Create a new file 'settings.py' and copy these contents into that file
 import secret
 import os
 
@@ -5,6 +6,8 @@ AUTH_MODE = "CAS"
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+# DEBUG mode is used to view more details when errors occur
+# Do not have set True in production
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
@@ -22,6 +25,8 @@ DATABASES = {
     }
 }
 
+# The domains this application will be deployed on
+# e.g. Which domains this app should listen to requests from.
 ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -33,13 +38,15 @@ USE_L10N = True
 USE_TZ = True
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = (os.path.join(BASE_DIR, 'media/'))
+MEDIA_ROOT = ''
 MEDIAFILES_DIRS = (
+  (os.path.join(BASE_DIR, 'media/'),
 )
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = ''
 STATICFILES_DIRS = (
+  os.path.join(BASE_DIR, 'static/'),
 )
 
 STATICFILES_FINDERS = (
