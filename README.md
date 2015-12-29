@@ -157,7 +157,6 @@ to start the site. Open your preferred web browser and navigate to 127.0.0.1:800
 
 In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in. Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to use the same username and Full Name aas your main account and select "approved" in the bottom row.
 
-
 ## To Do
 * qr codes on links view-- need to save the pictures somewhere, render
     inline as well as in different formats and sizes for download, and be
@@ -184,7 +183,6 @@ add a different authentication backend or database engine.
 
 You must configure an outside web server to properly host the static file
 required to run this Django app.
-
 
 ### Cron
 
