@@ -22,7 +22,7 @@ This retrieves links to the most up-to-date and secure versions of your packages
 
 Next, with:
 
-`$ sudo apt-get install python python-dev python-pip git`
+`$ sudo apt-get install python python-dev python-pip git libfreetype6-dev`
 
 you install python and git.
 
