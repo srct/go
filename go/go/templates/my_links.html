@@ -20,7 +20,9 @@ Go - My Links
 
 <div class="row">
     {% for url in urls %}
+    <legend>
       {% include 'link_box.html' %}
+    </legend>
     {% empty %}
       <p>None found.</p>
     {% endfor %}
