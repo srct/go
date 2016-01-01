@@ -22,7 +22,7 @@ Define useful helper methods here.
 def is_approved(user):
     """
     This function checks if a user account has a corresponding RegisteredUser,
-    thus checking if the user is registered.
+    thus checking if the user is approved.
     """
 
     try:
