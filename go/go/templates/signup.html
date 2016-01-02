@@ -134,9 +134,15 @@ Go - Signup
   </div>
 
 {% else %}
-  <div class="col-md-12">
-    <p>You are already signed up for Go.</p>
-  </div>
+  {% if not approved %}
+    <div class="col-md-12">
+      <p>You have already submitted a request for approval to use Go.</p>
+    </div>
+  {% else %}
+    <div class="col-md-12">
+      <p>You are already approved to use Go.</p>
+    </div>
+  {% endif %}
 {% endif %}
 </div>
 {% endblock %}
