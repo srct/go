@@ -56,7 +56,7 @@ def error_404(request):
     Error 404 view, in case a url is not found.
     """
 
-    return render(request, '404.html', {
+    return render(request, 'core/404.html', {
     },
     )
 
@@ -66,7 +66,7 @@ def error_500(request):
     Error 500 view, in case a server error occurs.
     """
 
-    return render(request, '500.html', {
+    return render(request, 'core/500.html', {
     },
     )
 
@@ -117,7 +117,7 @@ def index(request):
                 random_short = URL.generate_valid_short()
                 if random_short is None:
                     return HttpResponseServerError(
-                        render(request, '500.html', {})
+                        render(request, 'core/500.html', {})
                     )
                 else:
                     url.short = random_short
@@ -142,7 +142,7 @@ def index(request):
             url.save()
             return redirect('view', url.short)
 
-    return render(request, 'index.html', {
+    return render(request, 'core/index.html', {
         'form': url_form,
     },
     )
@@ -323,7 +323,7 @@ def useradmin(request):
                 todeny = RegisteredUser.objects.get(username=name)
                 todeny.delete()
     need_approval = RegisteredUser.objects.filter(approved=False)
-    return render(request, 'useradmin.html', {
+    return render(request, 'admin/useradmin.html', {
         'need_approval': need_approval
     },
     )
@@ -336,7 +336,7 @@ Define static user views here.
 
 
 def about(request):
-    return render(request, 'about.html', {
+    return render(request, 'core/about.html', {
     },
     )
 

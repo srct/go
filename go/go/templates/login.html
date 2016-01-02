@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'layouts/base.html' %}
 
 
 {% block title %}
@@ -20,7 +20,7 @@ Go - Login
 <div class="row">
   <div class="col-md-6">
     <div class="well">
-      
+
       <form class="form-horizontal" method="post" action="{% url 'django.contrib.auth.views.login' %}">
       {% csrf_token %}
       <fieldset>
