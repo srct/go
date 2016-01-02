@@ -211,9 +211,17 @@ def signup(request):
     yourself, or another person.
 
     """
+    # Do not display signup page to registered or approved users (Staff can still see these pages)
     if is_registered(request.user) and not request.user.is_staff:
         return render(request, 'signup.html', {
             'registered': True,
+            'approved': False,
+        },
+        )
+    elif is_approved(request.user) and not request.user.is_staff:
+        return render(request, 'signup.html', {
+            'registered': True,
+            'approved': True,
         },
         )
 
