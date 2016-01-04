@@ -56,7 +56,7 @@ def error_404(request):
     Error 404 view, in case a url is not found.
     """
 
-    return render(request, 'core/404.html', {
+    return render(request, '404.html', {
     },
     )
 
@@ -66,7 +66,7 @@ def error_500(request):
     Error 500 view, in case a server error occurs.
     """
 
-    return render(request, 'core/500.html', {
+    return render(request, '500.html', {
     },
     )
 
