@@ -149,6 +149,8 @@ to create an admin account, using the same username and email as you'll access t
 
 You can now uncomment line 55 from models.py, we have avoided nuclear armageddon.
 
+Be sure to uncomment line 46 from models.py as well in order to allow short urls to be generated. 
+
 Finally, within 'go/go' run:
 
 `$ python manage.py runserver`
