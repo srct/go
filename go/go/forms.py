@@ -94,3 +94,4 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = RegisteredUser
+        fields = '__all__'
