@@ -85,12 +85,13 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.comments',
+    # 'django.contrib.comments',
     'go',
     'piwik',
     'django.contrib.admin',
     'qrcode',
     'captcha',
+    'cas',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
