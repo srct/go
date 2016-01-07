@@ -28,12 +28,6 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
-    # Short field must be only letters.
-    alphanumeric = RegexValidator(
-        r'^[a-zA-Z]*$',
-        'Only letters are allowed.'
-    )
-
     def unique_short(value):
         try:
             URL.objects.get(short__iexact=value)
@@ -42,11 +36,11 @@ class URLForm(forms.ModelForm):
         raise ValidationError('Short url already exists.')
 
     # Custom short-url field with validators.
-    short = forms.CharField(
+    short = forms.SlugField(
         required=False,
         label='Short URL (Optional)',
         widget=forms.TextInput(attrs={}),
-        validators=[alphanumeric, unique_short],
+        validators=[unique_short],
         max_length=20,
         min_length=3,
     )

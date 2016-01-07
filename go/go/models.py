@@ -21,7 +21,7 @@ class URL(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
 
     target = models.URLField(max_length=1000)
-    short = models.CharField(primary_key=True, max_length=20)
+    short = models.SlugField(primary_key=True, max_length=20)
     clicks = models.IntegerField(default=0)
 
     qrclicks = models.IntegerField(default=0)
