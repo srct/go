@@ -213,13 +213,13 @@ def signup(request):
     """
     # Do not display signup page to registered or approved users (Staff can still see these pages)
     if is_registered(request.user) and not request.user.is_staff:
-        return render(request, 'signup.html', {
+        return render(request, 'core/signup.html', {
             'registered': True,
             'approved': False,
         },
         )
     elif is_approved(request.user) and not request.user.is_staff:
-        return render(request, 'signup.html', {
+        return render(request, 'core/signup.html', {
             'registered': True,
             'approved': True,
         },
@@ -258,7 +258,7 @@ def signup(request):
 
             return redirect('registered')
 
-    return render(request, 'signup.html', {
+    return render(request, 'core/signup.html', {
         'form': signup_form,
         'registered': False,
     },
