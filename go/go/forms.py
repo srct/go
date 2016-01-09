@@ -6,12 +6,13 @@ from captcha.fields import CaptchaField
 
 class URLForm(forms.ModelForm):
 
+    # Custom target URL field
     target = forms.URLField(
         required=True,
         label='Long URL',
         max_length=1000,
         widget=forms.URLInput(attrs={
-            'placeholder': 'http://'
+            'placeholder': 'https://'
         })
     )
 
@@ -55,7 +56,8 @@ class URLForm(forms.ModelForm):
 
     class Meta:
         model = URL
-        fields = '__all__'
+        fields = ('target',)
+        exclude = ('owner', 'short', 'date_created', 'clicks', 'expires')
 
 class SignupForm(forms.ModelForm):
 
