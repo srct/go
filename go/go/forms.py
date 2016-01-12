@@ -16,6 +16,7 @@ class URLForm(forms.ModelForm):
         })
     )
 
+    # Check to make sure the short url has not been used
     def unique_short(value):
         try:
             URL.objects.get(short__iexact=value)

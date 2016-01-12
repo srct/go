@@ -117,7 +117,7 @@ def index(request):
                 random_short = URL.generate_valid_short()
                 if random_short is None:
                     return HttpResponseServerError(
-                        render(request, 'core/500.html', {})
+                        render(request, '500.html', {})
                     )
                 else:
                     url.short = random_short
