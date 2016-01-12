@@ -16,32 +16,43 @@
 
 <div class="container">
   <div class="col-md-8">
-    <strong>Long:</strong> <a href="{{url.target}}">{{url.target}}</a>
-    <br />
-
-    <strong>Short:</strong> <a href="/{{url.short}}">{{url.short}}</a>
-    <br />
-
-    {% if url.owner = request.user and request.user|is_registered %}
-    <strong>Clicks:</strong> {{url.clicks}}
-    <br />
-
-    <strong>QR Code Uses:</strong> {{url.qrclicks}}
-    <br />
-    <strong>Social Clicks:</strong> {{url.socialclicks}}
-    <br />
-
-    <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
-    <br />
-
-    <strong>
-      <a href="{%url 'delete' url.short%}"
-      onclick="return confirm('Are you sure you want to delete this link?');">
-        Delete
-      </a>
-    </strong>
-    {% endif %}
+    <h3>Go Address:</h3>
+      <a href="{{url.short}}">go.gmu.edu/{{url.short}}</a>
     <br></br>
+
+    <h3>Address Details:</h3>
+      <strong>Target URL:</strong>
+        <br />
+        <a href="{{url.target}}">{{url.target}}</a>
+      <br></br>
+
+      {% if url.owner = request.user and request.user|is_registered %}
+      <strong>Clicks:</strong>
+        {{url.clicks}}
+      <br />
+
+      <strong>QR Code Uses:</strong> {{url.qrclicks}}
+      <br />
+      <strong>Social Clicks:</strong> {{url.socialclicks}}
+      <br />
+
+      <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
+      <br></br>
+
+      <strong>
+        <a href="https://www.google.com">
+          Edit
+        </a>
+      </strong>
+      <br />
+
+      <strong>
+        <a href="{%url 'delete' url.short%}" onclick="return confirm('Are you sure you want to delete this link?');">
+          Delete
+        </a>
+      </strong>
+      {% endif %}
+      <br></br>
   </div>
 
   <div class="col-md-4">
