@@ -1,11 +1,38 @@
 from django import forms
 from go.models import URL, RegisteredUser
-from django.core.validators import RegexValidator  # MinLengthValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
 
 
 class URLForm(forms.ModelForm):
+
+    # Custom target URL field
+    target = forms.URLField(
+        required=True,
+        label='Long URL',
+        max_length=1000,
+        widget=forms.URLInput(attrs={
+            'placeholder': 'https://'
+        })
+    )
+
+    # Check to make sure the short url has not been used
+    def unique_short(value):
+        try:
+            URL.objects.get(short__iexact=value)
+        except URL.DoesNotExist:
+            return
+        raise ValidationError('Short url already exists.')
+
+    # Custom short-url field with validators.
+    short = forms.SlugField(
+        required=False,
+        label='Short URL (Optional)',
+        widget=forms.TextInput(),
+        validators=[unique_short],
+        max_length=20,
+        min_length=3,
+    )
 
     DAY = '1 Day'
     WEEK = '1 Week'
@@ -28,36 +55,10 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
-    def unique_short(value):
-        try:
-            URL.objects.get(short__iexact=value)
-        except URL.DoesNotExist:
-            return
-        raise ValidationError('Short url already exists.')
-
-    # Custom short-url field with validators.
-    short = forms.SlugField(
-        required=False,
-        label='Short URL (Optional)',
-        widget=forms.TextInput(attrs={}),
-        validators=[unique_short],
-        max_length=20,
-        min_length=3,
-    )
-
     class Meta:
         model = URL
         fields = ('target',)
         exclude = ('owner', 'short', 'date_created', 'clicks', 'expires')
-        labels = {
-            'target': 'Long URL',
-        }
-        widgets = {
-            'target': forms.URLInput(attrs={
-                'placeholder': 'http://',
-            }),
-        }
-
 
 class SignupForm(forms.ModelForm):
 

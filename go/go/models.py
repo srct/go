@@ -43,7 +43,7 @@ class URL(models.Model):
         tries = 1
         while tries < 100:
             try:
-                # urls = URL.objects.get(short__iexact=short)
+                urls = URL.objects.get(short__iexact=short)
                 tries += 1
                 hashids_counter += 1
             except URL.DoesNotExist:
