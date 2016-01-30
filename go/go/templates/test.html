@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Go - A Product of Vapor
+{% endblock %}
+
+
+{% block content %}
+<style>
+.asteriskField {
+    display: none;
+}  
+</style>
+
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1><strong>Super secret testing page</strong></h1>
+
+    </div>
+  </div>
+</div>
+
+{% crispy form form.helper %}
+
+
+{% endblock %}

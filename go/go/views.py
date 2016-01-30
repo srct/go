@@ -1,5 +1,5 @@
 from go.models import URL, RegisteredUser
-from go.forms import URLForm, SignupForm
+from go.forms import URLForm, SignupForm, ExampleForm
 from datetime import timedelta
 from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
@@ -69,6 +69,16 @@ def error_500(request):
     return render(request, '500.html', {
     },
     )
+def test(request):
+    """
+    Testing page, pls ignore.
+    """
+    url_form = ExampleForm()
+    if request.method == 'POST':
+        url_form = URLForm(request.POST)  # bind dat form
+    return render(request, 'test.html', {
+        'form': url_form,
+    },)
 
 ##############################################################################
 """
