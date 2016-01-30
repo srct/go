@@ -1,5 +1,5 @@
 from go.models import URL, RegisteredUser
-from go.forms import URLForm, SignupForm, ExampleForm
+from go.forms import URLForm, SignupForm, ExampleForm, URLFormTest
 from datetime import timedelta
 from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
@@ -69,16 +69,74 @@ def error_500(request):
     return render(request, '500.html', {
     },
     )
+
 def test(request):
     """
     Testing page, pls ignore.
     """
-    url_form = ExampleForm()
+    # If the user is not authenticated, show them a public landing page.
+    if not request.user.is_authenticated():
+        return render(request, 'public_landing.html')
+
+    # If the user isn't registered, don't give them any leeway.
+    if not is_approved(request.user):
+        return render(request, 'not_registered.html')
+
+    url_form = URLFormTest()  # unbound form
+
     if request.method == 'POST':
-        url_form = URLForm(request.POST)  # bind dat form
+        url_form = URLFormTest(request.POST)  # bind dat form
+        if url_form.is_valid():
+
+            # We don't commit the url object yet because we need to add its
+            # owner, and parse its date field.
+            url = url_form.save(commit=False)
+            url.owner = request.user
+
+            # If the user entered a short url, it's already been validated,
+            # so accept it. If they did not, however, then generate a
+            # random one and use that instead.
+            short = url_form.cleaned_data.get('short').strip()
+            if len(short) > 0:
+                url.short = short
+            else:
+                # If the user didn't enter a short url, generate a random
+                # one. However, if a random one can't be generated, return
+                # a 500 server error.
+                random_short = URL.generate_valid_short()
+                if random_short is None:
+                    return HttpResponseServerError(
+                        render(request, '500.html', {})
+                    )
+                else:
+                    url.short = random_short
+
+            # Grab the expiration field value. It's currently an unsable
+            # string value, so we need to parse it into a datetime object
+            # relative to right now.
+            expires = url_form.cleaned_data.get('expires')
+
+            if expires == URLFormTest.DAY:
+                url.expires = timezone.now() + timedelta(days=1)
+            elif expires == URLFormTest.WEEK:
+                url.expires = timezone.now() + timedelta(weeks=1)
+            elif expires == URLFormTest.MONTH:
+                url.expires = timezone.now() + timedelta(weeks=3)
+            else:
+                pass  # leave the field NULL
+
+            # Make sure that our new URL object is clean, then save it and
+            # let's redirect to view this baby.
+            url.full_clean()
+            url.save()
+            return redirect('view', url.short)
+
     return render(request, 'test.html', {
         'form': url_form,
-    },)
+    },
+    )
+
+
 
 ##############################################################################
 """

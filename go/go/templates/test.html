@@ -10,20 +10,18 @@ Go - A Product of Vapor
 <style>
 .asteriskField {
     display: none;
-}  
+}
 </style>
 
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-
-      <h1><strong>Super secret testing page</strong></h1>
-
+      <h1><strong>Shorten URL</strong></h1>
     </div>
   </div>
 </div>
 
-{% crispy form form.helper %}
-
+{% crispy form %}
+<div id='form-errors'>{{ form_errors }}</div>
 
 {% endblock %}
