@@ -147,6 +147,9 @@ class URLFormTest(forms.ModelForm):
                             title="target_url",
                             css_class="first_group",
                         ),
+                        css_id='firstCollapse',
+                        active=True,
+                        template='crispy/accordian-group.html',
                     ),
                     AccordionGroup('Step 2: Short URL',
                         Div(
@@ -159,7 +162,10 @@ class URLFormTest(forms.ModelForm):
                             style="background: rgb(#F6F6F6);",
                             title="short_url",
                             css_class="second_group",
-                        )
+                        ),
+                        css_id='secondCollapse',
+                        active=False,
+                        template='crispy/accordian-group.html',
                     ),
                     AccordionGroup('Step 3: URL Expiration',
                         Div(
@@ -170,8 +176,13 @@ class URLFormTest(forms.ModelForm):
                             style="background: rgb(#F6F6F6);",
                             title="expires_url",
                             css_class="third_group",
-                        )
-                    )
+                        ),
+                        css_id='thirdCollapse',
+                        active=False,
+                        template='crispy/accordian-group.html',
+                    ),
+                    css_id='accordian',
+                    template='crispy/accordian.html'
                 ),
             HTML("""
                 <br />
