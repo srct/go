@@ -155,6 +155,7 @@ class URLFormTest(forms.ModelForm):
                         Div(
                             HTML("""
                                 <h4>Create a custom Go address:</h4>
+                                <br />
                             """),
                             PrependedText('short',
                             'go.gmu.edu/',
@@ -171,6 +172,7 @@ class URLFormTest(forms.ModelForm):
                         Div(
                             HTML("""
                                 <h4>Set when you would like your Go address to expire:</h4>
+                                <br />
                             """),
                             'expires',
                             style="background: rgb(#F6F6F6);",
