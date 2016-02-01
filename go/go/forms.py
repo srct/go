@@ -72,7 +72,6 @@ class URLFormTest(forms.ModelForm):
         label='Long URL',
         max_length=1000,
         widget=forms.URLInput(attrs={
-            'placeholder': 'https://'
         })
     )
 
@@ -118,16 +117,12 @@ class URLFormTest(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(URLFormTest, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = 'id-URLFormTest'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_URLTest'
+        self.helper.form_method = 'POST'
 
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-1'
         self.helper.field_class = 'col-md-6'
 
-        self.helper.help_text_inline = True
-        self.helper.error_text_inline = False
 
         self.helper.layout = Layout(
             Fieldset(
@@ -140,8 +135,7 @@ class URLFormTest(forms.ModelForm):
                                 <br />
                             """),
                             PrependedText('target',
-                            'https://',
-                            placeholder="www."
+                            'https:// required',
                             ),
                             style="background: rgb(#F6F6F6);",
                             title="target_url",
@@ -189,9 +183,10 @@ class URLFormTest(forms.ModelForm):
             HTML("""
                 <br />
             """),
-            StrictButton('Shorten', css_class="btn-success"),
+            StrictButton('Shorten', css_class="btn-success", type='submit'),
         )
     )
+
 
     class Meta:
         model = URL

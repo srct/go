@@ -12,19 +12,6 @@ Go - A Product of Vapor
 .asteriskField {
     display: none;
 }
-.collapse {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  -webkit-transition: height 0.35s ease;
-     -moz-transition: height 0.35s ease;
-       -o-transition: height 0.35s ease;
-          transition: height 0.35s ease;
-}
-
-.collapse.in {
-  height: auto;
-}
 </style>
 
 <div class="page-header" id="banner">
@@ -35,7 +22,8 @@ Go - A Product of Vapor
   </div>
 </div>
 
-{% crispy form %}
-<div id='form-errors'>{{ form_errors }}</div>
+<div class="well">
+  {% crispy form %}
+</div>
 
 {% endblock %}
