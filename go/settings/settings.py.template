@@ -170,6 +170,7 @@ elif AUTH_MODE.lower() == 'cas':
 PIWIK_SITE_ID = secret.PIWIK_SITE_ID
 PIWIK_URL = secret.PIWIK_URL
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Mail settings
 EMAIL_HOST = secret.EMAIL_HOST

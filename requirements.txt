@@ -1,5 +1,6 @@
 Django==1.9.1
 django-auth-ldap==1.2.7
+django-crispy-forms==1.6.0
 django-piwik==0.1
 django-qrcode==0.3
 django-simple-captcha==0.5.1
