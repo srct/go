@@ -34,8 +34,6 @@ urlpatterns = patterns('go.views',
 
     # /useradmin - user approval interface
     url(r'^useradmin/?$', 'useradmin', name='useradmin'),
-
-    url(r'^test/?$', 'test', name='test')
 )
 
 urlpatterns += patterns('django.contrib.auth.views',
