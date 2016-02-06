@@ -2,7 +2,9 @@ from django import forms
 from go.models import URL, RegisteredUser
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
+from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 
 class URLForm(forms.ModelForm):
 
@@ -12,7 +14,6 @@ class URLForm(forms.ModelForm):
         label='Long URL',
         max_length=1000,
         widget=forms.URLInput(attrs={
-            'placeholder': 'https://'
         })
     )
 
@@ -55,10 +56,85 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
+    def __init__(self, *args, **kwargs):
+        super(URLForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-1'
+        self.helper.field_class = 'col-md-6'
+
+
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                Accordion(
+                    AccordionGroup('Step 1: Long URL',
+                        Div(
+                            HTML("""
+                                <h4>Paste the URL you would like to shorten:</h4>
+                                <br />
+                            """),
+                            PrependedText('target',
+                            'https:// required',
+                            ),
+                            style="background: rgb(#F6F6F6);",
+                            title="target_url",
+                            css_class="first_group",
+                        ),
+                        css_id='firstCollapse',
+                        active=True,
+                        template='crispy/accordian-group.html',
+                    ),
+                    AccordionGroup('Step 2: Short URL',
+                        Div(
+                            HTML("""
+                                <h4>Create a custom Go address:</h4>
+                                <br />
+                            """),
+                            PrependedText('short',
+                            'go.gmu.edu/',
+                            ),
+                            style="background: rgb(#F6F6F6);",
+                            title="short_url",
+                            css_class="second_group",
+                        ),
+                        css_id='secondCollapse',
+                        active=True,
+                        template='crispy/accordian-group.html',
+                    ),
+                    AccordionGroup('Step 3: URL Expiration',
+                        Div(
+                            HTML("""
+                                <h4>Set when you would like your Go address to expire:</h4>
+                                <br />
+                            """),
+                            'expires',
+                            style="background: rgb(#F6F6F6);",
+                            title="expires_url",
+                            css_class="third_group",
+                        ),
+                        css_id='thirdCollapse',
+                        active=True,
+                        template='crispy/accordian-group.html',
+                    ),
+                    css_id='accordian',
+                    template='crispy/accordian.html'
+                ),
+            HTML("""
+                <br />
+            """),
+            StrictButton('Shorten', css_class="btn-success", type='submit'),
+        )
+    )
+
+
     class Meta:
         model = URL
         fields = ('target',)
         exclude = ('owner', 'short', 'date_created', 'clicks', 'expires')
+
 
 class SignupForm(forms.ModelForm):
 
