@@ -1,55 +1,55 @@
 from django.conf.urls import patterns, include, url
-
+import go.views
+import django.contrib.auth.views
 from django.contrib import admin
 admin.autodiscover()
 
 handle404 = "error_404"
 handle500 = "error_500"
 
-urlpatterns = patterns('go.views',
-
+urlpatterns = [
     # / - Homepage url.
-    url(r'^$', 'index', name='index'),
+    url(r'^$', go.views.index, name='index'),
 
     # /view/<short> - View URL data.
-    url(r'^view/(?P<short>\w+)$', 'view', name='view'),
+    url(r'^view/(?P<short>\w+)$', go.views.view, name='view'),
 
     # /about - About page.
-    url(r'^about/?$', 'about', name='about'),
+    url(r'^about/?$', go.views.about, name='about'),
 
     # /signup - Signup page for access.
-    url(r'^signup/?$', 'signup', name='signup'),
+    url(r'^signup/?$', go.views.signup, name='signup'),
 
     # /my - My-Links page, view and review links.
-    url(r'^my/?$', 'my_links', name='my_links'),
+    url(r'^my/?$', go.views.my_links, name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
-    url(r'^delete/(?P<short>\w+)$', 'delete', name='delete'),
+    url(r'^delete/(?P<short>\w+)$', go.views.delete, name='delete'),
 
     # /registered - registration complete page
-    url(r'^registered/?$', 'registered', name='registered'),
+    url(r'^registered/?$', go.views.registered, name='registered'),
 
     # /admin - Administrator interface.
-    url(r'^admin/?', include(admin.site.urls)),
+    url(r'^admin/?', admin.site.urls),
 
     # /useradmin - user approval interface
-    url(r'^useradmin/?$', 'useradmin', name='useradmin'),
-)
+    url(r'^useradmin/?$', go.views.useradmin, name='useradmin'),
+]
 
-urlpatterns += patterns('django.contrib.auth.views',
-
+urlpatterns += [
     # Auth pages
-    url(r'^login$', 'login', name='go_login'),
-    url(r'^logout$', 'logout', {'next_page': '/'},
+    url(r'^login$', django.contrib.auth.views.login, name='go_login'),
+    url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
         name='go_logout'),
-)
+]
 
-urlpatterns += patterns('go.views',
+urlpatterns += [
     # Redirection regex.
-    url(r'^(?P<short>\w+)$', 'redirection', name='redirection'),
-)
+    url(r'^(?P<short>\w+)$', go.views.redirection, name='redirection'),
 
-# Captcha support
-urlpatterns += patterns('',
+]
+
+urlpatterns += [
+    # Captcha support
     url(r'^captcha/', include('captcha.urls')),
-)
+]
