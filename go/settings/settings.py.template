@@ -40,7 +40,7 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = ''
 MEDIAFILES_DIRS = (
-  (os.path.join(BASE_DIR, 'media/'),
+  os.path.join(BASE_DIR, 'media/'),
 )
 
 STATIC_URL = '/static/'
@@ -56,14 +56,24 @@ STATICFILES_FINDERS = (
 
 SECRET_KEY = secret.SECRET_KEY
 
-TEMPLATE_LOADERS = (
-    'django.template.loaders.app_directories.Loader',
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    'django.contrib.auth.context_processors.auth',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')            
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.core.context_processors.request'
+            ],
+            'loaders': [
+                'django.template.loaders.app_directories.Loader'
+            ],
+            'debug': DEBUG
+        }
+    }
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -91,6 +101,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'qrcode',
     'captcha',
+    'crispy_forms',
     'cas',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
