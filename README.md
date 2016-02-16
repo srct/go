@@ -119,9 +119,6 @@ Exit the mysql shell by typing:
 `> exit`
 
 ### Additional Setup
-For a currently undetermined reason you will need to comment out line 55 of go/go/go/models.py to avoid the app from literally exploding:
-
-`# hashids_counter = URL.objects.count()`
 
 Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
 

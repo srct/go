@@ -1,13 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.core.cache import cache
 # from django.conf import settings
 import string  # random
 from hashids import Hashids
 
 
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
-hashids_counter = None
 
 
 class URL(models.Model):
@@ -37,23 +37,19 @@ class URL(models.Model):
 
     @staticmethod
     def generate_valid_short():
-        global hashids_counter
-        hashids_counter += 1
-        short = hashids.encrypt(hashids_counter)
+        if cache.get("hashids_counter") == None:
+            cache.set("hashids_counter", URL.objects.count())
+        cache.incr("hashids_counter")
+        short = hashids.encrypt(cache.get("hashids_counter"))
         tries = 1
         while tries < 100:
             try:
                 urls = URL.objects.get(short__iexact=short)
                 tries += 1
-                hashids_counter += 1
+                cache.incr("hashids_counter")
             except URL.DoesNotExist:
                 return short
         return None
-
-# this needs to be here instead of at the top because the model's manager
-# must be available before this line
-hashids_counter = URL.objects.count()
-
 
 class RegisteredUser(models.Model):
     """
