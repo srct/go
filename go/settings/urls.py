@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 import go.views
 import django.contrib.auth.views
 from django.contrib import admin
+from django.conf import settings
+
 admin.autodiscover()
 
 handle404 = "error_404"
@@ -35,13 +37,20 @@ urlpatterns = [
     # /useradmin - user approval interface
     url(r'^useradmin/?$', go.views.useradmin, name='useradmin'),
 ]
-
-urlpatterns += [
-    # Auth pages
-    url(r'^login$', django.contrib.auth.views.login, name='go_login'),
-    url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
-        name='go_logout'),
-]
+if settings.AUTH_MODE.lower() == "ldap":
+    urlpatterns += [
+        # Auth pages
+        url(r'^login$', django.contrib.auth.views.login, {'template_name' : 'core/login.html'}, name='go_login'),
+        url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
+            name='go_logout'),
+    ]
+else:
+    urlpatterns += [
+        # Auth pages
+        url(r'^login$', django.contrib.auth.views.login, name='go_login'),
+        url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
+            name='go_logout'),
+    ]
 
 urlpatterns += [
     # Redirection regex.
