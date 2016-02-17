@@ -230,7 +230,7 @@ def signup(request):
     if request.user.is_staff:
         signup_form = SignupForm()
     else:
-        signup_form = SignupForm(initial={'username': request.user.username})
+        signup_form = SignupForm(initial={'username': request.user.username, 'full_name': request.user.first_name + " " + request.user.last_name})
         signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
