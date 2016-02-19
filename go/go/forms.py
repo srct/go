@@ -11,7 +11,7 @@ class URLForm(forms.ModelForm):
     # Custom target URL field
     target = forms.URLField(
         required=True,
-        label='Long URL',
+        label='Long URL (Required)',
         max_length=1000,
         widget=forms.URLInput(attrs={
         })
@@ -77,7 +77,7 @@ class URLForm(forms.ModelForm):
                                 <br />
                             """),
                             PrependedText('target',
-                            'https:// required',
+                            'https://',
                             ),
                             style="background: rgb(#F6F6F6);",
                             title="target_url",
@@ -94,7 +94,7 @@ class URLForm(forms.ModelForm):
                                 <br />
                             """),
                             PrependedText('short',
-                            'go.gmu.edu/',
+                            'https://go.gmu.edu/',
                             ),
                             style="background: rgb(#F6F6F6);",
                             title="short_url",
