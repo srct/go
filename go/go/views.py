@@ -177,7 +177,7 @@ def my_links(request):
 
     urls = URL.objects.filter(owner=request.user)
 
-    domain = "//%s" % request.META.get('HTTP_HOST') + "/"
+    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     return render(request, 'my_links.html', {
         'urls': urls,
