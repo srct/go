@@ -19,4 +19,3 @@ requests==2.9.1
 simplejson==3.8.1
 six==1.10.0
 wheel==0.26.0
-requests==2.5.1
