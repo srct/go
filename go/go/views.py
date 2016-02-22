@@ -154,7 +154,7 @@ def view(request, short):
     do not need to be logged in to view info.
     """
 
-    domain = "//%s" % request.META.get('HTTP_HOST') + "/"
+    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     url = get_object_or_404(URL, short__iexact=short)
 
