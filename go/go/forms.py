@@ -1,7 +1,6 @@
 from django import forms
 from go.models import URL, RegisteredUser
 from django.core.exceptions import ValidationError
-from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
@@ -167,7 +166,6 @@ class SignupForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
         }),
     )
-    captcha = CaptchaField()
 
     class Meta:
         model = RegisteredUser
