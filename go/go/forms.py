@@ -50,7 +50,7 @@ class URLForm(forms.ModelForm):
     # Add a custom expiration choice field.
     expires = forms.ChoiceField(
         required=True,
-        label='Expiration',
+        label='Expiration (Required)',
         choices=EXPIRATION_CHOICES,
         initial=NEVER,
         widget=forms.RadioSelect(),
