@@ -3,7 +3,6 @@ django-auth-ldap==1.2.7
 django-crispy-forms==1.6.0
 django-piwik==0.1
 django-qrcode==0.3
-django-simple-captcha==0.5.1
 flake8==2.5.1
 git+https://github.com/kstateome/django-cas.git
 gunicorn==19.4.5

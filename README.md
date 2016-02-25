@@ -144,7 +144,7 @@ to create an admin account, using the same username and email as you'll access t
 
 (If you accidentally skip this step, you can run python manage.py shell and edit your user from there. Select your user, and set .is_staff and .is_superuser to True, then save.)
 
-Be sure to uncomment line 46 from models.py as well in order to allow short urls to be generated. 
+Be sure to uncomment line 46 from models.py as well in order to allow short urls to be generated.
 
 Finally, within 'go/go' run:
 
@@ -188,8 +188,3 @@ expirelinks command regularly. A sample cron script is available in the
 repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
 change the paths so that they point to the virtualenv activate script and
 manage.py.
-
-
-# Troubleshooting
-
-If your CAPTCHA is messing up, try checking that your system has `libfreetype6-dev` installed. If not, install it and remove + reinstall `pillow` in your virtual environment.
