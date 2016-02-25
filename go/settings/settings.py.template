@@ -100,7 +100,6 @@ INSTALLED_APPS = (
     'piwik',
     'django.contrib.admin',
     'qrcode',
-    'captcha',
     'crispy_forms',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
