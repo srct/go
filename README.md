@@ -144,7 +144,6 @@ to create an admin account, using the same username and email as you'll access t
 
 (If you accidentally skip this step, you can run python manage.py shell and edit your user from there. Select your user, and set .is_staff and .is_superuser to True, then save.)
 
-Be sure to uncomment line 46 from models.py as well in order to allow short urls to be generated.
 
 Finally, within 'go/go' run:
 
