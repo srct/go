@@ -122,7 +122,7 @@ Exit the mysql shell by typing:
 
 Now, to configure your newly created database with the project settings, and set up your project's cryptographic key, copy the secret.py.template in settings/ to secret.py. Follow the comment instructions provided in each file to set your secret key and database info.
 
-Also copy config.py.template to config.py. You will need to set DEBUG mode to True in order to view more details when things go awry.
+Also copy settings.py.template to settings.py. You will need to set DEBUG mode to True in order to view more details when things go awry.
 
 Change directory into go/go/ and run:
 
@@ -151,7 +151,7 @@ Finally, within 'go/go' run:
 
 to start the site. Open your preferred web browser and navigate to 127.0.0.1:8000/ to see the site!
 
-In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in. Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to use the same username and Full Name aas your main account and select "approved" in the bottom row.
+In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in. Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to use the same username and Full Name as your main account and select "approved" in the bottom row.
 
 ## To Do
 * qr codes on links view-- need to save the pictures somewhere, render
