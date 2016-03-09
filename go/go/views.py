@@ -225,20 +225,22 @@ def signup(request):
         },
         )
 
-    signup_form = SignupForm(initial={'username': request.user.username})
+    signup_form = SignupForm(request, initial={'username': request.user.username})
+
     # Non-staff have the username field read-only and pre-filled
     if request.user.is_staff:
-        signup_form = SignupForm()
+        signup_form = SignupForm(request)
     else:
-        signup_form = SignupForm(initial={'username': request.user.username, 'full_name': request.user.first_name + " " + request.user.last_name})
+        signup_form = SignupForm(request,
+            initial={'username': request.user.username, 'full_name': request.user.first_name + " " + request.user.last_name})
         signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
-        signup_form = SignupForm(request.POST, initial={'approved': False,
-                                 'username': request.user.username})
+        signup_form = SignupForm(request, request.POST,
+            initial={'approved': False, 'username': request.user.username})
+        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
 
         if signup_form.is_valid():
-            # Prevent hax: if not staff, force the username back to the request username.
             if not request.user.is_staff:
                 username = request.user.username
             else:
@@ -248,10 +250,11 @@ def signup(request):
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                send_mail('Signup from %s' % (username), '%s signed up at %s\n'
+                # TODO rewrite see #14
+                send_mail('Signup from %s' % (request.user.username), '%s signed up at %s\n'
                           'Username: %s\nMessage: %s\nPlease attend to this request at '
                           'your earliest convenience.' % (str(full_name),
-                          str(timezone.now()).strip(), str(username), str(description)),
+                          str(timezone.now()).strip(), str(request.user.username), str(description)),
                           settings.EMAIL_FROM, [settings.EMAIL_TO])
 
             signup_form.save()
