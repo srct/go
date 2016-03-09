@@ -167,6 +167,21 @@ class SignupForm(forms.ModelForm):
         }),
     )
 
+    def clean_username(self):
+        # Prevent hax: (non-staff) Users cannot signup for other users
+        cleaned_data = super(SignupForm, self).clean()
+        data_username = cleaned_data.get("username")
+
+        if not self.request.user.is_staff:
+            if self.request.user.username not in data_username:
+                self.add_error('username', "This is not your NetID!")
+        return data_username
+
+    def __init__(self, request, *args, **kwargs):
+        # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
+        self.request = request
+        super(SignupForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = RegisteredUser
         fields = '__all__'
