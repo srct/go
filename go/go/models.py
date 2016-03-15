@@ -68,6 +68,11 @@ class RegisteredUser(models.Model):
         max_length=100,
     )
 
+    organization = models.CharField(
+        blank=False,
+        max_length=100,
+    )
+
     description = models.TextField(blank=True)
 
     approved = models.BooleanField()
