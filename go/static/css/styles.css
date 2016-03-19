@@ -23,3 +23,6 @@ body {
   vertical-align: middle;
   line-height: normal;
 }
+.asteriskField {
+    display: none;
+}

@@ -1,6 +1,7 @@
 from django import forms
 from go.models import URL, RegisteredUser
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
@@ -146,7 +147,7 @@ class SignupForm(forms.ModelForm):
 
     username = forms.CharField(
         required=True,
-        label='Mason NetID',
+        label='Mason NetID (Required)',
         max_length=30,
         validators=[validate_username],
         widget=forms.TextInput(attrs={
@@ -154,10 +155,17 @@ class SignupForm(forms.ModelForm):
     )
     full_name = forms.CharField(
         required=True,
-        label='Full Name',
+        label='Full Name (Required)',
         max_length=100,
         widget=forms.TextInput(attrs={
         }),
+    )
+    organization = forms.CharField(
+        required=True,
+        label='Organization (Required)',
+        max_length=100,
+        widget=forms.TextInput(attrs={
+        })
     )
     description = forms.CharField(
         required=False,
@@ -165,6 +173,11 @@ class SignupForm(forms.ModelForm):
         max_length=200,
         widget=forms.Textarea(attrs={
         }),
+    )
+    tos_box = forms.BooleanField(
+        required=True,
+        # Need to add a Terms of Service Page and replace the href below
+        label = mark_safe('Do you accept the <a href="#" target="_blank">Terms of Service</a>?'),
     )
 
     def clean_username(self):
@@ -181,7 +194,45 @@ class SignupForm(forms.ModelForm):
         # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
         self.request = request
         super(SignupForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(form=self)
+        self.helper.form_method = 'POST'
 
+    def clean_username(self):
+        # Prevent hax: (non-staff) Users cannot signup for other users
+        cleaned_data = super(SignupForm, self).clean()
+        data_username = cleaned_data.get("username")
+
+        if not self.request.user.is_staff:
+            if self.request.user.username not in data_username:
+                self.add_error('username', "This is not your NetID!")
+        return data_username
+
+    def __init__(self, request, *args, **kwargs):
+        # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
+        self.request = request
+        super(SignupForm, self).__init__(*args, **kwargs)
+
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-4'
+        self.helper.field_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                Div(
+                    Div(
+                        'username',
+                        'full_name',
+                        'organization',
+                        'description',
+                        'tos_box',
+                        css_class='well',
+                    ),
+                    StrictButton('Submit',css_class='btn btn-primary btn-md col-md-4', type='submit'),
+                    css_class='col-md-6',
+                ),
+            )
+        )
     class Meta:
         model = RegisteredUser
         fields = '__all__'

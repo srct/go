@@ -247,7 +247,8 @@ def signup(request):
                 username = signup_form.cleaned_data.get('username')
             full_name = signup_form.cleaned_data.get('full_name')
             description = signup_form.cleaned_data.get('description')
-
+            organization = signup_form.cleaned_data.get('organization')
+            
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
                 # TODO rewrite see #14

@@ -7,7 +7,7 @@ class URLAdmin(admin.ModelAdmin):
 
 
 class RegisteredUserAdmin(admin.ModelAdmin):
-    list_display = ("username", "full_name", "approved")
+    list_display = ("username", "full_name", "organization", "approved")
 
 admin.site.register(URL, URLAdmin)
 admin.site.register(RegisteredUser, RegisteredUserAdmin)
