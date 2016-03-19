@@ -1,6 +1,5 @@
 {% extends 'layouts/base.html' %}
 {% load crispy_forms_tags %}
-{% crispy SignupForm SignupForm.helper %}
 
 {% block title %}
 Go - Apply
@@ -12,13 +11,25 @@ Go - Apply
   <div class="row">
     <div class="col-md-12">
 
-      <h1><strong>Apply</strong></h1>
+      <h1><strong>Apply to Go</strong></h1>
 
     </div>
   </div>
 </div>
 
+<p>
+  In order to prevent abuse of the URL Shortner, users must be manually approved.
+  <br></br>
+  You will need to list the organization you represent and, while optional, we would like
+  <br />
+  to know why you would like to use Go and
+  some examples where you would use this service.
+  <br></br>
+  Please indicate below if you are interested.
+</p>
+<br />
+<legend></legend>
+
 {% crispy form %}
 
 {% endblock %}
-

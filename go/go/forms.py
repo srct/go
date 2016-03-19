@@ -145,38 +145,6 @@ class SignupForm(forms.ModelForm):
         except RegisteredUser.DoesNotExist:
             return
 
-    def __init__(self, request, *args, **kwargs):
-        # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
-        self.request = request
-        super(SignupForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(form=self)
-        self.helper.form_method = 'POST'
-        
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-4'
-        self.helper.field_class = 'col-md-6' 
-    
-        self.helper.layout = Layout(
-            Fieldset(
-                '',
-                HTML("""<p>In order to succesfully provide this service, users must be manually approved. This prevents misuse of the URL shortener. Please indicate below if you are interested.</p><br>"""),
-                Div(
-                    Div(
-                        'username',
-                        'full_name',
-                        'organization',
-                        'description',
-                        'tos_box',
-                        css_class='well',
-                    ),      
-                    StrictButton('Submit',css_class='btn btn-primary btn-md col-md-6', type='submit'),
-                    css_class='col-md-6',
-                )
-
-            )
-            ,
-        )
-
     username = forms.CharField(
         required=True,
         label='Mason NetID (Required)',
@@ -208,7 +176,7 @@ class SignupForm(forms.ModelForm):
     )
     tos_box = forms.BooleanField(
         required=True,
-        #Need to add a Terms of Service Page and replace the href below
+        # Need to add a Terms of Service Page and replace the href below
         label = mark_safe('Do you accept the <a href="#" target="_blank">Terms of Service</a>?'),
     )
 
@@ -222,6 +190,34 @@ class SignupForm(forms.ModelForm):
                 self.add_error('username', "This is not your NetID!")
         return data_username
 
+    def __init__(self, request, *args, **kwargs):
+        # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
+        self.request = request
+        super(SignupForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(form=self)
+        self.helper.form_method = 'POST'
+
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-4'
+        self.helper.field_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                Div(
+                    Div(
+                        'username',
+                        'full_name',
+                        'organization',
+                        'description',
+                        'tos_box',
+                        css_class='well',
+                    ),
+                    StrictButton('Submit',css_class='btn btn-primary btn-md col-md-4', type='submit'),
+                    css_class='col-md-6',
+                ),
+            )
+        )
     class Meta:
         model = RegisteredUser
         fields = '__all__'
