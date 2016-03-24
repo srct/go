@@ -77,6 +77,7 @@ class URLForm(forms.ModelForm):
                                 <h4>Paste the URL you would like to shorten:</h4>
                                 <br />
                             """),
+                            'target',
                             style="background: rgb(#F6F6F6);",
                             title="target_url",
                             css_class="first_group",
