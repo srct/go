@@ -14,6 +14,7 @@ class URLForm(forms.ModelForm):
         label='Long URL (Required)',
         max_length=1000,
         widget=forms.URLInput(attrs={
+            'placeholder': 'https://yoursite.com/'
         })
     )
 
@@ -76,9 +77,6 @@ class URLForm(forms.ModelForm):
                                 <h4>Paste the URL you would like to shorten:</h4>
                                 <br />
                             """),
-                            PrependedText('target',
-                            'https://',
-                            ),
                             style="background: rgb(#F6F6F6);",
                             title="target_url",
                             css_class="first_group",
