@@ -124,7 +124,7 @@ class URLForm(forms.ModelForm):
             HTML("""
                 <br />
             """),
-            StrictButton('Shorten', css_class="btn-success", type='submit'),
+            StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit'),
         )
     )
 
