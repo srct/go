@@ -194,7 +194,7 @@ class SignupForm(forms.ModelForm):
         # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
         self.request = request
         super(SignupForm, self).__init__(*args, **kwargs)
-
+        self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-4'
         self.helper.field_class = 'col-md-6'
