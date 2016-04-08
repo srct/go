@@ -1,7 +1,12 @@
+# Django Imports
 from django import forms
-from go.models import URL, RegisteredUser
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+
+# App Imports
+from go.models import URL, RegisteredUser
+
+# Other Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup

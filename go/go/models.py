@@ -1,9 +1,11 @@
+# Django Imports
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.cache import cache
-# from django.conf import settings
-import string  # random
+
+# Other Imports
+import string
 from hashids import Hashids
 
 

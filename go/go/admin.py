@@ -1,4 +1,6 @@
+# Django Imports
 from django.contrib import admin
+# App Imports
 from go.models import URL, RegisteredUser
 
 

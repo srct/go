@@ -1,8 +1,9 @@
-from __future__ import absolute_import, print_function
-
+# Django Imports
 from django.contrib.auth.models import User
 from django.conf import settings
+# Other Imports
 import requests
+from __future__ import absolute_import, print_function
 
 def pfparse(pf_name_result):
     # name comes in format of Anderson, Nicholas J
@@ -68,7 +69,7 @@ def create_user_dud(tree):
             user.set_password("cas_used_instead")
 
             # a list of empty strings is False
-            if not info_name: 
+            if not info_name:
                 user.first_name = info_name[0]
                 user.last_name = info_name[1]
                 print("Added user's name, %s %s." % (info_name[0], info_name[1]))
