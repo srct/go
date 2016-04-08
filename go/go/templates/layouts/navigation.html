@@ -6,7 +6,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'index' %}">Go</a>
+    <a class="navbar-brand" href="{% url 'index' %}"><i class="fa fa-link"> Go</i></a>
   </div>
   <div class="navbar-collapse collapse navbar-responsive-collapse">
     <ul class="nav navbar-nav navbar-left">
@@ -20,16 +20,16 @@
     </ul>
     <ul class="nav navbar-nav navbar-right" style="margin-right:5%;">
       {% if user.is_authenticated %}
-      <li><a href="{% url 'go_logout' %}">Log Out</a></li>
+      <li><a href="{% url 'go_logout' %}">Log Out <i class="fa fa-sign-out fa-fw"></i></a></li>
       {% else %}
-      <li><a href="{% url 'go_login' %}">Log In</a></li>
+      <li><a href="{% url 'go_login' %}">Log In <i class="fa fa-sign-in fa-fw"></i></a></li>
       {% endif %}
       {% if user.is_staff and user|is_approved %}
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <i class="fa fa-caret-down fa-fw"></i></a>
         <ul class="dropdown-menu">
-          <li><a href="{% url 'useradmin' %}">User Moderation</a></li>
-          <li><a href="{% url 'signup' %}">Signup</a></li>
+          <li><a href="{% url 'useradmin' %}">User Moderation <i class="fa fa-users fa-fw"></i></a></li>
+          <li><a href="{% url 'signup' %}">Signup New Users <i class="fa fa-user-plus fa-fw"></i></a></li>
         </ul>
       </li>
       {% endif %}
