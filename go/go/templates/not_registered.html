@@ -10,9 +10,13 @@ Go - Account Not Approved
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-
-      <h1><strong>Account Not Approved</strong></h1>
-
+      <h1><strong>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-ban fa-stack-1x fa-inverse"></i>
+        </span>
+        <i class="fa">Account Not Approved</i>
+      </strong></h1>
     </div>
   </div>
 </div>
@@ -20,17 +24,15 @@ Go - Account Not Approved
 <div class="row">
   <div class="col-md-12">
     <p>
-      If you have not done so, you may <a href="{% url 'signup' %}">sign up</a>
-      for an account.
-    </p>
-
-    <p>
       Because Go allows users to represent their group or organization with
       George Mason branding, user accounts must be manually approved by a Go
       official.
     </p>
-
+    <br />
     <p>
+      If you have not done so, you may <a href="{% url 'signup' %}">sign up</a>
+      for an account.
+      <br></br>
       This process takes time. Please be patient.
     </p>
     <br/><br/>
