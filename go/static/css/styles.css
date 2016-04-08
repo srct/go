@@ -25,3 +25,9 @@ body {
 .asteriskField {
     display: none;
 }
+.fa-li {
+  top: 5px;
+}
+.fa-ul > li {
+  padding: 0 0 5px;
+}
