@@ -1,13 +1,17 @@
+# Django Imports
 from django.conf.urls import patterns, include, url
-import go.views
 import django.contrib.auth.views
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic import TemplateView
+
+# App Imports
+import go.views
 
 admin.autodiscover()
 
-handle404 = "error_404"
-handle500 = "error_500"
+handle404 = TemplateView.as_view(template_name="404.html")
+handle500 = TemplateView.as_view(template_name="500.html")
 
 urlpatterns = [
     # / - Homepage url.
@@ -17,7 +21,7 @@ urlpatterns = [
     url(r'^view/(?P<short>\w+)$', go.views.view, name='view'),
 
     # /about - About page.
-    url(r'^about/?$', go.views.about, name='about'),
+    url(r'^about/?$', TemplateView.as_view(template_name='core/about.html'), name='about'),
 
     # /signup - Signup page for access.
     url(r'^signup/?$', go.views.signup, name='signup'),
@@ -29,7 +33,7 @@ urlpatterns = [
     url(r'^delete/(?P<short>\w+)$', go.views.delete, name='delete'),
 
     # /registered - registration complete page
-    url(r'^registered/?$', go.views.registered, name='registered'),
+    url(r'^registered/?$', TemplateView.as_view(template_name='registered.html'), name='registered'),
 
     # /admin - Administrator interface.
     url(r'^admin/?', admin.site.urls),

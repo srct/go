@@ -1,17 +1,19 @@
-from go.models import URL, RegisteredUser
-from go.forms import URLForm, SignupForm
-from datetime import timedelta
+# Django Imports
 from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
 from django.utils import timezone
-# from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied  # ValidationError
 from django.core.mail import send_mail
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
-# import os
 
+# App Imports
+from go.models import URL, RegisteredUser
+from go.forms import URLForm, SignupForm
+
+# Other Imports
+from datetime import timedelta
 
 ##############################################################################
 """
@@ -44,31 +46,6 @@ def is_registered(user):
     except RegisteredUser.DoesNotExist:
         return False
 
-
-##############################################################################
-"""
-Define error page handling here.
-"""
-
-
-def error_404(request):
-    """
-    Error 404 view, in case a url is not found.
-    """
-
-    return render(request, '404.html', {
-    },
-    )
-
-
-def error_500(request):
-    """
-    Error 500 view, in case a server error occurs.
-    """
-
-    return render(request, '500.html', {
-    },
-    )
 
 ##############################################################################
 """
@@ -248,7 +225,7 @@ def signup(request):
             full_name = signup_form.cleaned_data.get('full_name')
             description = signup_form.cleaned_data.get('description')
             organization = signup_form.cleaned_data.get('organization')
-            
+
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
                 # TODO rewrite see #14
@@ -337,23 +314,5 @@ def useradmin(request):
     need_approval = RegisteredUser.objects.filter(approved=False)
     return render(request, 'admin/useradmin.html', {
         'need_approval': need_approval
-    },
-    )
-
-
-##############################################################################
-"""
-Define static user views here.
-"""
-
-
-def about(request):
-    return render(request, 'core/about.html', {
-    },
-    )
-
-
-def registered(request):
-    return render(request, 'registered.html', {
     },
     )
