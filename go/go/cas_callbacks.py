@@ -1,9 +1,10 @@
+from __future__ import absolute_import, print_function
 # Django Imports
 from django.contrib.auth.models import User
 from django.conf import settings
 # Other Imports
 import requests
-from __future__ import absolute_import, print_function
+
 
 def pfparse(pf_name_result):
     # name comes in format of Anderson, Nicholas J
