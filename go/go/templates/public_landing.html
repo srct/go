@@ -1,3 +1,10 @@
+<style>
+banner,.page-header,#banner{
+  border-bottom: none;
+  margin-bottom: 0;
+}
+</style>
+
 {% extends 'layouts/base.html' %}
 
 
@@ -10,7 +17,7 @@ Go - Welcome
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-        <h1>Go</h1>
+        <h1><i class="fa"><i class="fa fa-link"></i> Go</i></h1>
         <p class="lead">University-branded URL shortening</p>
     </div>
   </div>
@@ -19,7 +26,8 @@ Go - Welcome
 <div class="row">
 
   <div class="col-md-4">
-      <h3>What is Go?</h3>
+      <h3><i class="fa">What is Go?</i></h3>
+      <legend></legend>
       <p>Go provides University-branded URL shortening for student organizations,
       administration, and ULife groups. Any approved user can generate a
       <a href="http://go.gmu.edu">go.gmu.edu</a> address
@@ -32,39 +40,47 @@ Go - Welcome
   </div>
 
   <div class="col-md-4">
-    <h3>Why should I use Go?</h3>
+    <h3><i class="fa">Why should I use Go?</i></h3>
+    <legend></legend>
     <p>
       Go features:
-      <ul>
+    </p>
+      <ul class="fa-ul">
         <li>
+          <i class="fa-li fa fa-check-square"></i>
            Data tracking on the number of clicks a Go link gets.
         </li>
         <li>
+          <i class="fa-li fa fa-check-square"></i>
            Options to share Go links across various social media platforms.
         </li>
         <li>
+          <i class="fa-li fa fa-check-square"></i>
            QR Code generation at various resolutions, ready to be shared.
         </li>
         <li>
+          <i class="fa-li fa fa-check-square"></i>
            Optional expiration for links after particular times.
         </li>
       </ul>
-    </p>
   </div>
 
   <div class="col-md-4">
-    <h3>How do I access Go?</h3>
+    <h3><i class="fa">How do I access Go?</i></h3>
+    <legend></legend>
     <p>
       In order to prevent abuse of the URL shortner, access to Go
       is moderated by SRCT administrators. New users will need to fill out
       a registration form in order to become an approved user.
-      Additionally, only people with a current, valid Mason username and password
+      <br></br>
+      Additionally, only users with a current, valid Mason username and password
       may request to be approved.
     </p>
 
   </div>
 </div>
 
+<br />
 <hr />
 <div class="row">
   <div class="col-md-offset-1 col-md-4" "col-md-offset-2 col-md-4">
