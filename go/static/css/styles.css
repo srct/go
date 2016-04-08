@@ -21,7 +21,6 @@ body {
 .valign-center span {
   display: inline-block;
   vertical-align: middle;
-  line-height: normal;
 }
 .asteriskField {
     display: none;
