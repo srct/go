@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
-from django.core.mail import send_mail, send_mass_mail
+from django.core.mail import send_mail, send_mass_mail, EmailMessage
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -230,23 +230,26 @@ def signup(request):
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
                 user_mail = username + settings.EMAIL_DOMAIN
                 # Email sent to notify Admins
-                to_admin = (
+                to_admin = EmailMessage(
                     'Signup from %s' % (request.user.username),
                     ######################
                     '%s signed up at %s\n\n'
                     'Username: %s\n'
                     'Organization: %s\n\n'
                     'Message: %s\n\n'
+                    'You can contact the user directly by replying to this email or '
+                    'reply all to contact the user and notfiy the mailing list.\n'
                     'Please head to go.gmu.edu/useradmin to approve or '
                     'deny this application.'
                     % (str(full_name), str(timezone.now()).strip(),
                     str(request.user.username), str(organization), str(description)),
                     ######################
                     settings.EMAIL_FROM,
-                    [settings.EMAIL_TO]
-                )
+                    [settings.EMAIL_TO],
+                    reply_to=[user_mail]
+                ).send(fail_silently=False)
                 # Confirmation email sent to Users
-                to_user = (
+                send_mail(
                     'We have received your Go application!',
                     ######################
                     'Hey there %s,\n\n'
@@ -260,7 +263,6 @@ def signup(request):
                     settings.EMAIL_FROM,
                     [user_mail]
                 )
-                send_mass_mail((to_admin, to_user), fail_silently=False)
             signup_form.save()
             return redirect('registered')
 
