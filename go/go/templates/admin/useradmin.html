@@ -12,7 +12,13 @@ Go - Administration Panel
   <div class="row">
     <div class="col-md-12">
 
-      <h1><strong>Moderation Panel</strong></h1>
+      <h1><strong>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-balance-scale fa-stack-1x fa-inverse"></i>
+        </span>
+        <i class="fa">Moderation Panel</i>
+      </strong></h1>
 
     </div>
   </div>
@@ -21,7 +27,7 @@ Go - Administration Panel
 <div class="row">
   <div class="col-md-12">
 
-    <h2>Users awaiting moderation</h2>
+    <h3>Users awaiting moderation</h3>
 
     <form method="post" action="useradmin">{% csrf_token %}
 
@@ -57,8 +63,9 @@ Go - Administration Panel
 
     <div class="form-group">
 
-      <input type="submit" name="_approve" value="Approve" class="btn btn-primary">
-      <input type="submit" name="_deny" value="Deny" class="btn btn-default">
+      <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm">
+      <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-sm">
+
 
     </div>
 
