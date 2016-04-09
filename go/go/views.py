@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
-from django.core.mail import send_mail
+from django.core.mail import send_mail, send_mass_mail
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -228,15 +228,40 @@ def signup(request):
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                # TODO rewrite see #14
-                send_mail('Signup from %s' % (request.user.username), '%s signed up at %s\n'
-                          'Username: %s\nMessage: %s\nPlease attend to this request at '
-                          'your earliest convenience.' % (str(full_name),
-                          str(timezone.now()).strip(), str(request.user.username), str(description)),
-                          settings.EMAIL_FROM, [settings.EMAIL_TO])
-
+                user_mail = username + settings.EMAIL_DOMAIN
+                # Email sent to notify Admins
+                to_admin = (
+                    'Signup from %s' % (request.user.username),
+                    ######################
+                    '%s signed up at %s\n\n'
+                    'Username: %s\n'
+                    'Organization: %s\n\n'
+                    'Message: %s\n\n'
+                    'Please head to go.gmu.edu/useradmin to approve or '
+                    'deny this application.'
+                    % (str(full_name), str(timezone.now()).strip(),
+                    str(request.user.username), str(organization), str(description)),
+                    ######################
+                    settings.EMAIL_FROM,
+                    [settings.EMAIL_TO]
+                )
+                # Confirmation email sent to Users
+                to_user = (
+                    'We have received your Go application!',
+                    ######################
+                    'Hey there %s,\n\n'
+                    'The Go admins have received your application and are '
+                    'currently in the process of reviewing it.\n\n'
+                    'You will receive another email when you have been '
+                    'approved.\n\n'
+                    '- Go Admins'
+                    % (str(full_name)),
+                    ######################
+                    settings.EMAIL_FROM,
+                    [user_mail]
+                )
+                send_mass_mail((to_admin, to_user), fail_silently=False)
             signup_form.save()
-
             return redirect('registered')
 
     return render(request, 'core/signup.html', {
@@ -307,9 +332,40 @@ def useradmin(request):
                 toapprove = RegisteredUser.objects.get(username=name)
                 toapprove.approved = True
                 toapprove.save()
+                if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                    user_mail = toapprove.username + settings.EMAIL_DOMAIN
+                    send_mail(
+                        'Your Account has been Approved!',
+                        ######################
+                        'Hey there %s,\n\n'
+                        'The Go admins have reviewed your application and have '
+                        'approved you to use Go!\n\n'
+                        'Head over to go.gmu.edu to create your first address.\n\n'
+                        '- Go Admins'
+                        % (str(toapprove.full_name)),
+                        ######################
+                        settings.EMAIL_FROM,
+                        [user_mail]
+                    )
         elif '_deny' in request.POST:
             for name in userlist:
                 todeny = RegisteredUser.objects.get(username=name)
+                if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                    user_mail = todeny.username + settings.EMAIL_DOMAIN
+                    send_mail(
+                        'Your Account has been Denied!',
+                        ######################
+                        'Hey there %s,\n\n'
+                        'The Go admins have reviewed your application and have '
+                        'decided to not approve you to use Go.\n\n'
+                        'Please reach out to srct@gmu.edu to appeal '
+                        'this decision.\n\n'
+                        '- Go Admins'
+                        % (str(todeny.full_name)),
+                        ######################
+                        settings.EMAIL_FROM,
+                        [user_mail]
+                    )
                 todeny.delete()
     need_approval = RegisteredUser.objects.filter(approved=False)
     return render(request, 'admin/useradmin.html', {
