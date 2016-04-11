@@ -281,6 +281,10 @@ def redirection(request, short):
     url = get_object_or_404(URL, short__iexact=short)
     url.clicks = url.clicks + 1
 
+    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
+    if url.target == domain + short:
+        return redirect('404.html')
+
     if 'qr' in request.GET:
         url.qrclicks += 1
 
