@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
-from django.core.mail import send_mail, send_mass_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
@@ -70,10 +70,10 @@ def index(request):
     if not is_approved(request.user):
         return render(request, 'not_registered.html')
 
-    url_form = URLForm()  # unbound form
+    url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
 
     if request.method == 'POST':
-        url_form = URLForm(request.POST)  # bind dat form
+        url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))  # bind dat form
         if url_form.is_valid():
 
             # We don't commit the url object yet because we need to add its

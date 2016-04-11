@@ -13,6 +13,14 @@ from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, Accor
 
 class URLForm(forms.ModelForm):
 
+    # Prevent redirect loop links
+    def clean_target(self):
+        target = self.cleaned_data.get('target')
+        if self.host in target:
+            raise ValidationError("You can't make a Go link to Go silly!")
+        else:
+            return target
+
     # Custom target URL field
     target = forms.URLField(
         required=True,
@@ -62,77 +70,65 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
+
     def __init__(self, *args, **kwargs):
+        # Grab that host info
+        self.host = kwargs.pop('host', None)
         super(URLForm, self).__init__(*args, **kwargs)
+        # Define the basics for crispy-forms
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
 
+        # Some xtra vars for form css purposes
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-1'
         self.helper.field_class = 'col-md-6'
 
-
+        # The main "layout" defined
         self.helper.layout = Layout(
-            Fieldset(
-                '',
+            Fieldset('',
+            #######################
                 Accordion(
+                    # Step 1: Long URL
                     AccordionGroup('Step 1: Long URL',
                         Div(
                             HTML("""
                                 <h4>Paste the URL you would like to shorten:</h4>
-                                <br />
-                            """),
+                                <br />"""),
                             'target',
-                            style="background: rgb(#F6F6F6);",
-                            title="target_url",
-                            css_class="first_group",
-                        ),
-                        css_id='firstCollapse',
+                            style="background: rgb(#F6F6F6);"),
                         active=True,
-                        template='crispy/accordian-group.html',
-                    ),
+                        template='crispy/accordian-group.html'),
+
+                    # Step 2: Short URL
                     AccordionGroup('Step 2: Short URL',
                         Div(
                             HTML("""
                                 <h4>Create a custom Go address:</h4>
-                                <br />
-                            """),
-                            PrependedText('short',
-                            'https://go.gmu.edu/',
-                            ),
-                            style="background: rgb(#F6F6F6);",
-                            title="short_url",
-                            css_class="second_group",
-                        ),
-                        css_id='secondCollapse',
+                                <br />"""),
+                            PrependedText(
+                            'short', 'https://go.gmu.edu/'),
+                            style="background: rgb(#F6F6F6);"),
                         active=True,
-                        template='crispy/accordian-group.html',
-                    ),
+                        template='crispy/accordian-group.html',),
+
+                    # Step 3: Expiration
                     AccordionGroup('Step 3: URL Expiration',
                         Div(
                             HTML("""
                                 <h4>Set when you would like your Go address to expire:</h4>
-                                <br />
-                            """),
+                                <br />"""),
                             'expires',
-                            style="background: rgb(#F6F6F6);",
-                            title="expires_url",
-                            css_class="third_group",
-                        ),
-                        css_id='thirdCollapse',
+                            style="background: rgb(#F6F6F6);"),
                         active=True,
-                        template='crispy/accordian-group.html',
-                    ),
-                    css_id='accordian',
-                    template='crispy/accordian.html'
-                ),
-            HTML("""
-                <br />
-            """),
-            StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit'),
-        )
-    )
+                        template='crispy/accordian-group.html'),
 
+                    # FIN
+                    template='crispy/accordian.html'),
+            #######################
+            HTML("""
+                <br />"""),
+            StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit')))
 
     class Meta:
         model = URL
@@ -148,6 +144,14 @@ class SignupForm(forms.ModelForm):
             raise ValidationError('Username "%s" is already in use.' % username)
         except RegisteredUser.DoesNotExist:
             return
+
+    def clean_username(self):
+        # Prevent hax: (non-staff) Users cannot signup for other users
+        data_username = self.cleaned_data.get("username")
+
+        if not self.request.user.is_staff:
+            if self.request.user.username not in data_username:
+                raise ValidationError('username', "This is not your NetID!")
 
     username = forms.CharField(
         required=True,
@@ -184,17 +188,6 @@ class SignupForm(forms.ModelForm):
         label = mark_safe('Do you accept the <a href="#" target="_blank">Terms of Service</a>?'),
     )
 
-    def clean_username(self):
-        # Prevent hax: (non-staff) Users cannot signup for other users
-        cleaned_data = super(SignupForm, self).clean()
-        data_username = cleaned_data.get("username")
-
-        if not self.request.user.is_staff:
-            if self.request.user.username not in data_username:
-                self.add_error('username', "This is not your NetID!")
-        return data_username
-
-
     def __init__(self, request, *args, **kwargs):
         # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
         self.request = request
@@ -205,22 +198,20 @@ class SignupForm(forms.ModelForm):
         self.helper.field_class = 'col-md-6'
 
         self.helper.layout = Layout(
-            Fieldset(
-                '',
+            Fieldset('',
                 Div(
+                    # Place in form fields
                     Div(
                         'username',
                         'full_name',
                         'organization',
                         'description',
                         'tos_box',
-                        css_class='well',
-                    ),
+                        css_class='well'),
+
+                    # Extras at bottom
                     StrictButton('Submit',css_class='btn btn-primary btn-md col-md-4', type='submit'),
-                    css_class='col-md-6',
-                ),
-            )
-        )
+                    css_class='col-md-6')))
     class Meta:
         model = RegisteredUser
         fields = '__all__'
