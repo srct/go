@@ -64,7 +64,7 @@ class URLForm(forms.ModelForm):
         (CUSTOM, CUSTOM),
     )
 
-    # Add a custom expiration choice field.
+    # Add preset expiration choices.
     expires = forms.ChoiceField(
         required=True,
         label='Expiration (Required)',
@@ -73,8 +73,14 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
+    # Add a custom expiration choice.
     expires_custom = forms.DateTimeField(
-        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False})
+        required = False,
+        label='Custom Date',
+        widget=DateTimePicker(options={
+            "format": "YYYY-MM-DD", 
+            "pickTime": False, 
+            })
     )
 
 

@@ -9,14 +9,13 @@ Go - A University Branded URL Shortener
 <script type="text/javascript">
 $(function() {
     $("#div_id_expires_custom").hide();
-  $("#div_id_expires").click(function() {
-  if ($("#id_expires_5").is(":checked")) {
-    $("#div_id_expires_custom").show();
-  } else {
-    $("#div_id_expires_custom").hide();
-  }
-})
-  
+    $("#div_id_expires").click(function() {
+      if ($("#id_expires_5").is(":checked")) {
+        $("#div_id_expires_custom").slideDown();
+      } else {
+          $("#div_id_expires_custom").slideUp();
+      }
+  })  
 })
 </script>
 
