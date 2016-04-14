@@ -5,8 +5,20 @@
 Go - A University Branded URL Shortener
 {% endblock %}
 
-
 {% block content %}
+<script type="text/javascript">
+$(function() {
+    $("#div_id_expires_custom").hide();
+  $("#div_id_expires").click(function() {
+  if ($("#id_expires_5").is(":checked")) {
+    $("#div_id_expires_custom").show();
+  } else {
+    $("#div_id_expires_custom").hide();
+  }
+})
+  
+})
+</script>
 
 <div class="page-header" id="banner">
   <div class="row">
