@@ -10,6 +10,7 @@ from go.models import URL, RegisteredUser
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
+from bootstrap3_datetime.widgets import DateTimePicker
 
 class URLForm(forms.ModelForm):
 
@@ -52,6 +53,7 @@ class URLForm(forms.ModelForm):
     DAY = '1 Day'
     WEEK = '1 Week'
     MONTH = '1 Month'
+    CUSTOM = 'Custom Date'
     NEVER = 'Never'
 
     EXPIRATION_CHOICES = (
@@ -59,6 +61,7 @@ class URLForm(forms.ModelForm):
         (WEEK, WEEK),
         (MONTH, MONTH),
         (NEVER, NEVER),
+        (CUSTOM, CUSTOM),
     )
 
     # Add a custom expiration choice field.
@@ -68,6 +71,10 @@ class URLForm(forms.ModelForm):
         choices=EXPIRATION_CHOICES,
         initial=NEVER,
         widget=forms.RadioSelect(),
+    )
+
+    expires_custom = forms.DateTimeField(
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False})
     )
 
 
@@ -119,6 +126,7 @@ class URLForm(forms.ModelForm):
                                 <h4>Set when you would like your Go address to expire:</h4>
                                 <br />"""),
                             'expires',
+                            'expires_custom',
                             style="background: rgb(#F6F6F6);"),
                         active=True,
                         template='crispy/accordian-group.html'),
