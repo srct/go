@@ -99,7 +99,6 @@ INSTALLED_APPS = (
   'piwik',
   'django.contrib.admin',
   'qrcode',
-  'captcha',
   'crispy_forms',
 )
 
