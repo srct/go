@@ -2,6 +2,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from django.utils import timezone
 
 # App Imports
 from go.models import URL, RegisteredUser
@@ -12,6 +13,7 @@ from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 from bootstrap3_datetime.widgets import DateTimePicker
 import datetime
+from datetime import date
 
 class URLForm(forms.ModelForm):
 
@@ -74,22 +76,29 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
+    def valid_date(value):
+        if value > timezone.now():
+            return
+        else:
+            raise ValidationError('Date can\'t be before today.')
+
+
     # Add a custom expiration choice.
     expires_custom = forms.DateTimeField(
         required = False,
         label='Custom Date',
         input_formats=['%m-%d-%Y'],
+        validators=[valid_date],
         widget=DateTimePicker(
             options={
                 "format": "MM-DD-YYYY",
                 "pickTime": False,
-                "defaultDate": "4-20-2016",
+                "defaultDate": True,
             },
             icon_attrs={
                 "class": "fa fa-calendar",
             })
     )
-
 
     def __init__(self, *args, **kwargs):
         # Grab that host info

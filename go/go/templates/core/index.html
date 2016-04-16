@@ -8,7 +8,12 @@ Go - A University Branded URL Shortener
 {% block content %}
 <script type="text/javascript">
 $(function() {
-    $("#div_id_expires_custom").hide();
+  $("div_id_expires_custom").hide();
+  if ($("#id_expires_5").is(":checked")) {
+        $("#div_id_expires_custom").slideDown();
+      } else {
+          $("#div_id_expires_custom").slideUp();
+      }
     $("#div_id_expires").click(function() {
       if ($("#id_expires_5").is(":checked")) {
         $("#div_id_expires_custom").slideDown();
