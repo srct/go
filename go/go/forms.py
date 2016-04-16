@@ -11,6 +11,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 from bootstrap3_datetime.widgets import DateTimePicker
+import datetime
 
 class URLForm(forms.ModelForm):
 
@@ -77,9 +78,15 @@ class URLForm(forms.ModelForm):
     expires_custom = forms.DateTimeField(
         required = False,
         label='Custom Date',
-        widget=DateTimePicker(options={
-            "format": "YYYY-MM-DD", 
-            "pickTime": False, 
+        input_formats=['%m-%d-%Y'],
+        widget=DateTimePicker(
+            options={
+                "format": "MM-DD-YYYY",
+                "pickTime": False,
+                "defaultDate": "4-20-2016",
+            },
+            icon_attrs={
+                "class": "fa fa-calendar",
             })
     )
 

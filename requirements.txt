@@ -5,6 +5,7 @@ django-piwik==0.1
 django-qrcode==0.3
 flake8==2.5.1
 git+https://github.com/kstateome/django-cas.git
+git+https://github.com/bruno207/django-bootstrap3-datetimepicker.git
 gunicorn==19.4.5
 hashids==1.1.0
 mccabe==0.3.1
@@ -18,4 +19,3 @@ requests==2.9.1
 simplejson==3.8.1
 six==1.10.0
 wheel==0.26.0
-django-bootstrap3-datetimepicker==2.2.3
