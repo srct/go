@@ -93,7 +93,7 @@ class URLForm(forms.ModelForm):
             options={
                 "format": "MM-DD-YYYY",
                 "pickTime": False,
-                "defaultDate": True,
+                "defaultDate": "4-20-2016",
             },
             icon_attrs={
                 "class": "fa fa-calendar",
