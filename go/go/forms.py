@@ -93,6 +93,7 @@ class URLForm(forms.ModelForm):
             options={
                 "format": "MM-DD-YYYY",
                 "pickTime": False,
+                "defaultDate": (datetime.date.today() + datetime.timedelta(hours=24)).strftime("%m-%d-%Y"),
             },
             icon_attrs={
                 "class": "fa fa-calendar",
@@ -111,9 +112,6 @@ class URLForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-1'
         self.helper.field_class = 'col-md-6'
-
-        #Set Custom Date field initial value to the current date.
-        self.fields['expires_custom'].initial = datetime.date.today().strftime("%m-%d-%Y")
 
         # The main "layout" defined
         self.helper.layout = Layout(
@@ -150,7 +148,7 @@ class URLForm(forms.ModelForm):
                                 <h4>Set when you would like your Go address to expire:</h4>
                                 <br />"""),
                             'expires',
-                            'expires_custom',
+                            Field('expires_custom', template="crispy/customField.html"),
                             style="background: rgb(#F6F6F6);"),
                         active=True,
                         template='crispy/accordian-group.html'),
