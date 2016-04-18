@@ -93,7 +93,6 @@ class URLForm(forms.ModelForm):
             options={
                 "format": "MM-DD-YYYY",
                 "pickTime": False,
-                "defaultDate": "4-20-2016",
             },
             icon_attrs={
                 "class": "fa fa-calendar",
@@ -112,6 +111,9 @@ class URLForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-1'
         self.helper.field_class = 'col-md-6'
+
+        #Set Custom Date field initial value to the current date.
+        self.fields['expires_custom'].initial = datetime.date.today().strftime("%m-%d-%Y")
 
         # The main "layout" defined
         self.helper.layout = Layout(
