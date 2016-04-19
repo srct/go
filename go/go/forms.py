@@ -80,7 +80,7 @@ class URLForm(forms.ModelForm):
         if value > timezone.now():
             return
         else:
-            raise ValidationError('Date can\'t be before today.')
+            raise ValidationError('Date must be after today.')
 
 
     # Add a custom expiration choice.
