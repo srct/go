@@ -1,0 +1,83 @@
+---
+# Ansible Playbook for Go
+# 
+# Installs a production-like envrionment with:
+# - MySQL
+# - nginx
+# - uwsgi + Emperor
+# - Django
+
+- hosts: all
+  tasks: 
+    - name: install go packages
+      apt: name={{ item }} state=latest
+      with_items:
+        - python
+        - python-dev
+        - python-virtualenv
+        - python-pip
+        - git
+        - libldap2-dev
+        - mysql-server
+        - mysql-client
+        - libmysqlclient-dev
+        - python-mysqldb
+        - libsasl2-dev
+        - libjpeg-dev
+
+    - name: create mysql user
+      mysql_user: >
+        name={{ mysql['user'] }} 
+        password={{ mysql['pass'] }} 
+        login_password={{ mysql['root_pass'] }} 
+        login_user={{ mysql['root_user'] }} 
+        state=present 
+        host=localhost 
+        priv={{ mysql['db'] }}.*:ALL 
+
+    - name: create mysql database
+      mysql_db: >
+        name={{ mysql['db'] }} 
+        state=present 
+        login_user={{ mysql['root_user'] }}
+        login_password={{ mysql['root_pass'] }}
+
+    - name: install site packages to virtual env
+      pip: >
+        requirements={{ django['requirements_path'] }}
+        virtualenv={{ django['venv_path'] }}
+        virtualenv_python=python2.7
+
+    - name: install django settings.py
+      template: >
+        src=templates/settings.py.j2
+        dest={{ django['settings_path'] }}/settings.py
+        backup=yes
+
+    - name: install django secret.py
+      template: >
+        src=templates/secret.py.j2
+        dest={{ django['settings_path'] }}/secret.py
+
+    - name: setup django database
+      django_manage: >
+        command={{ item }}
+        app_path={{ django['app_path'] }}
+        virtualenv={{ django['venv_path'] }}
+      with_items:
+        - flush
+        - makemigrations
+        - migrate
+
+    - name: create python superuser (defaults to dhaynes3)
+      django_manage: >
+        command="createsuperuser --noinput --username={{ django['superuser'] }} --email={{ django['superuser'] }}@masonlive.gmu.edu"
+        app_path={{ django['app_path'] }}
+        virtualenv={{ django['venv_path'] }}
+
+    - name: killing old screen sessions
+      shell: screen -ls | grep -q django && screen -X -S django quit
+      ignore_errors: true
+
+    - name: start django runserver (access via localhost:8000)
+      command: screen -dmS django bash -c "echo Starting on port {{ nginx['port'] }}; cd /vagrant/go; source ../venv/bin/activate; python manage.py runserver 0.0.0.0:8000;"
