@@ -5,6 +5,7 @@
 .vagrant/
 venv
 .venv
+/provisioning/playbook.retry
 /go/settings/settings.py
 /go/settings/secret.py
 /go/static/admin
