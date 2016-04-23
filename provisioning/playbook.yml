@@ -1,6 +1,6 @@
 ---
 # Ansible Playbook for Go
-# 
+#
 # Installs a production-like envrionment with:
 # - MySQL
 # - nginx
@@ -8,7 +8,7 @@
 # - Django
 
 - hosts: all
-  tasks: 
+  tasks:
     - name: install go packages
       apt: name={{ item }} state=latest
       with_items:
@@ -27,18 +27,18 @@
 
     - name: create mysql user
       mysql_user: >
-        name={{ mysql['user'] }} 
-        password={{ mysql['pass'] }} 
-        login_password={{ mysql['root_pass'] }} 
-        login_user={{ mysql['root_user'] }} 
-        state=present 
-        host=localhost 
-        priv={{ mysql['db'] }}.*:ALL 
+        name={{ mysql['user'] }}
+        password={{ mysql['pass'] }}
+        login_password={{ mysql['root_pass'] }}
+        login_user={{ mysql['root_user'] }}
+        state=present
+        host=localhost
+        priv={{ mysql['db'] }}.*:ALL
 
     - name: create mysql database
       mysql_db: >
-        name={{ mysql['db'] }} 
-        state=present 
+        name={{ mysql['db'] }}
+        state=present
         login_user={{ mysql['root_user'] }}
         login_password={{ mysql['root_pass'] }}
 
@@ -67,6 +67,7 @@
       with_items:
         - flush
         - makemigrations
+        - makemigrations go
         - migrate
 
     - name: create python superuser (defaults to dhaynes3)
