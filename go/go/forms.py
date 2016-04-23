@@ -152,6 +152,7 @@ class SignupForm(forms.ModelForm):
         if not self.request.user.is_staff:
             if self.request.user.username not in data_username:
                 raise ValidationError('username', "This is not your NetID!")
+        return data_username
 
     username = forms.CharField(
         required=True,
