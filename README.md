@@ -6,6 +6,8 @@ Go is a drop-in URL shortening service. It aims to provide an easily
 branded service for institutions that wish to widely disseminate
 information without unnecessarily outsourcing branding.
 
+I encourage you to join the #go channel in SRCT's [Slack Group](srct.slack.com) if you have any questions on setup or would like to contribute.
+
 ## Package Installation
 <legend>
 ### Prerequisities
@@ -37,17 +39,49 @@ Now, on your computer, navigate to the directory in which you want to download t
 
 ### Required Packages
 Finally, install these packages from the standard repositories:
- - VirtualBox ??
- - Vagrant ++
- - Ansible ++
+ - VirtualBox
+
+    `$ sudo apt-get install virtualbox`
+ - Vagrant
+
+    `$ sudo apt-get install vagrant`
+ - Ansible
+
+    `$ sudo easy_install pip && sudo pip install ansible`
 
 ## Developing with Vagrant
-<legend>
-### Initial Setup
+<legend></legend>
+Vagrant allows for the virtualization of your development enviornment and automates the setup process for Go.
 
+### Vagrant Setup
+Navigate to go/ and run:
+
+`$ vagrant up`
+
+This will setup a vm to run Go on your computer and will setup a database, install packages, etc. The first time you run `vagrant up` it may take a few minutes to setup, specifically when installing Go packages. Don't worry as progressive times it will speed up.
+
+And that's it! Navigate to [localhost](127.0.0.1:8000) in your web browser to view the website.
+
+### Additional Notes
+If you make any changes to _models.py_ you will need to re-provision the vm:
+
+`$ vagrant provision`
+
+Please note that this will refresh the database.
+
+It is also good practice to suspend your vm when you are done:
+
+`$ vagrant suspend`
+
+and to restart with:
+
+`$ vagrant resume`
 
 ## On Deployemnt
 <legend>
+### Deploying with Vagrant
+TODO
+
 ### Cron
 
 In order to expire links, you need to set up a cron job to run the manage.py
