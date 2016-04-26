@@ -69,13 +69,13 @@ If you make any changes to _models.py_ you will need to re-provision the vm:
 
 Please note that this will refresh the database.
 
-It is also good practice to suspend your vm when you are done:
+It is also good practice to shutdown your vm when you are done:
 
-`$ vagrant suspend`
+`$ vagrant halt`
 
 and to restart with:
 
-`$ vagrant resume`
+`$ vagrant up`
 
 ## On Deployemnt
 <legend>
