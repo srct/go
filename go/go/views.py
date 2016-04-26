@@ -110,6 +110,8 @@ def index(request):
                 url.expires = timezone.now() + timedelta(weeks=1)
             elif expires == URLForm.MONTH:
                 url.expires = timezone.now() + timedelta(weeks=3)
+            elif expires == URLForm.CUSTOM:
+                url.expires = url_form.cleaned_data.get('expires_custom')
             else:
                 pass  # leave the field NULL
 

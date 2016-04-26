@@ -2,6 +2,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from django.utils import timezone
 
 # App Imports
 from go.models import URL, RegisteredUser
@@ -10,6 +11,9 @@ from go.models import URL, RegisteredUser
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
+from bootstrap3_datetime.widgets import DateTimePicker
+import datetime
+from datetime import date
 
 class URLForm(forms.ModelForm):
 
@@ -52,6 +56,7 @@ class URLForm(forms.ModelForm):
     DAY = '1 Day'
     WEEK = '1 Week'
     MONTH = '1 Month'
+    CUSTOM = 'Custom Date'
     NEVER = 'Never'
 
     EXPIRATION_CHOICES = (
@@ -59,9 +64,10 @@ class URLForm(forms.ModelForm):
         (WEEK, WEEK),
         (MONTH, MONTH),
         (NEVER, NEVER),
+        (CUSTOM, CUSTOM),
     )
 
-    # Add a custom expiration choice field.
+    # Add preset expiration choices.
     expires = forms.ChoiceField(
         required=True,
         label='Expiration (Required)',
@@ -70,6 +76,29 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
+    def valid_date(value):
+        if value > timezone.now():
+            return
+        else:
+            raise ValidationError('Date must be after today.')
+
+
+    # Add a custom expiration choice.
+    expires_custom = forms.DateTimeField(
+        required = False,
+        label='Custom Date',
+        input_formats=['%m-%d-%Y'],
+        validators=[valid_date],
+        widget=DateTimePicker(
+            options={
+                "format": "MM-DD-YYYY",
+                "pickTime": False,
+                "defaultDate": (datetime.date.today() + datetime.timedelta(hours=24)).strftime("%m-%d-%Y"),
+            },
+            icon_attrs={
+                "class": "fa fa-calendar",
+            })
+    )
 
     def __init__(self, *args, **kwargs):
         # Grab that host info
@@ -107,7 +136,7 @@ class URLForm(forms.ModelForm):
                                 <h4>Create a custom Go address:</h4>
                                 <br />"""),
                             PrependedText(
-                            'short', 'https://go.gmu.edu/'),
+                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
                             style="background: rgb(#F6F6F6);"),
                         active=True,
                         template='crispy/accordian-group.html',),
@@ -119,6 +148,7 @@ class URLForm(forms.ModelForm):
                                 <h4>Set when you would like your Go address to expire:</h4>
                                 <br />"""),
                             'expires',
+                            Field('expires_custom', template="crispy/customDateField.html"),
                             style="background: rgb(#F6F6F6);"),
                         active=True,
                         template='crispy/accordian-group.html'),
