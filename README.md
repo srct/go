@@ -63,6 +63,9 @@ This will setup a vm to run Go on your computer and will setup a database, insta
 And that's it! Navigate to [localhost](http://127.0.0.1:8000) in your web browser to view the website.
 
 ### Additional Notes
+
+The authentication service used for Go is CAS however in local development all you need to do to sign in is pass your CAS username in both the username and password fields when prompted. 
+
 If you make any changes to _models.py_ you will need to re-provision the vm:
 
 `$ vagrant provision`
