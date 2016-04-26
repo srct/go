@@ -60,7 +60,7 @@ Navigate to go/ and run:
 
 This will setup a vm to run Go on your computer and will setup a database, install packages, etc. The first time you run `vagrant up` it may take a few minutes to setup, specifically when installing Go packages. Don't worry as progressive times it will speed up.
 
-And that's it! Navigate to [localhost](127.0.0.1:8000) in your web browser to view the website.
+And that's it! Navigate to [localhost](http://127.0.0.1:8000) in your web browser to view the website.
 
 ### Additional Notes
 If you make any changes to _models.py_ you will need to re-provision the vm:
