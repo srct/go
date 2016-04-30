@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^signup/?$', go.views.signup, name='signup'),
 
     # /my - My-Links page, view and review links.
-    url(r'^my/?$', go.views.my_links, name='my_links'),
+    url(r'^myLinks/?$', go.views.my_links, name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>\w+)$', go.views.delete, name='delete'),
