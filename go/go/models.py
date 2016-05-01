@@ -59,10 +59,10 @@ class RegisteredUser(models.Model):
     that that user is registered.
     """
 
-    username = models.CharField(
-        blank=False,
-        max_length=30,
-        primary_key=True
+    username = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
     )
 
     full_name = models.CharField(
