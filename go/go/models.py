@@ -59,7 +59,7 @@ class RegisteredUser(models.Model):
     that that user is registered.
     """
 
-    username = models.OneToOneField(
+    user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         primary_key=True,
@@ -77,7 +77,9 @@ class RegisteredUser(models.Model):
 
     description = models.TextField(blank=True)
 
-    approved = models.BooleanField()
+    approved = models.BooleanField(default=False)
+
+    registered = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '<Registered User: %s - Approval Status: %s>' % (self.username, self.approved)

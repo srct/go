@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
 from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -26,26 +27,14 @@ def is_approved(user):
     This function checks if a user account has a corresponding RegisteredUser,
     thus checking if the user is approved.
     """
-
-    try:
-        registered = RegisteredUser.objects.get(username=user.username)
-        return registered.approved
-    except RegisteredUser.DoesNotExist:
-        return False
-
+    return user.RegisteredUser
 
 def is_registered(user):
     """
     This function checks if a user account has a corresponding RegisteredUser,
     thus checking if the user is registered.
     """
-
-    try:
-        registered = RegisteredUser.objects.get(username=user.username)
-        return True
-    except RegisteredUser.DoesNotExist:
-        return False
-
+    return user.registereduser.requested
 
 ##############################################################################
 """
