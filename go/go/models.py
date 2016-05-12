@@ -3,14 +3,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Other Imports
 import string
 from hashids import Hashids
 
-
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
-
 
 class URL(models.Model):
     """
@@ -59,27 +59,38 @@ class RegisteredUser(models.Model):
     that that user is registered.
     """
 
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
+    # Let's associate a User to this RegisteredUser
+    user = models.OneToOneField(User)
 
+    # What is your name?
     full_name = models.CharField(
         blank=False,
         max_length=100,
     )
 
+    # What organization are you associated with?
     organization = models.CharField(
+        null=True,
         blank=False,
         max_length=100,
     )
 
+    # Why do you want to use Go?
     description = models.TextField(blank=True)
 
-    approved = models.BooleanField(default=False)
-
+    # Have you filled out the registration form?
     registered = models.BooleanField(default=False)
 
+    # Are you approved to use Go?
+    approved = models.BooleanField(default=False)
+
+    # print(RegisteredUser)
     def __unicode__(self):
-        return '<Registered User: %s - Approval Status: %s>' % (self.username, self.approved)
+        return '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
+
+# When a post_save is called on a User object (and it is newly created), this is
+# called to create an associated RegisteredUser
+@receiver(post_save, sender=User)
+def handle_regUser_creation(sender, instance, created, **kwargs):
+  if created:
+    RegisteredUser.objects.create(user=instance)
