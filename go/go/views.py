@@ -16,32 +16,6 @@ from go.forms import URLForm, SignupForm
 # Other Imports
 from datetime import timedelta
 
-##############################################################################
-"""
-Define useful helper methods here.
-"""
-
-
-def is_approved(user):
-    """
-    This function checks if a user account has a corresponding RegisteredUser,
-    thus checking if the user is approved.
-    """
-    return user.RegisteredUser
-
-def is_registered(user):
-    """
-    This function checks if a user account has a corresponding RegisteredUser,
-    thus checking if the user is registered.
-    """
-    return user.registereduser.requested
-
-##############################################################################
-"""
-Define user views here.
-"""
-
-
 def index(request):
     """
     This view handles the homepage that the user is presented with when
@@ -54,9 +28,8 @@ def index(request):
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
         return render(request, 'public_landing.html')
-
-    # If the user isn't registered, don't give them any leeway.
-    if not is_approved(request.user):
+    # If the user isn't approved, don't give them any leeway.
+    elif not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
@@ -140,7 +113,7 @@ def my_links(request):
     obviously need to be logged in to view your URLs.
     """
 
-    if not is_approved(request.user):
+    if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
     urls = URL.objects.filter(owner=request.user)
@@ -161,7 +134,7 @@ def delete(request, short):
     logged in and registered, and must also be the owner of the URL.
     """
 
-    if not is_approved(request.user):
+    if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
     url = get_object_or_404(URL, short__iexact=short)
@@ -175,47 +148,33 @@ def delete(request, short):
 @login_required
 def signup(request):
     """
-    This view presents the user with a registration form. You can register
-    yourself, or another person.
-
+    This view presents the user with a registration form. You can register yourself.
     """
     # Do not display signup page to registered or approved users (Staff can still see these pages)
-    if is_registered(request.user) and not request.user.is_staff:
-        return render(request, 'core/signup.html', {
-            'registered': True,
-            'approved': False,
-        },
-        )
-    elif is_approved(request.user) and not request.user.is_staff:
-        return render(request, 'core/signup.html', {
-            'registered': True,
-            'approved': True,
-        },
-        )
+    if request.user.registereduser.registered and not request.user.is_staff:
+        return render(request, 'registered.html', {})
+    elif request.user.registereduser.approved and not request.user.is_staff:
+        return render(request, 'core/index.html', {})
 
-    signup_form = SignupForm(request, initial={'username': request.user.username})
+    signup_form = SignupForm(request)
 
-    # Non-staff have the username field read-only and pre-filled
     if request.user.is_staff:
         signup_form = SignupForm(request)
     else:
         signup_form = SignupForm(request,
-            initial={'username': request.user.username, 'full_name': request.user.first_name + " " + request.user.last_name})
-        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
+            initial={'full_name': request.user.first_name + " " + request.user.last_name})
+        signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
-        signup_form = SignupForm(request, request.POST,
-            initial={'approved': False, 'username': request.user.username})
-        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
+        signup_form = SignupForm(request, request.POST, instance=request.user.registereduser,
+            initial={'full_name': request.user.first_name + " " + request.user.last_name})
+        signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
 
         if signup_form.is_valid():
-            if not request.user.is_staff:
-                username = request.user.username
-            else:
-                username = signup_form.cleaned_data.get('username')
-            full_name = signup_form.cleaned_data.get('full_name')
             description = signup_form.cleaned_data.get('description')
+            full_name = signup_form.cleaned_data.get('full_name')
             organization = signup_form.cleaned_data.get('organization')
+            registered = signup_form.cleaned_data.get('registered')
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
@@ -254,6 +213,7 @@ def signup(request):
                     settings.EMAIL_FROM,
                     [user_mail]
                 )
+
             signup_form.save()
             return redirect('registered')
 
