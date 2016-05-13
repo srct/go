@@ -151,10 +151,10 @@ def signup(request):
     This view presents the user with a registration form. You can register yourself.
     """
     # Do not display signup page to registered or approved users (Staff can still see these pages)
-    if request.user.registereduser.registered and not request.user.is_staff:
-        return render(request, 'registered.html', {})
-    elif request.user.registereduser.approved and not request.user.is_staff:
-        return render(request, 'core/index.html', {})
+    if request.user.registereduser.approved and not request.user.is_staff:
+        return redirect('/')
+    elif request.user.registereduser.registered and not request.user.is_staff:
+        return redirect('registered')
 
     signup_form = SignupForm(request)
 
