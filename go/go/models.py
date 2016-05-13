@@ -70,7 +70,6 @@ class RegisteredUser(models.Model):
 
     # What organization are you associated with?
     organization = models.CharField(
-        null=True,
         blank=False,
         max_length=100,
     )
