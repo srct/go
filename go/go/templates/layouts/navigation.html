@@ -12,8 +12,10 @@
     <ul class="nav navbar-nav navbar-left">
       <li><a href="{% url 'about' %}">About</a></li>
       {% if user.is_authenticated %}
+      {% if user.registereduser.approved %}
       <li><a href="{% url 'my_links' %}">My Links</a></li>
-      {% if not user|is_registered %}
+      {% endif %}
+      {% if not user.registereduser.registered %}
       <li><a href="{% url 'signup' %}">Register</a></li>
       {% endif %}
       {% endif %}
@@ -24,12 +26,11 @@
       {% else %}
       <li><a href="{% url 'go_login' %}">Log In <i class="fa fa-sign-in fa-fw"></i></a></li>
       {% endif %}
-      {% if user.is_staff and user|is_approved %}
+      {% if user.is_staff %}
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Administration <i class="fa fa-caret-down fa-fw"></i></a>
         <ul class="dropdown-menu dropdown-menu-left">
           <li><a href="{% url 'useradmin' %}">User Moderation <i class="fa fa-users fa-fw"></i></a></li>
-          <li><a href="{% url 'signup' %}">Signup New Users <i class="fa fa-user-plus fa-fw"></i></a></li>
         </ul>
       </li>
       {% endif %}

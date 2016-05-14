@@ -168,30 +168,6 @@ class URLForm(forms.ModelForm):
 
 class SignupForm(forms.ModelForm):
 
-    def validate_username(username):
-        try:
-            registered = RegisteredUser.objects.get(username=username)
-            raise ValidationError('Username "%s" is already in use.' % username)
-        except RegisteredUser.DoesNotExist:
-            return
-
-    def clean_username(self):
-        # Prevent hax: (non-staff) Users cannot signup for other users
-        data_username = self.cleaned_data.get("username")
-
-        if not self.request.user.is_staff:
-            if self.request.user.username not in data_username:
-                raise ValidationError('username', "This is not your NetID!")
-        return data_username
-
-    username = forms.CharField(
-        required=True,
-        label='Mason NetID (Required)',
-        max_length=30,
-        validators=[validate_username],
-        widget=forms.TextInput(attrs={
-        }),
-    )
     full_name = forms.CharField(
         required=True,
         label='Full Name (Required)',
@@ -213,7 +189,8 @@ class SignupForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
         }),
     )
-    tos_box = forms.BooleanField(
+    # A user becomes registered when they agree to the TOS
+    registered = forms.BooleanField(
         required=True,
         # Need to add a Terms of Service Page and replace the href below
         label = mark_safe('Do you accept the <a href="#" target="_blank">Terms of Service</a>?'),
@@ -233,11 +210,10 @@ class SignupForm(forms.ModelForm):
                 Div(
                     # Place in form fields
                     Div(
-                        'username',
                         'full_name',
                         'organization',
                         'description',
-                        'tos_box',
+                        'registered',
                         css_class='well'),
 
                     # Extras at bottom
@@ -245,4 +221,5 @@ class SignupForm(forms.ModelForm):
                     css_class='col-md-6')))
     class Meta:
         model = RegisteredUser
-        fields = '__all__'
+        fields = ('full_name', 'organization', 'description', 'registered',)
+        exclude = ('user',)

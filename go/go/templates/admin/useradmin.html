@@ -44,8 +44,8 @@ SRCT Go - Administration Panel
 
       {% for unapproved in need_approval %}
         <tr>
-          <td><input type="checkbox" name="username" value={{ unapproved.username }}></td>
-          <td>{{ unapproved.username }}</td>
+          <td><input type="checkbox" name="username" value={{ unapproved.user }}></td>
+          <td>{{ unapproved.user }}</td>
           <td>{{ unapproved.full_name }}</td>
           <td>{{ unapproved.description|default:"No description provided" }}</td>
         </tr>

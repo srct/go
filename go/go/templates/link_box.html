@@ -31,7 +31,7 @@
         <a href="{{url.target}}">{{url.target}}</a>
         <br />
 
-      {% if url.owner == request.user and request.user|is_registered %}
+      {% if url.owner == request.user.registereduser and request.user.registereduser.approved == True %}
       <strong>Clicks:</strong>
         {{url.clicks}}
       <br />

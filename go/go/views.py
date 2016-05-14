@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
 from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -14,44 +15,6 @@ from go.forms import URLForm, SignupForm
 
 # Other Imports
 from datetime import timedelta
-
-##############################################################################
-"""
-Define useful helper methods here.
-"""
-
-
-def is_approved(user):
-    """
-    This function checks if a user account has a corresponding RegisteredUser,
-    thus checking if the user is approved.
-    """
-
-    try:
-        registered = RegisteredUser.objects.get(username=user.username)
-        return registered.approved
-    except RegisteredUser.DoesNotExist:
-        return False
-
-
-def is_registered(user):
-    """
-    This function checks if a user account has a corresponding RegisteredUser,
-    thus checking if the user is registered.
-    """
-
-    try:
-        registered = RegisteredUser.objects.get(username=user.username)
-        return True
-    except RegisteredUser.DoesNotExist:
-        return False
-
-
-##############################################################################
-"""
-Define user views here.
-"""
-
 
 def index(request):
     """
@@ -65,9 +28,8 @@ def index(request):
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
         return render(request, 'public_landing.html')
-
-    # If the user isn't registered, don't give them any leeway.
-    if not is_approved(request.user):
+    # If the user isn't approved, don't give them any leeway.
+    elif not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
@@ -79,7 +41,7 @@ def index(request):
             # We don't commit the url object yet because we need to add its
             # owner, and parse its date field.
             url = url_form.save(commit=False)
-            url.owner = request.user
+            url.owner = request.user.registereduser
 
             # If the user entered a short url, it's already been validated,
             # so accept it. If they did not, however, then generate a
@@ -151,10 +113,10 @@ def my_links(request):
     obviously need to be logged in to view your URLs.
     """
 
-    if not is_approved(request.user):
+    if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
-    urls = URL.objects.filter(owner=request.user)
+    urls = URL.objects.filter(owner=request.user.registereduser)
 
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
@@ -172,11 +134,11 @@ def delete(request, short):
     logged in and registered, and must also be the owner of the URL.
     """
 
-    if not is_approved(request.user):
+    if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
     url = get_object_or_404(URL, short__iexact=short)
-    if url.owner == request.user:
+    if url.owner == request.user.registereduser:
         url.delete()
         return redirect('my_links')
     else:
@@ -186,54 +148,35 @@ def delete(request, short):
 @login_required
 def signup(request):
     """
-    This view presents the user with a registration form. You can register
-    yourself, or another person.
-
+    This view presents the user with a registration form. You can register yourself.
     """
-    # Do not display signup page to registered or approved users (Staff can still see these pages)
-    if is_registered(request.user) and not request.user.is_staff:
-        return render(request, 'core/signup.html', {
-            'registered': True,
-            'approved': False,
-        },
-        )
-    elif is_approved(request.user) and not request.user.is_staff:
-        return render(request, 'core/signup.html', {
-            'registered': True,
-            'approved': True,
-        },
-        )
+    # Do not display signup page to registered or approved users
+    if request.user.registereduser.approved:
+        return redirect('/')
+    elif request.user.registereduser.registered:
+        return redirect('registered')
 
-    signup_form = SignupForm(request, initial={'username': request.user.username})
-
-    # Non-staff have the username field read-only and pre-filled
-    if request.user.is_staff:
-        signup_form = SignupForm(request)
-    else:
-        signup_form = SignupForm(request,
-            initial={'username': request.user.username, 'full_name': request.user.first_name + " " + request.user.last_name})
-        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
+    signup_form = SignupForm(request,
+        initial={'full_name': request.user.first_name + " " + request.user.last_name})
+    signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
-        signup_form = SignupForm(request, request.POST,
-            initial={'approved': False, 'username': request.user.username})
-        signup_form.fields['username'].widget.attrs['readonly'] = 'readonly'
+        signup_form = SignupForm(request, request.POST, instance=request.user.registereduser,
+            initial={'full_name': request.user.first_name + " " + request.user.last_name})
+        signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
 
         if signup_form.is_valid():
-            if not request.user.is_staff:
-                username = request.user.username
-            else:
-                username = signup_form.cleaned_data.get('username')
-            full_name = signup_form.cleaned_data.get('full_name')
             description = signup_form.cleaned_data.get('description')
+            full_name = signup_form.cleaned_data.get('full_name')
             organization = signup_form.cleaned_data.get('organization')
+            registered = signup_form.cleaned_data.get('registered')
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                user_mail = username + settings.EMAIL_DOMAIN
+                user_mail = request.user.registereduser.user + settings.EMAIL_DOMAIN
                 # Email sent to notify Admins
                 to_admin = EmailMessage(
-                    'Signup from %s' % (request.user.username),
+                    'Signup from %s' % (request.user.registereduser.user),
                     ######################
                     '%s signed up at %s\n\n'
                     'Username: %s\n'
@@ -244,12 +187,12 @@ def signup(request):
                     'Please head to go.gmu.edu/useradmin to approve or '
                     'deny this application.'
                     % (str(full_name), str(timezone.now()).strip(),
-                    str(request.user.username), str(organization), str(description)),
+                    str(request.user.registereduser.user), str(organization), str(description)),
                     ######################
                     settings.EMAIL_FROM,
                     [settings.EMAIL_TO],
                     reply_to=[user_mail]
-                ).send(fail_silently=False)
+                ).send()
                 # Confirmation email sent to Users
                 send_mail(
                     'We have received your Go application!',
@@ -265,6 +208,7 @@ def signup(request):
                     settings.EMAIL_FROM,
                     [user_mail]
                 )
+
             signup_form.save()
             return redirect('registered')
 
@@ -315,7 +259,7 @@ def redirection(request, short):
     return redirect(url.target)
 
 
-def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='about'):
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
     """
     Decorator for views that checks that the user is logged in and is a staff
     member, displaying the login page if necessary.
@@ -337,11 +281,11 @@ def useradmin(request):
         userlist = request.POST.getlist('username')
         if '_approve' in request.POST:
             for name in userlist:
-                toapprove = RegisteredUser.objects.get(username=name)
+                toapprove = RegisteredUser.objects.get(user__username__exact=name)
                 toapprove.approved = True
                 toapprove.save()
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toapprove.username + settings.EMAIL_DOMAIN
+                    user_mail = toapprove.user + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Approved!',
                         ######################
@@ -357,9 +301,9 @@ def useradmin(request):
                     )
         elif '_deny' in request.POST:
             for name in userlist:
-                todeny = RegisteredUser.objects.get(username=name)
+                todeny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = todeny.username + settings.EMAIL_DOMAIN
+                    user_mail = todeny.user + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Denied!',
                         ######################
@@ -374,8 +318,8 @@ def useradmin(request):
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                todeny.delete()
-    need_approval = RegisteredUser.objects.filter(approved=False)
+                todeny.user.delete()
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
     return render(request, 'admin/useradmin.html', {
         'need_approval': need_approval
     },

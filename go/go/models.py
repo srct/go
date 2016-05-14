@@ -3,14 +3,55 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.cache import cache
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Other Imports
 import string
 from hashids import Hashids
 
-
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
 
+class RegisteredUser(models.Model):
+    """
+    This is simply a wrapper model which, if an object exists, indicates
+    that that user is registered.
+    """
+
+    # Let's associate a User to this RegisteredUser
+    user = models.OneToOneField(User)
+
+    # What is your name?
+    full_name = models.CharField(
+        blank=False,
+        max_length=100,
+    )
+
+    # What organization are you associated with?
+    organization = models.CharField(
+        blank=False,
+        max_length=100,
+    )
+
+    # Why do you want to use Go?
+    description = models.TextField(blank=True)
+
+    # Have you filled out the registration form?
+    registered = models.BooleanField(default=False)
+
+    # Are you approved to use Go?
+    approved = models.BooleanField(default=False)
+
+    # print(RegisteredUser)
+    def __unicode__(self):
+        return '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
+
+# When a post_save is called on a User object (and it is newly created), this is
+# called to create an associated RegisteredUser
+@receiver(post_save, sender=User)
+def handle_regUser_creation(sender, instance, created, **kwargs):
+  if created:
+    RegisteredUser.objects.create(user=instance)
 
 class URL(models.Model):
     """
@@ -19,7 +60,7 @@ class URL(models.Model):
     date.
     """
 
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(RegisteredUser)
     date_created = models.DateTimeField(default=timezone.now)
 
     target = models.URLField(max_length=1000)
@@ -32,7 +73,7 @@ class URL(models.Model):
     expires = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
-        return '<%s : %s>' % (self.owner.username, self.target)
+        return '<%s : %s>' % (self.owner.user, self.target)
 
     class Meta:
         ordering = ['short']
@@ -52,32 +93,3 @@ class URL(models.Model):
             except URL.DoesNotExist:
                 return short
         return None
-
-class RegisteredUser(models.Model):
-    """
-    This is simply a wrapper model which, if an object exists, indicates
-    that that user is registered.
-    """
-
-    username = models.CharField(
-        blank=False,
-        max_length=30,
-        primary_key=True
-    )
-
-    full_name = models.CharField(
-        blank=False,
-        max_length=100,
-    )
-
-    organization = models.CharField(
-        blank=False,
-        max_length=100,
-    )
-
-    description = models.TextField(blank=True)
-
-    approved = models.BooleanField()
-
-    def __unicode__(self):
-        return '<Registered User: %s - Approval Status: %s>' % (self.username, self.approved)
