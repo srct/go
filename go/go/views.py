@@ -116,7 +116,7 @@ def my_links(request):
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
-    urls = URL.objects.filter(owner=request.user)
+    urls = URL.objects.filter(owner=request.user.registereduser.user)
 
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
@@ -138,7 +138,7 @@ def delete(request, short):
         return render(request, 'not_registered.html')
 
     url = get_object_or_404(URL, short__iexact=short)
-    if url.owner == request.user:
+    if url.owner == request.user.registereduser.user:
         url.delete()
         return redirect('my_links')
     else:
@@ -150,20 +150,15 @@ def signup(request):
     """
     This view presents the user with a registration form. You can register yourself.
     """
-    # Do not display signup page to registered or approved users (Staff can still see these pages)
-    if request.user.registereduser.approved and not request.user.is_staff:
+    # Do not display signup page to registered or approved users
+    if request.user.registereduser.approved:
         return redirect('/')
-    elif request.user.registereduser.registered and not request.user.is_staff:
+    elif request.user.registereduser.registered:
         return redirect('registered')
 
-    signup_form = SignupForm(request)
-
-    if request.user.is_staff:
-        signup_form = SignupForm(request)
-    else:
-        signup_form = SignupForm(request,
-            initial={'full_name': request.user.first_name + " " + request.user.last_name})
-        signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
+    signup_form = SignupForm(request,
+        initial={'full_name': request.user.first_name + " " + request.user.last_name})
+    signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
 
     if request.method == 'POST':
         signup_form = SignupForm(request, request.POST, instance=request.user.registereduser,
@@ -178,10 +173,10 @@ def signup(request):
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                user_mail = username + settings.EMAIL_DOMAIN
+                user_mail = request.user.registereduser.user + settings.EMAIL_DOMAIN
                 # Email sent to notify Admins
                 to_admin = EmailMessage(
-                    'Signup from %s' % (request.user.username),
+                    'Signup from %s' % (request.user.registereduser.user),
                     ######################
                     '%s signed up at %s\n\n'
                     'Username: %s\n'
@@ -192,12 +187,12 @@ def signup(request):
                     'Please head to go.gmu.edu/useradmin to approve or '
                     'deny this application.'
                     % (str(full_name), str(timezone.now()).strip(),
-                    str(request.user.username), str(organization), str(description)),
+                    str(request.user.registereduser.user), str(organization), str(description)),
                     ######################
                     settings.EMAIL_FROM,
                     [settings.EMAIL_TO],
                     reply_to=[user_mail]
-                ).send(fail_silently=False)
+                ).send()
                 # Confirmation email sent to Users
                 send_mail(
                     'We have received your Go application!',
@@ -264,7 +259,7 @@ def redirection(request, short):
     return redirect(url.target)
 
 
-def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='about'):
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
     """
     Decorator for views that checks that the user is logged in and is a staff
     member, displaying the login page if necessary.
@@ -286,11 +281,11 @@ def useradmin(request):
         userlist = request.POST.getlist('username')
         if '_approve' in request.POST:
             for name in userlist:
-                toapprove = RegisteredUser.objects.get(username=name)
+                toapprove = RegisteredUser.objects.get(user__username__exact=name)
                 toapprove.approved = True
                 toapprove.save()
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toapprove.username + settings.EMAIL_DOMAIN
+                    user_mail = toapprove.user + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Approved!',
                         ######################
@@ -306,9 +301,9 @@ def useradmin(request):
                     )
         elif '_deny' in request.POST:
             for name in userlist:
-                todeny = RegisteredUser.objects.get(username=name)
+                todeny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = todeny.username + settings.EMAIL_DOMAIN
+                    user_mail = todeny.user + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Denied!',
                         ######################
@@ -323,8 +318,8 @@ def useradmin(request):
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                todeny.delete()
-    need_approval = RegisteredUser.objects.filter(approved=False)
+                todeny.user.delete()
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
     return render(request, 'admin/useradmin.html', {
         'need_approval': need_approval
     },
