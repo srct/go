@@ -73,7 +73,7 @@ class URL(models.Model):
     expires = models.DateTimeField(blank=True, null=True)
 
     def __unicode__(self):
-        return '<%s : %s>' % (self.owner.username, self.target)
+        return '<%s : %s>' % (self.owner.user, self.target)
 
     class Meta:
         ordering = ['short']
