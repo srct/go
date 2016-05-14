@@ -41,7 +41,7 @@ def index(request):
             # We don't commit the url object yet because we need to add its
             # owner, and parse its date field.
             url = url_form.save(commit=False)
-            url.owner = request.user.registereduser.user
+            url.owner = request.user.registereduser
 
             # If the user entered a short url, it's already been validated,
             # so accept it. If they did not, however, then generate a
@@ -116,7 +116,7 @@ def my_links(request):
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
-    urls = URL.objects.filter(owner=request.user.registereduser.user)
+    urls = URL.objects.filter(owner=request.user.registereduser)
 
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
@@ -138,7 +138,7 @@ def delete(request, short):
         return render(request, 'not_registered.html')
 
     url = get_object_or_404(URL, short__iexact=short)
-    if url.owner == request.user.registereduser.user:
+    if url.owner == request.user.registereduser:
         url.delete()
         return redirect('my_links')
     else:
