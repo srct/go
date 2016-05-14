@@ -59,9 +59,6 @@
         src=templates/secret.py.j2
         dest={{ django['settings_path'] }}/secret.py
 
-    - name: refresh migrations
-      file: path=/vagrant/go/go/migrations state=absent
-
     - name: setup django database
       django_manage: >
         command={{ item }}
