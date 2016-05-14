@@ -41,7 +41,7 @@ def index(request):
             # We don't commit the url object yet because we need to add its
             # owner, and parse its date field.
             url = url_form.save(commit=False)
-            url.owner = request.user
+            url.owner = request.user.registereduser.user
 
             # If the user entered a short url, it's already been validated,
             # so accept it. If they did not, however, then generate a
