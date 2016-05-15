@@ -56,7 +56,7 @@ def index(request):
                 random_short = URL.generate_valid_short()
                 if random_short is None:
                     return HttpResponseServerError(
-                        render(request, '500.html', {})
+                        render(request, 'admin/500.html', {})
                     )
                 else:
                     url.short = random_short
@@ -229,7 +229,7 @@ def redirection(request, short):
 
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
     if url.target == domain + short:
-        return redirect('404.html')
+        return redirect('admin/404.html')
 
     if 'qr' in request.GET:
         url.qrclicks += 1

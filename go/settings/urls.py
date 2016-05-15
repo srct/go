@@ -10,8 +10,8 @@ import go.views
 
 admin.autodiscover()
 
-handle404 = TemplateView.as_view(template_name="404.html")
-handle500 = TemplateView.as_view(template_name="500.html")
+handle404 = TemplateView.as_view(template_name="admin/404.html")
+handle500 = TemplateView.as_view(template_name="admin/500.html")
 
 urlpatterns = [
     # / - Homepage url.
