@@ -192,8 +192,8 @@ class SignupForm(forms.ModelForm):
     # A user becomes registered when they agree to the TOS
     registered = forms.BooleanField(
         required=True,
-        # Need to add a Terms of Service Page and replace the href below
-        label = mark_safe('Do you accept the <a href="#" target="_blank">Terms of Service</a>?'),
+        # ***Need to replace lower url with production URL*** ie. go.gmu.edu/about#terms
+        label = mark_safe('Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'),
     )
 
     def __init__(self, request, *args, **kwargs):
