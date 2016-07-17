@@ -101,3 +101,7 @@ expirelinks command regularly. A sample cron script is available in the
 repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
 change the paths so that they point to the virtualenv activate script and
 manage.py.
+
+
+### Note
+Link by Viktor Vorobyev from the Noun Project.
