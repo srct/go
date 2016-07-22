@@ -1,6 +1,6 @@
 # Go (URL Shortener)
 
-A project of [GMU SRCT](http://srct.gmu.edu).
+A project of [GMU SRCT](http://srct.gmu.edu)
 
 Go is a drop-in URL shortening service. It aims to provide an easily
 branded service for institutions that wish to widely disseminate
