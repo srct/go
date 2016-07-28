@@ -1,4 +1,4 @@
-# Go (URL Shortener)
+# Go (URL Shortener) [![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master)
 
 A project of [GMU SRCT](http://srct.gmu.edu)
 
