@@ -12,6 +12,7 @@ from hashids import Hashids
 
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
 
+
 class RegisteredUser(models.Model):
     """
     This is simply a wrapper model which, if an object exists, indicates
@@ -46,12 +47,14 @@ class RegisteredUser(models.Model):
     def __unicode__(self):
         return '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
 
+
 # When a post_save is called on a User object (and it is newly created), this is
 # called to create an associated RegisteredUser
 @receiver(post_save, sender=User)
 def handle_regUser_creation(sender, instance, created, **kwargs):
-  if created:
-    RegisteredUser.objects.create(user=instance)
+    if created:
+        RegisteredUser.objects.create(user=instance)
+
 
 class URL(models.Model):
     """
@@ -80,14 +83,14 @@ class URL(models.Model):
 
     @staticmethod
     def generate_valid_short():
-        if cache.get("hashids_counter") == None:
+        if cache.get("hashids_counter") is None:
             cache.set("hashids_counter", URL.objects.count())
         cache.incr("hashids_counter")
         short = hashids.encrypt(cache.get("hashids_counter"))
         tries = 1
         while tries < 100:
             try:
-                urls = URL.objects.get(short__iexact=short)
+                URL.objects.get(short__iexact=short)
                 tries += 1
                 cache.incr("hashids_counter")
             except URL.DoesNotExist:
