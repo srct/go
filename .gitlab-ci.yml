@@ -1,0 +1,11 @@
+types:
+  - build
+  - test
+
+build_Go:
+  type: build
+  script: echo Building!
+
+test_Go:
+  type: test
+  script: echo Testing!
