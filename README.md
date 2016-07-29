@@ -1,6 +1,6 @@
-# Go (URL Shortener)
+# Go (URL Shortener) [![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master)
 
-A project of [GMU SRCT](http://srct.gmu.edu).
+A project of [GMU SRCT](http://srct.gmu.edu)
 
 Go is a drop-in URL shortening service. It aims to provide an easily
 branded service for institutions that wish to widely disseminate
@@ -101,3 +101,7 @@ expirelinks command regularly. A sample cron script is available in the
 repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
 change the paths so that they point to the virtualenv activate script and
 manage.py.
+
+
+### Note
+Link by Viktor Vorobyev from the Noun Project.
