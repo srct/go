@@ -1,0 +1,37 @@
+# Change Log
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [2.0.0] - 2016-07-30
+### Added
+- More informative pages all around.
+- Use numbers in short links.
+- Documentation for developers.
+- Vagrant w/ ansible playbook.
+- Expanded email support in signup process.
+- Custom date/time for expiring links.
+- Apache license.
+- More information presented to the user on the homepage.
+- Masonstrap -- GMU Branded version of Bootstrap 3.
+
+### Changed
+- Pretty much the entire user interface got a touch up.
+- Use Django 1.9
+- Django 1.10 preparation
+- QR Codes can be chosen from multiple sizes.
+- Sticky footer
+- Cleanup of template files.
+- Iconography -- using awesomeicons
+
+### Fixed
+- Peoplefinder/CAS is actually used to create new users.
+- Signup page cannot be shown to users who are already signed up.
+- Admin interface is now useful.
+- Navbar cleanup.
+
+### Removed
+- Old code designed for Django 1.6
+
+## [1.0.0]
+### Added
+- The basics of the site.
