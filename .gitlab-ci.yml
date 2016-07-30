@@ -10,29 +10,9 @@ variables:
   MYSQL_DATABASE: go
   MYSQL_ROOT_PASSWORD: root
 
-before_script:
-  script:
-    - apt-get update -qy
-    - apt-get install -y python-dev python-pip python-pip libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev git
-    - pip install -r requirements.txt
-    - cp go/settings/settings.py.template go/settings/settings.py
-    - cp go/settings/secret.py.template go/settings/secret.py
-    - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
-    - sed -i go/settings/secret.py -e 's/DB_NAME.*/DB_NAME = \"go\"/'
-    - sed -i go/settings/secret.py -e 's/DB_USER.*/DB_USER = \"root\"/'
-    - sed -i go/settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
-    - sed -i go/settings/secret.py -e 's/DB_HOST.*/DB_HOST = \"mysql\"/'
-    - sed -i go/settings/secret.py -e 's/SECRET_KEY.*/SECRET_KEY = \"${SECRET_KEY}\"/'
-    - cd go
-    - export DJANGO_DEBUG="True"
-    - python manage.py makemigrations
-    - python manage.py makemigrations go
-    - python manage.py migrate
-    - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python ./manage.py shell
-
 test_Go:
   type: test
-  script:
+  before_script:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip python-pip libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev git
     - pip install -r requirements.txt
@@ -50,4 +30,5 @@ test_Go:
     - python manage.py makemigrations go
     - python manage.py migrate
     - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python ./manage.py shell
+  script:
     - python manage.py test
