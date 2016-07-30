@@ -52,13 +52,6 @@
         priv=test_{{ mysql['db'] }}.*:ALL
         append_privs=yes
 
-    - name: create test mysql database
-      mysql_db: >
-        name={{ mysql['db'] }}_test
-        state=present
-        login_user={{ mysql['root_user'] }}
-        login_password={{ mysql['root_pass'] }}
-
     - name: install site packages to virtual env
       pip: >
         requirements={{ django['requirements_path'] }}
