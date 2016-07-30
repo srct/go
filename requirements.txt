@@ -1,5 +1,9 @@
+<<<<<<< 6b5bee16097fec111893ed6546a9bb96fa506828
 Django==1.10
 django-auth-ldap==1.2.8
+=======
+Django==1.9.1
+>>>>>>> wipe another useless pip package
 django-crispy-forms==1.6.0
 django-piwik==0.1
 django-qrcode==0.3
