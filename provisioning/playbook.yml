@@ -42,6 +42,23 @@
         login_user={{ mysql['root_user'] }}
         login_password={{ mysql['root_pass'] }}
 
+    - name: give mysql user access to test db
+      mysql_user: >
+        name={{ mysql['user'] }}
+        login_password={{ mysql['root_pass'] }}
+        login_user={{ mysql['root_user'] }}
+        state=present
+        host=localhost
+        priv=test_{{ mysql['db'] }}.*:ALL
+        append_privs=yes
+
+    - name: create test mysql database
+      mysql_db: >
+        name={{ mysql['db'] }}_test
+        state=present
+        login_user={{ mysql['root_user'] }}
+        login_password={{ mysql['root_pass'] }}
+
     - name: install site packages to virtual env
       pip: >
         requirements={{ django['requirements_path'] }}
