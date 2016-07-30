@@ -35,7 +35,7 @@
         login_user: "{{ mysql['root_user'] }}"
         state: present
         host: localhost
-        priv: {{ mysql['db'] }}.*:ALL
+        priv: "{{ mysql['db'] }}.*:ALL"
 
     - name: create mysql database
       mysql_db:
