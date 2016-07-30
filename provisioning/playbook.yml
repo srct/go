@@ -10,7 +10,9 @@
 - hosts: all
   tasks:
     - name: install go packages
-      apt: name={{ item }} state=latest
+      apt:
+        name: "{{ item }}"
+        state: latest
       with_items:
         - python
         - python-dev
@@ -26,54 +28,54 @@
         - libjpeg-dev
 
     - name: create mysql user
-      mysql_user: >
-        name={{ mysql['user'] }}
-        password={{ mysql['pass'] }}
-        login_password={{ mysql['root_pass'] }}
-        login_user={{ mysql['root_user'] }}
-        state=present
-        host=localhost
-        priv={{ mysql['db'] }}.*:ALL
+      mysql_user:
+        name: "{{ mysql['user'] }}"
+        password: "{{ mysql['pass'] }}"
+        login_password: "{{ mysql['root_pass'] }}"
+        login_user: "{{ mysql['root_user'] }}"
+        state: present
+        host: localhost
+        priv: {{ mysql['db'] }}.*:ALL
 
     - name: create mysql database
-      mysql_db: >
-        name={{ mysql['db'] }}
-        state=present
-        login_user={{ mysql['root_user'] }}
-        login_password={{ mysql['root_pass'] }}
+      mysql_db:
+        name: "{{ mysql['db'] }}"
+        state: present
+        login_user: "{{ mysql['root_user'] }}"
+        login_password: "{{ mysql['root_pass'] }}"
 
     - name: give mysql user access to test db
-      mysql_user: >
-        name={{ mysql['user'] }}
-        login_password={{ mysql['root_pass'] }}
-        login_user={{ mysql['root_user'] }}
-        state=present
-        host=localhost
-        priv=test_{{ mysql['db'] }}.*:ALL
-        append_privs=yes
+      mysql_user:
+        name: "{{ mysql['user'] }}"
+        login_password: "{{ mysql['root_pass'] }}"
+        login_user: "{{ mysql['root_user'] }}"
+        state: present
+        host: localhost
+        priv: test_{{ mysql['db'] }}.*:ALL
+        append_privs: yes
 
     - name: install site packages to virtual env
-      pip: >
-        requirements={{ django['requirements_path'] }}
-        virtualenv={{ django['venv_path'] }}
-        virtualenv_python=python2.7
+      pip:
+        requirements: "{{ django['requirements_path'] }}"
+        virtualenv: "{{ django['venv_path'] }}"
+        virtualenv_python: python2.7
 
     - name: install django settings.py
-      template: >
-        src=templates/settings.py.j2
-        dest={{ django['settings_path'] }}/settings.py
-        backup=yes
+      template:
+        src: templates/settings.py.j2
+        dest: "{{ django['settings_path'] }}/settings.py"
+        backup: yes
 
     - name: install django secret.py
-      template: >
-        src=templates/secret.py.j2
-        dest={{ django['settings_path'] }}/secret.py
+      template:
+        src: templates/secret.py.j2
+        dest: "{{ django['settings_path'] }}/secret.py"
 
     - name: setup django database
-      django_manage: >
-        command={{ item }}
-        app_path={{ django['app_path'] }}
-        virtualenv={{ django['venv_path'] }}
+      django_manage:
+        command: "{{ item }}"
+        app_path: "{{ django['app_path'] }}"
+        virtualenv: "{{ django['venv_path'] }}"
       with_items:
         - flush
         - makemigrations
@@ -81,10 +83,10 @@
         - migrate
 
     - name: create python superuser (defaults to dhaynes3)
-      django_manage: >
-        command="createsuperuser --noinput --username={{ django['superuser'] }} --email={{ django['superuser'] }}@masonlive.gmu.edu"
-        app_path={{ django['app_path'] }}
-        virtualenv={{ django['venv_path'] }}
+      django_manage:
+        command: "createsuperuser --noinput --username={{ django['superuser'] }} --email={{ django['superuser'] }}@masonlive.gmu.edu"
+        app_path: "{{ django['app_path'] }}"
+        virtualenv: "{{ django['venv_path'] }}"
 
     - name: killing old screen sessions
       shell: screen -ls | grep -q django && screen -X -S django quit
