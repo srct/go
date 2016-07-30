@@ -4,15 +4,13 @@ services:
   - mysql:latest
 
 types:
-  - build
   - test
 
 variables:
   MYSQL_DATABASE: go
   MYSQL_ROOT_PASSWORD: root
 
-build_Go:
-  type: build
+before_script:
   script:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip python-pip libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev git
