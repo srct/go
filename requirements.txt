@@ -1,4 +1,4 @@
-Django==1.9.1
+Django==1.10 
 django-auth-ldap==1.2.7
 django-crispy-forms==1.6.0
 django-piwik==0.1
