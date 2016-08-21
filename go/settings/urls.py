@@ -1,5 +1,5 @@
 # Django Imports
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 import django.contrib.auth.views
 from django.contrib import admin
 from django.conf import settings
