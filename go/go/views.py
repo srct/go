@@ -173,7 +173,7 @@ def signup(request):
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                user_mail = request.user.username + settings.EMAIL_DOMAIN
+                user_mail = request.user.registereduser.user + settings.EMAIL_DOMAIN
                 # Email sent to notify Admins
                 to_admin = EmailMessage(
                     'Signup from %s' % (request.user.registereduser.user),
@@ -285,7 +285,7 @@ def useradmin(request):
                 toapprove.approved = True
                 toapprove.save()
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toapprove.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toapprove.user + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Approved!',
                         ######################
@@ -303,7 +303,7 @@ def useradmin(request):
             for name in userlist:
                 todeny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = todeny.user.username + settings.EMAIL_DOMAIN
+                    user_mail = todeny.user + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Denied!',
                         ######################
