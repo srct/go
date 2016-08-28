@@ -13,16 +13,9 @@ MySQL-python==1.2.5
 pep8==1.7.0
 Pillow==3.3.0
 piwikapi==0.3
-<<<<<<< a0866cc7e90c7c05aeadecb07be0b1fa475e2b77
 pyflakes==1.2.3
 python-ldap==2.4.27
 requests==2.11.0
 simplejson==3.8.2
-=======
-pyflakes==1.0.0
-python-ldap==2.4.22
-requests==2.9.1
-simplejson==3.8.1
->>>>>>> Add back in those packages
 six==1.10.0
 wheel==0.29.0
