@@ -16,6 +16,7 @@ test_Go:
     - apt-get update -qy
     - apt-get install -y python-dev python-pip python-pip libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev git
     - pip install -r requirements.txt
+    - pip install coverage
     - cp go/settings/settings.py.template go/settings/settings.py
     - cp go/settings/secret.py.template go/settings/secret.py
     - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
@@ -32,3 +33,5 @@ test_Go:
     - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python ./manage.py shell
   script:
     - python manage.py test
+    - coverage html
+    - grep pc_cov go/go/templates/core/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
