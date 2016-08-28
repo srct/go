@@ -35,4 +35,4 @@ test_Go:
     - python manage.py test
     - coverage run ./manage.py test
     - coverage html
-    - ls -la
+    - grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
