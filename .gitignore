@@ -11,3 +11,6 @@ venv
 /go/static/admin
 /go/media
 /go/go/migrations
+.coverage
+htmlcov/
+
