@@ -33,5 +33,6 @@ test_Go:
     - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python ./manage.py shell
   script:
     - python manage.py test
+    - coverage run ./manage.py test
     - coverage html
-    - grep pc_cov go/go/templates/core/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
+    - ls -la
