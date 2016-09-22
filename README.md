@@ -25,7 +25,7 @@ This retrieves links to the most up-to-date and secure versions of your packages
 
 Next, with:
 
-`$ sudo apt-get install python git`
+`$ sudo apt-get install python python-dev python-pip git`
 
 you install python and git.
 
@@ -44,12 +44,18 @@ Finally, install these packages from the standard repositories:
  - VirtualBox
 
     `$ sudo apt-get install virtualbox`
+
+    You should be installing the latest virtualbox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
  - Vagrant
 
     `$ sudo apt-get install vagrant`
+
+    You should be installing the latest vagrant version which as of time of writing is `Vagrant 1.8.1`. You can verify the version number by running `vagrant -v`.
  - Ansible
 
-    `$ sudo easy_install pip && sudo pip install ansible`
+    `$ sudo pip install ansible`
+
+    You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
 
 ## Developing with Vagrant
 <legend></legend>
@@ -64,13 +70,13 @@ This will setup a vm to run Go on your computer and will setup a database, insta
 
 And that's it! Navigate to [localhost](http://127.0.0.1:8000) in your web browser to view the website.
 
-### Additional Notes
+### Additional Notes & Troubleshooting
 
 The authentication service used for Go is CAS. In local development however we utilize a test server. You can log in using your CAS username for both the username and password fields.
 
  The default superuser is _dhaynes3_ though this can be changed in _vagrantfile_ if you wish. You can run `$ vagrant provision` to apply this change. Be sure not to include that change in your commits.
 
-For a currently undetermined reason at some points if you try to navigate to [localhost](http://127.0.0.1:8000) and you see an error like: "Conenction has been reset" then:
+*Note:* For a currently undetermined reason at some points if you try to navigate to [localhost](http://127.0.0.1:8000) and you see an error like: "Conenction has been reset" then:
 1. `vagrant ssh`
 2. `sudo /etc/init.d/networking restart` and then `exit`
 3. `vagrant provision` (may need to do twice)
@@ -83,18 +89,6 @@ If you make any changes to _models.py_ you will need to re-provision the vm's da
 
 Please note that this will refresh the database (as in delete everything in it).
 
-It is also good practice to shutdown your vm when you are done:
-
-`$ vagrant halt`
-
-and to restart with:
-
-`$ vagrant up`
-
-## On Deployment
-<legend></legend>
-### Deploying with Vagrant
-TODO
 
 ### Cron
 
