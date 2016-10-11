@@ -29,6 +29,20 @@ Next, with:
 
 you install python and git.
 
+**MacOS**
+Open terminal and run the following command:
+
+If you have Homebrew installed skip the following command
+`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+This installs Homebrew on your Mac
+
+Next run the command:
+`brew update`
+This updates Homebrew
+
+Next we install python and git with:
+`brew install python git`
+
 ### Cloning the Go Codebase
 Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go), the SRCT code respository.
 
@@ -45,6 +59,7 @@ Finally, install these packages from the standard repositories:
 
     `$ sudo apt-get install virtualbox`
 
+
     You should be installing the latest virtualbox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
  - Vagrant
 
@@ -56,6 +71,12 @@ Finally, install these packages from the standard repositories:
     `$ sudo pip install ansible`
 
     You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
+    **MacOS**
+    Install virtual box at
+    [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
+
+    Then install Vagrant and Ansible with Homebrew with the following command:
+    `brew install Vagrant Ansible`
 
 ## Developing with Vagrant
 <legend></legend>
@@ -68,7 +89,7 @@ Navigate to go/ and run:
 
 This will setup a vm to run Go on your computer and will setup a database, install packages, etc. The first time you run `vagrant up` it may take a few minutes to setup, specifically when installing Go packages. Don't worry as progressive times it will speed up.
 
-And that's it! Navigate to [localhost](http://127.0.0.1:8000) in your web browser to view the website.
+And that's it! Navigate to [localhost:8000](http://127.0.0.1:8000) in your web browser to view the website.
 
 ### Additional Notes & Troubleshooting
 
