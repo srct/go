@@ -29,25 +29,17 @@ Next, with:
 
 you install python and git.
 
-**MacOS**
+**macOS (Formerly OS X)**
 
-Open terminal and run the following command:
+This tutorial uses the third party Homebrew package manager for macOS, which allows you to install packages from your terminal just as easily as you could on a Linux based system. You could use another package manager (or not use one at all), but Homebrew is highly reccomended.
 
-If you have Homebrew installed skip the following command
+To get homebrew, run the following command in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)`
 
-`/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
 
-This installs Homebrew on your Mac
+Next, to make sure Homebrew is up to date, run `brew update`
 
-Next run the command:
-
-`brew update`
-
-This updates Homebrew
-
-Next we install python and git with:
-
-`brew install python git`
+Finally we can install python and git with `brew install python git`
 
 ### Cloning the Go Codebase
 Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go), the SRCT code respository.
