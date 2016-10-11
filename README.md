@@ -77,9 +77,10 @@ Finally, install these packages from the standard repositories:
     `$ sudo pip install ansible`
 
     You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
-    **MacOS**
-    Install virtual box at
 
+    **MacOS**
+
+    Install virtual box at:  
     [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
 
     Then install Vagrant and Ansible with Homebrew with the following command:
