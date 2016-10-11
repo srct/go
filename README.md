@@ -30,17 +30,23 @@ Next, with:
 you install python and git.
 
 **MacOS**
+
 Open terminal and run the following command:
 
 If you have Homebrew installed skip the following command
+
 `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
 This installs Homebrew on your Mac
 
 Next run the command:
+
 `brew update`
+
 This updates Homebrew
 
 Next we install python and git with:
+
 `brew install python git`
 
 ### Cloning the Go Codebase
@@ -73,9 +79,11 @@ Finally, install these packages from the standard repositories:
     You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
     **MacOS**
     Install virtual box at
+
     [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
 
     Then install Vagrant and Ansible with Homebrew with the following command:
+    
     `brew install Vagrant Ansible`
 
 ## Developing with Vagrant
