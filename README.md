@@ -55,10 +55,12 @@ Now, on your computer, navigate to the directory in which you want to download t
 Finally, install these packages from the standard repositories:
  - VirtualBox
 
+    On Ubuntu:
     `$ sudo apt-get install virtualbox`
 
 
-    You should be installing the latest virtualbox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
+    You should be installing the latest VirtualBox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
+    
  - Vagrant
 
     `$ sudo apt-get install vagrant`
@@ -70,14 +72,11 @@ Finally, install these packages from the standard repositories:
 
     You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
 
-  **MacOS**
+  **macOS**
 
-  Install virtual box at:  
-  [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
+  First, get VirtualBox from [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
 
-  Then install Vagrant and Ansible with Homebrew with the following command:
-
-  `brew install Caskroom/cask/vagrant Ansible`
+  Then install Vagrant and Ansible with Homebrew with `brew install Caskroom/cask/vagrant Ansible`
 
 ## Developing with Vagrant
 <legend></legend>
