@@ -29,6 +29,18 @@ Next, with:
 
 you install python and git.
 
+**macOS (Formerly OS X)**
+
+This tutorial uses the third party Homebrew package manager for macOS, which allows you to install packages from your terminal just as easily as you could on a Linux based system. You could use another package manager (or not use one at all), but Homebrew is highly reccomended.
+
+To get homebrew, run the following command in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)`
+
+**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
+
+Next, to make sure Homebrew is up to date, run `brew update`
+
+Finally we can install python and git with `brew install python git`
+
 ### Cloning the Go Codebase
 Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go), the SRCT code respository.
 
@@ -43,9 +55,12 @@ Now, on your computer, navigate to the directory in which you want to download t
 Finally, install these packages from the standard repositories:
  - VirtualBox
 
+    On Ubuntu:
     `$ sudo apt-get install virtualbox`
 
-    You should be installing the latest virtualbox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
+
+    You should be installing the latest VirtualBox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
+    
  - Vagrant
 
     `$ sudo apt-get install vagrant`
@@ -56,6 +71,12 @@ Finally, install these packages from the standard repositories:
     `$ sudo pip install ansible`
 
     You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
+
+  **macOS**
+
+  First, get VirtualBox from [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
+
+  Then install Vagrant and Ansible with Homebrew with `brew install Caskroom/cask/vagrant Ansible`
 
 ## Developing with Vagrant
 <legend></legend>
@@ -68,7 +89,7 @@ Navigate to go/ and run:
 
 This will setup a vm to run Go on your computer and will setup a database, install packages, etc. The first time you run `vagrant up` it may take a few minutes to setup, specifically when installing Go packages. Don't worry as progressive times it will speed up.
 
-And that's it! Navigate to [localhost](http://127.0.0.1:8000) in your web browser to view the website.
+And that's it! Navigate to [localhost:8000](http://127.0.0.1:8000) in your web browser to view the website.
 
 ### Additional Notes & Troubleshooting
 
