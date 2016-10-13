@@ -43,8 +43,10 @@
 
       <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
       <br></br>
-      <a class="button btn btn-danger btn-sm fa" href="{{domain}}delete/{{url.short}}">
+      <a class="button btn btn-danger btn-sm fa" data-target="#deletionModal" data-toggle="modal">
         <i class="fa fa-trash-o fa-lg"></i> Delete</a>
+      <!-- <a class="button btn btn-danger btn-sm fa" href="{{domain}}delete/{{url.short}}">
+        <i class="fa fa-trash-o fa-lg"></i> Delete</a> -->
 
       <a tabindex="0" class="button btn btn-info btn-sm fa"
         role="button" data-toggle="popover" title="Not Implemented Quite Yet :("
@@ -53,6 +55,28 @@
         release of Go. If you'd like to check that progress or potentially
         contribute code, head to git.gmu.edu/srct/go">
         <i class="fa fa-cog"></i> Edit</a>
+
+      <div id="deletionModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title" style="font-weight:bold">Are you sure you would like to <a style="color:red">delete</a> {{domain}}{{url.short}}</h4>
+                  </div>
+                  <div class="modal-body" style="padding-bottom: 80px">
+                    <a type="button" class="btn btn-success btn-lg btn-block" href="{{domain}}delete/{{url.short}}" style="padding-bottom: 10px">Yes</a>
+                    <a type="button" class="btn btn-danger btn-lg btn-block" style="float:right;" data-dismiss="modal">No</a>
+
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  </div>
+              </div>
+
+          </div>
+      </div>
 
       {% endif %}
       <br></br>
