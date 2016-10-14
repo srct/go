@@ -22,7 +22,17 @@
 <div class="container">
   <div class="col-md-8">
     <h3>Go Address:</h3>
-      <a href="{{url.short}}">{{domain}}{{url.short}}</a>
+      <a id="link" href="{{url.short}}">{{domain}}{{url.short}}</a>
+      <br></br>
+      <button type="button" class="button btn btn-default btn-xs fa" role="button"
+          id="btn" data-clipboard-target="#link">
+          <i class="fa fa-clipboard" aria-hidden="true"></i> Copy to clipboard</button>
+      <script src="../../static/js/clipboard.min.js"></script>
+      <script>
+      var btn = document.getElementById('btn');
+      var clipboard = new Clipboard(btn);
+      </script>
+
     <br></br>
 
     <h3>Address Details:</h3>
@@ -44,7 +54,7 @@
       <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
       <br></br>
       <a class="button btn btn-danger btn-sm fa" href="{{domain}}delete/{{url.short}}">
-        <i class="fa fa-trash-o fa-lg"></i> Delete</a>
+        <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i> Delete</a>
 
       <a tabindex="0" class="button btn btn-info btn-sm fa"
         role="button" data-toggle="popover" title="Not Implemented Quite Yet :("
@@ -52,7 +62,7 @@
         "We are working on adding this feature in a future
         release of Go. If you'd like to check that progress or potentially
         contribute code, head to git.gmu.edu/srct/go">
-        <i class="fa fa-cog"></i> Edit</a>
+        <i class="fa fa-cog" aria-hidden="true"></i> Edit</a>
 
       {% endif %}
       <br></br>
