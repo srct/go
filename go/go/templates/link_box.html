@@ -1,31 +1,19 @@
 {% load go_extras %}
 {% load qr_tags %}
 
-<style>
-  a.share:link {color:#000000;}
-  a.share:visited {color:#000000;}
-  a.share:hover {color:#000000;}
-  a.share {text-decoration:none;}
-
-  a.button:link {color:#FFF;}
-  a.button:visited {color:#FFF;}
-  a.button:hover {color:#FFF;}
-
-  legend {
-    font-size: inherit;
-  }
-  pre {
-    font-family: inherit;
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="../../static/css/style-link-box.css">
 
 <div class="container">
   <div class="col-md-8">
     <h3>Go Address:</h3>
-       <a id="link" href="{{url.short}}">{{domain}}{{url.short}}</a>
+    <div id="link-container" class="input-group">
+       <a id="link" class="form-control" href="{{url.short}}">{{domain}}{{url.short}}</a>
+       <div id="button-container" class="input-group-addon">
        <button id="btn" type="button" class="button btn btn-default btn-xs fa" role="button"
              data-clipboard-target="#link">
-            <i class="fa fa-clipboard" aria-hidden="true"></i></button>
+            <i id="clipboard-icon" class="fa fa-clipboard fa-1g" aria-hidden="true"></i></button>
+       </div>
+    </div>
     <br></br>
 
     <h3>Address Details:</h3>
