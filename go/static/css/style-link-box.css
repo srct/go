@@ -21,13 +21,13 @@ pre {
     padding-top: 4px;
 }
 
-#btn {
+#copy-button {
     border: none;
     background-color: #eeeeee;
     padding-bottom: 3px;
 }
 
-#btn:focus {
+#copy-button:focus {
     outline: none;
 }
 
@@ -37,4 +37,9 @@ pre {
 
 #link-container {
     width: 400px;
+}
+
+.tooltip-inner {
+    white-space: nowrap;
+    max-width: none;
 }
