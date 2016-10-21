@@ -1,4 +1,5 @@
-{% load go_extras %} {% load qr_tags %}
+{% load go_extras %}
+{% load qr_tags %}
 
 <style>
     a.share:link {
@@ -41,91 +42,123 @@
 <div class="container">
     <div class="col-md-8">
         <h3>Go Address:</h3>
-        <a href="{{domain}}{{url.short}}">{{domain}}{{url.short}}</a>
+        <div id="link-container" class="input-group">
+            <a id="link" class="form-control" href="{{domain}}{{url.short}}">
+                {{domain}}{{url.short}}
+            </a>
+            <div id="button-container" class="input-group-addon">
+                <button id="copy-button" type="button" class="button btn btn-default btn-xs fa" role="button"
+                data-clipboard-target="#link" title="Copy to Clipboard">
+                    <i id="clipboard-icon" class="fa fa-clipboard fa-1g" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
         <br></br>
 
         <h3>Address Details:</h3>
         <strong>Target URL:</strong>
         <br />
         <a href="{{url.target}}">{{url.target}}</a>
-        <br /> {% if url.owner == request.user.registereduser and request.user.registereduser.approved == True %}
-        <strong>Clicks:</strong> {{url.clicks}}
         <br />
+        {% if url.owner == request.user.registereduser and request.user.registereduser.approved == True %}
+            <strong>Clicks:</strong> {{url.clicks}}
+            <br />
+            <strong>QR Code Uses:</strong> {{url.qrclicks}}
+            <br />
+            <strong>Social Media Clicks:</strong> {{url.socialclicks}}
+            <br />
 
-        <strong>QR Code Uses:</strong> {{url.qrclicks}}
-        <br />
-        <strong>Social Media Clicks:</strong> {{url.socialclicks}}
-        <br />
+            <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
 
-        <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
-        <br></br>
-        <a class="button btn btn-danger btn-sm fa" data-target="#deletionModal" data-toggle="modal">
-            <i class="fa fa-trash-o fa-lg"></i> Delete</a>
-        <!-- <a class="button btn btn-danger btn-sm fa" href="{{domain}}delete/{{url.short}}">
-        <i class="fa fa-trash-o fa-lg"></i> Delete</a> -->
+            <br></br>
 
-        <a tabindex="0" class="button btn btn-info btn-sm fa" role="button" data-toggle="popover" title="Not Implemented Quite Yet :(" data-content="We are working on adding this feature in a future
-        release of Go. If you'd like to check that progress or potentially
-        contribute code, head to git.gmu.edu/srct/go">
-            <i class="fa fa-cog"></i> Edit</a>
+            <a class="button btn btn-danger btn-sm fa" data-target="#deletionModal" data-toggle="modal">
+                <i class="fa fa-trash-o fa-lg"></i> Delete
+            </a>
+            <!-- <a class="button btn btn-danger btn-sm fa" href="{{domain}}delete/{{url.short}}">
+            <i class="fa fa-trash-o fa-lg"></i> Delete</a> -->
 
-        <div id="deletionModal" class="modal fade" role="dialog" tabindex="-1">
-            <div class="modal-dialog">
+            <a tabindex="0" class="button btn btn-info btn-sm fa" role="button" data-toggle="popover" title="Not Implemented Quite Yet :(" data-content="We are working on adding this feature in a future
+            release of Go. If you'd like to check that progress or potentially
+            contribute code, head to git.gmu.edu/srct/go">
+                <i class="fa fa-cog"></i> Edit
+            </a>
 
-                <!-- Modal content-->
-                <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                    <div class="modal-header" style="text-align:center;">
-                        <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-                        <!-- <span class="fa-stack fa-fw">
-                        <i class="fa fa-circle fa-stack-2x"></i>
-                        <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-                      </span> -->
-                        <h4 class="modal-title fa text-center" style="font-weight:bold; font-size: 21px !important;">Are you sure you would like to <color style="color:red">delete</color> this link?</h4>
-                        <h5 style="color:red;font-weight:500;margin-top: 0px;margin-bottom: 0px;">Deleting a link is permenant and can not be undone!</h5>
+            <div id="deletionModal" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+                        <div class="modal-header" style="text-align:center;">
+                            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                            <!-- <span class="fa-stack fa-fw">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+                          </span> -->
+                            <h4 class="modal-title text-center" style="font-weight:bold; font-size: 21px !important;">Are you sure you would like to <color style="color:red">delete</color> this link?</h4>
+                            <h5 style="color:red;font-weight:500;margin-top: 0px;margin-bottom: 0px;">Deleting a link is permenant and can not be undone!</h5>
+                        </div>
+                        <div class="modal-body" style="padding-bottom: 80px">
+                            <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                            <a type="button" class="btn btn-danger btn-lg" href="{{domain}}delete/{{url.short}}" style="border-width: 0px; float:right; width:49%;background-color: #AC1D37; border-radius: 4px;">Delete</a>
+                        </div>
                     </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                        <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                        <a type="button" class="btn btn-danger btn-lg" href="{{domain}}delete/{{url.short}}" style="border-width: 0px; float:right; width:49%;background-color: #AC1D37; border-radius: 4px;">Delete</a>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
 
         {% endif %}
+
         <br></br>
+
     </div>
 
     <div class="col-md-4">
-        {% with domain|add:url.short as the_url %} {% with the_url|add:"?qr" as qr_url%} {% qr_from_text qr_url 's' %} {% endwith %} {% with the_url|add:"?social" as social_url %}
-        <a class="share" href="http://twitter.com/share?url={{ social_url }}" target="_blank" title="Share via Twitter">
-            <i class="fa fa-twitter-square fa-3x"></i>
-        </a>
+        {% with domain|add:url.short as the_url %}
+            {% with the_url|add:"?qr" as qr_url%}
+              {% qr_from_text qr_url 's' %}
+            {% endwith %}
 
-        <a class="share" href="http://www.facebook.com/share.php?u={{ social_url }}" target="_blank" title="Share via Facebook">
-            <i class="fa fa-facebook-square fa-3x"></i>
-        </a>
+            {% with the_url|add:"?social" as social_url %}
+              <a class="share" href="http://twitter.com/share?url={{ social_url }}" target="_blank" title="Share via Twitter">
+                <i class="fa fa-twitter-square fa-3x"></i>
+              </a>
 
-        <a class="share" href="https://plus.google.com/share?url={{ social_url }}" target="_blank" title="Share via Google+">
-            <i class="fa fa-google-plus-square fa-3x"></i>
-        </a>
+              <a class="share" href="http://www.facebook.com/share.php?u={{ social_url }}" target="_blank" title="Share via Facebook">
+                <i class="fa fa-facebook-square fa-3x"></i>
+              </a>
 
-        <a class="share" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ social_url }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="Share via LinkedIn">
-            <i class="fa fa-linkedin-square fa-3x"></i>
-        </a>
-        {% endwith %} {% with the_url|add:"?qr" as qr_url %}
-        <pre><strong>QR Downloads:</strong>
+              <a class="share" href="https://plus.google.com/share?url={{ social_url }}" target="_blank" title="Share via Google+">
+                <i class="fa fa-google-plus-square fa-3x"></i>
+              </a>
+
+              <a class="share" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ social_url }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="Share via LinkedIn">
+                <i class="fa fa-linkedin-square fa-3x"></i>
+              </a>
+            {% endwith %}
+
+            {% with the_url|add:"?qr" as qr_url %}
+              <pre><strong>QR Downloads:</strong>
         <a href="http://chart.googleapis.com/chart?cht=qr&chs=268x268&chl={{ qr_url }}" target="_blank">Small (268x268)</a>
         <a href="http://chart.googleapis.com/chart?cht=qr&chs=383x383&chl={{ qr_url }}" target="_blank">Medium (383x383)</a>
         <a href="http://chart.googleapis.com/chart?cht=qr&chs=547x547&chl={{ qr_url }}" target="_blank">Large (547x547)</a>
-        </pre> {% endwith %} {% endwith %}
+                </pre>
+            {% endwith %}
+        {% endwith %}
+
     </div>
 </div>
+
+
+<link rel="stylesheet" type="text/css" href="../../static/css/style-link-box.css">
+<script src="../../static/js/clipboard.min.js"></script>
+<script src="../../static/js/copy.js"></script>
 
 <script>
     $(function() {
         var option = {
-            'trigger': 'hover'
+            'trigger': 'hover',
         };
         $('[data-toggle="popover"]').popover(option)
     })
