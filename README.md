@@ -13,10 +13,10 @@ I encourage you to join the #go channel in SRCT's [Slack Group](http://srct.slac
 ## Package Installation
 <legend></legend>
 
-### If Using Docker 
-First, install Docker on your system.
-* For macOS go here https://docs.docker.com/docker-for-mac/
-#### Prerequisities
+
+
+
+### Prerequisities
 First, install python and git on your system.
 * Python is the programming language used for Django, the web framework used by Go.
 * Git is the version control system used for SRCT projects.
@@ -54,8 +54,17 @@ Now, on your computer, navigate to the directory in which you want to download t
 
 `$ git clone git@git.gmu.edu:srct/go.git`
 
+### If Using Docker 
+First, install Docker on your system.
+* For macOS go here https://docs.docker.com/docker-for-mac/
+* For windows go here https://docs.docker.com/docker-for-windows/
+* For you specific linux disro go here https://docs.docker.com/engine/installation/ 
 
-### Required Packages
+Next go to the directory with the docker-compose file in it and run 'docker-compose up'
+You should see that the server is running by going to localhost:8000 in your browser
+Any changes you make to your local file system will be mirrored in the server 
+
+### If Using Vagrant
 Finally, install these packages from the standard repositories:
  - VirtualBox
 
