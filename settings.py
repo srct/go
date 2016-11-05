@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # DEBUG mode is used to view more details when errors occur
 # Do not have set True in production
-DEBUG = False
+DEBUG = True
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -16,17 +16,17 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': secret.DB_NAME,
-        'USER': secret.DB_USER,
-        'PASSWORD': secret.DB_PASSWORD,
-        'HOST': secret.DB_HOST,
-        'PORT': '',
+        'NAME': 'go',
+        'USER': 'go',
+        'PASSWORD': 'go',
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
 
 # The domains this application will be deployed on
 # e.g. Which domains this app should listen to requests from.
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Peoplefinder API
 PF_URL = "http://api.srct.gmu.edu/pf/v1/"
@@ -162,7 +162,7 @@ if AUTH_MODE.lower() == 'ldap':
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
 
 elif AUTH_MODE.lower() == 'cas':
-    CAS_SERVER_URL = "https://login.gmu.edu"
+    CAS_SERVER_URL = "https://nanderson.me/cas/"
     CAS_LOGOUT_COMPLETELY = True
     CAS_PROVIDE_URL_TO_LOGOUT = True
 
@@ -197,4 +197,4 @@ EMAIL_TO = "to@example.com"
 
 # Domain used to email to users. See line 231 in views.py
 # ie. in Mason's case '@masonlive.gmu.edu'
-EMAIL_DOMAIN = "@example.com"
+EMAIL_DOMAIN = "@masonlive.gmu.edu"

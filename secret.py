@@ -2,13 +2,13 @@
 # Please be sure to keep these variables secret in production
 
 # You can generate a secret key from the following link: http://www.miniwebtool.com/django-secret-key-generator/
-SECRET_KEY = ""
+SECRET_KEY = "much-secret"
 
 # Use the values from the database configuration
-DB_NAME = ""
-DB_USER = ""
+DB_NAME = "go"
+DB_USER = "go"
 # Remember to use a strong password in production
-DB_PASSWORD = ""
+DB_PASSWORD = "go"
 # Often left blank
 DB_HOST = ""
 
