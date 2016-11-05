@@ -12,7 +12,11 @@ I encourage you to join the #go channel in SRCT's [Slack Group](http://srct.slac
 
 ## Package Installation
 <legend></legend>
-### Prerequisities
+
+### If Using Docker 
+First, install Docker on your system.
+* For macOS go here https://docs.docker.com/docker-for-mac/
+#### Prerequisities
 First, install python and git on your system.
 * Python is the programming language used for Django, the web framework used by Go.
 * Git is the version control system used for SRCT projects.
