@@ -60,9 +60,12 @@ First, install Docker on your system.
 * For windows go here https://docs.docker.com/docker-for-windows/
 * For you specific linux disro go here https://docs.docker.com/engine/installation/ 
 
-Next go to the directory with the docker-compose file in it and run 'docker-compose up'
-You should see that the server is running by going to localhost:8000 in your browser
-Any changes you make to your local file system will be mirrored in the server 
+Next go to the directory with the docker-compose file in it and run 
+
+`$ docker-compose up`
+
+You should see that the server is running by going to http://localhost:8000 in your browser.
+Any changes you make to your local file system will be mirrored in the server.
 
 ### If Using Vagrant
 Finally, install these packages from the standard repositories:
