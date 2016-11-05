@@ -12,4 +12,4 @@ RUN apt-get install libldap2-dev -y
 RUN apt-get install 
 RUN pip install -r requirements.txt
 ADD . /go/
-CMD ./startup.sh
+

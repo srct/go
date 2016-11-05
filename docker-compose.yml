@@ -4,7 +4,7 @@ services:
     build: .
     ports:
       - "8000:8000"
-    command: python go/manage.py runserver 0.0.0.0:8000
+    command: /bin/bash ./startup.sh #python go/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/go
     depends_on:
