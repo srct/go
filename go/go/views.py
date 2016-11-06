@@ -303,7 +303,7 @@ def useradmin(request):
             for name in userlist:
                 todeny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = todeny.user + settings.EMAIL_DOMAIN
+                    user_mail = todeny.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Denied!',
                         ######################

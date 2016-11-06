@@ -12,8 +12,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 from bootstrap3_datetime.widgets import DateTimePicker
-import datetime
-from datetime import date
+from datetime import date, datetime, timedelta
 
 class URLForm(forms.ModelForm):
 
@@ -89,11 +88,11 @@ class URLForm(forms.ModelForm):
         label='Custom Date',
         input_formats=['%m-%d-%Y'],
         validators=[valid_date],
+        initial=lambda: datetime.now() + timedelta(days=1),
         widget=DateTimePicker(
             options={
                 "format": "MM-DD-YYYY",
                 "pickTime": False,
-                "defaultDate": (datetime.date.today() + datetime.timedelta(hours=24)).strftime("%m-%d-%Y"),
             },
             icon_attrs={
                 "class": "fa fa-calendar",

@@ -38,12 +38,22 @@ def pfinfo(uname):
         pfjson = metadata.json()
         try:
             if len(pfjson['results']) == 1:
-                name_str = pfjson['results'][0]['name']
-                name = pfparse(name_str)
+                if pfjson['method'] == 'peoplefinder':
+                    name_str = pfjson['results'][0]['name']
+                    name = pfparse(name_str)
+                elif pfjson['method'] == 'ldap':
+                    name = [pfjson['results'][0]['givenname'], pfjson['results'][0]['surname']]
+                else:
+                    name = pfjson['results'][0]['name']
                 return name
             else:
-                name_str = pfjson['results'][1]['name']
-                name = pfparse(name_str)
+                if pfjson['method'] == 'peoplefinder':
+                    name_str = pfjson['results'][1]['name']
+                    name = pfparse(name_str)
+                elif pfjson['method'] == 'ldap':
+                    name = [pfjson['results'][1]['givenname'], pfjson['results'][1]['surname']]
+                else:
+                    name = pfjson['results'][0]['name']
                 return name
         # if the name is not in peoplefinder, return empty first and last name
         except IndexError:
