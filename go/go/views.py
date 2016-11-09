@@ -16,6 +16,11 @@ from go.forms import URLForm, SignupForm
 # Other Imports
 from datetime import timedelta
 
+requestObject = request.RegisteredUser.objects.get(user__username__exact=user)
+if requestObject.user.registereduser.blocked != False
+    raise PermissionDenied()
+
+
 def index(request):
     """
     This view handles the homepage that the user is presented with when
@@ -319,6 +324,27 @@ def useradmin(request):
                         [user_mail]
                     )
                 todeny.user.delete()
+        elif '_block' in request.POST:
+            for name in userlist:
+                toblock = RegisteredUser.objects.get(user__username__exact=name)
+                if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                    user_mail = toblock.user.username + settings.EMAIL_DOMAIN
+                    send_mail(
+                        'Your Account has been Blocked!',
+                        ######################
+                        'Hey there %s,\n\n'
+                        'The Go admins have reviewed your application and have '
+                        'blocked you from using Go.\n\n'
+                        'Please reach out to srct@gmu.edu to appeal '
+                        'this decision.\n\n'
+                        '- Go Admins'
+                        % (str(toblock.full_name)),
+                        ######################
+                        settings.EMAIL_FROM,
+                        [user_mail]
+                    )
+                # toblock.user.delete()
+                toblock.user.registereduser.blocked = True
     need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
     return render(request, 'admin/useradmin.html', {
         'need_approval': need_approval

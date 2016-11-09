@@ -19,6 +19,9 @@ class RegisteredUser(models.Model):
     that that user is registered.
     """
 
+    # Is this User Bloacked?
+    blocked = models.BooleanField(default=False)
+
     # Let's associate a User to this RegisteredUser
     user = models.OneToOneField(User)
 
