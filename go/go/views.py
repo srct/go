@@ -30,12 +30,16 @@ def index(request):
     get the URL registration form.
     """
 
+    # If the user is blocked, redirect them to the blocked page.
+    if request.user.registereduser.blocked:
+        return render(request, 'blocked.html')
     # If the user is not authenticated, show them a public landing page.
-    if not request.user.is_authenticated():
+    elif not request.user.is_authenticated():
         return render(request, 'public_landing.html')
     # If the user isn't approved, don't give them any leeway.
     elif not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
+
 
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
 
