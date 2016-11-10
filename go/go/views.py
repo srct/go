@@ -16,9 +16,9 @@ from go.forms import URLForm, SignupForm
 # Other Imports
 from datetime import timedelta
 
-requestObject = request.RegisteredUser.objects.get(user__username__exact=user)
-if requestObject.user.registereduser.blocked != False
-    raise PermissionDenied()
+# requestObject = request.RegisteredUser.objects.get(user__username__exact=user)
+# if requestObject.user.registereduser.blocked != False
+#     raise PermissionDenied()
 
 
 def index(request):
@@ -344,9 +344,57 @@ def useradmin(request):
                         [user_mail]
                     )
                 # toblock.user.delete()
-                toblock.user.registereduser.blocked = True
+                toblock.blocked = True
+                toblock.approved = False
+                toblock.save()
+        elif '_unblock' in request.POST:
+            for name in userlist:
+                toUNblock = RegisteredUser.objects.get(user__username__exact=name)
+                if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                    user_mail = toUNblock.user.username + settings.EMAIL_DOMAIN
+                    send_mail(
+                        'Your Account has been Blocked!',
+                        ######################
+                        'Hey there %s,\n\n'
+                        'The Go admins have reviewed your application and have '
+                        'unblocked you from using Go.\n\n'
+                        'Congratulations! '
+                        '- Go Admins'
+                        % (str(toblock.full_name)),
+                        ######################
+                        settings.EMAIL_FROM,
+                        [user_mail]
+                    )
+                # toblock.user.delete()
+                toUNblock.blocked = False
+                toUNblock.approved = True
+                toUNblock.save()
+        elif '_remove' in request.POST:
+            for name in userlist:
+                toremove = RegisteredUser.objects.get(user__username__exact=name)
+                if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                    user_mail = toremove.user.username + settings.EMAIL_DOMAIN
+                    send_mail(
+                        'Your Account has been Deleted!',
+                        ######################
+                        'Hey there %s,\n\n'
+                        'The Go admins have decided to remove you from Go. \n\n'
+                        'Please reach out to srct@gmu.edu to appeal '
+                        'this decision.\n\n'
+                        '- Go Admins'
+                        % (str(toremove.full_name)),
+                        ######################
+                        settings.EMAIL_FROM,
+                        [user_mail]
+                    )
+                toremove.user.delete()
+
     need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
+    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True)
+    blocked_users = RegisteredUser.objects.filter(blocked=True)
     return render(request, 'admin/useradmin.html', {
-        'need_approval': need_approval
+        'need_approval': need_approval,
+        'current_users': current_users,
+        'blocked_users': blocked_users
     },
     )

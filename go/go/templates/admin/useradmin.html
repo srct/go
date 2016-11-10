@@ -24,6 +24,8 @@ SRCT Go &bull; Administration Panel
   </div>
 </div>
 
+
+<!-- TABLE 1 -->
 <div class="row">
   <div class="col-md-12">
 
@@ -66,6 +68,119 @@ SRCT Go &bull; Administration Panel
       <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm">
       <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-sm">
       <input type="submit" name="_block" value="Block" class="btn btn-default btn-sm" style="background-color: black; color: white;">
+
+
+    </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- TABLE 2 -->
+<div class="row">
+  <div class="col-md-12">
+
+    <h3>Blocked Users</h3>
+
+    <form method="post" action="useradmin">{% csrf_token %}
+
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>Selected</th>
+          <th>Username</th>
+          <th>Full Name</th>
+          <th>Description</th>
+          <th>Is Blocked</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for blockedUsers in blocked_users %}
+        <tr>
+          <td><input type="checkbox" name="username" value={{ blockedUsers.user }}></td>
+          <td>{{ blockedUsers.user }}</td>
+          <td>{{ blockedUsers.full_name }}</td>
+          <td>{{ blockedUsers.description|default:"No description provided" }}</td>
+          <td>{{ blockedUsers.blocked }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+    <div class="form-group">
+
+      <!-- <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm"> -->
+      <!-- <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-sm"> -->
+      <input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-sm">
+
+
+
+    </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- TABLE 3 -->
+<div class="row">
+  <div class="col-md-12">
+
+    <h3>Current Users</h3>
+
+    <form method="post" action="useradmin">{% csrf_token %}
+
+    <table class="table table-striped table-hover ">
+      <thead>
+        <tr>
+          <th>Selected</th>
+          <th>Username</th>
+          <th>Full Name</th>
+          <th>Description</th>
+          <th>Is Blocked</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for currentUsers in current_users %}
+        <tr>
+          <td><input type="checkbox" name="username" value={{ currentUsers.user }}></td>
+          <td>{{ currentUsers.user }}</td>
+          <td>{{ currentUsers.full_name }}</td>
+          <td>{{ currentUsers.description|default:"No description provided" }}</td>
+          <td>{{ currentUsers.blocked }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+          <td>none</td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+    <div class="form-group">
+
+      <!-- <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm"> -->
+      <input type="submit" name="_remove" value="Remove" class="btn btn-danger btn-sm">
+      <input type="submit" name="_block" value="Block" class="btn btn-default btn-sm" style="background-color: black; color: white;">
+      <!-- <input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-sm"> -->
+
 
 
     </div>
