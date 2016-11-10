@@ -1,0 +1,41 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block title %}
+SRCT Go &bull; Account Not Approved
+{% endblock %}
+
+
+{% block content %}
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+      <h1><strong>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-ban fa-stack-1x fa-inverse"></i>
+        </span>
+        <i class="fa">Account Is Blocked</i>
+      </strong></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    {% block name %}
+    <p>
+      You have been banned from go {{ request.user.registereduser.full_name }}.
+    </p>
+    {% endblock %}
+    <br />
+    <p>
+      If you belive this is in error please contact Go Admins.
+      <br />
+      <br/>
+      Thank you, And have a nice day!
+    </p>
+    <br/><br/>
+  </div>
+</div>
+{% endblock %}
