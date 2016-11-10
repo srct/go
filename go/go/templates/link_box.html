@@ -1,42 +1,6 @@
 {% load go_extras %} {% load qr_tags %}
 
-<style>
-    a.share:link {
-        color: #000000;
-    }
-
-    a.share:visited {
-        color: #000000;
-    }
-
-    a.share:hover {
-        color: #000000;
-    }
-
-    a.share {
-        text-decoration: none;
-    }
-
-    a.button:link {
-        color: #FFF;
-    }
-
-    a.button:visited {
-        color: #FFF;
-    }
-
-    a.button:hover {
-        color: #FFF;
-    }
-
-    legend {
-        font-size: inherit;
-    }
-
-    pre {
-        font-family: inherit;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="../../style-link-box.css">
 
 <div class="container">
     <div class="col-md-8">
@@ -140,6 +104,67 @@
             {% endwith %}
         {% endwith %}
 
+      {% if url.owner == request.user.registereduser and request.user.registereduser.approved == True %}
+      <strong>Clicks:</strong>
+        {{url.clicks}}
+      <br />
+
+      <strong>QR Code Uses:</strong> {{url.qrclicks}}
+      <br />
+      <strong>Social Media Clicks:</strong> {{url.socialclicks}}
+      <br />
+
+      <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
+      <br></br>
+      <a class="button btn btn-danger btn-sm" href="{{domain}}delete/{{url.short}}">
+        <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i> Delete</a>
+
+      <a tabindex="0" class="button btn btn-info btn-sm"
+        role="button" data-toggle="popover" title="Not Implemented Quite Yet :("
+        data-content=
+        "We are working on adding this feature in a future
+        release of Go. If you'd like to check that progress or potentially
+        contribute code, head to git.gmu.edu/srct/go">
+        <i class="fa fa-cog" aria-hidden="true"></i> Edit</a>
+
+      {% endif %}
+      <br></br>
+  </div>
+
+  <div class="col-md-4">
+  {% with domain|add:url.short as the_url %}
+    {% with the_url|add:"?qr" as qr_url%}
+      {% qr_from_text qr_url 's' %}
+    {% endwith %}
+
+    {% with the_url|add:"?social" as social_url %}
+      <a class="share" href="http://twitter.com/share?url={{ social_url }}" target="_blank" title="Share via Twitter">
+        <i class="fa fa-twitter-square fa-3x"></i>
+      </a>
+
+      <a class="share" href="http://www.facebook.com/share.php?u={{ social_url }}" target="_blank" title="Share via Facebook">
+        <i class="fa fa-facebook-square fa-3x"></i>
+      </a>
+
+      <a class="share" href="https://plus.google.com/share?url={{ social_url }}" target="_blank" title="Share via Google+">
+        <i class="fa fa-google-plus-square fa-3x"></i>
+      </a>
+
+      <a class="share" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ social_url }}&amp;ro=false&amp;summary=&amp;source=" target="_blank" title="Share via LinkedIn">
+        <i class="fa fa-linkedin-square fa-3x"></i>
+      </a>
+    {% endwith %}
+
+    {% with the_url|add:"?qr" as qr_url %}
+      <pre><strong>QR Downloads:</strong>
+        <a href="http://chart.googleapis.com/chart?cht=qr&chs=120x120&chl={{ qr_url }}">Small (120x120)</a>
+        <a href="http://chart.googleapis.com/chart?cht=qr&chs=230x230&chl={{ qr_url }}">Medium (230x230)</a>
+        <a href="http://chart.googleapis.com/chart?cht=qr&chs=350x350&chl={{ qr_url }}">Large (350x350)</a>
+        </pre>
+    {% endwith %}
+
+  {% endwith %}
+  </div>
     </div>
 </div>
 
