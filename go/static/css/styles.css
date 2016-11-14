@@ -34,3 +34,6 @@ body {
 .navbar-brand {
   padding: 10px 15px;
 }
+.btn-blockUsr {
+  font-weight: 600;
+}

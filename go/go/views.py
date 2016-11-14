@@ -31,14 +31,15 @@ def index(request):
     """
 
     # If the user is blocked, redirect them to the blocked page.
-    if request.user.registereduser.blocked:
-        return render(request, 'blocked.html')
     # If the user is not authenticated, show them a public landing page.
-    elif not request.user.is_authenticated():
-        return render(request, 'public_landing.html')
+    if not request.user.is_authenticated():
+            return render(request, 'public_landing.html')
     # If the user isn't approved, don't give them any leeway.
     elif not request.user.registereduser.approved:
-        return render(request, 'not_registered.html')
+        if request.user.registereduser.blocked:
+            return render(request, 'blocked.html')
+        else:
+         return render(request, 'not_registered.html')
 
 
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
@@ -350,6 +351,7 @@ def useradmin(request):
                 # toblock.user.delete()
                 toblock.blocked = True
                 toblock.approved = False
+                toblock.registered = False
                 toblock.save()
         elif '_unblock' in request.POST:
             for name in userlist:
@@ -369,10 +371,10 @@ def useradmin(request):
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                # toblock.user.delete()
-                toUNblock.blocked = False
-                toUNblock.approved = True
-                toUNblock.save()
+                toUNblock.user.delete()
+                # toUNblock.blocked = False
+                # toUNblock.approved = False
+                # toUNblock.save()
         elif '_remove' in request.POST:
             for name in userlist:
                 toremove = RegisteredUser.objects.get(user__username__exact=name)
