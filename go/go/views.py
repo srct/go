@@ -364,6 +364,7 @@ def useradmin(request):
                         'Hey there %s,\n\n'
                         'The Go admins have reviewed your application and have '
                         'unblocked you from using Go.\n\n'
+                        'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
                         % (str(toblock.full_name)),
