@@ -13,4 +13,4 @@ venv
 /go/go/migrations
 .coverage
 htmlcov/
-
+.idea
