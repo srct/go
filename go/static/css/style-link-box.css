@@ -10,9 +10,6 @@ a.button:hover {color:#FFF;}
 legend {
     font-size: inherit;
 }
-pre {
-    font-family: inherit;
-}
 
 #button-container {
     padding-bottom: 4px;
@@ -33,6 +30,10 @@ pre {
 
 #clipboard-icon {
     font-size: 14px;
+}
+
+#link:visited {
+    color: #006633;
 }
 
 #link-container {

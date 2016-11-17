@@ -1,42 +1,6 @@
 {% load go_extras %} {% load qr_tags %}
 
-<style>
-    a.share:link {
-        color: #000000;
-    }
-
-    a.share:visited {
-        color: #000000;
-    }
-
-    a.share:hover {
-        color: #000000;
-    }
-
-    a.share {
-        text-decoration: none;
-    }
-
-    a.button:link {
-        color: #FFF;
-    }
-
-    a.button:visited {
-        color: #FFF;
-    }
-
-    a.button:hover {
-        color: #FFF;
-    }
-
-    legend {
-        font-size: inherit;
-    }
-
-    pre {
-        font-family: inherit;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="../../style-link-box.css">
 
 <div class="container">
     <div class="col-md-8">
@@ -75,8 +39,7 @@
             <a class="button btn btn-danger btn-sm fa" data-target="#deletionModal" data-toggle="modal">
                 <i class="fa fa-trash-o fa-lg"></i> Delete
             </a>
-            <!-- <a class="button btn btn-danger btn-sm fa" href="{{domain}}delete/{{url.short}}">
-            <i class="fa fa-trash-o fa-lg"></i> Delete</a> -->
+
 
             <a tabindex="0" class="button btn btn-info btn-sm fa" role="button" data-toggle="popover" title="Not Implemented Quite Yet :(" data-content="We are working on adding this feature in a future
             release of Go. If you'd like to check that progress or potentially
@@ -139,6 +102,8 @@
                 </pre>
             {% endwith %}
         {% endwith %}
+      <br></br>
+  </div>
 
     </div>
 </div>
