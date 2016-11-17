@@ -37,7 +37,7 @@ def index(request):
     # If the user isn't approved, don't give them any leeway.
     elif not request.user.registereduser.approved:
         if request.user.registereduser.blocked:
-            return render(request, 'blocked.html')
+            return render(request, 'banned.html')
         else:
             return render(request, 'not_registered.html')
 
