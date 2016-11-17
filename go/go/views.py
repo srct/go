@@ -1,6 +1,7 @@
 # Django Imports
 from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
 from django.core.mail import send_mail, EmailMessage
@@ -329,6 +330,7 @@ def useradmin(request):
                         [user_mail]
                     )
                 todeny.user.delete()
+                return HttpResponseRedirect('useradmin')
         elif '_block' in request.POST:
             for name in userlist:
                 toblock = RegisteredUser.objects.get(user__username__exact=name)
@@ -373,6 +375,7 @@ def useradmin(request):
                         [user_mail]
                     )
                 toUNblock.user.delete()
+                return HttpResponseRedirect('useradmin')
                 # toUNblock.blocked = False
                 # toUNblock.approved = False
                 # toUNblock.save()
@@ -395,6 +398,7 @@ def useradmin(request):
                         [user_mail]
                     )
                 toremove.user.delete()
+                return HttpResponseRedirect('useradmin')
 
     need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
     current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True)

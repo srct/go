@@ -92,7 +92,6 @@ SRCT Go &bull; Administration Panel
           <th>Username</th>
           <th>Full Name</th>
           <th>Description</th>
-          <th>Is Blocked</th>
         </tr>
       </thead>
       <tbody>
@@ -103,11 +102,9 @@ SRCT Go &bull; Administration Panel
           <td>{{ blockedUsers.user }}</td>
           <td>{{ blockedUsers.full_name }}</td>
           <td>{{ blockedUsers.description|default:"No description provided" }}</td>
-          <td>{{ blockedUsers.blocked }}</td>
         </tr>
       {% empty %}
         <tr>
-          <td>none</td>
           <td>none</td>
           <td>none</td>
           <td>none</td>
@@ -148,7 +145,6 @@ SRCT Go &bull; Administration Panel
           <th>Username</th>
           <th>Full Name</th>
           <th>Description</th>
-          <th>Is Blocked</th>
         </tr>
       </thead>
       <tbody>
@@ -159,11 +155,9 @@ SRCT Go &bull; Administration Panel
           <td>{{ currentUsers.user }}</td>
           <td>{{ currentUsers.full_name }}</td>
           <td>{{ currentUsers.description|default:"No description provided" }}</td>
-          <td>{{ currentUsers.blocked }}</td>
         </tr>
       {% empty %}
         <tr>
-          <td>none</td>
           <td>none</td>
           <td>none</td>
           <td>none</td>
