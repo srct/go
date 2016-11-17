@@ -25,7 +25,7 @@ SRCT Go &bull; Account Blocked
   <div class="col-md-12">
     {% block name %}
     <p>
-      You have been banned from go {{ request.user.registereduser.full_name }}.
+      You have been banned from Go: <strong>{{ request.user.registereduser.full_name }}</strong>.
     </p>
     {% endblock %}
     <br />

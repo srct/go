@@ -400,7 +400,7 @@ def useradmin(request):
                 toremove.user.delete()
                 return HttpResponseRedirect('useradmin')
 
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
     current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True)
     blocked_users = RegisteredUser.objects.filter(blocked=True)
     return render(request, 'admin/useradmin.html', {
