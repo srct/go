@@ -1,5 +1,7 @@
 FROM python:2.7
 ENV PYTHONUNBUFFERED 1
+# currently this doesnt do anything 
+
 RUN mkdir /go
 WORKDIR /go
 ADD requirements.txt /go/
