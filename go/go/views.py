@@ -162,7 +162,9 @@ def signup(request):
     This view presents the user with a registration form. You can register yourself.
     """
     # Do not display signup page to registered or approved users
-    if request.user.registereduser.approved:
+    if request.user.registereduser.blocked:
+        return redirect('banned.html')
+    elif request.user.registereduser.approved:
         return redirect('/')
     elif request.user.registereduser.registered:
         return redirect('registered')
