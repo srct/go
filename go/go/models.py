@@ -72,7 +72,7 @@ class URL(models.Model):
     # What is the target URL for this Go link
     target = models.URLField(max_length=1000)
     # What is the actual go link (short url) for this URL
-    short = models.SlugField(max_length=20)
+    short = models.SlugField(max_length=20, primary_key=True)
 
     # how many people have visited this Go link
     clicks = models.IntegerField(default=0)
@@ -94,7 +94,7 @@ class URL(models.Model):
         ordering = ['short']
 
     # legacy method to ensure that generated short URL's are valid
-    # should be updated to be simpler 
+    # should be updated to be simpler
     @staticmethod
     def generate_valid_short():
         if cache.get("hashids_counter") is None:
