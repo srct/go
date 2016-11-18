@@ -8,16 +8,17 @@ from django.dispatch import receiver
 
 # Other Imports
 import string
+# http://hashids.org/python/
 from hashids import Hashids
 
+# generate the salt and initialize Hashids
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
 
-
+"""
+    This is simply a wrapper model for the user object  which, if an object
+    exists, indicates that that user is registered.
+"""
 class RegisteredUser(models.Model):
-    """
-    This is simply a wrapper model which, if an object exists, indicates
-    that that user is registered.
-    """
 
     # Let's associate a User to this RegisteredUser
     user = models.OneToOneField(User)
@@ -56,31 +57,44 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
         RegisteredUser.objects.create(user=instance)
 
 
-class URL(models.Model):
-    """
+"""
     This model represents a stored URL redirection rule. Each URL has an
     owner, target url, short identifier, click counter, and expiration
     date.
-    """
+"""
+class URL(models.Model):
 
+    # Who is the owner of this Go link
     owner = models.ForeignKey(RegisteredUser)
+    # When was this link created?
     date_created = models.DateTimeField(default=timezone.now)
 
+    # What is the target URL for this Go link
     target = models.URLField(max_length=1000)
-    short = models.SlugField(primary_key=True, max_length=20)
-    clicks = models.IntegerField(default=0)
+    # What is the actual go link (short url) for this URL
+    short = models.SlugField(max_length=20)
 
+    # how many people have visited this Go link
+    clicks = models.IntegerField(default=0)
+    # how many people have visited this Go link through the qr code
     qrclicks = models.IntegerField(default=0)
+    # how many people have visited the go link through social media
     socialclicks = models.IntegerField(default=0)
 
+    # does this Go link expire on a certain date
     expires = models.DateTimeField(blank=True, null=True)
 
+    # print(URL)
     def __unicode__(self):
         return '<%s : %s>' % (self.owner.user, self.target)
 
+    # metadata for URL's
     class Meta:
+        # they should be ordered by their short links
         ordering = ['short']
 
+    # legacy method to ensure that generated short URL's are valid
+    # should be updated to be simpler 
     @staticmethod
     def generate_valid_short():
         if cache.get("hashids_counter") is None:
