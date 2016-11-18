@@ -286,6 +286,17 @@ def redirection(request, short):
     return redirect(url.target)
 
 """
+    Decorator function for views that checks that the user is logged in and is
+    a staff member, displaying the login page if necessary.
+"""
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
+    return user_passes_test(
+        lambda u: u.is_active and u.is_staff,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )(view_func)
+
+"""
     This view is a simplified admin panel, so that staff don't need to log in
     to approve links
 """
@@ -353,14 +364,3 @@ def useradmin(request):
         'need_approval': need_approval
     },
     )
-
-"""
-    Decorator function for views that checks that the user is logged in and is
-    a staff member, displaying the login page if necessary.
-"""
-def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
-    return user_passes_test(
-        lambda u: u.is_active and u.is_staff,
-        login_url=login_url,
-        redirect_field_name=redirect_field_name
-    )(view_func)
