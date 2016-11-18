@@ -1,17 +1,18 @@
+<!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
-
+<!-- define the page title block -->
 {% block title %}
 SRCT Go &bull; Administration Panel
 {% endblock %}
 
-
+<!-- define the content block for the page -->
 {% block content %}
 
+<!-- define the page header div -->
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-
       <h1><strong>
         <span class="fa-stack fa-lg">
           <i class="fa fa-circle fa-stack-2x"></i>
@@ -19,60 +20,77 @@ SRCT Go &bull; Administration Panel
         </span>
         <i class="fa">Moderation Panel</i>
       </strong></h1>
-
     </div>
   </div>
 </div>
 
+<!-- define the div where we can select users from a table to judge them -->
 <div class="row">
   <div class="col-md-12">
-
     <h3>Users awaiting moderation</h3>
+    <!-- define our useradmin form which is later submitted to add users -->
+    <form method="post" action="useradmin">
+        <!-- csrf protection -->
+        {% csrf_token %}
 
-    <form method="post" action="useradmin">{% csrf_token %}
+        <!-- define our table of users -->
+        <table class="table table-striped table-hover">
+            <!-- define the table head row -->
+            <thead>
+                <tr>
+                  <th>Selected</th>
+                  <th>Username</th>
+                  <th>Full Name</th>
+                  <th>Description</th>
+                </tr>
+            </thead>
 
-    <table class="table table-striped table-hover ">
-      <thead>
-        <tr>
-          <th>Selected</th>
-          <th>Username</th>
-          <th>Full Name</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
+            <!-- define the table body rows -->
+            <tbody>
+                <!-- loop through every user in the need_approval list -->
+                {% for unapproved in need_approval %}
+                    <!-- create a new row for this user -->
+                    <tr>
+                        <!-- checkbox to select user -->
+                        <td>
+                            <input type="checkbox" name="username" value={{ unapproved.user }}>
+                        </td>
+                        <!-- username -->
+                        <td>{{ unapproved.user }}</td>
+                        <!-- user's full name -->
+                        <td>{{ unapproved.full_name }}</td>
+                        <!--
+                            The description provided by the user (unless they
+                            did not provide one)
+                        -->
+                        <td>
+                            {{ unapproved.description|default:"No description provided" }}
+                        </td>
+                    </tr>
 
-      {% for unapproved in need_approval %}
-        <tr>
-          <td><input type="checkbox" name="username" value={{ unapproved.user }}></td>
-          <td>{{ unapproved.user }}</td>
-          <td>{{ unapproved.full_name }}</td>
-          <td>{{ unapproved.description|default:"No description provided" }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td>none</td>
-          <td>none</td>
-          <td>none</td>
-          <td>none</td>
-        </tr>
-      {% endfor %}
+                    <!-- if the list is empty.. display a blank row -->
+                    {% empty %}
+                        <tr>
+                          <td>none</td>
+                          <td>none</td>
+                          <td>none</td>
+                          <td>none</td>
+                        </tr>
+                  {% endfor %}
+            </tbody>
+        </table>
 
-      </tbody>
-    </table>
-
-    <div class="form-group">
-
-      <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm">
-      <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-sm">
-
-
-    </div>
-
+        <!-- define the div that contains submit buttons for our form -->
+        <div class="form-group">
+            <!-- approve selected users -->
+            <input type="submit" name="_approve" value="Approve"
+                    class="btn btn-primary btn-sm">
+            <!-- approve selected users -->
+            <input type="submit" name="_deny" value="Deny"
+                    class="btn btn-danger btn-sm">
+        </div>
     </form>
-
   </div>
 </div>
-
 
 {% endblock %}
