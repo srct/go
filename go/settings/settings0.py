@@ -96,7 +96,7 @@ INSTALLED_APPS = (
    'django.contrib.messages',
    'django.contrib.staticfiles',
    'go',
-   'piwik',
+   
    'django.contrib.admin',
    'qrcode',
    'crispy_forms',
@@ -182,8 +182,8 @@ elif AUTH_MODE.lower() == 'cas':
         'cas.middleware.CASMiddleware',
     )
  
-PIWIK_SITE_ID = secret.PIWIK_SITE_ID
-PIWIK_URL = secret.PIWIK_URL
+# PIWIK_SITE_ID = secret.PIWIK_SITE_ID
+# PIWIK_URL = secret.PIWIK_URL
  
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
  

@@ -10,7 +10,8 @@ services:
     depends_on:
       - db
     environment:
-      - test=* 
+      - debug=True
+      - host=* 
       - email_domain=@masonlive.gmu.edu
       - cas_url=https://nanderson.me/cas/
       - superuser=dhaynes3
