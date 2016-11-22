@@ -163,7 +163,7 @@ def signup(request):
     """
     # Do not display signup page to registered or approved users
     if request.user.registereduser.blocked:
-        return redirect('banned.html')
+        return render(request, 'banned.html')
     elif request.user.registereduser.approved:
         return redirect('/')
     elif request.user.registereduser.registered:
