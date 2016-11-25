@@ -35,7 +35,7 @@
             <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
 
             <br></br>
-
+            <!-- Delete Button  -->
             <a class="button btn btn-danger btn-sm fa" data-target="#deletionModal-{{url.short}}" data-toggle="modal">
                 <i class="fa fa-trash-o fa-lg"></i> Delete
             </a>
@@ -46,7 +46,7 @@
             contribute code, head to git.gmu.edu/srct/go">
                 <i class="fa fa-cog"></i> Edit
             </a>
-
+            <!--Define Delete Modal-->
             <div id="deletionModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
                 <div class="modal-dialog">
 
