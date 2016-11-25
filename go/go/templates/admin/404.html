@@ -1,21 +1,26 @@
+<!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
+<!-- define the page title block -->
 {% block title %}
 404 Error &bull; Page Not Found
 {% endblock %}
 
+<!-- define the content block for the page -->
 {% block content %}
 
+<!-- div that contains the 404 page content -->
 <div class="row">
   <div class="col-md-10 col-md-offset-1 text-center">
     <h1>404 Error - Page Not Found</h1>
-
     <h3>The link you provided is invalid or may have been deleted.</h3>
-    <h3>If you are registered to use Go, you can verify your links <a href="{% url 'my_links' %}">here</a>.</h3>
-    <img id="squirrels" src="/static/img/squirrels.png">
-
-    <a href="/"><img src="/static/img/acorn.png" style="width:10vw;"></a>
-
+    <h3>
+        If you are registered to use Go, you can verify your links
+        <a href="{% url 'my_links' %}">here</a>.
+    </h3>
+    <img id="squirrels" src="{% static "img/acorn.png" %}">
+    <a href="/"><img src="{% static "img/acorn.png" %}" style="width:10vw;"></a>
   </div>
 </div>
+
 {% endblock %}
