@@ -12,11 +12,11 @@ services:
       - db
     environment:
       - debug=True
-      - host=* 
+      - host=*
       - email_domain=@masonlive.gmu.edu
       - cas_url=https://nanderson.me/cas/
       - superuser=dhaynes3
-      - SECRET_KEY=much-secret
+      # - SECRET_KEY=much-secret
       - DB_NAME=go
       - DB_USER=go
       - DB_PASSWORD=go
