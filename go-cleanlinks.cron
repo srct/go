@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Cron job to automatically expire outdated links, put this in cron.hourly
 ACTIVATE_PATH=/path/to/virtualenv/activate
 MANAGE_PATH=/path/to/go/manage.py
