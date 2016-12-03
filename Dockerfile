@@ -16,6 +16,3 @@ RUN apt-get install
 RUN pip install -r requirements.txt
 ADD . /go/
 
-RUN mv go/settings/settings.docker.py.template go/settings/settings.py 
-RUN mv go/settings/secret.docker.py.template go/settings/secret.py
-

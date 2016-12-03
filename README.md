@@ -63,6 +63,7 @@ Next go to the directory with the docker-compose file in it and run:
 
 `$ docker-compose up`
 
+SOMETIMES if this branch is updated you might have to 
 You should see that the server is running by going to http://localhost:8000 in your browser.
 Any changes you make to your local file system will be mirrored in the server.
 
