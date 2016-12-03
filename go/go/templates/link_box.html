@@ -12,12 +12,12 @@
         <!-- what is the address? -->
         <h3>Go Address:</h3>
         <div id="link-container" class="input-group">
-            <a id="link" class="form-control" href="{{domain}}{{url.short}}">
+            <a id="link-{{url.short}}" class="form-control" href="{{domain}}{{url.short}}">
                 {{domain}}{{url.short}}
             </a>
             <div id="button-container" class="input-group-addon">
                 <button id="copy-button" type="button" class="button btn btn-default btn-xs fa" role="button"
-                data-clipboard-target="#link" title="Copy to Clipboard">
+                        data-clipboard-target="#link-{{url.short}}" title="Copy to Clipboard">
                     <i id="clipboard-icon" class="fa fa-clipboard fa-1g" aria-hidden="true"></i>
                 </button>
             </div>
