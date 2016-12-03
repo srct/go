@@ -16,7 +16,7 @@
                 {{domain}}{{url.short}}
             </a>
             <div id="button-container" class="input-group-addon">
-                <button id="copy-button" type="button" class="button btn btn-default btn-xs fa" role="button"
+                <button id="copy-button-{{url.short}}" type="button" class="button btn btn-default btn-xs fa" role="button"
                         data-clipboard-target="#link-{{url.short}}" title="Copy to Clipboard">
                     <i id="clipboard-icon" class="fa fa-clipboard fa-1g" aria-hidden="true"></i>
                 </button>
@@ -66,7 +66,7 @@
                             style="font-weight:bold; font-size: 21px !important;">
                             Are you sure you would like to delete this link?</h4>
                             <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                            Deleting a link is permenant and can not be undone!</h6>
+                            Deleting a link is permanent and can not be undone!</h6>
                         </div>
                         <div class="modal-body" style="padding-bottom: 80px">
                             <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
@@ -129,4 +129,23 @@
         };
         $('[data-toggle="popover"]').popover(option)
     })
+</script>
+
+<!-- script for copying text an displaying a tooltip -->
+<script>
+var clipboard = new Clipboard('#copy-button-{{url.short}}');
+
+$('#copy-button-{{url.short}}').tooltip({
+    trigger: 'hover',
+    placement: 'bottom'
+});
+
+$('#copy-button-{{url.short}}').on('hidden.bs.tooltip', function () {
+    $('#copy-button').attr('data-original-title', 'Copy to Clipboard');
+});
+
+clipboard.on('success', function(e) {
+    e.clearSelection();
+    $('#copy-button-{{url.short}}').attr('data-original-title', 'Copied!').tooltip('show');
+});
 </script>
