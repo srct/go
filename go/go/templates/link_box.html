@@ -4,6 +4,56 @@
 <!-- load in qr code lib -->
 {% load qr_tags %}
 
+<!-- CSS for page -->
+<style>
+    a.share:link {color:#000000;}     
+    a.share:visited {color:#000000;}     
+    a.share:hover {color:#000000;}     
+    a.share {text-decoration:none;}
+
+    a.button:link {color:#FFF;}
+    a.button:visited {color:#FFF;}
+    a.button:hover {color:#FFF;}
+
+    legend {
+        font-size: inherit;
+    }
+
+    #button-container {
+        padding-bottom: 4px;
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-top: 4px;
+    }
+
+    #copy-button-{{url.short}} {
+        border: none;
+        background-color: #eeeeee;
+        padding-bottom: 3px;
+    }
+
+    #copy-button-{{url.short}}:focus {
+        outline: none;
+    }
+
+    #clipboard-icon-{{url.short}} {
+        font-size: 14px;
+    }
+
+    #link-{{url.short}}:visited {
+        color: #006633;
+    }
+
+    #link-container-{{url.short}} {
+        width: 400px;
+    }
+
+    .tooltip-inner {
+        white-space: nowrap;
+        max-width: none;
+    }
+</style
+
 <!-- each link_box is a container of a bunch of elements -->
 <div class="container">
 
@@ -18,7 +68,7 @@
             <div id="button-container" class="input-group-addon">
                 <button id="copy-button-{{url.short}}" type="button" class="button btn btn-default btn-xs fa" role="button"
                         data-clipboard-target="#link-{{url.short}}" title="Copy to Clipboard">
-                    <i id="clipboard-icon" class="fa fa-clipboard fa-1g" aria-hidden="true"></i>
+                    <i id="clipboard-icon-{{url.short}}" class="fa fa-clipboard fa-1g" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -141,7 +191,7 @@ $('#copy-button-{{url.short}}').tooltip({
 });
 
 $('#copy-button-{{url.short}}').on('hidden.bs.tooltip', function () {
-    $('#copy-button').attr('data-original-title', 'Copy to Clipboard');
+    $('#copy-button-{{url.short}}').attr('data-original-title', 'Copy to Clipboard');
 });
 
 clipboard.on('success', function(e) {
