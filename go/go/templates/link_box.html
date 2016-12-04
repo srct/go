@@ -62,7 +62,7 @@
         <!-- what is the address? -->
         <h3>Go Address:</h3>
         <div id="link-container" class="input-group">
-            <a id="link-{{url.short}}" class="form-control" href="{{domain}}{{url.short}}">
+            <a id="link-{{url.short}}" class="form-control" href="{{domain}}{{url.short}}" target="_blank">
                 {{domain}}{{url.short}}
             </a>
             <div id="button-container" class="input-group-addon">
@@ -80,7 +80,7 @@
         <strong>Target URL:</strong>
         <br />
 
-        <a href="{{url.target}}">{{url.target}}</a>
+        <a href="{{url.target}}" target="_blank">{{url.target}}</a>
         <br />
 
         {% if url.owner == request.user.registereduser and request.user.registereduser.approved == True %}
