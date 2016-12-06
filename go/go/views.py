@@ -314,7 +314,6 @@ def useradmin(request):
     if request.POST:
         # Get a list of the potential victims (users)
         userlist = request.POST.getlist('username')
-
         # If we're approving users
         if '_approve' in request.POST:
             for name in userlist:
@@ -363,6 +362,7 @@ def useradmin(request):
                 # Delete their associated RegisteredUsers
                 todeny.user.delete()
                 return HttpResponseRedirect('useradmin')
+        # If we're blocking users
         elif '_block' in request.POST:
             for name in userlist:
                 toblock = RegisteredUser.objects.get(user__username__exact=name)
@@ -387,17 +387,18 @@ def useradmin(request):
                 toblock.approved = False
                 toblock.registered = False
                 toblock.save()
+        # If we're un-blocking users
         elif '_unblock' in request.POST:
             for name in userlist:
                 toUNblock = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
                     user_mail = toUNblock.user.username + settings.EMAIL_DOMAIN
                     send_mail(
-                        'Your Account has been Blocked!',
+                        'Your Account has been Un-Blocked!',
                         ######################
                         'Hey there %s,\n\n'
                         'The Go admins have reviewed your application and have '
-                        'unblocked you from using Go.\n\n'
+                        'Un-Blocked you from using Go.\n\n'
                         'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
@@ -411,6 +412,7 @@ def useradmin(request):
                 # toUNblock.blocked = False
                 # toUNblock.approved = False
                 # toUNblock.save()
+        # If we're removing existing users
         elif '_remove' in request.POST:
             for name in userlist:
                 toremove = RegisteredUser.objects.get(user__username__exact=name)
@@ -431,10 +433,10 @@ def useradmin(request):
                     )
                 toremove.user.delete()
                 return HttpResponseRedirect('useradmin')
-    # Get a list of all RegisteredUsers tthat need to be approved
+    # Get a list of all RegisteredUsers that need to be approved
     need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
 
-    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True)
+    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
