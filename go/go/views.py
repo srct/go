@@ -407,11 +407,11 @@ def useradmin(request):
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                toUNblock.user.delete()
+                # toUNblock.user.delete()
+                toUNblock.blocked = False
+                toUNblock.save()
                 return HttpResponseRedirect('useradmin')
-                # toUNblock.blocked = False
-                # toUNblock.approved = False
-                # toUNblock.save()
+
         # If we're removing existing users
         elif '_remove' in request.POST:
             for name in userlist:
