@@ -402,7 +402,7 @@ def useradmin(request):
                         'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
-                        % (str(toblock.full_name)),
+                        % (str(toUNblock.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
