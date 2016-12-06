@@ -314,17 +314,16 @@ def useradmin(request):
     if request.POST:
         # Get a list of the potential victims (users)
         userlist = request.POST.getlist('username')
-
         # If we're approving users
         if '_approve' in request.POST:
             for name in userlist:
-                toapprove = RegisteredUser.objects.get(user__username__exact=name)
-                toapprove.approved = True
-                toapprove.save()
+                toApprove = RegisteredUser.objects.get(user__username__exact=name)
+                toApprove.approved = True
+                toApprove.save()
 
                 # Send an email letting them know they are approved
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toapprove.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toApprove.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Approved!',
                         ######################
@@ -333,7 +332,7 @@ def useradmin(request):
                         'approved you to use Go!\n\n'
                         'Head over to go.gmu.edu to create your first address.\n\n'
                         '- Go Admins'
-                        % (str(toapprove.full_name)),
+                        % (str(toApprove.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
@@ -341,9 +340,9 @@ def useradmin(request):
         # If we're denying users
         elif '_deny' in request.POST:
             for name in userlist:
-                todeny = RegisteredUser.objects.get(user__username__exact=name)
+                toDeny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = todeny.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toDeny.user.username + settings.EMAIL_DOMAIN
 
                     # Send an email letting them know they are denied
                     send_mail(
@@ -355,19 +354,20 @@ def useradmin(request):
                         'Please reach out to srct@gmu.edu to appeal '
                         'this decision.\n\n'
                         '- Go Admins'
-                        % (str(todeny.full_name)),
+                        % (str(toDeny.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
                 # Delete their associated RegisteredUsers
-                todeny.user.delete()
+                toDeny.user.delete()
                 return HttpResponseRedirect('useradmin')
+        # If we're blocking users
         elif '_block' in request.POST:
             for name in userlist:
-                toblock = RegisteredUser.objects.get(user__username__exact=name)
+                toBlock = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toblock.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toBlock.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Blocked!',
                         ######################
@@ -377,45 +377,47 @@ def useradmin(request):
                         'Please reach out to srct@gmu.edu to appeal '
                         'this decision.\n\n'
                         '- Go Admins'
-                        % (str(toblock.full_name)),
+                        % (str(toBlock.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                # toblock.user.delete()
-                toblock.blocked = True
-                toblock.approved = False
-                toblock.registered = False
-                toblock.save()
+                # toBlock.user.delete()
+                toBlock.blocked = True
+                toBlock.approved = False
+                toBlock.registered = False
+                toBlock.save()
+        # If we're un-blocking users
         elif '_unblock' in request.POST:
             for name in userlist:
-                toUNblock = RegisteredUser.objects.get(user__username__exact=name)
+                toUnBlock = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toUNblock.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toUnBlock.user.username + settings.EMAIL_DOMAIN
                     send_mail(
-                        'Your Account has been Blocked!',
+                        'Your Account has been Un-Blocked!',
                         ######################
                         'Hey there %s,\n\n'
                         'The Go admins have reviewed your application and have '
-                        'unblocked you from using Go.\n\n'
+                        'Un-Blocked you from using Go.\n\n'
                         'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
-                        % (str(toblock.full_name)),
+                        % (str(toUnBlock.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                toUNblock.user.delete()
+                # toUNblock.user.delete()
+                toUnBlock.blocked = False
+                toUnBlock.save()
                 return HttpResponseRedirect('useradmin')
-                # toUNblock.blocked = False
-                # toUNblock.approved = False
-                # toUNblock.save()
+
+        # If we're removing existing users
         elif '_remove' in request.POST:
             for name in userlist:
-                toremove = RegisteredUser.objects.get(user__username__exact=name)
+                toRemove = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toremove.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toRemove.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Deleted!',
                         ######################
@@ -424,17 +426,17 @@ def useradmin(request):
                         'Please reach out to srct@gmu.edu to appeal '
                         'this decision.\n\n'
                         '- Go Admins'
-                        % (str(toremove.full_name)),
+                        % (str(toRemove.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                toremove.user.delete()
+                toRemove.user.delete()
                 return HttpResponseRedirect('useradmin')
-    # Get a list of all RegisteredUsers tthat need to be approved
+    # Get a list of all RegisteredUsers that need to be approved
     need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
 
-    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True)
+    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
