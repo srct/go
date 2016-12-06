@@ -1,6 +1,7 @@
 # Create a new file 'settings.py' and copy these contents into that file
 import secret
 import os
+import sys
 
 AUTH_MODE = "CAS"
 
@@ -117,6 +118,11 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout
         }
     },
     'loggers': {
@@ -124,6 +130,11 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propogate': True
         },
     }
 }
