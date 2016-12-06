@@ -390,9 +390,9 @@ def useradmin(request):
         # If we're un-blocking users
         elif '_unblock' in request.POST:
             for name in userlist:
-                toUNblock = RegisteredUser.objects.get(user__username__exact=name)
+                toUnblock = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toUNblock.user.username + settings.EMAIL_DOMAIN
+                    user_mail = toUnblock.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Un-Blocked!',
                         ######################
@@ -402,14 +402,14 @@ def useradmin(request):
                         'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
-                        % (str(toUNblock.full_name)),
+                        % (str(toUnblock.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
                 # toUNblock.user.delete()
-                toUNblock.blocked = False
-                toUNblock.save()
+                toUnblock.blocked = False
+                toUnblock.save()
                 return HttpResponseRedirect('useradmin')
 
         # If we're removing existing users
