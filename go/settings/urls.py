@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^$', go.views.index, name='index'),
 
     # /view/<short> - View URL data.
-    url(r'^view/(?P<short>\w+)$', go.views.view, name='view'),
+    url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
 
     # /about - About page.
     url(r'^about/?$', TemplateView.as_view(template_name='core/about.html'), name='about'),
@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^myLinks/?$', go.views.my_links, name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
-    url(r'^delete/(?P<short>\w+)$', go.views.delete, name='delete'),
+    url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
 
     # /registered - registration complete page
     url(r'^registered/?$', TemplateView.as_view(template_name='registered.html'), name='registered'),
