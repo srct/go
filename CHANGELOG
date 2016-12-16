@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Commented _all_ the things
 - go links now open in new tab when clicked
 - log INFO to stdout
+- CAS test server moved to much faster system 
 
 ### Fixed
 - Peoplefinder suppport for freshmen  
