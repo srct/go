@@ -1,19 +1,21 @@
+<!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
+<!-- define the page title block -->
 {% block title %}
 500 Error &bull; Internal Server Error
 {% endblock %}
 
+<!-- define the content block for the page -->
 {% block content %}
 
+<!-- div that contains the 500 page content -->
 <div class="row">
   <div class="col-md-10 col-md-offset-1 text-center">
     <h1>500 Error - Internal Server Error</h1>
-
-    <img id="squirrels" src="/static/img/squirrels.png">
-
-    <a href="/"><img src="/static/img/acorn.png" style="width:10vw;"></a>
-
+    <img id="squirrels" src="{% static "img/acorn.png" %}">
+    <a href="/"><img src="{% static "img/acorn.png" %}" style="width:10vw;"></a>
   </div>
 </div>
+
 {% endblock %}

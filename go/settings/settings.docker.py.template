@@ -1,7 +1,6 @@
-# Create a new file 'settings.py' and copy these contents into that file
+#Create a new file 'settings.py' and copy these contents into that file
 import secret
 import os
-import sys
 
 AUTH_MODE = "CAS"
 
@@ -9,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # DEBUG mode is used to view more details when errors occur
 # Do not have set True in production
-DEBUG = False
+DEBUG = os.environ['debug']
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -21,13 +20,13 @@ DATABASES = {
         'USER': secret.DB_USER,
         'PASSWORD': secret.DB_PASSWORD,
         'HOST': secret.DB_HOST,
-        'PORT': '',
+        'PORT': '3306',
     }
 }
 
 # The domains this application will be deployed on
 # e.g. Which domains this app should listen to requests from.
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = [os.environ['host']]
 
 # Peoplefinder API
 PF_URL = "http://api.srct.gmu.edu/pf/v1/"
@@ -118,11 +117,6 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout
         }
     },
     'loggers': {
@@ -130,11 +124,6 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-        },
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propogate': True
         },
     }
 }
@@ -172,7 +161,7 @@ if AUTH_MODE.lower() == 'ldap':
     AUTH_LDAP_ALWAYS_UPDATE_USER = True
 
 elif AUTH_MODE.lower() == 'cas':
-    CAS_SERVER_URL = "https://login.gmu.edu"
+    CAS_SERVER_URL = os.environ['cas_url']
     CAS_LOGOUT_COMPLETELY = True
     CAS_PROVIDE_URL_TO_LOGOUT = True
 
@@ -192,6 +181,9 @@ elif AUTH_MODE.lower() == 'cas':
         'cas.middleware.CASMiddleware',
     )
 
+# PIWIK_SITE_ID = secret.PIWIK_SITE_ID
+# PIWIK_URL = secret.PIWIK_URL
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Mail settings
@@ -204,4 +196,4 @@ EMAIL_TO = "to@example.com"
 
 # Domain used to email to users. See line 231 in views.py
 # ie. in Mason's case '@masonlive.gmu.edu'
-EMAIL_DOMAIN = "@example.com"
+EMAIL_DOMAIN = os.environ['email_domain']

@@ -1,17 +1,18 @@
+<!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
-
+<!-- define the page title block -->
 {% block title %}
 SRCT Go &bull; My Links
 {% endblock %}
 
-
+<!-- define the content block for the page -->
 {% block content %}
 
+<!-- define the page header div -->
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-
       <h1><strong>
         <span class="fa-stack fa-lg">
           <i class="fa fa-circle fa-stack-2x"></i>
@@ -19,18 +20,22 @@ SRCT Go &bull; My Links
         </span>
         <i class="fa">My Links</i>
       </strong></h1>
-
     </div>
   </div>
 </div>
 
+<!-- show all of the links -->
 <div class="row">
+    <!-- for every url in the urls list-->
     {% for url in urls %}
-    <legend>
-      {% include 'link_box.html' %}
-    </legend>
+        <legend>
+        <!-- include the link box for this url -->
+        {% include 'link_box.html' %}
+        </legend>
+    <!-- unless the list is empty -->
     {% empty %}
       <h3>&nbsp;&nbsp;&nbsp;None found <i class="fa fa-frown-o"></i></h3>
     {% endfor %}
 </div>
+
 {% endblock %}

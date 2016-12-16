@@ -12,6 +12,7 @@ I encourage you to join the #go channel in SRCT's [Slack Group](http://srct.slac
 
 ## Package Installation
 <legend></legend>
+
 ### Prerequisities
 First, install python and git on your system.
 * Python is the programming language used for Django, the web framework used by Go.
@@ -50,8 +51,27 @@ Now, on your computer, navigate to the directory in which you want to download t
 
 `$ git clone git@git.gmu.edu:srct/go.git`
 
+### If Using Docker
+First, install Docker on your system.
+* For macOS go here: https://docs.docker.com/docker-for-mac/
+* For windows go here: https://docs.docker.com/docker-for-windows/
+* For you specific linux disro go here: https://docs.docker.com/engine/installation/
 
-### Required Packages
+Additionally if you are not on Mac or Windows you will need to install docker-compose: https://docs.docker.com/compose/install/
+
+Next go to the directory with the docker-compose file in it and run:
+
+`$ docker-compose up`
+
+If that doesn't work, try:
+
+`$ sudo docker-compose up`
+
+SOMETIMES if this branch is updated you might have to 
+You should see that the server is running by going to http://localhost:8000 in your browser.
+Any changes you make to your local file system will be mirrored in the server.
+
+### If Using Vagrant
 Finally, install these packages from the standard repositories:
  - VirtualBox
 
@@ -60,7 +80,7 @@ Finally, install these packages from the standard repositories:
 
 
     You should be installing the latest VirtualBox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
-    
+
  - Vagrant
 
     `$ sudo apt-get install vagrant`

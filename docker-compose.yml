@@ -1,0 +1,37 @@
+version: '2'
+services:
+  web:
+    build: .
+    restart: always
+    ports:
+      - '8000:8000'
+    command: /bin/bash ./startup.sh -python go/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/go
+    depends_on:
+      - db
+    environment:
+      - debug=True
+      - host=*
+      - email_domain=@masonlive.gmu.edu
+      - cas_url=https://nanderson.me/cas/
+      - superuser=dhaynes3
+      # - SECRET_KEY=much-secret
+      - DB_NAME=go
+      - DB_USER=go
+      - DB_PASSWORD=go
+      - DB_HOST=db
+      - PIWIK_SITE_ID=
+      - PIWIK_URL=
+      - EMAIL_HOST=
+      - EMAIL_PORT=
+      - EMAIL_HOST_USER=
+      - EMAIL_HOST_PASSWORD=
+  db:
+    image: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: go
+      MYSQL_USER: go
+      MYSQL_PASSWORD: go
+  

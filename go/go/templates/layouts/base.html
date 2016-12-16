@@ -1,52 +1,65 @@
+<!-- Tell Django to load static files -->
 {% load staticfiles %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
+<!-- HTML 5 definition -->
+<!DOCTYPE html>
 
-    <title>
-      {% block title %}
-      {% endblock %}
-    </title>
+<!-- Start the HTML page for Go -->
+<html>
 
-    <meta charset="UTF-8">
-    <meta name="keywords" content="George Mason, URL shortener, URL">
-    <meta name="description" content="University branded URL shortener.">
-    <meta name="author" content="Mason SRCT">
-    <meta name="robots" content="all">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- load in our header content for every page  -->
+    <head>
+        <!-- load in the title block defined on each html page -->
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
 
-    <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic" rel="stylesheet" type="text/css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static "css/bootswatch.min.css" %}" />
-    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
-    <link rel="stylesheet" href="{% static "css/style-link-box.css" %}" />
-    <link rel="stylesheet" href="{% static "css/style-link-box.css" %}" />
+        <!-- Some metadata -->
+        <meta charset="UTF-8">
+        <meta name="keywords" content="George Mason, URL shortener, URL">
+        <meta name="description" content="University branded URL shortener.">
+        <meta name="author" content="Mason SRCT">
+        <meta name="robots" content="all">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#006633">
 
-    <link rel="icon" type="image/jpg" href="{% static "img/favicon.ico"%}" />
+        <!-- Load in our icon -->
+        <link rel="icon" type="image/ico" href="{% static "img/favicon.ico"%}" />
 
-    <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/clipboard.min.js" %}"></script>
+        <!-- Load in global CSS -->
+        <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic"
+        rel="stylesheet" type="text/css">
+        <link
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet">
+        <link rel="stylesheet" href="{% static "css/bootswatch.min.css" %}" />
+        <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+        <link rel="stylesheet" href="{% static "css/style-link-box.css" %}" />
+        <link rel="stylesheet" href="{% static "css/style-link-box.css" %}" />
 
-  </head>
+        <!-- Load in global js -->
+        <script src="{% static "js/jquery.min.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/clipboard.min.js" %}"></script>
+    </head>
 
-  <body>
+    <!-- Load in the body of a Go page -->
+    <body>
+        <!-- Load in the navbar template -->
+        {% include 'layouts/navigation.html' %}
 
-    {% include 'layouts/navigation.html' %}
+        <!-- Wrap the page content in a container -->
+        <div class="container">
+            <!-- Load in the main page content -->
+            {% block content %}
+            {% endblock %}
+        </div>
 
-    <div class="container">
+        <!-- Load in the footer template -->
+        {% include 'layouts/footer.html' %}
 
-      {% block content %}
-
-      {% endblock %}
-
-    </div>
-
-    {% include 'layouts/footer.html' %}
-
-    <script src="{% static "js/copy.js" %}"></script>
-  </body>
-
+        <!-- Load in js that relies on page elements -->
+        <script src="{% static "js/copy.js" %}"></script>
+    </body>
 </html>
