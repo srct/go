@@ -1,12 +1,17 @@
 from __future__ import absolute_import, print_function
-# core django imports
+# python 3 imports ^^^
+
+# Django Imports
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib import messages
+
 # third party imports
 import requests
 
-
+"""
+    parse what peoplefinder sends back to us and make a list out of it
+"""
 def pfparse(pf_name_result):
     # name comes in format of Anderson, Nicholas J
     name_list = pf_name_result.split(',')
@@ -19,10 +24,13 @@ def pfparse(pf_name_result):
         first_name = ' '.join(mi_q[:-1])
     else:
         first_name = first_name_section
+    # our list containing the name of the person in a usable list
     new_name_list = [first_name, name_list[0]]
     return new_name_list
 
-
+"""
+    get information from peoplefinder
+"""
 def pfinfo(uname):
     base_url = settings.PF_URL
     url = base_url + "basic/all/" + str(uname)
@@ -64,7 +72,9 @@ def pfinfo(uname):
             print("Returning empty user info tuple.")
             return [u'', u'']
 
-
+"""
+    create a django user based off of the peoplefinder info we parsed earlier
+"""
 def create_user(tree):
 
     print("Parsing CAS information.")

@@ -34,3 +34,9 @@ body {
 .navbar-brand {
   padding: 10px 15px;
 }
+.btn-blockUsr {
+  font-weight: 600;
+}
+.btn-Unblock {
+  font-weight: 600;
+}

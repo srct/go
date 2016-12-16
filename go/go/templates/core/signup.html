@@ -1,16 +1,21 @@
+<!-- include the base html template -->
 {% extends 'layouts/base.html' %}
+
+<!-- load django crispy forms' tags -->
 {% load crispy_forms_tags %}
 
+<!-- define the page title block -->
 {% block title %}
 SRCT Go &bull; Apply
 {% endblock %}
 
-
+<!-- define the content block for the page -->
 {% block content %}
+
+<!-- define the page header div -->
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-
       <h1><strong>
         <span class="fa-stack fa-lg">
           <i class="fa fa-circle fa-stack-2x"></i>
@@ -18,11 +23,11 @@ SRCT Go &bull; Apply
         </span>
         <i class="fa">Apply to Go</i>
       </strong></h1>
-
     </div>
   </div>
 </div>
 
+<!-- Define the div that describes why we need a signup process -->
 <div class="row">
   <div class="col-md-12">
     <p>
@@ -40,6 +45,7 @@ SRCT Go &bull; Apply
   </div>
 </div>
 
+<!-- call django crispy forms to render the go signup form here -->
 {% crispy form %}
 
 {% endblock %}

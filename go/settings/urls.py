@@ -8,17 +8,21 @@ from django.views.generic import TemplateView
 # App Imports
 import go.views
 
+# This function attempts to import an admin module in each installed
+# application. Such modules are expected to register models with the admin.
 admin.autodiscover()
 
+# Handle 404 and 500 errors with custom pages
 handle404 = TemplateView.as_view(template_name="admin/404.html")
 handle500 = TemplateView.as_view(template_name="admin/500.html")
 
+# Main list of project URL's
 urlpatterns = [
     # / - Homepage url.
     url(r'^$', go.views.index, name='index'),
 
     # /view/<short> - View URL data.
-    url(r'^view/(?P<short>\w+)$', go.views.view, name='view'),
+    url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
 
     # /about - About page.
     url(r'^about/?$', TemplateView.as_view(template_name='core/about.html'), name='about'),
@@ -30,7 +34,7 @@ urlpatterns = [
     url(r'^myLinks/?$', go.views.my_links, name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
-    url(r'^delete/(?P<short>\w+)$', go.views.delete, name='delete'),
+    url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
 
     # /registered - registration complete page
     url(r'^registered/?$', TemplateView.as_view(template_name='registered.html'), name='registered'),
@@ -41,6 +45,8 @@ urlpatterns = [
     # /useradmin - user approval interface
     url(r'^useradmin/?$', go.views.useradmin, name='useradmin'),
 ]
+
+# Handle authentication pages
 if settings.AUTH_MODE.lower() == "ldap":
     urlpatterns += [
         # Auth pages
@@ -58,6 +64,6 @@ else:
 
 urlpatterns += [
     # Redirection regex.
-    url(r'^(?P<short>\w+)$', go.views.redirection, name='redirection'),
+    url(r'^(?P<short>[-\w]+)$', go.views.redirection, name='redirection'),
 
 ]
