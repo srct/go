@@ -93,7 +93,7 @@ Vagrant.configure(2) do |config|
         email_domain: "@masonlive.gmu.edu",
         requirements_path: "/vagrant/requirements.txt",
         venv_path: "/vagrant/venv",
-        cas_url: "https://nanderson.me/cas/",
+        cas_url: "https://cas.srct.gmu.edu/",
         app_path: "/vagrant/go",
         settings_path: "/vagrant/go/settings",
         superuser: "dhaynes3"
@@ -126,7 +126,7 @@ Vagrant.configure(2) do |config|
         email_domain: "@masonlive.gmu.edu",
         requirements_path: "/vagrant/requirements.txt",
         venv_path: "/vagrant/venv",
-        cas_url: "https://nanderson.me/cas",
+        cas_url: "https://cas.srct.gmu.edu/",
         app_path: "/vagrant/go",
         settings_path: "/vagrant/go/settings",
         superuser: "dhaynes3"
