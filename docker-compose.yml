@@ -14,7 +14,7 @@ services:
       - debug=True
       - host=*
       - email_domain=@masonlive.gmu.edu
-      - cas_url=https://nanderson.me/cas/
+      - cas_url=https://cas.srct.gmu.edu/
       - superuser=dhaynes3
       # - SECRET_KEY=much-secret
       - DB_NAME=go
@@ -34,4 +34,3 @@ services:
       MYSQL_DATABASE: go
       MYSQL_USER: go
       MYSQL_PASSWORD: go
-  
