@@ -2,6 +2,38 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.1.0] - 2016-12-16
+### Added
+- Coverage calculation now runs on each CI build/test
+- gitlab-ci will now run unit tests with the Django unit testing DB
+- macOS instructions in the README
+- Copy URL button
+- delete modal for URLs
+- HTTPS resources
+- Docker and docker-compose added for local development
+- ban users on /useradmin page
+- banned.html
+- mobile chrome tab colors
+
+### Changed 
+- QR Code sizes are now increased
+- Commented _all_ the things
+- go links now open in new tab when clicked
+- log INFO to stdout
+- CAS test server moved to much faster system 
+
+### Fixed
+- Peoplefinder suppport for freshmen  
+- &bull present on all page headers
+- Default Custom Date now actually updates every day 
+- code duplication (thanks @yoda)
+- /bin/sh -> /bin/bash
+- allow hyphens in short URLs
+- vagrant apt now updates cache before installing new packages
+
+### Removed 
+- Piwik
+
 ## [2.0.1] - 2016-08-14
 ### Added 
 - Django 1.10 support 
