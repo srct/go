@@ -384,8 +384,6 @@ def useradmin(request):
                     )
                 # toBlock.user.delete()
                 toBlock.blocked = True
-                toBlock.approved = False
-                toBlock.registered = False
                 toBlock.save()
         # If we're un-blocking users
         elif '_unblock' in request.POST:
