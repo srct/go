@@ -436,7 +436,9 @@ def useradmin(request):
 
     # Get a list of all RegisteredUsers that need to be approved
     need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
+    # Get a list of all RegisteredUsers that are currently users
     current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
+    # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
