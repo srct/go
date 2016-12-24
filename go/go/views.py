@@ -433,9 +433,9 @@ def useradmin(request):
                     )
                 toRemove.user.delete()
                 return HttpResponseRedirect('useradmin')
-                
+
     # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
     current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
