@@ -75,22 +75,22 @@ class URL(models.Model):
     # Who is the owner of this Go link
     owner = models.ForeignKey(RegisteredUser)
     # When was this link created?
-    date_created = models.DateTimeField(default=timezone.now)
+    date_created = models.DateTimeField(default = timezone.now)
 
     # What is the target URL for this Go link
-    target = models.URLField(max_length=1000)
+    target = models.URLField(max_length = 1000)
     # What is the actual go link (short url) for this URL
-    short = models.SlugField(max_length=20, primary_key=True)
+    short = models.SlugField(max_length = 20, primary_key = True)
 
     # how many people have visited this Go link
-    clicks = models.IntegerField(default=0)
+    clicks = models.IntegerField(default = 0)
     # how many people have visited this Go link through the qr code
-    qrclicks = models.IntegerField(default=0)
+    qrclicks = models.IntegerField(default = 0)
     # how many people have visited the go link through social media
-    socialclicks = models.IntegerField(default=0)
+    socialclicks = models.IntegerField(default = 0)
 
     # does this Go link expire on a certain date
-    expires = models.DateTimeField(blank=True, null=True)
+    expires = models.DateTimeField(blank = True, null = True)
 
     # print(URL)
     def __str__(self):
@@ -112,7 +112,7 @@ class URL(models.Model):
         tries = 1
         while tries < 100:
             try:
-                URL.objects.get(short__iexact=short)
+                URL.objects.get(short__iexact = short)
                 tries += 1
                 cache.incr("hashids_counter")
             except URL.DoesNotExist as ex:
