@@ -41,21 +41,21 @@ def index(request):
 
 
     # Initialize a URL form
-    url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
+    url_form = URLForm(host = request.META.get('HTTP_HOST'))  # unbound form
 
     # If a POST request is received, then the user has submitted a form and it's
     # time to parse the form and create a new URL object
     if request.method == 'POST':
         # Now we initialize the form again but this time we have the POST
         # request
-        url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
+        url_form = URLForm(request.POST, host = request.META.get('HTTP_HOST'))
 
         # Django will check the form to make sure it's valid
         if url_form.is_valid():
 
             # We don't commit the url object yet because we need to add its
             # owner, and parse its date field.
-            url = url_form.save(commit=False)
+            url = url_form.save(commit = False)
             url.owner = request.user.registereduser
 
             # If the user entered a short url, it's already been validated,
