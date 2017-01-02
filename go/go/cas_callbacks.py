@@ -4,7 +4,6 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # Django Imports
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.contrib import messages
 
 # third party imports
 import requests
@@ -41,7 +40,7 @@ def pfinfo(uname):
     except requests.exceptions.RequestException as e:
         print("Cannot resolve to peoplefinder api:", e)
         print("Returning empty user info tuple.")
-        return [u'', u'']
+        return ['', '']
     else:
         pfjson = metadata.json()
         try:
@@ -66,11 +65,11 @@ def pfinfo(uname):
         # if the name is not in peoplefinder, return empty first and last name
         except IndexError:
             print("Name not found in peoplefinder.")
-            return [u'',u'']
+            return ['','']
         except Exception as e:
             print("Unknown peoplefinder error:", e)
             print("Returning empty user info tuple.")
-            return [u'', u'']
+            return ['', '']
 
 """
     create a django user based off of the peoplefinder info we parsed earlier
