@@ -340,13 +340,13 @@ def useradmin(request):
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
+
         # If we're denying users
         elif '_deny' in request.POST:
             for name in userlist:
                 toDeny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
                     user_mail = toDeny.user.username + settings.EMAIL_DOMAIN
-
                     # Send an email letting them know they are denied
                     send_mail(
                         'Your Account has been Denied!',
@@ -365,6 +365,7 @@ def useradmin(request):
                 # Delete their associated RegisteredUsers
                 toDeny.user.delete()
                 return HttpResponseRedirect('useradmin')
+
         # If we're blocking users
         elif '_block' in request.POST:
             for name in userlist:
@@ -387,9 +388,8 @@ def useradmin(request):
                     )
                 # toBlock.user.delete()
                 toBlock.blocked = True
-                toBlock.approved = False
-                toBlock.registered = False
                 toBlock.save()
+
         # If we're un-blocking users
         elif '_unblock' in request.POST:
             for name in userlist:
@@ -436,10 +436,12 @@ def useradmin(request):
                     )
                 toRemove.user.delete()
                 return HttpResponseRedirect('useradmin')
-    # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False)
 
+    # Get a list of all RegisteredUsers that need to be approved
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
+    # Get a list of all RegisteredUsers that are currently users
     current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
+    # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template

@@ -25,7 +25,7 @@ SRCT Go &bull; Administration Panel
 </div>
 
 
-<!-- TABLE 1 -->
+<!-- Table 1 -->
 <!-- define the div where we can select users from a table to judge them -->
 <div class="row">
     <div class="col-md-12">
@@ -80,9 +80,8 @@ SRCT Go &bull; Administration Panel
     </div>
 </div>
 
-<!-- TABLE 2 -->
-<!-- define the table that displays blocked users and allows us to unblock
-them -->
+<!-- Table 2 -->
+<!-- define the table that displays blocked users and allows us to unblock them -->
 <div class="row">
     <div class="col-md-12">
         <h3>Blocked Users</h3>
@@ -99,6 +98,7 @@ them -->
                         <th>Username</th>
                         <th>Full Name</th>
                         <th>Description</th>
+                        <th>Approved</th>
                     </tr>
                 </thead>
 
@@ -111,10 +111,12 @@ them -->
                           <td>{{ blockedUsers.user }}</td>
                           <td>{{ blockedUsers.full_name }}</td>
                           <td>{{ blockedUsers.description|default:"No description provided" }}</td>
+                          <td>{{ blockedUsers.approved }}</td>
                         </tr>
                     <!-- unless there are no blocked users -->
                     {% empty %}
                         <tr>
+                          <td>none</td>
                           <td>none</td>
                           <td>none</td>
                           <td>none</td>
@@ -132,7 +134,7 @@ them -->
     </div>
 </div>
 
-<!-- TABLE 3 -->
+<!-- Table 3 -->
 <!-- define the table of current users -->
 <div class="row">
     <div class="col-md-12">
