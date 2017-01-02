@@ -1,3 +1,6 @@
+# Future Imports
+from __future__ import unicode_literals, absolute_import, print_function, division
+
 # Django Imports
 from django.conf import settings
 from django.http import HttpResponseServerError  # Http404

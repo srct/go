@@ -1,5 +1,5 @@
-from __future__ import absolute_import, print_function
-# python 3 imports ^^^
+# Future Imports
+from __future__ import unicode_literals, absolute_import, print_function, division
 
 # Django Imports
 from django.contrib.auth.models import User
