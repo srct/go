@@ -22,7 +22,7 @@ def is_registered(user):
         registered = RegisteredUser.objects.get(username=user.username)
         # if it works then the user is registered
         return True
-    except RegisteredUser.DoesNotExist:
+    except RegisteredUser.DoesNotExist as ex:
         # if they don't exist then they are not registered
         return False
 
@@ -36,6 +36,6 @@ def is_approved(user):
         registered = RegisteredUser.objects.get(username=user.username)
         # if they exist, return whether or not they are approved (boolean)
         return registered.approved
-    except RegisteredUser.DoesNotExist:
+    except RegisteredUser.DoesNotExist as ex:
         # if they don't exist then they are not approved
         return False
