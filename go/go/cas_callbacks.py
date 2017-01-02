@@ -37,8 +37,8 @@ def pfinfo(uname):
         metadata = requests.get(url, timeout=5)
         print("Retrieving information from the peoplefinder api.")
         metadata.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print("Cannot resolve to peoplefinder api:", e)
+    except requests.exceptions.RequestException as ex:
+        print("Cannot resolve to peoplefinder api:", ex)
         print("Returning empty user info tuple.")
         return ['', '']
     else:
@@ -63,11 +63,11 @@ def pfinfo(uname):
                     name = pfjson['results'][0]['name']
                 return name
         # if the name is not in peoplefinder, return empty first and last name
-        except IndexError:
+        except IndexError as ex:
             print("Name not found in peoplefinder.")
             return ['','']
-        except Exception as e:
-            print("Unknown peoplefinder error:", e)
+        except Exception as ex:
+            print("Unknown peoplefinder error:", ex)
             print("Returning empty user info tuple.")
             return ['', '']
 
@@ -80,8 +80,8 @@ def create_user(tree):
     try:
         username = tree[0][0].text
         user, user_created = User.objects.get_or_create(username=username)
-    except Exception as e:
-        print("CAS callback unsuccessful:", e)
+    except Exception as ex:
+        print("CAS callback unsuccessful:", ex)
 
     # error handling in pfinfo function
     info_name = pfinfo(username)
@@ -110,5 +110,5 @@ def create_user(tree):
             print("User object already exists.")
 
         print("CAS callback successful.")
-    except Exception as e:
-        print("Unhandled user creation error:", e)
+    except Exception as ex:
+        print("Unhandled user creation error:", ex)
