@@ -8,11 +8,11 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
 
 # Other Imports
+from hashids import Hashids # http://hashids.org/python/
 import string
-# http://hashids.org/python/
-from hashids import Hashids
 
 # generate the salt and initialize Hashids
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
@@ -21,37 +21,38 @@ hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string
     This is simply a wrapper model for the user object  which, if an object
     exists, indicates that that user is registered.
 """
+@python_2_unicode_compatible
 class RegisteredUser(models.Model):
 
     # Is this User Blocked?
-    blocked = models.BooleanField(default=False)
+    blocked = models.BooleanField(default = False)
 
     # Let's associate a User to this RegisteredUser
     user = models.OneToOneField(User)
 
     # What is your name?
     full_name = models.CharField(
-        blank=False,
-        max_length=100,
+        blank = False,
+        max_length = 100,
     )
 
     # What organization are you associated with?
     organization = models.CharField(
-        blank=False,
-        max_length=100,
+        blank = False,
+        max_length = 100,
     )
 
     # Why do you want to use Go?
-    description = models.TextField(blank=True)
+    description = models.TextField(blank = True)
 
     # Have you filled out the registration form?
-    registered = models.BooleanField(default=False)
+    registered = models.BooleanField(default = False)
 
     # Are you approved to use Go?
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default = False)
 
     # print(RegisteredUser)
-    def __unicode__(self):
+    def __str__(self):
         return '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
 
 
@@ -68,6 +69,7 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
     owner, target url, short identifier, click counter, and expiration
     date.
 """
+@python_2_unicode_compatible
 class URL(models.Model):
 
     # Who is the owner of this Go link
@@ -91,7 +93,7 @@ class URL(models.Model):
     expires = models.DateTimeField(blank=True, null=True)
 
     # print(URL)
-    def __unicode__(self):
+    def __str__(self):
         return '<%s : %s>' % (self.owner.user, self.target)
 
     # metadata for URL's
@@ -113,6 +115,6 @@ class URL(models.Model):
                 URL.objects.get(short__iexact=short)
                 tries += 1
                 cache.incr("hashids_counter")
-            except URL.DoesNotExist:
+            except URL.DoesNotExist as ex:
                 return short
         return None
