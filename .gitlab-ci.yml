@@ -14,7 +14,7 @@ test_Go:
   type: test
   before_script:
     - apt-get update -qy
-    - apt-get install -y libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libjpeg-dev
+    - apt-get install -y libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libjpeg-dev libsasl2-dev
     - pip install -r requirements.txt
     - pip install coverage
     - cp go/settings/settings.py.template go/settings/settings.py
