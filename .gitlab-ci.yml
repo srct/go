@@ -1,4 +1,4 @@
-image: ubuntu:14.04
+image: library/python:2.7 
 
 services:
   - mysql:latest
@@ -14,7 +14,7 @@ test_Go:
   type: test
   before_script:
     - apt-get update -qy
-    - apt-get install -y python-dev python-pip python-pip libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev libjpeg-dev git
+    - apt-get install -y libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libjpeg-dev
     - pip install -r requirements.txt
     - pip install coverage
     - cp go/settings/settings.py.template go/settings/settings.py
