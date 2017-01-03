@@ -16,23 +16,21 @@ test_Go:
     - apt-get update -qy
     - apt-get install -y libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libjpeg-dev libsasl2-dev
     - pip install -r requirements.txt
-    - pip install coverage
-    - cp go/settings/settings.py.template go/settings/settings.py
-    - cp go/settings/secret.py.template go/settings/secret.py
+    - cd go/
+    - cp settings/settings.py.template go/settings/settings.py
+    - cp settings/secret.py.template go/settings/secret.py
     - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
-    - sed -i go/settings/secret.py -e 's/DB_NAME.*/DB_NAME = \"go\"/'
-    - sed -i go/settings/secret.py -e 's/DB_USER.*/DB_USER = \"root\"/'
-    - sed -i go/settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
-    - sed -i go/settings/secret.py -e 's/DB_HOST.*/DB_HOST = \"mysql\"/'
-    - sed -i go/settings/secret.py -e 's/SECRET_KEY.*/SECRET_KEY = \"${SECRET_KEY}\"/'
-    - cd go
     - export DJANGO_DEBUG="True"
+    - sed -i settings/secret.py -e 's/DB_NAME.*/DB_NAME = \"go\"/'
+    - sed -i settings/secret.py -e 's/DB_USER.*/DB_USER = \"root\"/'
+    - sed -i settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
+    - sed -i settings/secret.py -e 's/DB_HOST.*/DB_HOST = \"mysql\"/'
+    - sed -i settings/secret.py -e 's/SECRET_KEY.*/SECRET_KEY = \"${SECRET_KEY}\"/'
     - python manage.py makemigrations
     - python manage.py makemigrations go
     - python manage.py migrate
-    - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python ./manage.py shell
+    - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
   script:
-    - cd ..
-    - coverage run --source=go ./go/manage.py test --parallel
-    - coverage html
-    - grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
+    - pip install coverage
+    - coverage run --source=go --omit=*migrations/* manage.py test --parallel
+    - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
