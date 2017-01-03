@@ -17,8 +17,8 @@ test_Go:
     - apt-get install -y libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libjpeg-dev libsasl2-dev
     - pip install -r requirements.txt
     - cd go/
-    - cp settings/settings.py.template go/settings/settings.py
-    - cp settings/secret.py.template go/settings/secret.py
+    - cp settings/settings.py.template settings/settings.py
+    - cp settings/secret.py.template settings/secret.py
     - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
     - export DJANGO_DEBUG="True"
     - sed -i settings/secret.py -e 's/DB_NAME.*/DB_NAME = \"go\"/'
