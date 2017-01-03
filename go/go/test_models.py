@@ -1,5 +1,6 @@
 # Django Imports
 from django.test import TestCase
+from django.contrib.auth.models import User
 
 # App Imports
 from go.models import URL, RegisteredUser
@@ -20,5 +21,10 @@ class URLTest(TestCase):
 """
 class RegisteredUserTest(TestCase):
 
-    def test_Django_Test(self):
-        self.assertEqual(1+1, 2)
+    def setUp(self):
+        User.objects.create(username='dhaynes', password='password')
+
+    def test_RegisteredUserCreation(self):
+        getUser = User.objects.get(username='dhaynes')
+        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
+        self.assertTrue(getRegisteredUser)
