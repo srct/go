@@ -1,47 +1,72 @@
-# Go (URL Shortener) [![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/2.2-dev/coverage.svg)](https://git.gmu.edu/srct/go/commits/2.2-dev)
+# Go
 
-A project of [GMU SRCT](http://srct.gmu.edu).
+[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/2.2-dev) [![coverage report](https://git.gmu.edu/srct/go/badges/2.2-dev/coverage.svg)](https://git.gmu.edu/srct/go/commits/2.2-dev)
 
-Go is a drop-in URL shortening service. It aims to provide an easily
-branded service for institutions that wish to widely disseminate
-information without unnecessarily outsourcing branding.
+#### A project of [GMU SRCT](http://srct.gmu.edu).
 
-I encourage you to join the #go channel in SRCT's [Slack Group](http://srct.slack.com) if you have any questions on setup or would like to contribute.
+Go is a drop-in URL shortening service. This project aims to provide an easy to use
+URL branding service for institutions that wish to widely disseminate information
+without unnecessarily outsourcing branding.
 
-## Package Installation
-<legend></legend>
+Go is currently a `Python 2.7` project written in the `Django` web framework, with
+`MySQL` as our backend database.
 
-### Prerequisities
-First, install python and git on your system.
-* Python is the programming language used for Django, the web framework used by Go.
-* Git is the version control system used for SRCT projects.
+# Setup instructions for local development
+
+---
+
+Go currently supports developers on Linux, macOS and Windows platforms through
+both the Docker and Vagrant virtualization platforms. You may use either one
+though we have included instructions for manual setup as well. Here's our walk-through
+of steps we will take:
+
+1. Install `git` on your system.
+2. Clone the Go codebase.
+3. Get Go up and running with the method of your choice.
+
+## 1) Install `git` on your system.
+
+`git` is the version control system used for SRCT projects.
+
+### On Linux Based Systems
 
 Open a terminal and run the following command:
 
-`$ sudo apt-get update`
+    $ sudo apt-get update
 
 This retrieves links to the most up-to-date and secure versions of your packages.
 
 Next, with:
 
-`$ sudo apt-get install python python-dev python-pip git`
+    $ sudo apt-get install git
 
-you install python and git.
+you install `git` onto your system.
 
-**macOS (Formerly OS X)**
+### On macOS
 
-This tutorial uses the third party Homebrew package manager for macOS, which allows you to install packages from your terminal just as easily as you could on a Linux based system. You could use another package manager (or not use one at all), but Homebrew is highly reccomended.
+We recommend that you use the third party Homebrew package manager for macOS,
+which allows you to install packages from your terminal just as easily as you
+could on a Linux based system. You could use another package manager (or not
+use one at all), but Homebrew is highly reccomended.
 
-To get homebrew, run the following command in a terminal: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)`
+To get homebrew, run the following command in a terminal:
 
-**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and it likely won't work if you do.
+    $ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)
 
-Next, to make sure Homebrew is up to date, run `brew update`
+**Note**: You do NOT need to use `sudo` when running any Homebrew commands, and
+it likely won't work if you do.
 
-Finally we can install python and git with `brew install python git`
+Next, to make sure Homebrew is up to date, run:
 
-### Cloning the Go Codebase
-Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go), the SRCT code respository.
+    $ brew update
+
+Finally we can install git with `brew install git`
+
+### On Windows
+
+## 2) Clone the Go codebase.
+Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go),
+the SRCT code respository.
 
 Configure your ssh keys by following the directions at [git.gmu.edu/help/ssh/README](http://git.gmu.edu/help/ssh/README).
 
@@ -49,87 +74,29 @@ Now, on your computer, navigate to the directory in which you want to download t
 
 `$ git clone git@git.gmu.edu:srct/go.git`
 
-### If Using Docker
-First, install Docker on your system.
-* For macOS go here: https://docs.docker.com/docker-for-mac/
-* For windows go here: https://docs.docker.com/docker-for-windows/
-* For you specific linux disro go here: https://docs.docker.com/engine/installation/
+## 3) Get Go up and running with the method of your choice.
 
-Additionally if you are not on Mac or Windows you will need to install docker-compose: https://docs.docker.com/compose/install/
+### Docker
 
-Next go to the directory with the docker-compose file in it and run:
+[docker configuration on the wiki](https://git.gmu.edu/srct/go/wikis/docker-configuration)
 
-`$ docker-compose up`
+### Vagrant
 
-If that doesn't work, try:
+[config](https://git.gmu.edu/srct/go/wikis/vagrant-configuration)
 
-`$ sudo docker-compose up`
+[usage](https://git.gmu.edu/srct/go/wikis/vagrant-usage)
 
-SOMETIMES if this branch is updated you might have to 
-You should see that the server is running by going to http://localhost:8000 in your browser.
-Any changes you make to your local file system will be mirrored in the server.
+### Manual Setup
 
-### If Using Vagrant
-Finally, install these packages from the standard repositories:
- - VirtualBox
+# On Contributing
 
-    On Ubuntu:
-    `$ sudo apt-get install virtualbox`
+---
+
+I encourage you to join the [#go channel](https://srct.slack.com/messages/go/details/) in SRCT's [Slack Group](https://srct.slack.com)
+if you have any questions on setup or would like to contribute.
 
 
-    You should be installing the latest VirtualBox version which as of time of writing is `5.0.24_Ubuntur108355`. You can verify the version number by running `vboxmanage --version`.
-
- - Vagrant
-
-    `$ sudo apt-get install vagrant`
-
-    You should be installing the latest vagrant version which as of time of writing is `Vagrant 1.8.1`. You can verify the version number by running `vagrant -v`.
- - Ansible
-
-    `$ sudo pip install ansible`
-
-    You should be installing the latest ansible version which as of time of writing is `ansible 2.1.1.0`. You can verify the version number by running `ansible --version`.
-
-  **macOS**
-
-  First, get VirtualBox from [VirtualBox.org](https://www.virtualbox.org/wiki/Downloads)
-
-  Then install Vagrant and Ansible with Homebrew with `brew install Caskroom/cask/vagrant Ansible`
-
-## Developing with Vagrant
-<legend></legend>
-Vagrant allows for the virtualization of your development enviornment and automates the setup process for Go.
-
-### Vagrant Setup
-Navigate to go/ and run:
-
-`$ vagrant up`
-
-This will setup a vm to run Go on your computer and will setup a database, install packages, etc. The first time you run `vagrant up` it may take a few minutes to setup, specifically when installing Go packages. Don't worry as progressive times it will speed up.
-
-And that's it! Navigate to [localhost:8000](http://127.0.0.1:8000) in your web browser to view the website.
-
-### Additional Notes & Troubleshooting
-
-The authentication service used for Go is CAS. In local development however we utilize a test server. You can log in using your CAS username for both the username and password fields.
-
- The default superuser is _dhaynes3_ though this can be changed in _vagrantfile_ if you wish. You can run `$ vagrant provision` to apply this change. Be sure not to include that change in your commits.
-
-*Note:* For a currently undetermined reason at some points if you try to navigate to [localhost](http://127.0.0.1:8000) and you see an error like: "Conenction has been reset" then:
-1. `vagrant ssh`
-2. `sudo /etc/init.d/networking restart` and then `exit`
-3. `vagrant provision` (may need to do twice)
-
-This is the only temporary fix that we know exists.
-
-If you make any changes to _models.py_ you will need to re-provision the vm's database:
-
-`$ vagrant provision`
-
-Please note that this will refresh the database (as in delete everything in it).
-
-
-### Cron
+# Deployment
 
 In order to expire links, you need to set up a cron job to run the manage.py
 expirelinks command regularly. A sample cron script is available in the
@@ -137,6 +104,7 @@ repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
 change the paths so that they point to the virtualenv activate script and
 manage.py.
 
+---
+**Note:**
 
-### Note
 Link by Viktor Vorobyev from the Noun Project.
