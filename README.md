@@ -1,6 +1,9 @@
 # Go
 
-[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/2.2-dev) [![coverage report](https://git.gmu.edu/srct/go/badges/2.2-dev/coverage.svg)](https://git.gmu.edu/srct/go/commits/2.2-dev)
+[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master)
+[![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master)
+![python version](https://img.shields.io/badge/python-2.7-blue.svg)
+![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)
 
 #### A project of [GMU SRCT](http://srct.gmu.edu).
 
@@ -12,8 +15,6 @@ Go is currently a `Python 2.7` project written in the `Django` web framework, wi
 `MySQL` as our backend database.
 
 # Setup instructions for local development
-
----
 
 Go currently supports developers on Linux, macOS and Windows platforms through
 both the Docker and Vagrant virtualization platforms. You may use either one
@@ -63,8 +64,12 @@ Next, to make sure Homebrew is up to date, run:
 Finally we can install git with `brew install git`
 
 ### On Windows
+---
+
+Instruction on how to setup git on Windows goes here.
 
 ## 2) Clone the Go codebase.
+
 Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go),
 the SRCT code respository.
 
@@ -90,7 +95,6 @@ Now, on your computer, navigate to the directory in which you want to download t
 
 # On Contributing
 
----
 
 I encourage you to join the [#go channel](https://srct.slack.com/messages/go/details/) in SRCT's [Slack Group](https://srct.slack.com)
 if you have any questions on setup or would like to contribute.
