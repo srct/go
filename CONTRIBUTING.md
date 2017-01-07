@@ -39,19 +39,24 @@ issue before creating your branch.
 
 ### Commits & Their Messages
 
-It is important to commit more often than not such that if we run
-into issues we can narrow down which commit started to cause issues.
+It is important to commit more often than not such that if we run into issues we
+can narrow down which commit started to cause issues.
 
 Commit messages should follow the format:
 
 #### Title -
-Should fill in the blank: "This commit ______"
 
-Additionally if you are closing an issue include:
+Should fill in the blank:
 
-(Closes #issue_number_here)
+    This commit ______
 
-ex.  "Complete the about page + TOS (Closes #36)"
+Additionally, if you are closing an issue include:
+
+    (Closes #issue_number_here)
+
+Example commit title:
+
+    Complete the about page + TOS (Closes #36)
 
 #### Description -
 
@@ -59,14 +64,20 @@ Bullet points of some highlights from the commit.
 
 They don't have to be super serious (see any of my commits) though just a tad bit of info is nice.
 
-ex.
-- mostly talk about how great SRCT (and :dhaynes:) is
-- plus a short blurb on how we can ban you
+Example commit description:
 
-[Reference](https://git.gmu.edu/srct/go/commit/db89af2e4ffd06a6044d3301a3f7a45ced74799a)
+    - mostly talk about how great SRCT (and :dhaynes:) is
+    - plus a short blurb on how we can ban you
 
-### Merging to Master
+[Example full commit](https://git.gmu.edu/srct/go/commit/db89af2e4ffd06a6044d3301a3f7a45ced74799a)
 
-Open a [pull request](https://git.gmu.edu/srct/go/merge_requests/new) with a descriptive enough title and description and we'll take one last look at your code before merging.
+### Merging to the current development branch
 
-[Reference](https://git.gmu.edu/srct/go/merge_requests/25)
+Once you've finished work in a branch open a [pull request](https://git.gmu.edu/srct/go/merge_requests/new)
+to start the process of getting your code into the repo. Your code wil be reviewed
+by another member before being merged. Your code must pass our tests and include
+in the description:
+
+    Closes #issue_number_here
+
+[Example pull request](https://git.gmu.edu/srct/go/merge_requests/25)
