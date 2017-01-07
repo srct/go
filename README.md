@@ -176,23 +176,41 @@ https://git.gmu.edu/srct/go/wikis/manual-setup
 
 # Some words about contributing to Go.
 
-Words about contributing.md go here.
+## CONTRIBUTING.md
 
-" " Opening issues
+This document goes into detail about how to contribute to the repo, plus some
+opinions about using `git`.
+
+## Opening issues
+
+There is a template for issue descriptions located on the new issue page. I will
+close issues with poor descriptions or who do not follow the standard.
+
+## Authentication
 
 The authentication service used for Go is CAS. In local development however we
 utilize a test server. You can log in with just your CAS username to simulate logging
 in. By default, the Django superuser is set to `dhaynes3`.
 
-In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in. Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to use the same username and Full Name as your main account and select "approved" in the bottom row.
+In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in.
+Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to
+use the same username and Full Name as your main account and select "approved" in the bottom row.
+
+## Coding style
+You should adhere to the style of the repo code. Consistancy is key! PEP8 guidelines
+are strongly reccomended but not enforced at the time. Please comment your code,
+I will not accept commits that contain uncommented code.
+
+## Getting Help
 
 I encourage you to join the [#go channel](https://srct.slack.com/messages/go/details/) in SRCT's [Slack Group](https://srct.slack.com)
 if you have any questions on setup or would like to contribute.
 
-
 # Some words about deploying Go.
 
-someone @sysadmin writes up about how to deploy Go or just links to the wiki.
+Check out our admin guide:
+
+https://git.gmu.edu/srct/go/wikis/administration-guide
 
 In order to expire links, you need to set up a cron job to run the manage.py
 expirelinks command regularly. A sample cron script is available in the
