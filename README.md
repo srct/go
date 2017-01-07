@@ -1,6 +1,6 @@
 # Go
 
-[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)]()
+[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.1-yellowgreen.svg)]()
 
 #### A project of [GMU SRCT](http://srct.gmu.edu).
 
@@ -41,12 +41,6 @@ Next, with:
     sudo apt install git
 
 you install `git` onto your system.
-
-**with yum (now something else??):**
-
-**with rpm:**
-
-**with other package manager???:**
 
 ### On macOS
 
@@ -103,6 +97,8 @@ Instead of running a full VM that runs Go, we package up all the
 various bits that make up Go and run that as a container (two
 containers: one for Go and the other for mysql) that act as normal
 processes to the OS.   
+
+Check out [docker.com](https://www.docker.com/what-docker) for more details.
 
 Pros:
 
@@ -173,11 +169,22 @@ Cons:
   - Greater potential for things to go wrong
   - Way more steps
 
-Link to wiki page goes here.
+Head to:
+
+https://git.gmu.edu/srct/go/wikis/manual-setup
+
 
 # Some words about contributing to Go.
 
 Words about contributing.md go here.
+
+" " Opening issues
+
+The authentication service used for Go is CAS. In local development however we
+utilize a test server. You can log in with just your CAS username to simulate logging
+in. By default, the Django superuser is set to `dhaynes3`.
+
+In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in. Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to use the same username and Full Name as your main account and select "approved" in the bottom row.
 
 I encourage you to join the [#go channel](https://srct.slack.com/messages/go/details/) in SRCT's [Slack Group](https://srct.slack.com)
 if you have any questions on setup or would like to contribute.
