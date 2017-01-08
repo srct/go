@@ -32,5 +32,6 @@ test_Go:
     - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
   script:
     - pip install coverage
+    - pip install tblib
     - coverage run --source=go --omit=*migrations/* manage.py test --parallel
     - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
