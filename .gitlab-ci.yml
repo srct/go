@@ -2,8 +2,7 @@ services:
   - mysql:latest
 
 types:
-  - test-python-2.7
-  - test-python-3.6
+  - test
 
 variables:
   MYSQL_DATABASE: go
@@ -11,7 +10,7 @@ variables:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y libldap2-dev mysql-client libmysqlclient-dev python-mysqldb libsasl2-dev
+  - apt-get install -y libldap2-dev libsasl2-dev mysql-client libmysqlclient-dev python-mysqldb
   - pip install -r requirements.txt
   - cd go/
   - cp settings/settings.py.template settings/settings.py
@@ -31,13 +30,13 @@ before_script:
 
 Go-py2.7:
   image: library/python:2.7
-  type: test-python-2.7
+  type: test
   script:
     - python manage.py test --parallel
 
 Go-py3.6:
   image: library/python:3.6
-  type: test-python-3.6
+  type: test
   script:
     - pip install coverage
     - coverage run --source=go --omit=*migrations/* manage.py test --parallel
