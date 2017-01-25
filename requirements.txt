@@ -8,12 +8,11 @@ git+https://github.com/bruno207/django-bootstrap3-datetimepicker.git
 gunicorn==19.6.0
 hashids==1.1.0
 mccabe==0.5.2
-MySQL-python==1.2.5
+mysqlclient
 pep8==1.7.0
 Pillow==3.3.0
 pyflakes==1.2.3
-python-ldap==2.4.27
+pyldap
 requests==2.11.0
 simplejson==3.8.2
-six==1.10.0
 wheel==0.29.0
