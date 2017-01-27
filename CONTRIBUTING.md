@@ -5,6 +5,10 @@ First take a look at [github flow](https://guides.github.com/introduction/flow/)
 as this page gives a good starting point on understanding how to work with `git`
 in an open source repo.
 
+**Note:**
+
+You will need to be a member before making any contributions. Join the slack #go channel and ask nicely.
+
 ### Branches
 
 Each branch off of the development branch serves one and only one purpose: to
