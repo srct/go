@@ -1,5 +1,5 @@
 # Create a new file 'settings.py' and copy these contents into that file
-import secret
+from . import secret
 import os
 import sys
 

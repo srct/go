@@ -1,3 +1,6 @@
+# Future Imports
+from __future__ import unicode_literals, absolute_import, print_function, division
+
 # Django Imports
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin

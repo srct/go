@@ -1,6 +1,6 @@
 # Go
 
-[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.1.1-yellowgreen.svg)]()
+[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7,3.6-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.1.1-yellowgreen.svg)]()
 
 #### A project of [GMU SRCT](https://srct.gmu.edu).
 
@@ -8,7 +8,8 @@ Go is a drop-in URL shortening service. This project aims to provide an easy to 
 URL branding service for institutions that wish to widely disseminate information
 without unnecessarily outsourcing branding.
 
-Go is currently a `Python 2.7` project written in the `Django` web framework, with
+Go is currently a `Python 3` (with backwards compatability foor `Python 2.7` until
+Django 2.0 in December 2017) project written in the `Django` web framework, with
 `MySQL` as our backend database.
 
 # Setup instructions for local development
