@@ -72,9 +72,71 @@ SRCT Go &bull; Administration Panel
 
             <!-- a div containing our form submission buttons -->
             <div class="form-group">
+              <!-- the modal for approve doesn't work-->
               <a class="btn btn-primary btn-sm" data-target="#approveModal-{{url.short}}" data-toggle="modal"> Approve </a>
+              <!-- input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm"-->
               <a class="btn btn-danger btn-sm" data-target="#denyModal-{{url.short}}" data-toggle="modal"> Deny </a>
               <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal-{{url.short}}" data-toggle="modal" style="background-color: black; color: white;"> Block </a>
+
+              <!--Define Approve Modal-->
+              <div id="approveModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+                    <div class="modal-header" style="text-align:center;">
+                      <h4 class="modal-title  text-center"
+                      style="font-weight:bold; font-size: 21px !important;">
+                      Are you sure you would like to approve a user?</h4>
+                    </div>
+                    <div class="modal-body" style="padding-bottom: 80px">
+                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                      <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #00331a; color: #ffffff; border-radius: 4px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--Define Deny Modal-->
+              <div id="denyModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+                    <div class="modal-header" style="text-align:center;">
+                      <h4 class="modal-title  text-center"
+                      style="font-weight:bold; font-size: 21px !important;">
+                      Are you sure you would like to deny a user?</h4>
+                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                        Please remember the user's feelings</h6>
+                    </div>
+                    <div class="modal-body" style="padding-bottom: 80px">
+                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                      <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--Define Block Modal-->
+              <!-- Note there is another block modal for the other block button below -->
+              <div id="blockModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+                    <div class="modal-header" style="text-align:center;">
+                      <h4 class="modal-title  text-center"
+                        style="font-weight:bold; font-size: 21px !important;">
+                        Are you sure you would like to block a user?</h4>
+                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                            Please remember the user's feelings</h6>
+                    </div>
+                    <div class="modal-body" style="padding-bottom: 80px">
+                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                      <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
         </form>
     </div>
@@ -130,6 +192,25 @@ SRCT Go &bull; Administration Panel
             <div class="form-group">
                 <!-- input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-sm btn-Unblock"-->
                 <a class="btn btn-default btn-sm btn-Unblock" data-target="#unblockModal-{{url.short}}" data-toggle="modal"> Unblock </a>
+
+                <!--Define Un-Block Modal-->
+                <div id="unblockModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
+                  <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+                      <div class="modal-header" style="text-align:center;">
+                        <h4 class="modal-title  text-center"
+                        style="font-weight:bold; font-size: 21px !important;">
+                        Are you sure you would like to unblock a user?</h4>
+                      </div>
+                      <div class="modal-body" style="padding-bottom: 80px">
+                        <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                        <input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #e7e7e7; color: #000000; border-radius: 4px;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
             </div>
         </form>
     </div>
@@ -178,116 +259,55 @@ SRCT Go &bull; Administration Panel
                 </tbody>
             </table>
 
-            <!-- indent looks bad but I used dhaynes favorite text editior so it's ok-->
-
             <!-- display our removal and blocking buttons -->
             <div class="form-group">
               <a class="btn btn-danger btn-sm" data-target="#removeModal-{{url.short}}" data-toggle="modal"> Remove </a>
-              <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal-{{url.short}}" data-toggle="modal" style="background-color: black; color: white;"> Block </a>
-            </div>
+              <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal2-{{url.short}}" data-toggle="modal" style="background-color: black; color: white;"> Block </a>
 
-            <!--Define Approve Modal-->
-            <div id="approveModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                  <div class="modal-header" style="text-align:center;">
-                    <h4 class="modal-title  text-center"
-                    style="font-weight:bold; font-size: 21px !important;">
-                    Are you sure you would like to approve: (put list here)</h4>
-                    <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                      Please remember the user's feelings</h6>
-                    </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                      <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #00331a; color: #ffffff; border-radius: 4px;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!--Define Deny Modal-->
-              <div id="denyModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
+              <!--Define Remove Modal-->
+              <div id="removeModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
                 <div class="modal-dialog">
                   <!-- Modal content-->
                   <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
                     <div class="modal-header" style="text-align:center;">
                       <h4 class="modal-title  text-center"
                       style="font-weight:bold; font-size: 21px !important;">
-                      Are you sure you would like to deny: (put list here)</h4>
+                      Are you sure you would like to remove a user?</h4>
                       <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
                         Please remember the user's feelings</h6>
-                      </div>
-                      <div class="modal-body" style="padding-bottom: 80px">
-                        <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                        <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
-                      </div>
+                    </div>
+                    <div class="modal-body" style="padding-bottom: 80px">
+                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                      <input type="submit" name="_remove" value="Remove" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <!--Define Block Modal-->
-                <div id="blockModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
-                  <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                      <div class="modal-header" style="text-align:center;">
-                        <h4 class="modal-title  text-center"
+              <!--Define Block Modal 2-->
+              <div id="blockModal2-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
+                <div class="modal-dialog">
+                  <!-- Modal content-->
+                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+                    <div class="modal-header" style="text-align:center;">
+                      <h4 class="modal-title  text-center"
                         style="font-weight:bold; font-size: 21px !important;">
-                        Are you sure you would like to block user: </h4>
-                        <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                          Please remember the user's feelings</h6>
-                        </div>
-                        <div class="modal-body" style="padding-bottom: 80px">
-                          <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                          <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                <!--Define Un-Block Modal-->
-                <div id="unblockModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
-                  <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                      <div class="modal-header" style="text-align:center;">
-                        <h4 class="modal-title  text-center"
-                        style="font-weight:bold; font-size: 21px !important;">
-                        Are you sure you would like to unblock: (put list here)</h4>
-                        <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                          Please remember the user's feelings</h6>
-                        </div>
-                        <div class="modal-body" style="padding-bottom: 80px">
-                          <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                          <input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #e7e7e7; color: #ffffff; border-radius: 4px;">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!--Define Remove Modal-->
-                  <div id="removeModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
-                    <div class="modal-dialog">
-                      <!-- Modal content-->
-                      <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                        <div class="modal-header" style="text-align:center;">
-                          <h4 class="modal-title  text-center"
-                          style="font-weight:bold; font-size: 21px !important;">
-                          Are you sure you would like to remove: (put list here)</h4>
-                          <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                        Are you sure you would like to block a user?</h4>
+                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
                             Please remember the user's feelings</h6>
-                          </div>
-                          <div class="modal-body" style="padding-bottom: 80px">
-                            <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                            <input type="submit" name="_remove" value="Remove" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
-                          </div>
-                        </div>
-                      </div>
                     </div>
-
-                    </form>
+                    <div class="modal-body" style="padding-bottom: 80px">
+                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
+                      <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
+                    </div>
                   </div>
                 </div>
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
 
 {% endblock %}
