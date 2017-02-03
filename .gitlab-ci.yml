@@ -31,12 +31,12 @@ Go-py2.7:
   image: library/python:2.7
   type: test
   script:
-    - python manage.py test 
+    - python manage.py test
 
 Go-py3.6:
   image: library/python:3.6
   type: test
   script:
     - pip install coverage
-    - coverage run --source=go --omit=*migrations/* manage.py test 
+    - coverage run --source=go --omit=*migrations/*,*admin.py,*manage.py,*wsgi.py,*settings.py,*secret.py,*__init__.py,*.pyc,*templates/*,*static/* manage.py test 
     - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
