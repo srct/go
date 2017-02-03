@@ -17,3 +17,5 @@ class UrlsTest(TestCase):
     """
     def test_Django_Test(self):
         self.assertEqual("Hello World!", "Hello World!")
+
+# https://stackoverflow.com/questions/18987051/how-do-i-unit-test-django-urls
