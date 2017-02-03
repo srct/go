@@ -12,10 +12,6 @@ import go.views
 # application. Such modules are expected to register models with the admin.
 admin.autodiscover()
 
-# Handle 404 and 500 errors with custom pages
-handle404 = TemplateView.as_view(template_name="admin/404.html")
-handle500 = TemplateView.as_view(template_name="admin/500.html")
-
 # Main list of project URL's
 urlpatterns = [
     # / - Homepage url.
