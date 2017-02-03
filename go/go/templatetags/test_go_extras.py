@@ -5,13 +5,13 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.test import TestCase
 
 # App Imports
-from .expirelinks import *
+from .go_extras import *
 
 
 """
     Test cases for the functions in expirelinks
 """
-class ExpireLinksTest(TestCase):
+class GoExtrasTest(TestCase):
 
     """
         Default test case, does not actually test anything
