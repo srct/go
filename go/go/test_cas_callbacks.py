@@ -5,15 +5,14 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.test import TestCase
 
 # App Imports
-from go.cas_callbacks import *
+from go.cas_callbacks import pfparse, pfinfo, create_user
 
 """
     Test cases for the functions in call_callbacks
 """
 class CasCallbacksTest(TestCase):
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
-        self.assertEqual("Hello World!", "Hello World!")
+    def testpfinfo(self):
+        print(pfinfo('dhaynes3'))
+
+        self.assertTrue(True)
