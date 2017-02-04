@@ -32,7 +32,7 @@ class RegisteredUserTest(TestCase):
 
     def test_checkPrint(self):
         # expected = '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
-
+        self.assertTrue(True)
 """
     Test cases for the URL Model
 
