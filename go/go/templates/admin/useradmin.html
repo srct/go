@@ -29,8 +29,8 @@ SRCT Go &bull; Administration Panel
 <!-- define the div where we can select users from a table to judge them -->
 <div class="row">
     <div class="col-md-12">
-        <h3>Users awaiting moderation</h3>
         <input class="inputfilter" type="text" id="appliedInput" onkeyup="filterApplied()" placeholder="Search for Full names..">
+        <h3>Users awaiting moderation</h3>
         <form method="post" action="useradmin">
             <!-- csrf protection  -->
             {% csrf_token %}
@@ -145,12 +145,12 @@ SRCT Go &bull; Administration Panel
 <!-- define the table that displays blocked users and allows us to unblock them -->
 <div class="row">
     <div class="col-md-12">
-        <h3>Blocked Users</h3>
-        <input class="inputfilter" type="text" id="blockedInput" onkeyup="filterBlocked()" placeholder="Search for Full names..">
-        <form method="post" action="useradmin">
-            <!-- csrf protection  -->
-            {% csrf_token %}
-            <table class="table table-striped table-hover" id="blockedTable">
+      <input class="inputfilter" type="text" id="blockedInput" onkeyup="filterBlocked()" placeholder="Search for Full names..">
+      <h3>Blocked Users</h3>
+      <form method="post" action="useradmin">
+          <!-- csrf protection  -->
+          {% csrf_token %}
+          <table class="table table-striped table-hover" id="blockedTable">
                 <!-- define the header row -->
                 <thead>
                     <tr>
@@ -218,8 +218,8 @@ SRCT Go &bull; Administration Panel
 <!-- define the table of current users -->
 <div class="row">
     <div class="col-md-12">
-        <h3>Current Users</h3>
         <input class="inputfilter" type="text" id="currentInput" onkeyup="filterCurrent()" placeholder="Search for Full names..">
+        <h3>Current Users</h3>
         <form method="post" action="useradmin">
             <!-- csrf protection  -->
             {% csrf_token %}
