@@ -1,0 +1,11 @@
+Django==1.10
+django-auth-ldap==1.2.8
+django-crispy-forms==1.6.0
+git+https://github.com/bruno207/django-qrcode.git
+git+https://github.com/kstateome/django-cas.git
+git+https://github.com/bruno207/django-bootstrap3-datetimepicker.git
+hashids==1.1.0
+mysqlclient
+pyldap
+requests==2.11.0
+simplejson==3.8.2
