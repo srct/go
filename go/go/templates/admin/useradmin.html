@@ -150,8 +150,8 @@ SRCT Go &bull; Administration Panel
         <form method="post" action="useradmin">
             <!-- csrf protection  -->
             {% csrf_token %}
-
-            <table class="table table-striped table-hover">
+            <input type="text" id="blockedInput" onkeyup="filterBlocked()" placeholder="Search for Full names..">
+            <table class="table table-striped table-hover" id="blockedTable">
                 <!-- define the header row -->
                 <thead>
                     <tr>
@@ -224,8 +224,8 @@ SRCT Go &bull; Administration Panel
         <form method="post" action="useradmin">
             <!-- csrf protection  -->
             {% csrf_token %}
-
-            <table class="table table-striped table-hover ">
+            <input type="text" id="currentInput" onkeyup="filterCurrent()" placeholder="Search for Full names..">
+            <table class="table table-striped table-hover " id = "currentTable">
                 <!-- define the header row -->
                 <thead>
                     <tr>
