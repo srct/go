@@ -1,3 +1,6 @@
+# Future Imports
+from __future__ import unicode_literals, absolute_import, print_function, division
+
 # Django Imports
 from django import forms
 from django.core.exceptions import ValidationError
@@ -44,7 +47,7 @@ class URLForm(forms.ModelForm):
         try:
             # if we're able to get a URL with the same short url
             URL.objects.get(short__iexact=value)
-        except URL.DoesNotExist:
+        except URL.DoesNotExist as ex:
             return
         # then raise a ValidationError
         raise ValidationError('Short url already exists.')

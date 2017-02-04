@@ -1,5 +1,5 @@
 # Create a new file 'settings.py' and copy these contents into that file
-import secret
+from . import secret
 import os
 import sys
 
@@ -30,7 +30,7 @@ DATABASES = {
 ALLOWED_HOSTS = ['127.0.0.1']
 
 # Peoplefinder API
-PF_URL = "http://api.srct.gmu.edu/pf/v1/"
+PF_URL = "https://api.srct.gmu.edu/pf/v1/"
 
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
