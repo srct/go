@@ -43,9 +43,10 @@ body {
 .inputfilter {
     background-position: 10px 12px;
     background-repeat: no-repeat;
-    width: 100%;
+    width: 35%;
     font-size: 16px;
     padding: 7px 20px 7px 40px;
     border: 1px solid #ddd;
     margin-bottom: 12px;
+    float: right;
 }
