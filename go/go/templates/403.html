@@ -1,0 +1,28 @@
+<!-- include the base html template -->
+{% extends 'layouts/base.html' %}
+
+<!-- define the page title block -->
+{% block title %}
+403 Error &bull; Forbidden
+{% endblock %}
+
+<!-- define the content block for the page -->
+{% block content %}
+
+<!-- Tell Django to load static files -->
+{% load staticfiles %}
+
+<!-- div that contains the 404 page content -->
+<div class="row">
+  <div class="col-md-10 col-md-offset-1 text-center">
+    <h1>403 Error - Forbidden</h1>
+    <h3>You are not permitted to access this page, or you have exceeded the maximum limit of submitted links.</h3>
+    <h3>
+        Click <a href="{% url 'index' %}">here</a> to return to the home page.
+    </h3>
+    <img id="squirrels" src="{% static "img/acorn.png" %}">
+    <a href="/"><img src="{% static "img/acorn.png" %}" style="width:10vw;"></a>
+  </div>
+</div>
+
+{% endblock %}
