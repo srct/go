@@ -1,6 +1,7 @@
 Django==1.10
 django-auth-ldap==1.2.8
 django-crispy-forms==1.6.0
+django-ratelimit==1.0.1
 git+https://github.com/bruno207/django-qrcode.git
 flake8==3.0.4
 git+https://github.com/kstateome/django-cas.git
