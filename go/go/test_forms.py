@@ -18,3 +18,14 @@ class URLFormTest(TestCase):
     """
     def test_Django_Test(self):
         self.assertEqual("Hello World!", "Hello World!")
+
+"""
+    Test cases for the Signup form
+"""
+class SignupForm(TestCase):
+
+    """
+        Default test case, does not actually test anything
+    """
+    def test_Django_Test(self):
+        self.assertEqual("Hello World!", "Hello World!")
