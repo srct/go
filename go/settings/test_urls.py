@@ -22,11 +22,34 @@ class UrlsTest(TestCase):
         url = reverse('index')
         self.assertEqual(url, '/')
 
+    """
+        # /view/<short> - View URL data.
+        url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
+    """
+    def test_view_chars(self):
+        url = reverse('view', args=['dhaynes'])
+        self.assertEqual(url, '/view/dhaynes')
 
     """
         # /view/<short> - View URL data.
         url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
     """
-    def test_view(self):
-        url = reverse('view', args=['dhaynes'])
-        self.assertEqual(url, '/view/dhaynes')
+    def test_view_ints(self):
+        url = reverse('view', args=['123456789'])
+        self.assertEqual(url, '/view/123456789')
+
+    """
+        # /view/<short> - View URL data.
+        url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
+    """
+    def test_view_chars_ints(self):
+        url = reverse('view', args=['dhaynes123'])
+        self.assertEqual(url, '/view/dhaynes123')
+
+    """
+        # /view/<short> - View URL data.
+        url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
+    """
+    def test_view_full_slug(self):
+        url = reverse('view', args=['dhaynes123_-'])
+        self.assertEqual(url, '/view/dhaynes123_-')
