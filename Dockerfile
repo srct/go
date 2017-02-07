@@ -8,6 +8,6 @@ RUN apt-get install netcat -y
 
 RUN mkdir /go
 WORKDIR /go
-ADD requirements.txt /go/
-RUN pip install -r requirements.txt
+ADD /requirements/ /go/
+RUN pip install -r base.txt
 ADD . /go/
