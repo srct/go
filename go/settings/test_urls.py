@@ -53,6 +53,13 @@ class UrlsTest(TestCase):
     """
         /about - About page.
     """
-    def test_view_full_slug(self):
+    def test_about(self):
         url = reverse('about')
         self.assertEqual(url, '/about')
+
+    """
+        /signup - Signup page for access.
+    """
+    def test_signup(self):
+        url = reverse('signup')
+        self.assertEqual(url, '/signup')

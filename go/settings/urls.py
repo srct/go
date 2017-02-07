@@ -61,5 +61,4 @@ else:
 urlpatterns += [
     # Redirection regex.
     url(r'^(?P<short>[-\w]+)$', go.views.redirection, name='redirection'),
-
 ]
