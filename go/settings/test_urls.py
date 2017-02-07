@@ -22,3 +22,11 @@ class UrlsTest(TestCase):
         url = reverse('index')
         self.assertEqual(url, '/')
 
+
+    """
+        # /view/<short> - View URL data.
+        url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
+    """
+    def test_view(self):
+        url = reverse('view', args=['dhaynes'])
+        self.assertEqual(url, '/view/dhaynes')
