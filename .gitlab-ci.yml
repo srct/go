@@ -11,7 +11,7 @@ variables:
 before_script:
   - apt-get update -qy
   - apt-get install -y libldap2-dev libsasl2-dev mysql-client libmysqlclient-dev python-mysqldb
-  - pip install -r requirements.txt
+  - pip install -r requirements/ci.txt
   - cd go/
   - cp settings/settings.py.template settings/settings.py
   - cp settings/secret.py.template settings/secret.py
@@ -49,6 +49,5 @@ Go-py3.6:
   image: library/python:3.6
   type: test
   script:
-    - pip install coverage
     - coverage run --source=go --omit=*migrations/*,*admin.py,*manage.py,*wsgi.py,*settings.py,*secret.py,*__init__.py,*.pyc,*templates/*,*static/* manage.py test
     - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
