@@ -63,3 +63,45 @@ class UrlsTest(TestCase):
     def test_signup(self):
         url = reverse('signup')
         self.assertEqual(url, '/signup')
+
+    """
+        /myLinks - My-Links page, view and review links.
+    """
+    def test_my_links(self):
+        url = reverse('my_links')
+        self.assertEqual(url, '/myLinks')
+
+    """
+        /delete/<short> - Delete a link, no content display.
+    """
+    def test_delete_chars(self):
+        url = reverse('delete', args=['dhaynes'])
+        self.assertEqual(url, '/delete/dhaynes')
+
+    """
+        /delete/<short> - Delete a link, no content display.
+    """
+    def test_delete_ints(self):
+        url = reverse('delete', args=['123456789'])
+        self.assertEqual(url, '/delete/123456789')
+
+    """
+        /delete/<short> - Delete a link, no content display.
+    """
+    def test_delete_chars_ints(self):
+        url = reverse('delete', args=['dhaynes123'])
+        self.assertEqual(url, '/delete/dhaynes123')
+
+    """
+        /delete/<short> - Delete a link, no content display.
+    """
+    def test_delete_full_slug(self):
+        url = reverse('delete', args=['dhaynes123_-'])
+        self.assertEqual(url, '/delete/dhaynes123_-')
+
+    """
+        /registered - registration complete page
+    """
+    def test_registered(self):
+        url = reverse('registered')
+        self.assertEqual(url, '/registered')
