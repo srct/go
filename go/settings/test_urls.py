@@ -105,3 +105,27 @@ class UrlsTest(TestCase):
     def test_registered(self):
         url = reverse('registered')
         self.assertEqual(url, '/registered')
+
+    # The /admin URL is not tested as it is never resolves in source and generally
+    # Django yells at you if the admin page breaks
+
+    """
+        /useradmin - user approval interface
+    """
+    def test_useradmin(self):
+        url = reverse('useradmin')
+        self.assertEqual(url, '/useradmin')
+
+    """
+        /login - login portal
+    """
+    def test_useradmin(self):
+        url = reverse('go_login')
+        self.assertEqual(url, '/login')
+
+    """
+        /logout - logout portal
+    """
+    def test_useradmin(self):
+        url = reverse('go_logout')
+        self.assertEqual(url, '/logout')
