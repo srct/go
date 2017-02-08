@@ -59,7 +59,6 @@ def index(request):
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
 def post(request):
-
     # Now we initialize the form again but this time we have the POST
     # request
     url_form = URLForm(request.POST, host = request.META.get('HTTP_HOST'))
@@ -157,7 +156,6 @@ def my_links(request):
         'domain': domain,
     },
     )
-
 
 """
     This view deletes a URL if you have the permission to. User must be
