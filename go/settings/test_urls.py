@@ -129,3 +129,31 @@ class UrlsTest(TestCase):
     def test_useradmin(self):
         url = reverse('go_logout')
         self.assertEqual(url, '/logout')
+
+    """
+        /<short> - Redirect to a go link.
+    """
+    def test_delete_chars(self):
+        url = reverse('redirection', args=['dhaynes'])
+        self.assertEqual(url, '/dhaynes')
+
+    """
+        /<short> - Redirect to a go link.
+    """
+    def test_delete_ints(self):
+        url = reverse('redirection', args=['123456789'])
+        self.assertEqual(url, '/123456789')
+
+    """
+        /<short> - Redirect to a go link.
+    """
+    def test_delete_chars_ints(self):
+        url = reverse('redirection', args=['dhaynes123'])
+        self.assertEqual(url, '/dhaynes123')
+
+    """
+        /<short> - Redirect to a go link.
+    """
+    def test_delete_full_slug(self):
+        url = reverse('redirection', args=['dhaynes123_-'])
+        self.assertEqual(url, '/dhaynes123_-')
