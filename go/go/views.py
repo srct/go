@@ -28,7 +28,7 @@ from datetime import timedelta
     not_registered error page. If they are logged in AND registered, they
     get the URL registration form.
 """
-def index(request):
+def new_link(request):
     # If the user is blocked, redirect them to the blocked page.
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
@@ -50,10 +50,14 @@ def index(request):
         return redirect('view', post(request).short)
 
     # Render index.html passing the form to the template
-    return render(request, 'core/index.html', {
+    return render(request, 'core/new_link.html', {
         'form': url_form,
     },
     )
+
+# for compatibility, just in case
+def my_links(request):
+    return index(request)
 
 #rate limits are completely arbitrary
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
@@ -139,7 +143,7 @@ def view(request, short):
     obviously need to be logged in to view your URLs.
 """
 @login_required
-def my_links(request):
+def index(request):
 
     # Do not display this page to unapproved users
     if not request.user.registereduser.approved:
@@ -152,7 +156,7 @@ def my_links(request):
     urls = URL.objects.filter(owner = request.user.registereduser)
 
     # Render my_links.html passing the list of URL's and Domain to the template
-    return render(request, 'my_links.html', {
+    return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
     },
