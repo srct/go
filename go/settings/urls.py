@@ -41,7 +41,7 @@ urlpatterns = [
         name='registered'),
 
     # /admin - Administrator interface.
-    url(r'^admin/?$', admin.site.urls, name='go_admin'),
+    url(r'^admin/?', admin.site.urls, name='go_admin'),
 
     # /useradmin - user approval interface
     url(r'^useradmin/?$', go.views.useradmin, name='useradmin'),
