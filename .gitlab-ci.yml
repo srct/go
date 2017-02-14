@@ -10,7 +10,7 @@ variables:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y libldap2-dev libsasl2-dev mysql-client libmysqlclient-dev python-mysqldb
+  - apt-get install -y mysql-client libmysqlclient-dev python-mysqldb
   - pip install -r requirements/ci.txt
   - cd go/
   - cp settings/settings.py.template settings/settings.py

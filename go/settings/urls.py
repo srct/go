@@ -48,21 +48,12 @@ urlpatterns = [
 ]
 
 # Handle authentication pages
-if settings.AUTH_MODE.lower() == "ldap":
-    urlpatterns += [
-        # Auth pages
-        url(r'^login$', django.contrib.auth.views.login, {'template_name' : 'core/login.html'},
-            name='go_login'),
-        url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
-            name='go_logout'),
-    ]
-else:
-    urlpatterns += [
-        # Auth pages
-        url(r'^login$', django.contrib.auth.views.login, name='go_login'),
-        url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
-            name='go_logout'),
-    ]
+urlpatterns += [
+    # Auth pages
+    url(r'^login$', django.contrib.auth.views.login, name='go_login'),
+    url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
+        name='go_logout'),
+]
 
 urlpatterns += [
     # Redirection regex.
