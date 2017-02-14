@@ -37,8 +37,6 @@
         state: latest
         update_cache: yes
       with_items:
-        - libldap2-dev
-        - libsasl2-dev
         - mysql-server
         - mysql-client
         - libmysqlclient-dev
