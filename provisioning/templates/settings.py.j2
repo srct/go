@@ -2,8 +2,6 @@
 from . import secret
 import os
 
-AUTH_MODE = "CAS"
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # DEBUG mode is used to view more details when errors occur
@@ -137,49 +135,25 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+CAS_SERVER_URL = "{{ django['cas_url'] }}"
+CAS_LOGOUT_COMPLETELY = True
+CAS_PROVIDE_URL_TO_LOGOUT = True
 
-if AUTH_MODE.lower() == 'ldap':
-    import ldap
+AUTHENTICATION_BACKENDS += (
+    'cas.backends.CASBackend',
+)
 
-    AUTHENTICATION_BACKENDS += (
-        'django_auth_ldap.backend.LDAPBackend',
-    )
+CAS_RESPONSE_CALLBACKS = (
+    'go.cas_callbacks.create_user',
+)
 
-    AUTH_LDAP_SERVER_URI = "ldaps://directory.gmu.edu:636"  # server url
-    AUTH_LDAP_BIND_DN = "ou=people,o=gmu.edu"               # bind DN
-    AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = True            # use the user
-    AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s,ou=people,o=gmu.edu"
-    AUTH_LDAP_GLOBAL_OPTIONS = {                            # ignore UAC cert.
-        ldap.OPT_X_TLS: ldap.OPT_X_TLS_DEMAND,
-        ldap.OPT_X_TLS_REQUIRE_CERT: ldap.OPT_X_TLS_NEVER,
-    }
-    AUTH_LDAP_USER_ATTR_MAP = {
-        "first_name": "givenName",
-        "last_name": "sn",
-        "email": "mail"
-    }
-    AUTH_LDAP_ALWAYS_UPDATE_USER = True
+INSTALLED_APPS += (
+    'cas',
+)
 
-elif AUTH_MODE.lower() == 'cas':
-    CAS_SERVER_URL = "{{ django['cas_url'] }}"
-    CAS_LOGOUT_COMPLETELY = True
-    CAS_PROVIDE_URL_TO_LOGOUT = True
-
-    AUTHENTICATION_BACKENDS += (
-        'cas.backends.CASBackend',
-    )
-
-    CAS_RESPONSE_CALLBACKS = (
-        'go.cas_callbacks.create_user',
-    )
-
-    INSTALLED_APPS += (
-        'cas',
-    )
-
-    MIDDLEWARE_CLASSES += (
-        'cas.middleware.CASMiddleware',
-    )
+MIDDLEWARE_CLASSES += (
+    'cas.middleware.CASMiddleware',
+)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
