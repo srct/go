@@ -7,7 +7,7 @@ function filterApplied() {
     input = document.getElementById("appliedInput"); 
     // the var that holdes input from text box
     filter = input.value.toUpperCase();
-     //makes the input all uppercase so we can eliminate that from the things can break stuff
+     //makes the input all uppercase so we dont have problems with case insensitivity
     table = document.getElementById("appliedTable"); 
     // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); 
@@ -32,7 +32,7 @@ function filterBlocked() {
     input = document.getElementById("blockedInput"); 
     // the var that holdes input from text box
     filter = input.value.toUpperCase(); 
-    //makes the input all uppercase so we can eliminate that from the things can break stuff
+    //makes the input all uppercase so we dont have problems with case insensitivity
     table = document.getElementById("blockedTable"); 
     // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); 
@@ -57,7 +57,7 @@ function filterCurrent() {
     input = document.getElementById("currentInput");
      // the var that holdes input from text box
     filter = input.value.toUpperCase();
-     //makes the input all uppercase so we can eliminate that from the things can break stuff
+     //makes the input all uppercase so we dont have problems with case insensitivity
     table = document.getElementById("currentTable"); 
     // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); 
