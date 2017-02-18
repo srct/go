@@ -8,7 +8,7 @@ function filterApplied() {
     table = document.getElementById("appliedTable"); // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); //the table rows
     for (i = 1; i < tr.length; i++) { // loops through the table rows
-        td = tr[i].getElementsByTagName("td")[2]; //sets td to the element, gets changed evrey loop itteration
+        td = (tr[i].getElementsByTagName("td")[1] || tr[i].getElementsByTagName("td")[2]); //sets td to the element, gets changed evrey loop itteration
         if (td) {
             if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
@@ -27,7 +27,7 @@ function filterBlocked() {
     table = document.getElementById("blockedTable"); // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); //the table rows
     for (i = 1; i < tr.length; i++) { // loops through the table rows
-        td = tr[i].getElementsByTagName("td")[2]; //sets td to the element, gets changed evrey loop itteration
+        td = (tr[i].getElementsByTagName("td")[1] || tr[i].getElementsByTagName("td")[2]); //sets td to the element, gets changed evrey loop itteration
         if (td) {
             if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
@@ -46,7 +46,7 @@ function filterCurrent() {
     table = document.getElementById("currentTable"); // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); //the table rows
     for (i = 1; i < tr.length; i++) { // loops through the table rows
-        td = tr[i].getElementsByTagName("td")[2]; //sets td to the element, gets changed evrey loop itteration
+        td = (tr[i].getElementsByTagName("td")[1] || tr[i].getElementsByTagName("td")[2]); //sets td to the element, gets changed evrey loop itteration
         if (td) {
             if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
