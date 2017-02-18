@@ -1,7 +1,7 @@
 function filterApplied() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("appliedInput"); // the var that holdes input from text box
-    filter = input.value.toUpperCase(); //makes the input all uppercase for some fucking reason
+    filter = input.value.toUpperCase(); //makes the input all uppercase so we can eliminate that from the things can break stuff
     table = document.getElementById("appliedTable"); // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); //the table rows
     for (i = 1; i < tr.length; i++) { // loops through the table rows
@@ -20,7 +20,7 @@ function filterApplied() {
 function filterBlocked() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("blockedInput"); // the var that holdes input from text box
-    filter = input.value.toUpperCase(); //makes the input all uppercase for some fucking reason
+    filter = input.value.toUpperCase(); //makes the input all uppercase so we can eliminate that from the things can break stuff
     table = document.getElementById("blockedTable"); // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); //the table rows
     for (i = 1; i < tr.length; i++) { // loops through the table rows
@@ -39,7 +39,7 @@ function filterBlocked() {
 function filterCurrent() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("currentInput"); // the var that holdes input from text box
-    filter = input.value.toUpperCase(); //makes the input all uppercase for some fucking reason
+    filter = input.value.toUpperCase(); //makes the input all uppercase so we can eliminate that from the things can break stuff
     table = document.getElementById("currentTable"); // the table at the moment this is called
     tr = table.getElementsByTagName("tr"); //the table rows
     for (i = 1; i < tr.length; i++) { // loops through the table rows
