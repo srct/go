@@ -1,3 +1,6 @@
+//Zosman- This file was created in an effort to make /useradmin more usable. 
+//At the time this was created we had no searching feature of the users and it became somewhat hard to actually manage users
+//This file has three js functions, one for each table in /useradmin , the functions allow a user to search through the table
 function filterApplied() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("appliedInput"); // the var that holdes input from text box
