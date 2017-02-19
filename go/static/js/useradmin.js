@@ -1,4 +1,4 @@
-//Zosman- This file was created in an effort to make /useradmin more usable. 
+//Zosman- This file was created in an effort to make /useradmin more usable. As a responce to issue #119 ; branch 119-search-bar ;
 //At the time this was created we had no searching feature of the users and it became somewhat hard to actually manage users
 //This file has three js functions, one for each table in /useradmin , the functions allow a user to search through the table
 
