@@ -6,6 +6,7 @@ from django.conf.urls import include, url
 import django.contrib.auth.views
 from django.contrib import admin
 from django.conf import settings
+from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 
 # App Imports
@@ -18,26 +19,26 @@ admin.autodiscover()
 # Main list of project URL's
 urlpatterns = [
     # / - Homepage url.
-    url(r'^$', go.views.index, name='index'),
+    url(r'^$', cache_page(4)(go.views.index), name='index'),
 
     # /view/<short> - View URL data.
-    url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
+    url(r'^view/(?P<short>[-\w]+)$', cache_page(60*15)(go.views.view), name='view'),
 
     # /about - About page.
-    url(r'^about/?$', TemplateView.as_view(template_name='core/about.html'),
+    url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='core/about.html')),
         name='about'),
 
     # /signup - Signup page for access.
     url(r'^signup/?$', go.views.signup, name='signup'),
 
     # /myLinks - My-Links page, view and review links.
-    url(r'^myLinks/?$', go.views.my_links, name='my_links'),
+    url(r'^myLinks/?$', cache_page(10)(go.views.my_links), name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
 
     # /registered - registration complete page
-    url(r'^registered/?$', TemplateView.as_view(template_name='registered.html'),
+    url(r'^registered/?$', cache_page(60*15)(TemplateView.as_view(template_name='registered.html')),
         name='registered'),
 
     # /admin - Administrator interface.
