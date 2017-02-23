@@ -17,6 +17,8 @@ from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, Accor
 from bootstrap3_datetime.widgets import DateTimePicker
 from datetime import date, datetime, timedelta
 
+import urllib.request # this probably isn't supposed to be formatted like this
+
 """
     The form that is used in URL creation.
 """
@@ -26,8 +28,14 @@ class URLForm(forms.ModelForm):
     def clean_target(self):
         # get the entered target link
         target = self.cleaned_data.get('target')
+        # if the entered target link leads to an infinite loop or just has some issue
+        # note it WILL permit links that have go in an intermediary stage... such as bit.ly -> go -> not go.
+        try:
+            final_url = urllib.request.urlopen(target).geturl()
+        except:
+            raise ValidationError("Invalid link") # right now you get a 500 error... intended?
         # if the host (go.gmu.edu) is in the entered target link
-        if self.host in target:
+        if self.host in final_url or self.host in target: # not sure both logic checks necessary
             raise ValidationError("You can't make a Go link to Go silly!")
         else:
             return target
