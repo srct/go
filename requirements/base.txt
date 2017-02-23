@@ -10,3 +10,4 @@ mysqlclient
 redis==2.10.5
 requests==2.11.0
 simplejson==3.8.2
+six
