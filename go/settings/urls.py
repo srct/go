@@ -18,26 +18,26 @@ admin.autodiscover()
 
 # Main list of project URL's
 urlpatterns = [
-    # / - Homepage url.
-    url(r'^$', cache_page(4)(go.views.index), name='index'),
+    # / - Homepage url. Cached for 1 second (this is the page you see after logging in, so having it show as not logged in is strange)
+    url(r'^$', cache_page(1)(go.views.index), name='index'),
 
-    # /view/<short> - View URL data.
+    # /view/<short> - View URL data. Cached for 15 minutes
     url(r'^view/(?P<short>[-\w]+)$', cache_page(60*15)(go.views.view), name='view'),
 
-    # /about - About page.
+    # /about - About page. Cached for 15 minutes
     url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='core/about.html')),
         name='about'),
 
-    # /signup - Signup page for access.
-    url(r'^signup/?$', go.views.signup, name='signup'),
+    # /signup - Signup page for access. Cached for 15 minutes
+    url(r'^signup/?$', cache_page(60*15)(go.views.signup), name='signup'),
 
-    # /myLinks - My-Links page, view and review links.
-    url(r'^myLinks/?$', cache_page(10)(go.views.my_links), name='my_links'),
+    # /myLinks - My-Links page, view and review links. Cached for 5 seconds
+    url(r'^myLinks/?$', cache_page(5)(go.views.my_links), name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
 
-    # /registered - registration complete page
+    # /registered - registration complete page. Cached for 15 minutes
     url(r'^registered/?$', cache_page(60*15)(TemplateView.as_view(template_name='registered.html')),
         name='registered'),
 
