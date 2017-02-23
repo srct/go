@@ -168,3 +168,10 @@ EMAIL_TO = "to@example.com"
 # Domain used to email to users. See line 231 in views.py
 # ie. in Mason's case '@masonlive.gmu.edu'
 EMAIL_DOMAIN = os.environ['email_domain']
+
+# dummy cache for development-- doesn't actually cache things
+CACHES = {
+  'default': {
+    'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+  }

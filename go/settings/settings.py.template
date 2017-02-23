@@ -179,3 +179,14 @@ EMAIL_TO = "to@example.com"
 # Domain used to email to users. See line 231 in views.py
 # ie. in Mason's case '@masonlive.gmu.edu'
 EMAIL_DOMAIN = "@example.com"
+
+# Use redis cache when not in local development
+if DEBUG:
+    pass
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '/var/run/redis/redis.sock',
+        },
+    }
