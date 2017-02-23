@@ -17,7 +17,7 @@ from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, Accor
 from bootstrap3_datetime.widgets import DateTimePicker
 from datetime import date, datetime, timedelta
 
-import urllib.request # this probably isn't supposed to be formatted like this
+from six.moves import urllib  # this probably isn't supposed to be formatted like this
 
 """
     The form that is used in URL creation.
