@@ -32,10 +32,15 @@ class URLForm(forms.ModelForm):
         # note it WILL permit links that have go in an intermediary stage... such as bit.ly -> go -> not go.
         try:
             final_url = urllib.request.urlopen(target).geturl()
-        except:
-            raise ValidationError("Invalid link") # right now you get a 500 error... intended?
-        # if the host (go.gmu.edu) is in the entered target link
-        if self.host in final_url or self.host in target: # not sure both logic checks necessary
+        except urllib.error.URLError as e:
+            # to permit users to enter sites that return most errors, but
+            # prevent them from entering sites that result in an HTTP 300 error
+            if any(int(str(e)[11:14]) == errorNum for errorNum in range(300,308)):
+                raise ValidationError("Link result in a 300 error") # right now you get a 500 error... intended?
+            else:
+                final_url = ""
+        # if the host (go.gmu.edu) is in the entered target link or where it redirects
+        if self.host in final_url or self.host in target:
             raise ValidationError("You can't make a Go link to Go silly!")
         else:
             return target
