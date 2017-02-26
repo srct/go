@@ -16,8 +16,7 @@ from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 from bootstrap3_datetime.widgets import DateTimePicker
 from datetime import date, datetime, timedelta
-
-from six.moves import urllib  # this probably isn't supposed to be formatted like this
+from six.moves import urllib
 
 """
     The form that is used in URL creation.
@@ -28,18 +27,19 @@ class URLForm(forms.ModelForm):
     def clean_target(self):
         # get the entered target link
         target = self.cleaned_data.get('target')
-        # if the entered target link leads to an infinite loop or just has some issue
-        # note it WILL permit links that have go in an intermediary stage... such as bit.ly -> go -> not go.
         try:
             final_url = urllib.request.urlopen(target).geturl()
+        # if visiting the provided url results in an HTTP error, or redirects
+        # to a page that results in an HTTP error
         except urllib.error.URLError as e:
             # to permit users to enter sites that return most errors, but
             # prevent them from entering sites that result in an HTTP 300 error
             if any(int(str(e)[11:14]) == errorNum for errorNum in range(300,308)):
-                raise ValidationError("Link result in a 300 error")
+                raise ValidationError("Link results in a 300 error")
             else:
                 final_url = ""
-        # if the host (go.gmu.edu) is in the entered target link or where it redirects
+        # if the host (go.gmu.edu) is in the entered target link or where it
+        # redirects
         if self.host in final_url or self.host in target:
             raise ValidationError("You can't make a Go link to Go silly!")
         else:
