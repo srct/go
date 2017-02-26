@@ -36,7 +36,7 @@ class URLForm(forms.ModelForm):
             # to permit users to enter sites that return most errors, but
             # prevent them from entering sites that result in an HTTP 300 error
             if any(int(str(e)[11:14]) == errorNum for errorNum in range(300,308)):
-                raise ValidationError("Link result in a 300 error") # right now you get a 500 error... intended?
+                raise ValidationError("Link result in a 300 error")
             else:
                 final_url = ""
         # if the host (go.gmu.edu) is in the entered target link or where it redirects
