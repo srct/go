@@ -47,7 +47,32 @@ def index(request):
     # If a POST request is received, then the user has submitted a form and it's
     # time to parse the form and create a new URL object
     if request.method == 'POST':
-        return redirect('view', post(request).short)
+        # Now we initialize the form again but this time we have the POST
+        # request
+        url_form = URLForm(request.POST, host = request.META.get('HTTP_HOST'))
+
+        # Django will check the form to make sure it's valid
+        if url_form.is_valid():
+            # Call our post method to assemble our new URL object 
+            res = post(request, url_form)
+            
+            # If there is a 500 error returned, handle it
+            if res == 500:
+                return HttpResponseServerError(
+                    render(request, 'admin/500.html', {})
+                )
+
+            # Redirect to the shiny new URL 
+            return redirect('view', res.short)
+        
+        # Else, there is an error, redisplay the form with the validation errors
+        else:
+            # Render index.html passing the form to the template
+            return render(request, 'core/index.html', {
+                'form': url_form,
+            },
+            )
+
 
     # Render index.html passing the form to the template
     return render(request, 'core/index.html', {
@@ -58,61 +83,53 @@ def index(request):
 #rate limits are completely arbitrary
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
-def post(request):
-    # Now we initialize the form again but this time we have the POST
-    # request
-    url_form = URLForm(request.POST, host = request.META.get('HTTP_HOST'))
+def post(request, url_form):
+    # We don't commit the url object yet because we need to add its
+    # owner, and parse its date field.
+    url = url_form.save(commit = False)
+    url.owner = request.user.registereduser
 
-    # Django will check the form to make sure it's valid
-    if url_form.is_valid():
+    # If the user entered a short url, it's already been validated,
+    # so accept it. If they did not, however, then generate a
+    # random one and use that instead.
+    short = url_form.cleaned_data.get('short').strip()
 
-        # We don't commit the url object yet because we need to add its
-        # owner, and parse its date field.
-        url = url_form.save(commit = False)
-        url.owner = request.user.registereduser
+    # Check if a short URL was entered
+    if len(short) > 0:
+        url.short = short
+    else:
+        # If the user didn't enter a short url, generate a random
+        # one. However, if a random one can't be generated, return
+        # a 500 server error.
+        random_short = URL.generate_valid_short()
 
-        # If the user entered a short url, it's already been validated,
-        # so accept it. If they did not, however, then generate a
-        # random one and use that instead.
-        short = url_form.cleaned_data.get('short').strip()
-
-        # Check if a short URL was entered
-        if len(short) > 0:
-            url.short = short
+        if random_short is None:
+            return 500
         else:
-            # If the user didn't enter a short url, generate a random
-            # one. However, if a random one can't be generated, return
-            # a 500 server error.
-            random_short = URL.generate_valid_short()
-            if random_short is None:
-                return HttpResponseServerError(
-                    render(request, 'admin/500.html', {})
-                )
-            else:
-                url.short = random_short
+            url.short = random_short
 
-        # Grab the expiration field value. It's currently an unsable
-        # string value, so we need to parse it into a datetime object
-        # relative to right now.
-        expires = url_form.cleaned_data.get('expires')
+    # Grab the expiration field value. It's currently an unsable
+    # string value, so we need to parse it into a datetime object
+    # relative to right now.
+    expires = url_form.cleaned_data.get('expires')
 
-        # Determine what the expiration date is
-        if expires == URLForm.DAY:
-            url.expires = timezone.now() + timedelta(days = 1)
-        elif expires == URLForm.WEEK:
-            url.expires = timezone.now() + timedelta(weeks = 1)
-        elif expires == URLForm.MONTH:
-            url.expires = timezone.now() + timedelta(weeks = 3)
-        elif expires == URLForm.CUSTOM:
-            url.expires = url_form.cleaned_data.get('expires_custom')
-        else:
-            pass  # leave the field NULL
+    # Determine what the expiration date is
+    if expires == URLForm.DAY:
+        url.expires = timezone.now() + timedelta(days = 1)
+    elif expires == URLForm.WEEK:
+        url.expires = timezone.now() + timedelta(weeks = 1)
+    elif expires == URLForm.MONTH:
+        url.expires = timezone.now() + timedelta(weeks = 3)
+    elif expires == URLForm.CUSTOM:
+        url.expires = url_form.cleaned_data.get('expires_custom')
+    else:
+        pass  # leave the field NULL
 
-        # Make sure that our new URL object is clean, then save it and
-        # let's redirect to view this baby.
-        url.full_clean()
-        url.save()
-        return url
+    # Make sure that our new URL object is clean, then save it and
+    # let's redirect to view this baby.
+    url.full_clean()
+    url.save()
+    return url
 
 """
     This view allows the user to view details about a URL. Note that they
