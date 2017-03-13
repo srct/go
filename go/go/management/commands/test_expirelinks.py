@@ -7,14 +7,15 @@ from django.test import TestCase
 # App Imports
 from .expirelinks import *
 
-
-"""
-    Test cases for the functions in expirelinks
-"""
 class ExpireLinksTest(TestCase):
+    """
+        Test cases for the functions in expirelinks
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
+
     def test_Django_Test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")

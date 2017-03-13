@@ -7,25 +7,26 @@ from django.test import TestCase
 # App Imports
 from go.forms import *
 
-
-"""
-    Test cases for the URL form
-"""
 class URLFormTest(TestCase):
+    """
+        Test cases for the URL form
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the Signup form
-"""
 class SignupForm(TestCase):
+    """
+        Test cases for the Signup form
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")

@@ -1,6 +1,10 @@
 # Future Imports
 from __future__ import unicode_literals, absolute_import, print_function, division
 
+# Python stdlib Imports
+from datetime import date, datetime, timedelta
+from six.moves import urllib
+
 # Django Imports
 from django import forms
 from django.core.exceptions import ValidationError
@@ -15,13 +19,11 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
 from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 from bootstrap3_datetime.widgets import DateTimePicker
-from datetime import date, datetime, timedelta
-from six.moves import urllib
 
-"""
-    The form that is used in URL creation.
-"""
 class URLForm(forms.ModelForm):
+    """
+        The form that is used in URL creation.
+    """
 
     # Prevent redirect loop links
     def clean_target(self):
@@ -34,7 +36,7 @@ class URLForm(forms.ModelForm):
         except urllib.error.URLError as e:
             # to permit users to enter sites that return most errors, but
             # prevent them from entering sites that result in an HTTP 300 error
-            if any(int(str(e)[11:14]) == errorNum for errorNum in range(300,308)):
+            if any(int(str(e)[11:14]) == errorNum for errorNum in range(300, 308)):
                 raise ValidationError("Link results in a 300 error")
             else:
                 final_url = ""
@@ -67,12 +69,12 @@ class URLForm(forms.ModelForm):
 
     # Custom short-url field with validators.
     short = forms.SlugField(
-        required = False,
-        label = 'Short URL (Optional)',
-        widget = forms.TextInput(),
-        validators = [unique_short],
-        max_length = 20,
-        min_length = 3,
+        required=False,
+        label='Short URL (Optional)',
+        widget=forms.TextInput(),
+        validators=[unique_short],
+        max_length=20,
+        min_length=3,
     )
 
     # define some string date standards
@@ -93,11 +95,11 @@ class URLForm(forms.ModelForm):
 
     # Add preset expiration choices.
     expires = forms.ChoiceField(
-        required = True,
-        label = 'Expiration (Required)',
-        choices = EXPIRATION_CHOICES,
-        initial = NEVER,
-        widget = forms.RadioSelect(),
+        required=True,
+        label='Expiration (Required)',
+        choices=EXPIRATION_CHOICES,
+        initial=NEVER,
+        widget=forms.RadioSelect(),
     )
 
     # Check if the selected date is a valid date
@@ -112,12 +114,12 @@ class URLForm(forms.ModelForm):
 
     # Add a custom expiration choice.
     expires_custom = forms.DateTimeField(
-        required = False,
-        label = 'Custom Date',
-        input_formats = ['%m-%d-%Y'],
-        validators = [valid_date],
-        initial = lambda: datetime.now() + timedelta(days=1),
-        widget = DateTimePicker(
+        required=False,
+        label='Custom Date',
+        input_formats=['%m-%d-%Y'],
+        validators=[valid_date],
+        initial=lambda: datetime.now() + timedelta(days=1),
+        widget=DateTimePicker(
             options={
                 "format": "MM-DD-YYYY",
                 "pickTime": False,
@@ -154,9 +156,9 @@ class URLForm(forms.ModelForm):
                                 <h4>Paste the URL you would like to shorten:</h4>
                                 <br />"""),
                             'target',
-                            style="background: rgb(#F6F6F6);"),
-                        active=True,
-                        template='crispy/accordian-group.html'),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html'),
 
                     # Step 2: Short URL
                     AccordionGroup('Step 2: Short URL',
@@ -166,9 +168,9 @@ class URLForm(forms.ModelForm):
                                 <br />"""),
                             PrependedText(
                             'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
-                            style="background: rgb(#F6F6F6);"),
-                        active=True,
-                        template='crispy/accordian-group.html',),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html',),
 
                     # Step 3: Expiration
                     AccordionGroup('Step 3: URL Expiration',
@@ -178,12 +180,12 @@ class URLForm(forms.ModelForm):
                                 <br />"""),
                             'expires',
                             Field('expires_custom', template="crispy/customDateField.html"),
-                            style="background: rgb(#F6F6F6);"),
-                        active=True,
-                        template='crispy/accordian-group.html'),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html'),
 
-                    # FIN
-                    template='crispy/accordian.html'),
+                # FIN
+                template='crispy/accordian.html'),
             #######################
             HTML("""
                 <br />"""),
@@ -194,42 +196,44 @@ class URLForm(forms.ModelForm):
         # what model this form is for
         model = URL
         # what attributes are included
-        fields = ['target',]
+        fields = ['target']
 
-"""
-    The form that is used when a user is signing up to be a RegisteredUser
-"""
 class SignupForm(forms.ModelForm):
+    """
+        The form that is used when a user is signing up to be a RegisteredUser
+    """
 
     # The full name of the RegisteredUser
     full_name = forms.CharField(
-        required = True,
-        label = 'Full Name (Required)',
-        max_length = 100,
-        widget = forms.TextInput(),
+        required=True,
+        label='Full Name (Required)',
+        max_length=100,
+        widget=forms.TextInput(),
     )
 
     # The RegisteredUser's chosen organization
     organization = forms.CharField(
-        required = True,
-        label = 'Organization (Required)',
-        max_length = 100,
-        widget = forms.TextInput(),
+        required=True,
+        label='Organization (Required)',
+        max_length=100,
+        widget=forms.TextInput(),
     )
 
     # The RegisteredUser's reason for signing up to us Go
     description = forms.CharField(
-        required = False,
-        label = 'Description (Optional)',
-        max_length = 200,
-        widget = forms.Textarea(),
+        required=False,
+        label='Description (Optional)',
+        max_length=200,
+        widget=forms.Textarea(),
     )
 
     # A user becomes registered when they agree to the TOS
     registered = forms.BooleanField(
         required=True,
         # ***Need to replace lower url with production URL*** ie. go.gmu.edu/about#terms
-        label = mark_safe('Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'),
+        label=mark_safe(
+            'Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'
+        ),
     )
 
     # on initialization of the form, crispy forms renders this layout
@@ -262,4 +266,4 @@ class SignupForm(forms.ModelForm):
         # what model this form is for
         model = RegisteredUser
         # what attributes are included
-        fields = ['full_name', 'organization', 'description', 'registered',]
+        fields = ['full_name', 'organization', 'description', 'registered']

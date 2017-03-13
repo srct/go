@@ -21,7 +21,7 @@ class RegisteredUserTest(TestCase):
 
         User.objects.create(username='dhaynes', password='password')
     
-    # User
+    # User ---------------------------------------------------------------------
 
     def test_registereduser_creation(self):
         """
@@ -32,11 +32,11 @@ class RegisteredUserTest(TestCase):
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
         self.assertTrue(getRegisteredUser)
 
-    # full_name
+    # full_name ----------------------------------------------------------------
 
-    # organization
+    # organization -------------------------------------------------------------
 
-    # description
+    # description --------------------------------------------------------------
 
     def test_description_blank(self):
         """
@@ -58,13 +58,13 @@ class RegisteredUserTest(TestCase):
         self.assertEqual(getRegisteredUser.description, "We're going to build a big beautiful testcase")
 
 
-    # registered
+    # registered ---------------------------------------------------------------
 
-    # approved
+    # approved -----------------------------------------------------------------
 
-    # blocked
+    # blocked ------------------------------------------------------------------
 
-    # __str__
+    # __str__ ------------------------------------------------------------------
 
     def test_check_str(self):
         """
@@ -83,22 +83,22 @@ class URLTest(TestCase):
         Test cases for the URL Model
     """
 
-    # owner
+    # owner --------------------------------------------------------------------
 
-    # date_created
+    # date_created -------------------------------------------------------------
 
-    # target
+    # target -------------------------------------------------------------------
 
-    # short
+    # short --------------------------------------------------------------------
 
-    # clicks
+    # clicks -------------------------------------------------------------------
 
-    # qrclicks
+    # qrclicks -----------------------------------------------------------------
 
-    # socialclicks
+    # socialclicks -------------------------------------------------------------
 
-    # expires
+    # expires ------------------------------------------------------------------
 
-    # __str__
+    # __str__ ------------------------------------------------------------------
 
-    # generate_valid_short
+    # generate_valid_short -----------------------------------------------------
