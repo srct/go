@@ -62,7 +62,10 @@ class RegisteredUserTest(TestCase):
         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
         """
-        # self.assertRaises(DataError, get_registered_user.save())
+        try:
+            get_registered_user.save()
+        except DataError as ex:
+            self.assertEqual(str(ex[0]), "1406")
 
     # blank=False is purely form validation related
 
@@ -99,7 +102,7 @@ class RegisteredUserTest(TestCase):
         try:
             get_registered_user.save()
         except DataError as ex:
-            print(ex)
+            self.assertEqual(str(ex[0]), "1406")
 
 
     # blank=False is purely form validation related
