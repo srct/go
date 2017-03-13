@@ -490,14 +490,14 @@ class URLTest(TestCase):
 
     # generate_valid_short -----------------------------------------------------
 
-    def test_generate_valid_short(self):
-        """
-            Test that we can generate a short url at will
-        """
+    # def test_generate_valid_short(self):
+    #     """
+    #         Test that we can generate a short url at will
+    #     """
 
-        # Get the URL to test
-        get_user = User.objects.get(username='dhaynes')
-        get_registered_user = RegisteredUser.objects.get(user=get_user)
-        current_url = URL.objects.get(owner=get_registered_user)
+    #     # Get the URL to test
+    #     get_user = User.objects.get(username='dhaynes')
+    #     get_registered_user = RegisteredUser.objects.get(user=get_user)
+    #     current_url = URL.objects.get(owner=get_registered_user)
 
-        self.assertTrue(current_url.generate_valid_short())
+    #     self.assertTrue(current_url.generate_valid_short())
