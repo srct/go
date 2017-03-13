@@ -2,9 +2,7 @@
 {% extends 'layouts/base.html' %}
 
 <!-- define the page title block -->
-{% block title %}
-SRCT Go &bull; Administration Panel
-{% endblock %}
+{% block title %} SRCT Go &bull; Administration Panel {% endblock %}
 
 <!-- define the content block for the page -->
 {% block content %}
@@ -28,282 +26,291 @@ SRCT Go &bull; Administration Panel
 <!-- Table 1 -->
 <!-- define the div where we can select users from a table to judge them -->
 <div class="row">
-    <div class="col-md-12">
-        <input class="inputfilter" type="text" id="appliedInput" onkeyup="filterApplied()" placeholder="Search Usernames or Full Names">
-        <h3>Users awaiting moderation</h3>
-        <form method="post" action="useradmin">
-            <!-- csrf protection  -->
-            {% csrf_token %}
-            <!-- define out table of users that need approval  -->
-            <table class="table table-striped table-hover" id="appliedTable">
-                <!-- define the header row -->
-                <thead>
-                    <tr>
-                      <th>Selected</th>
-                      <th>Username</th>
-                      <th>Full Name</th>
-                      <th>Description</th>
-                    </tr>
-                </thead>
+  <div class="col-md-12">
+    <input class="inputfilter" type="text" id="appliedInput"
+      placeholder="Search Usernames or Full Names">
+    <h3>Users awaiting moderation</h3>
+    <form method="post" action="useradmin">
+      <!-- csrf protection  -->
+      {% csrf_token %}
+      <!-- define out table of users that need approval  -->
+      <table class="table table-striped table-hover" id="appliedTable">
+        <!-- define the header row -->
+        <thead>
+          <tr>
+            <th>Selected</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
 
-                <!-- define the body rows -->
-                <tbody>
-                    <!-- loop through all users in the need_approval list -->
-                    {% for unapproved in need_approval %}
-                        <!-- ..and make a new row for each user -->
-                        <tr>
-                          <td><input type="checkbox" name="username" value={{ unapproved.user }}></td>
-                          <td>{{ unapproved.user }}</td>
-                          <td>{{ unapproved.full_name }}</td>
-                          <td>{{ unapproved.description|default:"No description provided" }}</td>
-                        </tr>
-                    <!-- unless it's empty in which case we show nothing -->
-                    {% empty %}
-                        <tr>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- define the body rows -->
+        <tbody>
+          <!-- loop through all users in the need_approval list -->
+          {% for unapproved in need_approval %}
+          <!-- ..and make a new row for each user -->
+          <tr>
+            <td><input type="checkbox" name="username" value={{ unapproved.user }}></td>
+            <td>{{ unapproved.user }}</td>
+            <td>{{ unapproved.full_name }}</td>
+            <td>{{ unapproved.description|default:"No description provided" }}</td>
+          </tr>
+          <!-- unless it's empty in which case we show nothing -->
+          {% empty %}
+          <tr>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-            <!-- a div containing our form submission buttons -->
-            <div class="form-group">
-              <!-- the modal for approve doesn't work-->
-              <a class="btn btn-primary btn-sm" data-target="#approveModal" data-toggle="modal"> Approve </a>
-              <!-- input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm"-->
-              <a class="btn btn-danger btn-sm" data-target="#denyModal" data-toggle="modal"> Deny </a>
-              <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal" data-toggle="modal" style="background-color: black; color: white;"> Block </a>
+      <!-- a div containing our form submission buttons -->
+      <div class="form-group">
+        <!-- the modal for approve doesn't work-->
+        <a class="btn btn-primary btn-sm" data-target="#approveModal" data-toggle="modal"> Approve </a>
+        <!-- input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-sm"-->
+        <a class="btn btn-danger btn-sm" data-target="#denyModal" data-toggle="modal"> Deny </a>
+        <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal" data-toggle="modal"
+          style="background-color: black; color: white;"> Block </a>
 
-              <!--Define Approve Modal-->
-              <div id="approveModal" class="modal fade" role="dialog" tabindex="-1">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                    <div class="modal-header" style="text-align:center;">
-                      <h4 class="modal-title  text-center"
-                      style="font-weight:bold; font-size: 21px !important;">
-                      Are you sure you would like to approve a user?</h4>
-                    </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                      <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #00331a; color: #ffffff; border-radius: 4px;">
-                    </div>
-                  </div>
-                </div>
+        <!--Define Approve Modal-->
+        <div id="approveModal" class="modal fade" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+              <div class="modal-header" style="text-align:center;">
+                <h4 class="modal-title  text-center" style="font-weight:bold; font-size: 21px !important;">
+                  Are you sure you would like to approve a user?</h4>
               </div>
-
-              <!--Define Deny Modal-->
-              <div id="denyModal" class="modal fade" role="dialog" tabindex="-1">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                    <div class="modal-header" style="text-align:center;">
-                      <h4 class="modal-title  text-center"
-                      style="font-weight:bold; font-size: 21px !important;">
-                      Are you sure you would like to deny a user?</h4>
-                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                        Please remember the user's feelings</h6>
-                    </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                      <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
-                    </div>
-                  </div>
-                </div>
+              <div class="modal-body" style="padding-bottom: 80px">
+                <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;"
+                  data-dismiss="modal">Cancel</a>
+                <input type="submit" name="_approve" value="Approve" class="btn btn-primary btn-lg"
+                  style="border-width: 0px;float:right; width:49%; background-color: #00331a; color: #ffffff; border-radius: 4px;">
               </div>
-
-              <!--Define Block Modal-->
-              <!-- Note there is another block modal for the other block button below -->
-              <div id="blockModal" class="modal fade" role="dialog" tabindex="-1">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                    <div class="modal-header" style="text-align:center;">
-                      <h4 class="modal-title  text-center"
-                        style="font-weight:bold; font-size: 21px !important;">
-                        Are you sure you would like to block a user?</h4>
-                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                            Please remember the user's feelings</h6>
-                    </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                      <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+
+        <!--Define Deny Modal-->
+        <div id="denyModal" class="modal fade" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+              <div class="modal-header" style="text-align:center;">
+                <h4 class="modal-title  text-center" style="font-weight:bold; font-size: 21px !important;">
+                  Are you sure you would like to deny a user?</h4>
+                <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                  Please remember the user's feelings</h6>
+              </div>
+              <div class="modal-body" style="padding-bottom: 80px">
+                <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;"
+                  data-dismiss="modal">Cancel</a>
+                <input type="submit" name="_deny" value="Deny" class="btn btn-danger btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Define Block Modal-->
+        <!-- Note there is another block modal for the other block button below -->
+        <div id="blockModal" class="modal fade" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+              <div class="modal-header" style="text-align:center;">
+                <h4 class="modal-title  text-center" style="font-weight:bold; font-size: 21px !important;">
+                  Are you sure you would like to block a user?</h4>
+                <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                  Please remember the user's feelings</h6>
+              </div>
+              <div class="modal-body" style="padding-bottom: 80px">
+                <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;"
+                  data-dismiss="modal">Cancel</a>
+                <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- Table 2 -->
 <!-- define the table that displays blocked users and allows us to unblock them -->
 <div class="row">
-    <div class="col-md-12">
-      <input class="inputfilter" type="text" id="blockedInput" onkeyup="filterBlocked()" placeholder="Search Usernames or Full Names">
-      <h3>Blocked Users</h3>
-      <form method="post" action="useradmin">
-          <!-- csrf protection  -->
-          {% csrf_token %}
-          <table class="table table-striped table-hover" id="blockedTable">
-                <!-- define the header row -->
-                <thead>
-                    <tr>
-                        <th>Selected</th>
-                        <th>Username</th>
-                        <th>Full Name</th>
-                        <th>Description</th>
-                        <th>Approved</th>
-                    </tr>
-                </thead>
+  <div class="col-md-12">
+    <input class="inputfilter" type="text" id="blockedInput"
+      placeholder="Search Usernames or Full Names">
+    <h3>Blocked Users</h3>
+    <form method="post" action="useradmin">
+      <!-- csrf protection  -->
+      {% csrf_token %}
+      <table class="table table-striped table-hover" id="blockedTable">
+        <!-- define the header row -->
+        <thead>
+          <tr>
+            <th>Selected</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Description</th>
+            <th>Approved</th>
+          </tr>
+        </thead>
 
-                <!-- define the body rows -->
-                <tbody>
-                    <!-- loop through all blocked users -->
-                    {% for blockedUsers in blocked_users %}
-                        <tr>
-                          <td><input type="checkbox" name="username" value={{ blockedUsers.user }}></td>
-                          <td>{{ blockedUsers.user }}</td>
-                          <td>{{ blockedUsers.full_name }}</td>
-                          <td>{{ blockedUsers.description|default:"No description provided" }}</td>
-                          <td>{{ blockedUsers.approved }}</td>
-                        </tr>
-                    <!-- unless there are no blocked users -->
-                    {% empty %}
-                        <tr>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!-- define the body rows -->
+        <tbody>
+          <!-- loop through all blocked users -->
+          {% for blockedUsers in blocked_users %}
+          <tr>
+            <td><input type="checkbox" name="username" value={{ blockedUsers.user }}></td>
+            <td>{{ blockedUsers.user }}</td>
+            <td>{{ blockedUsers.full_name }}</td>
+            <td>{{ blockedUsers.description|default:"No description provided" }}</td>
+            <td>{{ blockedUsers.approved }}</td>
+          </tr>
+          <!-- unless there are no blocked users -->
+          {% empty %}
+          <tr>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-            <!-- define an unblock button -->
-            <div class="form-group">
-                <!-- input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-sm btn-Unblock"-->
-                <a class="btn btn-default btn-sm btn-Unblock" data-target="#unblockModal" data-toggle="modal"> Unblock </a>
+      <!-- define an unblock button -->
+      <div class="form-group">
+        <!-- input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-sm btn-Unblock"-->
+        <a class="btn btn-default btn-sm btn-Unblock" data-target="#unblockModal" data-toggle="modal"> Unblock </a>
 
-                <!--Define Un-Block Modal-->
-                <div id="unblockModal" class="modal fade" role="dialog" tabindex="-1">
-                  <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                      <div class="modal-header" style="text-align:center;">
-                        <h4 class="modal-title  text-center"
-                        style="font-weight:bold; font-size: 21px !important;">
-                        Are you sure you would like to unblock a user?</h4>
-                      </div>
-                      <div class="modal-body" style="padding-bottom: 80px">
-                        <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                        <input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-lg" style="border-width: 0px;float:right; width:49%; background-color: #e7e7e7; color: #000000; border-radius: 4px;">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+        <!--Define Un-Block Modal-->
+        <div id="unblockModal" class="modal fade" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+              <div class="modal-header" style="text-align:center;">
+                <h4 class="modal-title  text-center" style="font-weight:bold; font-size: 21px !important;">
+                  Are you sure you would like to unblock a user?</h4>
+              </div>
+              <div class="modal-body" style="padding-bottom: 80px">
+                <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;"
+                  data-dismiss="modal">Cancel</a>
+                <input type="submit" name="_unblock" value="Un-Block" class="btn btn-default btn-lg"
+                  style="border-width: 0px;float:right; width:49%; background-color: #e7e7e7; color: #000000; border-radius: 4px;">
+              </div>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- Table 3 -->
 <!-- define the table of current users -->
 <div class="row">
-    <div class="col-md-12">
-        <input class="inputfilter" type="text" id="currentInput" onkeyup="filterCurrent()" placeholder="Search Usernames or Full Names">
-        <h3>Current Users</h3>
-        <form method="post" action="useradmin">
-            <!-- csrf protection  -->
-            {% csrf_token %}
-            <table class="table table-striped table-hover " id = "currentTable">
-                <!-- define the header row -->
-                <thead>
-                    <tr>
-                        <th>Selected</th>
-                        <th>Username</th>
-                        <th>Full Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
+  <div class="col-md-12">
+    <input class="inputfilter" type="text" id="currentInput" 
+      placeholder="Search Usernames or Full Names">
+    <h3>Current Users</h3>
+    <form method="post" action="useradmin">
+      <!-- csrf protection  -->
+      {% csrf_token %}
+      <table class="table table-striped table-hover " id="currentTable">
+        <!-- define the header row -->
+        <thead>
+          <tr>
+            <th>Selected</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
 
-                <!-- define the body rows -->
-                <tbody>
-                    <!-- loop through all current users -->
-                    {% for currentUsers in current_users %}
-                        <tr>
-                          <td><input type="checkbox" name="username" value={{ currentUsers.user }}></td>
-                          <td>{{ currentUsers.user }}</td>
-                          <td>{{ currentUsers.full_name }}</td>
-                          <td>{{ currentUsers.description|default:"No description provided" }}</td>
-                        </tr>
-                    <!-- unless there are none -->
-                    {% empty %}
-                        <tr>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                          <td>none</td>
-                        </tr>
-                  {% endfor %}
-                </tbody>
-            </table>
+        <!-- define the body rows -->
+        <tbody>
+          <!-- loop through all current users -->
+          {% for currentUsers in current_users %}
+          <tr>
+            <td><input type="checkbox" name="username" value={{ currentUsers.user }}></td>
+            <td>{{ currentUsers.user }}</td>
+            <td>{{ currentUsers.full_name }}</td>
+            <td>{{ currentUsers.description|default:"No description provided" }}</td>
+          </tr>
+          <!-- unless there are none -->
+          {% empty %}
+          <tr>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+            <td>none</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-            <!-- display our removal and blocking buttons -->
-            <div class="form-group">
-              <a class="btn btn-danger btn-sm" data-target="#removeModal" data-toggle="modal"> Remove </a>
-              <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal2" data-toggle="modal" style="background-color: black; color: white;"> Block </a>
+      <!-- display our removal and blocking buttons -->
+      <div class="form-group">
+        <a class="btn btn-danger btn-sm" data-target="#removeModal" data-toggle="modal"> Remove </a>
+        <a class="btn btn-default btn-sm btn-blockUsr" data-target="#blockModal2" data-toggle="modal"
+          style="background-color: black; color: white;"> Block </a>
 
-              <!--Define Remove Modal-->
-              <div id="removeModal" class="modal fade" role="dialog" tabindex="-1">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                    <div class="modal-header" style="text-align:center;">
-                      <h4 class="modal-title  text-center"
-                      style="font-weight:bold; font-size: 21px !important;">
-                      Are you sure you would like to remove a user?</h4>
-                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                        Please remember the user's feelings</h6>
-                    </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                      <input type="submit" name="_remove" value="Remove" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
-                    </div>
-                  </div>
-                </div>
+        <!--Define Remove Modal-->
+        <div id="removeModal" class="modal fade" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+              <div class="modal-header" style="text-align:center;">
+                <h4 class="modal-title  text-center" style="font-weight:bold; font-size: 21px !important;">
+                  Are you sure you would like to remove a user?</h4>
+                <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                  Please remember the user's feelings</h6>
               </div>
-
-              <!--Define Block Modal 2-->
-              <div id="blockModal2" class="modal fade" role="dialog" tabindex="-1">
-                <div class="modal-dialog">
-                  <!-- Modal content-->
-                  <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
-                    <div class="modal-header" style="text-align:center;">
-                      <h4 class="modal-title  text-center"
-                        style="font-weight:bold; font-size: 21px !important;">
-                        Are you sure you would like to block a user?</h4>
-                      <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
-                            Please remember the user's feelings</h6>
-                    </div>
-                    <div class="modal-body" style="padding-bottom: 80px">
-                      <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;" data-dismiss="modal">Cancel</a>
-                      <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
-                    </div>
-                  </div>
-                </div>
+              <div class="modal-body" style="padding-bottom: 80px">
+                <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;"
+                  data-dismiss="modal">Cancel</a>
+                <input type="submit" name="_remove" value="Remove" class="btn btn-danger btn-lg"
+                  style="border-width: 0px; float:right; width:49%;background-color: #ac1d37; color: #ffffff; border-radius: 4px;">
               </div>
             </div>
-        </form>
-    </div>
+          </div>
+        </div>
+
+        <!--Define Block Modal 2-->
+        <div id="blockModal2" class="modal fade" role="dialog" tabindex="-1">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color:#f5f5f5; border-radius: 7px">
+              <div class="modal-header" style="text-align:center;">
+                <h4 class="modal-title  text-center" style="font-weight:bold; font-size: 21px !important;">
+                  Are you sure you would like to block a user?</h4>
+                <h6 style="font-weight:500; margin-top: 0px; margin-bottom: 0px;">
+                  Please remember the user's feelings</h6>
+              </div>
+              <div class="modal-body" style="padding-bottom: 80px">
+                <a type="button" class="btn btn-success btn-lg" style="border-width: 0px;float:left; width:49%; background-color: #A9B0AD; color: #ffffff; border-radius: 4px;"
+                  data-dismiss="modal">Cancel</a>
+                <input type="submit" name="_block" value="Block" class="btn btn-danger btn-lg" style="border-width: 0px; float:right; width:49%;background-color: #000000; color: #ffffff; border-radius: 4px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
-<script src = "../../static/js/useradmin.js"> </script>
+<script src="../../static/js/useradmin.js">
+
+</script>
 
 {% endblock %}
