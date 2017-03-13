@@ -11,28 +11,34 @@ from go.models import URL, RegisteredUser
 """
     Test cases for the RegisteredUser Model
 
-    - check if RegisteredUsers are actually made
     - check approval and registration status flipping
     - check blocking
-    - check printing
     - add in description
     - check organization field
     - check full name field
-    - check print(RegisteredUser)
 """
 class RegisteredUserTest(TestCase):
 
     def setUp(self):
         User.objects.create(username='dhaynes', password='password')
-
+    
+    """
+        check if RegisteredUsers are actually made
+    """
     def test_RegisteredUserCreation(self):
         getUser = User.objects.get(username='dhaynes')
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
         self.assertTrue(getRegisteredUser)
-
+    
+    """
+        - check printing
+    """
     def test_checkPrint(self):
-        # expected = '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
-        self.assertTrue(True)
+        getUser = User.objects.get(username='dhaynes')
+        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
+        expected = '<Registered User: dhaynes - Approval Status: False>'
+        actual = str(getRegisteredUser)
+        self.assertEqual(expected, actual)
 
 """
     Test cases for the URL Model
