@@ -15,3 +15,4 @@ venv
 htmlcov/
 .idea
 __pycache__/
+.vscode
