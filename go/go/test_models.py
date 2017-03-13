@@ -5,6 +5,8 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.db.utils import DataError
+from django.utils import timezone
+
 
 # App Imports
 from go.models import URL, RegisteredUser
@@ -261,6 +263,22 @@ class URLTest(TestCase):
         self.assertEqual(current_url.owner, get_registered_user)
 
     # date_created -------------------------------------------------------------
+
+    def test_date_created(self):
+        """
+            Test that the timedate is set properly on URL creation
+        """
+
+        now = timezone.now
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        current_url.date_created = now
+
+        self.assertEqual(current_url.date_created, now)
+
 
     # target -------------------------------------------------------------------
 
