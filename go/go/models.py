@@ -17,39 +17,39 @@ import string
 # generate the salt and initialize Hashids
 hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
 
-"""
-    This is simply a wrapper model for the user object  which, if an object
-    exists, indicates that that user is registered.
-"""
 @python_2_unicode_compatible
 class RegisteredUser(models.Model):
+    """
+        This is simply a wrapper model for the user object  which, if an object
+        exists, indicates that that user is registered.
+    """
 
     # Is this User Blocked?
-    blocked = models.BooleanField(default = False)
+    blocked = models.BooleanField(default=False)
 
     # Let's associate a User to this RegisteredUser
     user = models.OneToOneField(User)
 
     # What is your name?
     full_name = models.CharField(
-        blank = False,
-        max_length = 100,
+        blank=False,
+        max_length=100,
     )
 
     # What organization are you associated with?
     organization = models.CharField(
-        blank = False,
-        max_length = 100,
+        blank=False,
+        max_length=100,
     )
 
     # Why do you want to use Go?
-    description = models.TextField(blank = True)
+    description = models.TextField(blank=True)
 
     # Have you filled out the registration form?
-    registered = models.BooleanField(default = False)
+    registered = models.BooleanField(default=False)
 
     # Are you approved to use Go?
-    approved = models.BooleanField(default = False)
+    approved = models.BooleanField(default=False)
 
     # print(RegisteredUser)
     def __str__(self):
