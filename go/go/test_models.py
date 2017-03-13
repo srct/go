@@ -136,9 +136,76 @@ class RegisteredUserTest(TestCase):
 
     # registered ---------------------------------------------------------------
 
+    def test_registered(self):
+        """
+            test the registered bool
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.registered = True
+        get_registered_user.save()
+
+        self.assertTrue(get_registered_user.registered)
+
+    def test_registered_default(self):
+        """
+            test the registered bool
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+
+        self.assertFalse(get_registered_user.registered)
+
     # approved -----------------------------------------------------------------
 
+    def test_approved(self):
+        """
+            test the approved bool
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.approved = True
+        get_registered_user.save()
+
+        self.assertTrue(get_registered_user.approved)
+
+    def test_approved_default(self):
+        """
+            test the approved bool default
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+
+        self.assertFalse(get_registered_user.approved)
+
     # blocked ------------------------------------------------------------------
+
+    def test_blocked(self):
+        """
+            test the blocked bool
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.blocked = True
+        get_registered_user.save()
+
+        self.assertTrue(get_registered_user.blocked)
+
+    def test_approved_default(self):
+        """
+            test the blocked bool default
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+
+        self.assertFalse(get_registered_user.blocked)
+
 
     # __str__ ------------------------------------------------------------------
 
