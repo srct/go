@@ -450,6 +450,25 @@ class URLTest(TestCase):
 
     # expires ------------------------------------------------------------------
 
+    def test_expires(self):
+        """
+            Test that the expires field functions as intended
+        """
+        
+        tomorrow = timezone.now() + timezone.timedelta(days=1)
+
+        # Get the URL to apply it to
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Apply the date
+        current_url.date_created = tomorrow
+        current_url.save()
+
+        self.assertEqual(current_url.date_created, tomorrow)
+
+
     # __str__ ------------------------------------------------------------------
 
     def test_check_str(self):
