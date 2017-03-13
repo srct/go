@@ -20,21 +20,85 @@ class RegisteredUserTest(TestCase):
         """
 
         User.objects.create(username='dhaynes', password='password')
-    
-    # User ---------------------------------------------------------------------
+
+    # user ---------------------------------------------------------------------
 
     def test_registereduser_creation(self):
         """
             check if RegisteredUsers are actually made
         """
 
-        getUser = User.objects.get(username='dhaynes')
-        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
-        self.assertTrue(getRegisteredUser)
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        self.assertTrue(get_registered_user)
 
     # full_name ----------------------------------------------------------------
 
+    def test_full_name(self):
+        """
+            check if full_name char field functions as intentioned
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.full_name = "David Haynes"
+        get_registered_user.save()
+
+        self.assertEqual(get_registered_user.full_name, "David Haynes")
+
+    def test_full_name_length(self):
+        """
+            check if full_name char field functions as intentioned
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.full_name = """
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        """
+        # MYSQL will truncate the long string, no errors
+        self.assertFalse((bool)(get_registered_user.save()))
+
+    # blank=False is purely form validation related
+
     # organization -------------------------------------------------------------
+
+    def test_organization(self):
+        """
+            check if organization char field functions as intentioned
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.organization = "SRCT"
+        get_registered_user.save()
+
+        self.assertEqual(get_registered_user.organization, "SRCT")
+
+    def test_organization_length(self):
+        """
+            check if organization char field functions as intentioned
+        """
+
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.organization = """
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+        """
+        # MYSQL will truncate the long string, no errors
+        self.assertFalse((bool)(get_registered_user.save()))
+
+    # blank=False is purely form validation related
 
     # description --------------------------------------------------------------
 
@@ -43,19 +107,24 @@ class RegisteredUserTest(TestCase):
             - add in description (blank)
         """
 
-        getUser = User.objects.get(username='dhaynes')
-        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
-        self.assertEqual(getRegisteredUser.description, "")
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        self.assertEqual(get_registered_user.description, "")
 
     def test_description_text(self):
         """
             - add in description (text)
         """
 
-        getUser = User.objects.get(username='dhaynes')
-        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
-        getRegisteredUser.description = "We're going to build a big beautiful testcase"
-        self.assertEqual(getRegisteredUser.description, "We're going to build a big beautiful testcase")
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        get_registered_user.description = "We're going to build a big beautiful testcase"
+        get_registered_user.save()
+
+        self.assertEqual(
+            get_registered_user.description,
+            "We're going to build a big beautiful testcase"
+        )
 
 
     # registered ---------------------------------------------------------------
@@ -71,10 +140,10 @@ class RegisteredUserTest(TestCase):
             check printing
         """
 
-        getUser = User.objects.get(username='dhaynes')
-        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
         expected = '<Registered User: dhaynes - Approval Status: False>'
-        actual = str(getRegisteredUser)
+        actual = str(get_registered_user)
         self.assertEqual(expected, actual)
 
 
