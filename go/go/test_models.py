@@ -234,11 +234,13 @@ class URLTest(TestCase):
             testing methods
         """
 
+        # Setup a blank URL object with an owner
         User.objects.create(username='dhaynes', password='password')
         get_user = User.objects.get(username='dhaynes')
         get_registered_user = RegisteredUser.objects.get(user=get_user)
         URL.objects.create(owner=get_registered_user)
-        
+
+        # Create a dummy User object
         User.objects.create(username='evildhaynes', password='password')
 
     # owner --------------------------------------------------------------------
@@ -269,18 +271,61 @@ class URLTest(TestCase):
             Test that the timedate is set properly on URL creation
         """
 
+        # Get a date
         now = timezone.now
 
+        # Get the URL to apply it to
         get_user = User.objects.get(username='dhaynes')
         get_registered_user = RegisteredUser.objects.get(user=get_user)
         current_url = URL.objects.get(owner=get_registered_user)
 
+        # Apply the date
         current_url.date_created = now
 
         self.assertEqual(current_url.date_created, now)
 
 
     # target -------------------------------------------------------------------
+
+    def test_target(self):
+        """
+            Test that the target field properly accepts a URL
+        """
+
+        # Get a URL
+        test_url = "https://dhaynes.xyz"
+
+        # Get the URL to apply it to
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Apply the URL
+        current_url.target = test_url
+
+        self.assertEqual(current_url.target, test_url)
+
+    def test_target_length(self):
+        """
+            Test that we can't input a URL longer than 1000 chars
+        """
+
+        # Get a URL
+        test_url = "https://ymzvakaamyamelmshikymeodyqogjbmrxfgjsjowjjluzbhmgaahkoflhftnicprokfsmkwzoczfowboagwvarbtozszvumruvjlnmxcyhzltgijfatiacihrnbennvvuiwpjpredeyrqdqvkhyjixohrhpyrhrzaptzfeacvkopzkvxcxapknoelcfapjiwlvwnhulmsadiuzhvjevywwvkjordyhyrqntfueycgasyantpcnartxappzmmhbhtyplatqylunvdfkpcrvjjuvpnprxrgcxzbatfcvipvhetoiuknlnwscrgtwruatjazkrmsbyvrkxjiggejxormncbrxwajhhmuvsmzaclaehievayhtjbublhrljdfrudxcmnmokmlpdvhbgkicbfezdjyxhhspdnnufevvcncdbqkmqbubvrtaeiniowpjuqyuvxpjqfuejubjbphempwgvhlrvmtjuqafsopppjqujpinphyslfyyoiysoozblpjtigjaaqiwwoggjspbotzgwzzjvhgeztcnkzwjeejjzrjrhiqvjurrncoluwmcxmfmhngaqovpxocishflcfklyoowqlgnjsmagadlpgaphptpeoojqkyhsfcyhoxjnfwczhnunyhvlnzcdauydaipefedqalakkfexbkddcyjxofxgvrhriryrjzrnvoudkvuehbrhfwudgsrxktflglkqdqptxeadlhpvgwobwrbyrynbljuzjrogjgpkgfkhaawcykwzpqeahkigkmldxkrzavoqhivlebfhkmwvxgfgveaqdkgxtaixzdlhbdgcygeuwqfquqaojutlrybdrlfvxitectjyfdjtsinsuahnxsfovecymnuswkrcptpkgjreccmhznbxngzhzarmaxenhkfncmmzqyqpiccugfnxdiyifzyjawykpgheayboekztyitvajbwgrnmhrpprmuteofemxtcfqcekwbkqgggggggggggggggg.xyz"
+
+        # Get the URL to apply it to
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Apply the URL
+        current_url.target = test_url
+
+        try:
+            current_url.save()
+        except DataError as ex:
+            self.assertTrue(ex)
+
 
     # short --------------------------------------------------------------------
 
