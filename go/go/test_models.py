@@ -226,7 +226,39 @@ class URLTest(TestCase):
         Test cases for the URL Model
     """
 
+    def setUp(self):
+        """
+            Set up any variables such as dummy objects that will be utilised in
+            testing methods
+        """
+
+        User.objects.create(username='dhaynes', password='password')
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        URL.objects.create(owner=get_registered_user)
+        
+        User.objects.create(username='evildhaynes', password='password')
+
     # owner --------------------------------------------------------------------
+
+    def test_change_owner(self):
+        """
+            Test the ability to change the owner of a URL
+        """
+
+        # Original owner
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # New Owner
+        get_user = User.objects.get(username='evildhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+
+        # Change original owner to new owner 
+        current_url.owner = get_registered_user
+
+        self.assertEqual(current_url.owner, get_registered_user)
 
     # date_created -------------------------------------------------------------
 
