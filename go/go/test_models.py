@@ -65,7 +65,7 @@ class RegisteredUserTest(TestCase):
         try:
             get_registered_user.save()
         except DataError as ex:
-            self.assertEqual(str(ex[0]), "1406")
+            self.assertTrue(ex)
 
     # blank=False is purely form validation related
 
@@ -102,7 +102,7 @@ class RegisteredUserTest(TestCase):
         try:
             get_registered_user.save()
         except DataError as ex:
-            self.assertEqual(str(ex[0]), "1406")
+            self.assertTrue(ex)
 
 
     # blank=False is purely form validation related
