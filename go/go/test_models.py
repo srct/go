@@ -4,9 +4,8 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # Django Imports
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.db.utils import DataError
+from django.db.utils import DataError, IntegrityError
 from django.utils import timezone
-
 
 # App Imports
 from go.models import URL, RegisteredUser
@@ -261,6 +260,7 @@ class URLTest(TestCase):
 
         # Change original owner to new owner 
         current_url.owner = get_registered_user
+        current_url.save()
 
         self.assertEqual(current_url.owner, get_registered_user)
 
@@ -272,7 +272,7 @@ class URLTest(TestCase):
         """
 
         # Get a date
-        now = timezone.now
+        now = timezone.now()
 
         # Get the URL to apply it to
         get_user = User.objects.get(username='dhaynes')
@@ -281,6 +281,7 @@ class URLTest(TestCase):
 
         # Apply the date
         current_url.date_created = now
+        current_url.save()
 
         self.assertEqual(current_url.date_created, now)
 
@@ -302,6 +303,7 @@ class URLTest(TestCase):
 
         # Apply the URL
         current_url.target = test_url
+        current_url.save()
 
         self.assertEqual(current_url.target, test_url)
 
@@ -328,6 +330,70 @@ class URLTest(TestCase):
 
 
     # short --------------------------------------------------------------------
+
+    def test_short(self):
+        """
+            Test that the short field functions as intended
+        """
+
+        # Get a short 
+        test_short = "dhaynes"
+
+        # Get the URL to apply it to
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Apply the short
+        current_url.short = test_short
+        current_url.save()
+
+        self.assertEqual(current_url.short, test_short)
+
+    def test_short_dupe(self):
+        """
+            Test that the short field primary key functions as intended
+        """
+
+        # Get a short 
+        test_short = "dhaynes"
+
+        # Get the URL to apply it to
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Apply the short
+        current_url.short = test_short
+        current_url.save()
+
+        try:
+            new_url = URL.objects.create(owner=get_registered_user, short="dhaynes")
+            new_url.save()
+        except IntegrityError as ex:
+            self.assertTrue(ex)
+
+    def test_short_length(self):
+        """
+            Test that a short field can be no longer than 20 characters
+        """
+
+        # Get a invalid short
+        test_short = "ggggggggggggggggggggg"
+
+        # Get the URL to apply it to
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Apply the URL
+        current_url.short = test_short
+
+        try:
+            current_url.save()
+        except DataError as ex:
+            self.assertTrue(ex)
+        
 
     # clicks -------------------------------------------------------------------
 
