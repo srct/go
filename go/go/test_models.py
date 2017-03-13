@@ -11,11 +11,6 @@ from go.models import URL, RegisteredUser
 class RegisteredUserTest(TestCase):
     """
         Test cases for the RegisteredUser Model
-
-        - check approval and registration status flipping
-        - check blocking
-        - check organization field
-        - check full name field
     """
 
     def setUp(self):
@@ -25,6 +20,8 @@ class RegisteredUserTest(TestCase):
         """
 
         User.objects.create(username='dhaynes', password='password')
+    
+    # User
 
     def test_registereduser_creation(self):
         """
@@ -35,16 +32,11 @@ class RegisteredUserTest(TestCase):
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
         self.assertTrue(getRegisteredUser)
 
-    def test_check_str(self):
-        """
-            check printing
-        """
+    # full_name
 
-        getUser = User.objects.get(username='dhaynes')
-        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
-        expected = '<Registered User: dhaynes - Approval Status: False>'
-        actual = str(getRegisteredUser)
-        self.assertEqual(expected, actual)
+    # organization
+
+    # description
 
     def test_description_blank(self):
         """
@@ -57,7 +49,7 @@ class RegisteredUserTest(TestCase):
 
     def test_description_text(self):
         """
-            - add in description
+            - add in description (text)
         """
 
         getUser = User.objects.get(username='dhaynes')
@@ -66,18 +58,47 @@ class RegisteredUserTest(TestCase):
         self.assertEqual(getRegisteredUser.description, "We're going to build a big beautiful testcase")
 
 
-"""
-    Test cases for the URL Model
+    # registered
 
-    - check if URL's are actually created
-    - modify clicks (social, qr, normal)
-    - check expiration date creation
-    - check print function
-"""
+    # approved
+
+    # blocked
+
+    # __str__
+
+    def test_check_str(self):
+        """
+            check printing
+        """
+
+        getUser = User.objects.get(username='dhaynes')
+        getRegisteredUser = RegisteredUser.objects.get(user=getUser)
+        expected = '<Registered User: dhaynes - Approval Status: False>'
+        actual = str(getRegisteredUser)
+        self.assertEqual(expected, actual)
+
+
 class URLTest(TestCase):
+    """
+        Test cases for the URL Model
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
-        self.assertEqual("Hello World!", "Hello World!")
+    # owner
+
+    # date_created
+
+    # target
+
+    # short
+
+    # clicks
+
+    # qrclicks
+
+    # socialclicks
+
+    # expires
+
+    # __str__
+
+    # generate_valid_short
