@@ -4,6 +4,7 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 # Django Imports
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.db.utils import DataError
 
 # App Imports
 from go.models import URL, RegisteredUser
@@ -61,8 +62,7 @@ class RegisteredUserTest(TestCase):
         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
         """
-        # MYSQL will truncate the long string, no errors
-        self.assertFalse((bool)(get_registered_user.save()))
+        self.assertRaises(DataError, get_registered_user.save())
 
     # blank=False is purely form validation related
 
@@ -95,8 +95,7 @@ class RegisteredUserTest(TestCase):
         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
         gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
         """
-        # MYSQL will truncate the long string, no errors
-        self.assertFalse((bool)(get_registered_user.save()))
+        self.assertRaises(DataError, get_registered_user.save())
 
     # blank=False is purely form validation related
 
