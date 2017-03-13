@@ -407,7 +407,8 @@ class URLTest(TestCase):
         current_url = URL.objects.get(owner=get_registered_user)
 
         # Increment
-        current_url.clicks += 1;
+        current_url.clicks += 1
+        current_url.save()
 
         self.assertEqual(current_url.clicks, 1)
 
@@ -424,7 +425,8 @@ class URLTest(TestCase):
         current_url = URL.objects.get(owner=get_registered_user)
 
         # Increment
-        current_url.qrclicks += 1;
+        current_url.qrclicks += 1
+        current_url.save()
 
         self.assertEqual(current_url.qrclicks, 1)
 
@@ -441,12 +443,30 @@ class URLTest(TestCase):
         current_url = URL.objects.get(owner=get_registered_user)
 
         # Increment
-        current_url.socialclicks += 1;
+        current_url.socialclicks += 1
+        current_url.save()
 
         self.assertEqual(current_url.socialclicks, 1)
 
     # expires ------------------------------------------------------------------
 
     # __str__ ------------------------------------------------------------------
+
+    def test_check_str(self):
+        """
+            check printing
+        """
+
+        # Get the URL to test
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        current_url.target = "https://dhaynes.xyz"
+        current_url.save()
+
+        expected = '<Owner: dhaynes - Target URL: https://dhaynes.xyz>'
+        actual = str(current_url)
+        self.assertEqual(expected, actual)
 
     # generate_valid_short -----------------------------------------------------
