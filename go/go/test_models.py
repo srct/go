@@ -393,13 +393,57 @@ class URLTest(TestCase):
             current_url.save()
         except DataError as ex:
             self.assertTrue(ex)
-        
 
     # clicks -------------------------------------------------------------------
 
+    def test_clicks(self):
+        """
+            Test that clicks incremention works
+        """
+
+        # Get the URL to test
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Increment
+        current_url.clicks += 1;
+
+        self.assertEqual(current_url.clicks, 1)
+
     # qrclicks -----------------------------------------------------------------
 
+    def test_qrclicks(self):
+        """
+            Test that cliqrclickscks incremention works
+        """
+
+        # Get the URL to test
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Increment
+        current_url.qrclicks += 1;
+
+        self.assertEqual(current_url.qrclicks, 1)
+
     # socialclicks -------------------------------------------------------------
+
+    def test_socialclicks(self):
+        """
+            Test that socialclicks incremention works
+        """
+
+        # Get the URL to test
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        current_url = URL.objects.get(owner=get_registered_user)
+
+        # Increment
+        current_url.socialclicks += 1;
+
+        self.assertEqual(current_url.socialclicks, 1)
 
     # expires ------------------------------------------------------------------
 
