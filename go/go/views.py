@@ -28,13 +28,10 @@ from datetime import timedelta
     not_registered error page. If they are logged in AND registered, they
     get the URL registration form.
 """
+@login_required
 def new_link(request):
-    # If the user is blocked, redirect them to the blocked page.
-    # If the user is not authenticated, show them a public landing page.
-    if not request.user.is_authenticated():
-        return render(request, 'public_landing.html')
     # If the user isn't approved, then display the you're not approved page.
-    elif not request.user.registereduser.approved:
+    if not request.user.registereduser.approved:
         if request.user.registereduser.blocked:
             return render(request, 'banned.html')
         else:
@@ -141,9 +138,11 @@ def view(request, short):
     This view displays all the information about all of your URLs. You
     obviously need to be logged in to view your URLs.
 """
-@login_required
-def index(request):
 
+def index(request):
+    # If the user is not authenticated, show them a public landing page.
+    if not request.user.is_authenticated():
+        return render(request, 'public_landing.html')
     # Do not display this page to unapproved users
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
