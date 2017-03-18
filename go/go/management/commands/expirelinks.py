@@ -10,6 +10,10 @@ from go.models import URL
 
 # Define a new custom django-admin command
 class Command(BaseCommand):
+    """
+        Remove expired links from the database
+    """
+    
     # Define help text for this command
     help = 'Removes expired links from the database'
 

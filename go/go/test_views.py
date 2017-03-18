@@ -7,79 +7,86 @@ from django.test import TestCase
 # App Imports
 from go.views import *
 
-"""
-    Test cases for the index view
-"""
 class IndexTest(TestCase):
+    """
+        Test cases for the index view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the "view" view
-"""
 class ViewTest(TestCase):
+    """
+        Test cases for the "view" view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the my_links view
-"""
 class MyLinksTest(TestCase):
+    """
+        Test cases for the my_links view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the delete view
-"""
 class DeleteTest(TestCase):
+    """
+        Test cases for the delete view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the signup view
-"""
 class SignupTest(TestCase):
+    """
+        Test cases for the signup view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the redirection view
-"""
 class RedirectionTest(TestCase):
+    """
+        Test cases for the redirection view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")
 
-"""
-    Test cases for the useradmin view
-"""
 class UserAdminTest(TestCase):
+    """
+        Test cases for the useradmin view
+    """
 
-    """
-        Default test case, does not actually test anything
-    """
-    def test_Django_Test(self):
+    def test_django_test(self):
+        """
+            Default test case, does not actually test anything
+        """
+
         self.assertEqual("Hello World!", "Hello World!")

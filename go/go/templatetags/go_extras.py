@@ -12,17 +12,18 @@ from go.models import RegisteredUser
 # filters are registered.
 register = template.Library()
 
-"""
-    Helper template function to check if a user is registered.
-
-    givenUser: The User object that we are checking to see if they are registered
-    or not.
-"""
 @register.filter
-def is_registered(givenUser):
+def is_registered(given_user):
+    """
+        Helper template function to check if a user is registered.
+
+        given_user: The User object that we are checking to see if they are registered
+        or not.
+    """
+
     # try getting the RegisteredUser of the current user
     try:
-        getRegisteredUser = RegisteredUser.objects.get(user=givenUser)
+        getRegisteredUser = RegisteredUser.objects.get(user=given_user)
         # if it works then the user is registered
         return getRegisteredUser.registered
     # This should never happen
@@ -31,19 +32,20 @@ def is_registered(givenUser):
         # if they don't exist then they are not registered
         return False
 
-"""
-    Helper template function to check if a user is approved.
-
-    givenUser: The User object that we are checking to see if they are approved
-    or not.
-"""
 @register.filter
-def is_approved(givenUser):
+def is_approved(given_user):
+    """
+        Helper template function to check if a user is approved.
+
+        given_user: The User object that we are checking to see if they are approved
+        or not.
+    """
+
     # try getting the RegisteredUser of the current user
     try:
-        getRegisteredUser = RegisteredUser.objects.get(user=givenUser)
+        get_registered_user = RegisteredUser.objects.get(user=given_user)
         # if they exist, return whether or not they are approved (boolean)
-        return getRegisteredUser.approved
+        return get_registered_user.approved
     # This should never happen
     except RegisteredUser.DoesNotExist as ex:
         print(ex)

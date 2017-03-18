@@ -21,15 +21,16 @@ from go.forms import URLForm, SignupForm
 # Other Imports
 from datetime import timedelta
 
-"""
-    This view handles the homepage that the user is presented with when
-    they request '/'. If they're not logged in, they're redirected to
-    login. If they're logged in but not registered, they're given the
-    not_registered error page. If they are logged in AND registered, they
-    get the URL registration form.
-"""
 @login_required
 def new_link(request):
+    """
+        This view handles the homepage that the user is presented with when
+        they request '/'. If they're not logged in, they're redirected to
+        login. If they're logged in but not registered, they're given the
+        not_registered error page. If they are logged in AND registered, they
+        get the URL registration form.
+    """
+
     # If the user isn't approved, then display the you're not approved page.
     if not request.user.registereduser.approved:
         if request.user.registereduser.blocked:
@@ -39,18 +40,41 @@ def new_link(request):
 
 
     # Initialize a URL form
-    url_form = URLForm(host = request.META.get('HTTP_HOST'))  # unbound form
+    url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
 
     # If a POST request is received, then the user has submitted a form and it's
     # time to parse the form and create a new URL object
     if request.method == 'POST':
-        return redirect('view', post(request).short)
+        # Now we initialize the form again but this time we have the POST
+        # request
+        url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
+
+        # Django will check the form to make sure it's valid
+        if url_form.is_valid():
+            # Call our post method to assemble our new URL object
+            res = post(request, url_form)
+
+            # If there is a 500 error returned, handle it
+            if res == 500:
+                return HttpResponseServerError(
+                    render(request, 'admin/500.html', {})
+                )
+
+            # Redirect to the shiny new URL
+            return redirect('view', res.short)
+
+        # Else, there is an error, redisplay the form with the validation errors
+        else:
+            # Render index.html passing the form to the template
+            return render(request, 'core/index.html', {
+                'form': url_form,
+            })
+
 
     # Render index.html passing the form to the template
     return render(request, 'core/new_link.html', {
         'form': url_form,
-    },
-    )
+    })
 
 # for compatibility, just in case
 def my_links(request):
@@ -59,87 +83,82 @@ def my_links(request):
 #rate limits are completely arbitrary
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
-def post(request):
-    # Now we initialize the form again but this time we have the POST
-    # request
-    url_form = URLForm(request.POST, host = request.META.get('HTTP_HOST'))
+def post(request, url_form):
+    """
+        function that handles POST requests for the URL creation ProcessLookupError
+    """
 
-    # Django will check the form to make sure it's valid
-    if url_form.is_valid():
+    # We don't commit the url object yet because we need to add its
+    # owner, and parse its date field.
+    url = url_form.save(commit=False)
+    url.owner = request.user.registereduser
 
-        # We don't commit the url object yet because we need to add its
-        # owner, and parse its date field.
-        url = url_form.save(commit = False)
-        url.owner = request.user.registereduser
+    # If the user entered a short url, it's already been validated,
+    # so accept it. If they did not, however, then generate a
+    # random one and use that instead.
+    short = url_form.cleaned_data.get('short').strip()
 
-        # If the user entered a short url, it's already been validated,
-        # so accept it. If they did not, however, then generate a
-        # random one and use that instead.
-        short = url_form.cleaned_data.get('short').strip()
+    # Check if a short URL was entered
+    if len(short) > 0:
+        url.short = short
+    else:
+        # If the user didn't enter a short url, generate a random
+        # one. However, if a random one can't be generated, return
+        # a 500 server error.
+        random_short = URL.generate_valid_short()
 
-        # Check if a short URL was entered
-        if len(short) > 0:
-            url.short = short
+        if random_short is None:
+            return 500
         else:
-            # If the user didn't enter a short url, generate a random
-            # one. However, if a random one can't be generated, return
-            # a 500 server error.
-            random_short = URL.generate_valid_short()
-            if random_short is None:
-                return HttpResponseServerError(
-                    render(request, 'admin/500.html', {})
-                )
-            else:
-                url.short = random_short
+            url.short = random_short
 
-        # Grab the expiration field value. It's currently an unsable
-        # string value, so we need to parse it into a datetime object
-        # relative to right now.
-        expires = url_form.cleaned_data.get('expires')
+    # Grab the expiration field value. It's currently an unsable
+    # string value, so we need to parse it into a datetime object
+    # relative to right now.
+    expires = url_form.cleaned_data.get('expires')
 
-        # Determine what the expiration date is
-        if expires == URLForm.DAY:
-            url.expires = timezone.now() + timedelta(days = 1)
-        elif expires == URLForm.WEEK:
-            url.expires = timezone.now() + timedelta(weeks = 1)
-        elif expires == URLForm.MONTH:
-            url.expires = timezone.now() + timedelta(weeks = 3)
-        elif expires == URLForm.CUSTOM:
-            url.expires = url_form.cleaned_data.get('expires_custom')
-        else:
-            pass  # leave the field NULL
+    # Determine what the expiration date is
+    if expires == URLForm.DAY:
+        url.expires = timezone.now() + timedelta(days=1)
+    elif expires == URLForm.WEEK:
+        url.expires = timezone.now() + timedelta(weeks=1)
+    elif expires == URLForm.MONTH:
+        url.expires = timezone.now() + timedelta(weeks=3)
+    elif expires == URLForm.CUSTOM:
+        url.expires = url_form.cleaned_data.get('expires_custom')
+    else:
+        pass  # leave the field NULL
 
-        # Make sure that our new URL object is clean, then save it and
-        # let's redirect to view this baby.
-        url.full_clean()
-        url.save()
-        return url
+    # Make sure that our new URL object is clean, then save it and
+    # let's redirect to view this baby.
+    url.full_clean()
+    url.save()
+    return url
 
-"""
-    This view allows the user to view details about a URL. Note that they
-    do not need to be logged in to view info.
-"""
 def view(request, short):
+    """
+        This view allows the user to view details about a URL. Note that they
+        do not need to be logged in to view info.
+    """
 
     # Get the current domain info
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Get the URL that is being requested
-    url = get_object_or_404(URL, short__iexact = short)
+    url = get_object_or_404(URL, short__iexact=short)
 
     # Render view.html passing the specified URL and Domain to the template
     return render(request, 'view.html', {
         'url': url,
         'domain': domain,
-    },
-    )
-
-"""
-    This view displays all the information about all of your URLs. You
-    obviously need to be logged in to view your URLs.
-"""
+    })
 
 def index(request):
+    """
+        This view displays all the information about all of your URLs. You
+        obviously need to be logged in to view your URLs.
+    """
+
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
         return render(request, 'public_landing.html')
@@ -151,28 +170,27 @@ def index(request):
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Grab a list of all the URL's that are currently owned by the user
-    urls = URL.objects.filter(owner = request.user.registereduser)
+    urls = URL.objects.filter(owner=request.user.registereduser)
 
     # Render my_links.html passing the list of URL's and Domain to the template
     return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
-    },
-    )
+    })
 
-"""
-    This view deletes a URL if you have the permission to. User must be
-    logged in and registered, and must also be the owner of the URL.
-"""
 @login_required
 def delete(request, short):
+    """
+        This view deletes a URL if you have the permission to. User must be
+        logged in and registered, and must also be the owner of the URL.
+    """
 
     # Do not allow unapproved users to delete links
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
     # Get the URL that is going to be deleted
-    url = get_object_or_404(URL, short__iexact = short)
+    url = get_object_or_404(URL, short__iexact=short)
 
     # If the RegisteredUser is the owner of the URL
     if url.owner == request.user.registereduser:
@@ -184,11 +202,12 @@ def delete(request, short):
         # do not allow them to delete
         raise PermissionDenied()
 
-"""
-    This view presents the user with a registration form. You can register yourself.
-"""
 @login_required
 def signup(request):
+    """
+        This view presents the user with a registration form. You can register yourself.
+    """
+
     # Do not display signup page to registered or approved users
     if request.user.registereduser.blocked:
         return render(request, 'banned.html')
@@ -198,8 +217,12 @@ def signup(request):
         return redirect('registered')
 
     # Initialize our signup form
-    signup_form = SignupForm(request,
-        initial={'full_name': request.user.first_name + " " + request.user.last_name})
+    signup_form = SignupForm(
+        request,
+        initial={
+            'full_name': request.user.first_name + " " + request.user.last_name
+        }
+    )
 
     # Set the full_name field to readonly since CAS will fill that in for them
     signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
@@ -209,8 +232,12 @@ def signup(request):
     if request.method == 'POST':
         # Now we initialize the form again but this time we have the POST
         # request
-        signup_form = SignupForm(request, request.POST, instance = request.user.registereduser,
-            initial = {'full_name': request.user.first_name + " " + request.user.last_name})
+        signup_form = SignupForm(
+            request, request.POST, instance=request.user.registereduser,
+            initial={
+                'full_name': request.user.first_name + " " + request.user.last_name
+            }
+        )
 
         # set the readonly flag again for good measure
         signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
@@ -221,7 +248,6 @@ def signup(request):
             description = signup_form.cleaned_data.get('description')
             full_name = signup_form.cleaned_data.get('full_name')
             organization = signup_form.cleaned_data.get('organization')
-            registered = signup_form.cleaned_data.get('registered')
 
             # Only send mail if we've defined the mailserver
             if settings.EMAIL_HOST and settings.EMAIL_PORT:
@@ -238,13 +264,17 @@ def signup(request):
                     'reply all to contact the user and notfiy the mailing list.\n'
                     'Please head to go.gmu.edu/useradmin to approve or '
                     'deny this application.'
-                    % (str(full_name), str(timezone.now()).strip(),
-                    str(request.user.registereduser.user), str(organization), str(description)),
+                    %(
+                        str(full_name), str(timezone.now()).strip(),
+                        str(request.user.registereduser.user), str(organization),
+                        str(description)
+                    ),
                     ######################
                     settings.EMAIL_FROM,
                     [settings.EMAIL_TO],
-                    reply_to = [user_mail]
-                ).send()
+                    reply_to=[user_mail]
+                )
+                to_admin.send()
                 # Confirmation email sent to Users
                 send_mail(
                     'We have received your Go application!',
@@ -271,19 +301,18 @@ def signup(request):
     return render(request, 'core/signup.html', {
         'form': signup_form,
         'registered': False,
-    },
-    )
+    })
 
-"""
-    This view redirects a user based on the short URL they requested.
-"""
 def redirection(request, short):
+    """
+        This view redirects a user based on the short URL they requested.
+    """
 
     # Get the current domain info
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Get the URL object that relates to the requested Go link
-    url = get_object_or_404(URL, short__iexact = short)
+    url = get_object_or_404(URL, short__iexact=short)
     # Increment our clicks by one
     url.clicks += 1
 
@@ -303,23 +332,24 @@ def redirection(request, short):
     url.save()
     return redirect(url.target)
 
-"""
-    Decorator function for views that checks that the user is logged in and is
-    a staff member, displaying the login page if necessary.
-"""
-def staff_member_required(view_func, redirect_field_name = REDIRECT_FIELD_NAME, login_url = '/'):
+def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
+    """
+        Decorator function for views that checks that the user is logged in and is
+        a staff member, displaying the login page if necessary.
+    """
+
     return user_passes_test(
         lambda u: u.is_active and u.is_staff,
         login_url = login_url,
         redirect_field_name = redirect_field_name
     )(view_func)
 
-"""
-    This view is a simplified admin panel, so that staff don't need to log in
-    to approve links
-"""
 @staff_member_required
 def useradmin(request):
+    """
+        This view is a simplified admin panel, so that staff don't need to log in
+        to approve links
+    """
 
     # If we receive a POST request
     if request.POST:
@@ -328,13 +358,13 @@ def useradmin(request):
         # If we're approving users
         if '_approve' in request.POST:
             for name in userlist:
-                toApprove = RegisteredUser.objects.get(user__username__exact = name)
-                toApprove.approved = True
-                toApprove.save()
+                to_approve = RegisteredUser.objects.get(user__username__exact=name)
+                to_approve.approved = True
+                to_approve.save()
 
                 # Send an email letting them know they are approved
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toApprove.user.username + settings.EMAIL_DOMAIN
+                    user_mail = to_approve.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Approved!',
                         ######################
@@ -343,7 +373,7 @@ def useradmin(request):
                         'approved you to use Go!\n\n'
                         'Head over to go.gmu.edu to create your first address.\n\n'
                         '- Go Admins'
-                        % (str(toApprove.full_name)),
+                        % (str(to_approve.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
@@ -352,9 +382,9 @@ def useradmin(request):
         # If we're denying users
         elif '_deny' in request.POST:
             for name in userlist:
-                toDeny = RegisteredUser.objects.get(user__username__exact = name)
+                to_deny = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toDeny.user.username + settings.EMAIL_DOMAIN
+                    user_mail = to_deny.user.username + settings.EMAIL_DOMAIN
                     # Send an email letting them know they are denied
                     send_mail(
                         'Your Account has been Denied!',
@@ -365,21 +395,21 @@ def useradmin(request):
                         'Please reach out to srct@gmu.edu to appeal '
                         'this decision.\n\n'
                         '- Go Admins'
-                        % (str(toDeny.full_name)),
+                        % (str(to_deny.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
                 # Delete their associated RegisteredUsers
-                toDeny.user.delete()
+                to_deny.user.delete()
                 return HttpResponseRedirect('useradmin')
 
         # If we're blocking users
         elif '_block' in request.POST:
             for name in userlist:
-                toBlock = RegisteredUser.objects.get(user__username__exact = name)
+                to_block = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toBlock.user.username + settings.EMAIL_DOMAIN
+                    user_mail = to_block.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Blocked!',
                         ######################
@@ -389,23 +419,22 @@ def useradmin(request):
                         'Please reach out to srct@gmu.edu to appeal '
                         'this decision.\n\n'
                         '- Go Admins'
-                        % (str(toBlock.full_name)),
+                        % (str(to_block.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                # toBlock.user.delete()
-                toBlock.blocked = True
-                toBlock.approved = False
-                toBlock.registered = False
-                toBlock.save()
+                to_block.blocked = True
+                to_block.approved = False
+                to_block.registered = False
+                to_block.save()
 
         # If we're un-blocking users
         elif '_unblock' in request.POST:
             for name in userlist:
-                toUnBlock = RegisteredUser.objects.get(user__username__exact = name)
+                to_un_block = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toUnBlock.user.username + settings.EMAIL_DOMAIN
+                    user_mail = to_un_block.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Un-Blocked!',
                         ######################
@@ -415,22 +444,21 @@ def useradmin(request):
                         'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
-                        % (str(toUnBlock.full_name)),
+                        % (str(to_un_block.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                # toUNblock.user.delete()
-                toUnBlock.blocked = False
-                toUnBlock.save()
+                to_un_block.blocked = False
+                to_un_block.save()
                 return HttpResponseRedirect('useradmin')
 
         # If we're removing existing users
         elif '_remove' in request.POST:
             for name in userlist:
-                toRemove = RegisteredUser.objects.get(user__username__exact = name)
+                to_remove = RegisteredUser.objects.get(user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = toRemove.user.username + settings.EMAIL_DOMAIN
+                    user_mail = to_remove.user.username + settings.EMAIL_DOMAIN
                     send_mail(
                         'Your Account has been Deleted!',
                         ######################
@@ -439,18 +467,20 @@ def useradmin(request):
                         'Please reach out to srct@gmu.edu to appeal '
                         'this decision.\n\n'
                         '- Go Admins'
-                        % (str(toRemove.full_name)),
+                        % (str(to_remove.full_name)),
                         ######################
                         settings.EMAIL_FROM,
                         [user_mail]
                     )
-                toRemove.user.delete()
+                to_remove.user.delete()
                 return HttpResponseRedirect('useradmin')
 
     # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(
+        approved=False).filter(blocked=False)
     # Get a list of all RegisteredUsers that are currently users
-    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
+    current_users = RegisteredUser.objects.filter(approved=True).filter(
+        registered=True).filter(blocked=False)
     # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 

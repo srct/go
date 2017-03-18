@@ -9,22 +9,25 @@ from django.contrib.auth.models import User
 from .go_extras import is_registered, is_approved
 from go.models import RegisteredUser
 
-
-"""
-    Test cases for the template helper functions in go_extras.py
-"""
 class GoExtrasTest(TestCase):
+    """
+        Test cases for the template helper functions in go_extras.py
+    """
 
-    """
-        Create a dummy user to be tested against.
-    """
     def setUp(self):
+        """
+            Create a dummy user to be tested against.
+        """
+
         User.objects.create(username='dhaynes', password='password')
 
-    """
-        Test the is_registered function to see if it gives correct false answers
-    """
-    def test_is_registeredFalse(self):
+    # is_registered ------------------------------------------------------------
+
+    def test_is_registered_false(self):
+        """
+            Test the is_registered function to see if it gives correct false answers
+        """
+
         getUser = User.objects.get(username='dhaynes')
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
 
@@ -33,10 +36,11 @@ class GoExtrasTest(TestCase):
 
         self.assertFalse(is_registered(getUser))
 
-    """
-        Test the is_registered function to see if it gives correct true answers
-    """
-    def test_is_registeredTrue(self):
+    def test_is_registered_true(self):
+        """
+            Test the is_registered function to see if it gives correct true answers
+        """
+
         getUser = User.objects.get(username='dhaynes')
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
 
@@ -45,10 +49,13 @@ class GoExtrasTest(TestCase):
 
         self.assertTrue(is_registered(getUser))
 
-    """
-        Test the is_registered function to see if it gives correct false answers
-    """
-    def test_is_approvedFalse(self):
+    # is_approved --------------------------------------------------------------
+
+    def test_is_approved_false(self):
+        """
+            Test the is_registered function to see if it gives correct false answers
+        """
+
         getUser = User.objects.get(username='dhaynes')
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
 
@@ -58,10 +65,11 @@ class GoExtrasTest(TestCase):
         self.assertFalse(is_approved(getUser))
 
 
-    """
-        Test the is_registered function to see if it gives correct true answers
-    """
-    def test_is_approvedTrue(self):
+    def test_is_approved_true(self):
+        """
+            Test the is_registered function to see if it gives correct true answers
+        """
+
         getUser = User.objects.get(username='dhaynes')
         getRegisteredUser = RegisteredUser.objects.get(user=getUser)
 
