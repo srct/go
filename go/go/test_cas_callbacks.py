@@ -5,17 +5,17 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.test import TestCase
 
 # App Imports
-from go.cas_callbacks import pfparse, pfinfo, create_user
+from go.cas_callbacks import pfparse, pfinfo
 
 class CasCallbacksTest(TestCase):
     """
-        Test cases for the functions in call_callbacks.
+    Test cases for the functions in call_callbacks.
     """
 
 
     def test_pf_peoplefinder_method(self):
         """
-            Presently enrolled student who has been added to peoplefinder
+        Presently enrolled student who has been added to peoplefinder
         """
 
         actual = pfinfo('dhaynes3')
@@ -24,8 +24,8 @@ class CasCallbacksTest(TestCase):
 
     def test_pfparse_peoplefinder_method(self):
         """
-            Test the parsing method to ensure that first and last names are seperated
-            accordingly and correctly.
+        Test the parsing method to ensure that first and last names are seperated
+        accordingly and correctly.
         """
 
         actual = pfparse("Haynes, David M")
@@ -34,7 +34,7 @@ class CasCallbacksTest(TestCase):
 
     def test_pfinfo_ldap_method(self):
         """
-            student no longer in peoplefinder, or who hasn't yet been added
+        student no longer in peoplefinder, or who hasn't yet been added
         """
 
         actual = pfinfo('lfaraone')
@@ -43,7 +43,7 @@ class CasCallbacksTest(TestCase):
 
     def test_pfinfo_employee_method(self):
         """
-            student employees will have their staff info return before their student info
+        student employees will have their staff info return before their student info
         """
 
         actual = pfinfo('nander13')
@@ -52,7 +52,7 @@ class CasCallbacksTest(TestCase):
 
     def test_pfinfo_dne(self):
         """
-            a name not found for either (should never happen, but gracefully handle anyway)
+        a name not found for either (should never happen, but gracefully handle anyway)
         """
 
         actual = pfinfo('bobama')

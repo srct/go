@@ -2,10 +2,9 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 # Django Imports
-from django.conf.urls import include, url
+from django.conf.urls import url
 import django.contrib.auth.views
 from django.contrib import admin
-from django.conf import settings
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 
@@ -18,7 +17,8 @@ admin.autodiscover()
 
 # Main list of project URL's
 urlpatterns = [
-    # / - Homepage url. Cached for 1 second (this is the page you see after logging in, so having it show as not logged in is strange)
+    # / - Homepage url. Cached for 1 second (this is the page you see after
+    # logging in, so having it show as not logged in is strange)
     url(r'^$', cache_page(1)(go.views.index), name='index'),
 
     # /view/<short> - View URL data. Cached for 15 minutes

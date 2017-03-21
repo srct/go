@@ -11,7 +11,7 @@ from go.models import URL, RegisteredUser
 
 class URLAdmin(admin.ModelAdmin):
     """
-        Define what attributes display in the URL Admin
+    Define what attributes display in the URL Admin
     """
 
     list_display = ("target", "short", "owner", "clicks", "date_created", "expires")
@@ -21,7 +21,7 @@ admin.site.register(URL, URLAdmin)
 
 class RegisteredUserInline(admin.StackedInline):
     """
-        Define an inline admin descriptor for User model
+    Define an inline admin descriptor for User model
     """
 
     model = RegisteredUser
@@ -29,7 +29,7 @@ class RegisteredUserInline(admin.StackedInline):
 
 class UserAdmin(UserAdmin):
     """
-        Define a new User admin
+    Define a new User admin
     """
 
     # see above class that we defined

@@ -5,13 +5,14 @@ from __future__ import unicode_literals, absolute_import, print_function, divisi
 from django.contrib.auth.models import User
 from django.conf import settings
 
-# third party imports
+# Other Imports
 import requests
 
-"""
-    parse what peoplefinder sends back to us and make a list out of it
-"""
 def pfparse(pf_name_result):
+    """
+    Parse what peoplefinder sends back to us and make a list out of it
+    """
+
     # name comes in format of Anderson, Nicholas J
     name_list = pf_name_result.split(',')
     # there's random whitespace with the first name
@@ -27,10 +28,11 @@ def pfparse(pf_name_result):
     new_name_list = [first_name, name_list[0]]
     return new_name_list
 
-"""
-    get information from peoplefinder
-"""
 def pfinfo(uname):
+    """
+    Get information from peoplefinder
+    """
+
     base_url = settings.PF_URL
     url = base_url + "basic/all/" + str(uname)
     try:
@@ -65,16 +67,16 @@ def pfinfo(uname):
         # if the name is not in peoplefinder, return empty first and last name
         except IndexError as ex:
             print("Name not found in peoplefinder.")
-            return ['','']
+            return ['', '']
         except Exception as ex:
             print("Unknown peoplefinder error:", ex)
             print("Returning empty user info tuple.")
             return ['', '']
 
-"""
-    create a django user based off of the peoplefinder info we parsed earlier
-"""
 def create_user(tree):
+    """
+    Create a django user based off of the peoplefinder info we parsed earlier
+    """
 
     print("Parsing CAS information.")
     try:

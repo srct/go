@@ -1,6 +1,9 @@
 # Future Imports
 from __future__ import unicode_literals, absolute_import, print_function, division
 
+# Python stdlib imports
+from datetime import timedelta
+
 # Django Imports
 from django.conf import settings
 from django.http import HttpResponseServerError  # Http404
@@ -12,22 +15,21 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
+
+# Other imports
 from ratelimit.decorators import ratelimit
 
 # App Imports
 from go.models import URL, RegisteredUser
 from go.forms import URLForm, SignupForm
 
-# Other Imports
-from datetime import timedelta
-
 def index(request):
     """
-        This view handles the homepage that the user is presented with when
-        they request '/'. If they're not logged in, they're redirected to
-        login. If they're logged in but not registered, they're given the
-        not_registered error page. If they are logged in AND registered, they
-        get the URL registration form.
+    This view handles the homepage that the user is presented with when
+    they request '/'. If they're not logged in, they're redirected to
+    login. If they're logged in but not registered, they're given the
+    not_registered error page. If they are logged in AND registered, they
+    get the URL registration form.
     """
 
     # If the user is blocked, redirect them to the blocked page.
@@ -79,12 +81,12 @@ def index(request):
         'form': url_form,
     })
 
-#rate limits are completely arbitrary
+# Rate limits are completely arbitrary
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
 def post(request, url_form):
     """
-        function that handles POST requests for the URL creation ProcessLookupError
+    Function that handles POST requests for the URL creation ProcessLookupError
     """
 
     # We don't commit the url object yet because we need to add its
@@ -136,8 +138,8 @@ def post(request, url_form):
 
 def view(request, short):
     """
-        This view allows the user to view details about a URL. Note that they
-        do not need to be logged in to view info.
+    This view allows the user to view details about a URL. Note that they
+    do not need to be logged in to view info.
     """
 
     # Get the current domain info
@@ -155,8 +157,8 @@ def view(request, short):
 @login_required
 def my_links(request):
     """
-        This view displays all the information about all of your URLs. You
-        obviously need to be logged in to view your URLs.
+    This view displays all the information about all of your URLs. You
+    obviously need to be logged in to view your URLs.
     """
 
     # Do not display this page to unapproved users
@@ -178,8 +180,8 @@ def my_links(request):
 @login_required
 def delete(request, short):
     """
-        This view deletes a URL if you have the permission to. User must be
-        logged in and registered, and must also be the owner of the URL.
+    This view deletes a URL if you have the permission to. User must be
+    logged in and registered, and must also be the owner of the URL.
     """
 
     # Do not allow unapproved users to delete links
@@ -202,7 +204,7 @@ def delete(request, short):
 @login_required
 def signup(request):
     """
-        This view presents the user with a registration form. You can register yourself.
+    This view presents the user with a registration form. You can register yourself.
     """
 
     # Do not display signup page to registered or approved users
@@ -302,7 +304,7 @@ def signup(request):
 
 def redirection(request, short):
     """
-        This view redirects a user based on the short URL they requested.
+    This view redirects a user based on the short URL they requested.
     """
 
     # Get the current domain info
@@ -331,8 +333,8 @@ def redirection(request, short):
 
 def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
     """
-        Decorator function for views that checks that the user is logged in and is
-        a staff member, displaying the login page if necessary.
+    Decorator function for views that checks that the user is logged in and is
+    a staff member, displaying the login page if necessary.
     """
 
     return user_passes_test(
@@ -344,8 +346,8 @@ def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, lo
 @staff_member_required
 def useradmin(request):
     """
-        This view is a simplified admin panel, so that staff don't need to log in
-        to approve links
+    This view is a simplified admin panel, so that staff don't need to log in
+    to approve links
     """
 
     # If we receive a POST request

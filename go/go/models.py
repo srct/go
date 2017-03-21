@@ -22,8 +22,8 @@ hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string
 @python_2_unicode_compatible
 class RegisteredUser(models.Model):
     """
-        This is simply a wrapper model for the user object  which, if an object
-        exists, indicates that that user is registered.
+    This is simply a wrapper model for the user object  which, if an object
+    exists, indicates that that user is registered.
     """
 
     # Let's associate a User to this RegisteredUser
@@ -53,15 +53,21 @@ class RegisteredUser(models.Model):
     # Is this User Blocked?
     blocked = models.BooleanField(default=False)
 
-    # str(RegisteredUser)
     def __str__(self):
+        """
+        str(RegisteredUser)
+        """
+
         return '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
 
 
-# When a post_save is called on a User object (and it is newly created), this is
-# called to create an associated RegisteredUser
 @receiver(post_save, sender=User)
 def handle_regUser_creation(sender, instance, created, **kwargs):
+    """
+    When a post_save is called on a User object (and it is newly created), this 
+    is called to create an associated RegisteredUser
+    """
+
     if created:
         RegisteredUser.objects.create(user=instance)
 
@@ -69,9 +75,9 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
 @python_2_unicode_compatible
 class URL(models.Model):
     """
-        This model represents a stored URL redirection rule. Each URL has an
-        owner, target url, short identifier, click counter, and expiration
-        date.
+    This model represents a stored URL redirection rule. Each URL has an
+    owner, target url, short identifier, click counter, and expiration
+    date.
     """
 
     # Who is the owner of this Go link
@@ -94,19 +100,27 @@ class URL(models.Model):
     # does this Go link expire on a certain date
     expires = models.DateTimeField(blank=True, null=True)
 
-    # print(URL)
     def __str__(self):
+        """
+        print(URL)
+        """
+
         return '<Owner: %s - Target URL: %s>' % (self.owner.user, self.target)
 
-    # metadata for URL's
     class Meta:
+        """
+        metadata for URLs
+        """
+
         # they should be ordered by their short links
         ordering = ['short']
 
-    # legacy method to ensure that generated short URL's are valid
-    # should be updated to be simpler
     @staticmethod
     def generate_valid_short():
+        """
+        legacy method to ensure that generated short URL's are valid
+        should be updated to be simpler
+        """
         if cache.get("hashids_counter") is None:
             cache.set("hashids_counter", URL.objects.count())
         cache.incr("hashids_counter")

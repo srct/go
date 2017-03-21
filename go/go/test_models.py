@@ -12,13 +12,13 @@ from go.models import URL, RegisteredUser
 
 class RegisteredUserTest(TestCase):
     """
-        Test cases for the RegisteredUser Model
+    Test cases for the RegisteredUser Model
     """
 
     def setUp(self):
         """
-            Set up any variables such as dummy objects that will be utilised in
-            testing methods
+        Set up any variables such as dummy objects that will be utilised in
+        testing methods
         """
 
         User.objects.create(username='dhaynes', password='password')
@@ -27,7 +27,7 @@ class RegisteredUserTest(TestCase):
 
     def test_registereduser_creation(self):
         """
-            check if RegisteredUsers are actually made
+        check if RegisteredUsers are actually made
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -38,7 +38,7 @@ class RegisteredUserTest(TestCase):
 
     def test_full_name(self):
         """
-            check if full_name char field functions as intentioned
+        check if full_name char field functions as intentioned
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -50,7 +50,7 @@ class RegisteredUserTest(TestCase):
 
     def test_full_name_length(self):
         """
-            check if full_name char field functions as intentioned
+        check if full_name char field functions as intentioned
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -74,7 +74,7 @@ class RegisteredUserTest(TestCase):
 
     def test_organization(self):
         """
-            check if organization char field functions as intentioned
+        check if organization char field functions as intentioned
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -86,7 +86,7 @@ class RegisteredUserTest(TestCase):
 
     def test_organization_length(self):
         """
-            check if organization char field functions as intentioned
+        check if organization char field functions as intentioned
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -112,7 +112,7 @@ class RegisteredUserTest(TestCase):
 
     def test_description_blank(self):
         """
-            - add in description (blank)
+        - add in description (blank)
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -121,7 +121,7 @@ class RegisteredUserTest(TestCase):
 
     def test_description_text(self):
         """
-            - add in description (text)
+        - add in description (text)
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -139,7 +139,7 @@ class RegisteredUserTest(TestCase):
 
     def test_registered(self):
         """
-            test the registered bool
+        test the registered bool
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -151,7 +151,7 @@ class RegisteredUserTest(TestCase):
 
     def test_registered_default(self):
         """
-            test the registered bool
+        test the registered bool
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -163,7 +163,7 @@ class RegisteredUserTest(TestCase):
 
     def test_approved(self):
         """
-            test the approved bool
+        test the approved bool
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -175,7 +175,7 @@ class RegisteredUserTest(TestCase):
 
     def test_approved_default(self):
         """
-            test the approved bool default
+        test the approved bool default
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -187,7 +187,7 @@ class RegisteredUserTest(TestCase):
 
     def test_blocked(self):
         """
-            test the blocked bool
+        test the blocked bool
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -199,7 +199,7 @@ class RegisteredUserTest(TestCase):
 
     def test_approved_default(self):
         """
-            test the blocked bool default
+        test the blocked bool default
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -212,7 +212,7 @@ class RegisteredUserTest(TestCase):
 
     def test_check_str(self):
         """
-            check printing
+        check printing
         """
 
         get_user = User.objects.get(username='dhaynes')
@@ -224,13 +224,13 @@ class RegisteredUserTest(TestCase):
 
 class URLTest(TestCase):
     """
-        Test cases for the URL Model
+    Test cases for the URL Model
     """
 
     def setUp(self):
         """
-            Set up any variables such as dummy objects that will be utilised in
-            testing methods
+        Set up any variables such as dummy objects that will be utilised in
+        testing methods
         """
 
         # Setup a blank URL object with an owner
@@ -246,7 +246,7 @@ class URLTest(TestCase):
 
     def test_change_owner(self):
         """
-            Test the ability to change the owner of a URL
+        Test the ability to change the owner of a URL
         """
 
         # Original owner
@@ -268,7 +268,7 @@ class URLTest(TestCase):
 
     def test_date_created(self):
         """
-            Test that the timedate is set properly on URL creation
+        Test that the timedate is set properly on URL creation
         """
 
         # Get a date
@@ -290,7 +290,7 @@ class URLTest(TestCase):
 
     def test_target(self):
         """
-            Test that the target field properly accepts a URL
+        Test that the target field properly accepts a URL
         """
 
         # Get a URL
@@ -309,7 +309,7 @@ class URLTest(TestCase):
 
     def test_target_length(self):
         """
-            Test that we can't input a URL longer than 1000 chars
+        Test that we can't input a URL longer than 1000 chars
         """
 
         # Get a URL
@@ -333,7 +333,7 @@ class URLTest(TestCase):
 
     def test_short(self):
         """
-            Test that the short field functions as intended
+        Test that the short field functions as intended
         """
 
         # Get a short 
@@ -352,7 +352,7 @@ class URLTest(TestCase):
 
     def test_short_dupe(self):
         """
-            Test that the short field primary key functions as intended
+        Test that the short field primary key functions as intended
         """
 
         # Get a short 
@@ -375,7 +375,7 @@ class URLTest(TestCase):
 
     def test_short_length(self):
         """
-            Test that a short field can be no longer than 20 characters
+        Test that a short field can be no longer than 20 characters
         """
 
         # Get a invalid short
@@ -398,7 +398,7 @@ class URLTest(TestCase):
 
     def test_clicks(self):
         """
-            Test that clicks incremention works
+        Test that clicks incremention works
         """
 
         # Get the URL to test
@@ -416,7 +416,7 @@ class URLTest(TestCase):
 
     def test_qrclicks(self):
         """
-            Test that cliqrclickscks incremention works
+        Test that cliqrclickscks incremention works
         """
 
         # Get the URL to test
@@ -434,7 +434,7 @@ class URLTest(TestCase):
 
     def test_socialclicks(self):
         """
-            Test that socialclicks incremention works
+        Test that socialclicks incremention works
         """
 
         # Get the URL to test
@@ -452,7 +452,7 @@ class URLTest(TestCase):
 
     def test_expires(self):
         """
-            Test that the expires field functions as intended
+        Test that the expires field functions as intended
         """
         
         tomorrow = timezone.now() + timezone.timedelta(days=1)
@@ -473,7 +473,7 @@ class URLTest(TestCase):
 
     def test_check_str(self):
         """
-            check printing
+        check printing
         """
 
         # Get the URL to test
@@ -492,7 +492,7 @@ class URLTest(TestCase):
 
     # def test_generate_valid_short(self):
     #     """
-    #         Test that we can generate a short url at will
+    #     Test that we can generate a short url at will
     #     """
 
     #     # Get the URL to test

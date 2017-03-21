@@ -2,7 +2,7 @@
 from __future__ import unicode_literals, absolute_import, print_function, division
 
 # Python stdlib Imports
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from six.moves import urllib
 
 # Django Imports
@@ -22,11 +22,16 @@ from bootstrap3_datetime.widgets import DateTimePicker
 
 class URLForm(forms.ModelForm):
     """
-        The form that is used in URL creation.
+    The form that is used in URL creation.
     """
 
-    # Prevent redirect loop links
+    # target -------------------------------------------------------------------
+
     def clean_target(self):
+        """
+        Prevent redirect loop links
+        """
+
         # get the entered target link
         target = self.cleaned_data.get('target')
         try:
@@ -57,13 +62,19 @@ class URLForm(forms.ModelForm):
         })
     )
 
-    # Check to make sure the short url has not been used
+    # short --------------------------------------------------------------------
+
     def unique_short(value):
+        """
+        Check to make sure the short url has not been used
+        """
+
         try:
             # if we're able to get a URL with the same short url
             URL.objects.get(short__iexact=value)
         except URL.DoesNotExist as ex:
             return
+
         # then raise a ValidationError
         raise ValidationError('Short url already exists.')
 
@@ -77,14 +88,16 @@ class URLForm(forms.ModelForm):
         min_length=3,
     )
 
-    # define some string date standards
+    # expires ------------------------------------------------------------------
+
+    # Define some string date standards
     DAY = '1 Day'
     WEEK = '1 Week'
     MONTH = '1 Month'
     CUSTOM = 'Custom Date'
     NEVER = 'Never'
 
-    # define a tuple of string date standards to be used as our date choices
+    # Define a tuple of string date standards to be used as our date choices
     EXPIRATION_CHOICES = (
         (DAY, DAY),
         (WEEK, WEEK),
@@ -102,8 +115,11 @@ class URLForm(forms.ModelForm):
         widget=forms.RadioSelect(),
     )
 
-    # Check if the selected date is a valid date
     def valid_date(value):
+        """
+        Check if the selected date is a valid date
+        """
+
         # a valid date is one that is greater than today
         if value > timezone.now():
             return
@@ -130,8 +146,11 @@ class URLForm(forms.ModelForm):
         )
     )
 
-    # on initialization of the form, crispy forms renders this layout
     def __init__(self, *args, **kwargs):
+        """
+        On initialization of the form, crispy forms renders this layout
+        """
+
         # Grab that host info
         self.host = kwargs.pop('host', None)
         super(URLForm, self).__init__(*args, **kwargs)
@@ -191,8 +210,11 @@ class URLForm(forms.ModelForm):
                 <br />"""),
             StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit')))
 
-    # metadata about this ModelForm
     class Meta:
+        """
+        Metadata about this ModelForm
+        """
+
         # what model this form is for
         model = URL
         # what attributes are included
@@ -200,7 +222,7 @@ class URLForm(forms.ModelForm):
 
 class SignupForm(forms.ModelForm):
     """
-        The form that is used when a user is signing up to be a RegisteredUser
+    The form that is used when a user is signing up to be a RegisteredUser
     """
 
     # The full name of the RegisteredUser
@@ -230,15 +252,20 @@ class SignupForm(forms.ModelForm):
     # A user becomes registered when they agree to the TOS
     registered = forms.BooleanField(
         required=True,
-        # ***Need to replace lower url with production URL*** ie. go.gmu.edu/about#terms
+        # ***Need to replace lower url with production URL***
+        # ie. go.gmu.edu/about#terms
         label=mark_safe(
             'Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'
         ),
     )
 
-    # on initialization of the form, crispy forms renders this layout
     def __init__(self, request, *args, **kwargs):
-        # Necessary to call request in forms.py, is otherwise restricted to views.py and models.py
+        """
+        On initialization of the form, crispy forms renders this layout
+        """
+
+        # Necessary to call request in forms.py, is otherwise restricted to
+        # views.py and models.py
         self.request = request
         super(SignupForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -261,8 +288,11 @@ class SignupForm(forms.ModelForm):
                     StrictButton('Submit',css_class='btn btn-primary btn-md col-md-4', type='submit'),
                     css_class='col-md-6')))
 
-    # metadata about this ModelForm
     class Meta:
+        """
+        Metadata about this ModelForm
+        """
+
         # what model this form is for
         model = RegisteredUser
         # what attributes are included
