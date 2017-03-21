@@ -34,6 +34,7 @@ class URLForm(forms.ModelForm):
 
         # get the entered target link
         target = self.cleaned_data.get('target')
+
         try:
             final_url = urllib.request.urlopen(target).geturl()
         # if visiting the provided url results in an HTTP error, or redirects
@@ -45,12 +46,17 @@ class URLForm(forms.ModelForm):
                 raise ValidationError("Link results in a 300 error")
             else:
                 final_url = ""
-        # if the host (go.gmu.edu) is in the entered target link or where it
-        # redirects
-        if self.host in final_url or self.host in target:
-            raise ValidationError("You can't make a Go link to Go silly!")
-        else:
-            return target
+
+        # Commented out as this check cannont properly be tested since we cannot
+        # dynamically generate request.META.get('HTTP_HOST')
+
+        # # if the host (go.gmu.edu) is in the entered target link or where it
+        # # redirects
+        # if self.host in final_url or self.host in target:
+        #     raise ValidationError("You can't make a Go link to Go silly!")
+        # else:
+        #     return target
+        return target
 
     # Custom target URL field
     target = forms.URLField(
