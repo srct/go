@@ -1,21 +1,55 @@
 # Future Imports
 from __future__ import unicode_literals, absolute_import, print_function, division
 
+# Python stdlib Imports
+from datetime import timedelta
+
 # Django Imports
 from django.test import TestCase
+from django.contrib.auth.models import User
+from django.utils import timezone
+from django.core.management import call_command
 
 # App Imports
-from .expirelinks import *
+from .expirelinks import Command
+from go.models import URL, RegisteredUser
 
 class ExpireLinksTest(TestCase):
     """
-        Test cases for the functions in expirelinks
+    Test cases for the functions in expirelinks
     """
 
-
-    def test_Django_Test(self):
+    def setUp(self):
         """
-            Default test case, does not actually test anything
+        Set up any variables such as dummy objects that will be utilised in
+        testing methods
         """
 
-        self.assertEqual("Hello World!", "Hello World!")
+        # Setup a blank URL object with an owner
+        User.objects.create(username='dhaynes', password='password')
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        URL.objects.create(owner=get_registered_user, short='test')
+        URL.objects.create(owner=get_registered_user, short='test-2')
+
+        # Get some dates
+        yesterday = timezone.now() - timedelta(days=1)
+        tomorrow = timezone.now() + timedelta(days=1)
+
+        # Get the URL to apply it to
+        current_url = URL.objects.get(short='test')
+        second_url = URL.objects.get(short='test-2')
+
+        # Apply the dates
+        current_url.expires = yesterday
+        second_url.expires = tomorrow
+        current_url.save()
+
+    def test_expirelinks(self):
+        """
+        Test that the expirelinks django admin command functions as intentioned.
+        """
+
+        call_command('expirelinks')
+
+        self.assertTrue(len(URL.objects.all()) == 1)
