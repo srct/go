@@ -345,15 +345,19 @@ def redirection(request, short):
 
     # Get the current domain info
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
-
+    
     # Get the URL object that relates to the requested Go link
     url = get_object_or_404(URL, short__iexact=short)
     # Increment our clicks by one
     url.clicks += 1
-
+    # Get the URL short link
+    doesExist = URL.objects.get(short__iexact=short)
+    # Checks to see if the link exists, if not we 404 the user.
+    if doesExist.target is None:
+        return redirect('go/404.html')
     # If the user is trying to make a Go link to itself, we 404 them
     if url.target == domain + short:
-        return redirect('admin/404.html')
+        return redirect('go/404.html')
 
     # If the user is coming from a QR request then increment qrclicks
     if 'qr' in request.GET:
