@@ -1,3 +1,7 @@
+"""
+go/views.py
+"""
+
 # Future Imports
 from __future__ import unicode_literals, absolute_import, print_function, division
 
@@ -12,7 +16,6 @@ from django.utils import timezone
 from django.core.exceptions import PermissionDenied  # ValidationError
 from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -61,9 +64,7 @@ def index(request):
 
             # If there is a 500 error returned, handle it
             if res == 500:
-                return HttpResponseServerError(
-                    render(request, 'admin/500.html', {})
-                )
+                return HttpResponseServerError(render(request, '500.html'))
 
             # Redirect to the shiny new URL
             return redirect('view', res.short)
@@ -86,7 +87,7 @@ def index(request):
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
 def post(request, url_form):
     """
-    Function that handles POST requests for the URL creation ProcessLookupError
+    Helper function that handles POST requests for the URL creation
     """
 
     # We don't commit the url object yet because we need to add its
@@ -138,8 +139,8 @@ def post(request, url_form):
 
 def view(request, short):
     """
-    This view allows the user to view details about a URL. Note that they
-    do not need to be logged in to view info.
+    This view allows the user to "view details" about a URL. Note that they
+    do not need to be logged in to view this information.
     """
 
     # Get the current domain info
@@ -204,7 +205,8 @@ def delete(request, short):
 @login_required
 def signup(request):
     """
-    This view presents the user with a registration form. You can register yourself.
+    This view presents the user with a registration form. You can register
+    yourself.
     """
 
     # Do not display signup page to registered or approved users
@@ -317,7 +319,7 @@ def redirection(request, short):
 
     # If the user is trying to make a Go link to itself, we 404 them
     if url.target == domain + short:
-        return redirect('admin/404.html')
+        return redirect('404.html')
 
     # If the user is coming from a QR request then increment qrclicks
     if 'qr' in request.GET:
@@ -339,8 +341,8 @@ def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, lo
 
     return user_passes_test(
         lambda u: u.is_active and u.is_staff,
-        login_url = login_url,
-        redirect_field_name = redirect_field_name
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
     )(view_func)
 
 @staff_member_required

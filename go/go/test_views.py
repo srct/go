@@ -1,11 +1,21 @@
+"""
+go/test_views.py
+
+References:
+    - http://stackoverflow.com/a/11887308
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
 from django.test import TestCase
 
 # App Imports
-from go.views import index, view, my_links, delete, signup, redirection, useradmin
+from go.views import (
+    index, view, my_links, delete, signup, redirection, useradmin
+)
 
 class IndexTest(TestCase):
     """
