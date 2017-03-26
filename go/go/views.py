@@ -93,7 +93,7 @@ def new_link(request):
         # Else, there is an error, redisplay the form with the validation errors
         else:
             # Render index.html passing the form to the template
-            return render(request, 'core/index.html', {
+            return render(request, 'core/new_link.html', {
                 'form': url_form,
             })
 
