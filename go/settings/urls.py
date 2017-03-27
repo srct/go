@@ -31,8 +31,11 @@ urlpatterns = [
     # /signup - Signup page for access. Cached for 15 minutes
     url(r'^signup/?$', cache_page(60*15)(go.views.signup), name='signup'),
 
-    # /myLinks - My-Links page, view and review links. Cached for 5 seconds
-    url(r'^myLinks/?$', cache_page(5)(go.views.my_links), name='my_links'),
+    # /new - My-Links page, view and review links.
+    url(r'^newLink/?$', go.views.new_link, name='new_link'),
+
+    # /myLinks - My-Links page, view and review links.
+    url(r'^myLinks/?$', go.views.my_links, name='my_links'),
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),

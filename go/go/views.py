@@ -29,19 +29,41 @@ from go.forms import URLForm, SignupForm
 
 def index(request):
     """
+    If a user is logged in, this view displays all the information about all
+    of their URLs. Otherwise, it will show the public landing page
+    """
+
+    # If the user is not authenticated, show them a public landing page.
+    if not request.user.is_authenticated():
+        return render(request, 'public_landing.html')
+    # Do not display this page to unapproved users
+    if not request.user.registereduser.approved:
+        return render(request, 'not_registered.html')
+
+    # Get the current domain info
+    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
+
+    # Grab a list of all the URL's that are currently owned by the user
+    urls = URL.objects.filter(owner=request.user.registereduser)
+
+    # Render my_links.html passing the list of URL's and Domain to the template
+    return render(request, 'core/index.html', {
+        'urls': urls,
+        'domain': domain,
+    })
+
+@login_required
+def new_link(request):
+    """
     This view handles the homepage that the user is presented with when
-    they request '/'. If they're not logged in, they're redirected to
+    they request '/newLink'. If they're not logged in, they're redirected to
     login. If they're logged in but not registered, they're given the
     not_registered error page. If they are logged in AND registered, they
     get the URL registration form.
     """
 
-    # If the user is blocked, redirect them to the blocked page.
-    # If the user is not authenticated, show them a public landing page.
-    if not request.user.is_authenticated():
-        return render(request, 'public_landing.html')
     # If the user isn't approved, then display the you're not approved page.
-    elif not request.user.registereduser.approved:
+    if not request.user.registereduser.approved:
         if request.user.registereduser.blocked:
             return render(request, 'banned.html')
         else:
@@ -73,15 +95,29 @@ def index(request):
         # Else, there is an error, redisplay the form with the validation errors
         else:
             # Render index.html passing the form to the template
-            return render(request, 'core/index.html', {
+            return render(request, 'core/new_link.html', {
                 'form': url_form,
             })
 
 
     # Render index.html passing the form to the template
-    return render(request, 'core/index.html', {
+    return render(request, 'core/new_link.html', {
         'form': url_form,
     })
+
+@login_required
+def my_links(request):
+    """
+    for compatibility, just in case
+    shows the same thing as /, but requires login to be consistent with
+    /newLink
+    """
+    if not request.user.registereduser.approved:
+        if request.user.registereduser.blocked:
+            return render(request, 'banned.html')
+        else:
+            return render(request, 'not_registered.html')
+    return index(request)
 
 # Rate limits are completely arbitrary
 @ratelimit(key='user', rate='3/m', method='POST', block=True)

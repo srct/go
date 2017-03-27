@@ -1,0 +1,62 @@
+<!-- include the base html template -->
+{% extends 'layouts/base.html' %}
+
+<!-- load django crispy forms' tags -->
+{% load crispy_forms_tags %}
+
+<!-- define the page title block -->
+{% block title %}
+SRCT Go &bull; A University Branded URL Shortener
+{% endblock %}
+
+<!-- define the content block for the page -->
+{% block content %}
+
+<!-- define the page header div -->
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+      <h1><strong>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-link fa-stack-1x fa-inverse"></i>
+        </span>
+        <i class="fa">Shorten URL</i>
+      </strong></h1>
+    </div>
+  </div>
+</div>
+
+<!-- call django crispy forms to render the go link creation form here -->
+{% crispy form %}
+
+<!-- load some JS to hide/show the custom date field -->
+<script type="text/javascript">
+$(function() {
+    // hide by default
+    $("div_id_expires_custom").hide();
+
+    // if the expires_custom checkbox is checked..
+    if ($("#id_expires_5").is(":checked")) {
+        // display the field
+        $("#div_id_expires_custom").slideDown();
+    } else {
+        // keep it up
+        $("#div_id_expires_custom").slideUp();
+    }
+
+    // if the expires_custom checkbox is clicked..
+    $("#div_id_expires").click(function() {
+        // if the expires_custom checkbox is checked..
+        if ($("#id_expires_5").is(":checked")) {
+            // display the field
+            $("#div_id_expires_custom").slideDown();
+        } else {
+            // keep it hidden 
+            $("#div_id_expires_custom").slideUp();
+        }
+    })
+})
+</script>
+
+{% endblock %}

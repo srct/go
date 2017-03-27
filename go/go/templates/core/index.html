@@ -1,12 +1,9 @@
 <!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
-<!-- load django crispy forms' tags -->
-{% load crispy_forms_tags %}
-
 <!-- define the page title block -->
 {% block title %}
-SRCT Go &bull; A University Branded URL Shortener
+SRCT Go &bull; My Links
 {% endblock %}
 
 <!-- define the content block for the page -->
@@ -21,42 +18,27 @@ SRCT Go &bull; A University Branded URL Shortener
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-link fa-stack-1x fa-inverse"></i>
         </span>
-        <i class="fa">Shorten URL</i>
+        <i class="fa">My Links</i>
       </strong></h1>
     </div>
   </div>
+  <div class="newlink" style="text-align: right;">
+      <a href="{% url 'new_link' %}"><i class="fa fa-plus" aria-hidden="true"></i> Add new link</a>
+  </div>
 </div>
 
-<!-- call django crispy forms to render the go link creation form here -->
-{% crispy form %}
-
-<!-- load some JS to hide/show the custom date field -->
-<script type="text/javascript">
-$(function() {
-    // hide by default
-    $("div_id_expires_custom").hide();
-
-    // if the expires_custom checkbox is checked..
-    if ($("#id_expires_5").is(":checked")) {
-        // display the field
-        $("#div_id_expires_custom").slideDown();
-    } else {
-        // keep it up
-        $("#div_id_expires_custom").slideUp();
-    }
-
-    // if the expires_custom checkbox is clicked..
-    $("#div_id_expires").click(function() {
-        // if the expires_custom checkbox is checked..
-        if ($("#id_expires_5").is(":checked")) {
-            // display the field
-            $("#div_id_expires_custom").slideDown();
-        } else {
-            // keep it hidden 
-            $("#div_id_expires_custom").slideUp();
-        }
-    })
-})
-</script>
+<!-- show all of the links -->
+<div class="row">
+    <!-- for every url in the urls list-->
+    {% for url in urls %}
+        <legend>
+        <!-- include the link box for this url -->
+        {% include 'link_box.html' %}
+        </legend>
+    <!-- unless the list is empty -->
+    {% empty %}
+      <h3>&nbsp;&nbsp;&nbsp;None found <i class="fa fa-frown-o"></i></h3>
+    {% endfor %}
+</div>
 
 {% endblock %}
