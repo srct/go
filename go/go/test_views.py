@@ -13,9 +13,8 @@ from __future__ import (absolute_import, division, print_function,
 from django.test import TestCase
 
 # App Imports
-from go.views import (
-    index, view, my_links, delete, signup, redirection, useradmin
-)
+from go.views import (index, view, my_links, delete, signup, redirection,
+                      useradmin)
 
 class IndexTest(TestCase):
     """

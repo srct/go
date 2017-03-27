@@ -1,5 +1,10 @@
+"""
+go/templatetags/test_go_extras.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
 from django.test import TestCase
@@ -11,12 +16,12 @@ from go.models import RegisteredUser
 
 class GoExtrasTest(TestCase):
     """
-        Test cases for the template helper functions in go_extras.py
+    Test cases for the template helper functions in go_extras.py
     """
 
     def setUp(self):
         """
-            Create a dummy user to be tested against.
+        Create a dummy user to be tested against.
         """
 
         User.objects.create(username='dhaynes', password='password')
@@ -25,7 +30,8 @@ class GoExtrasTest(TestCase):
 
     def test_is_registered_false(self):
         """
-            Test the is_registered function to see if it gives correct false answers
+        Test the is_registered function to see if it gives correct false 
+        answers
         """
 
         getUser = User.objects.get(username='dhaynes')
@@ -38,7 +44,7 @@ class GoExtrasTest(TestCase):
 
     def test_is_registered_true(self):
         """
-            Test the is_registered function to see if it gives correct true answers
+        Test the is_registered function to see if it gives correct true answers
         """
 
         getUser = User.objects.get(username='dhaynes')
@@ -53,7 +59,7 @@ class GoExtrasTest(TestCase):
 
     def test_is_approved_false(self):
         """
-            Test the is_registered function to see if it gives correct false answers
+        Test the is_registered function to see if it gives correct false answers
         """
 
         getUser = User.objects.get(username='dhaynes')
@@ -67,7 +73,7 @@ class GoExtrasTest(TestCase):
 
     def test_is_approved_true(self):
         """
-            Test the is_registered function to see if it gives correct true answers
+        Test the is_registered function to see if it gives correct true answers
         """
 
         getUser = User.objects.get(username='dhaynes')

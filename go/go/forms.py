@@ -3,7 +3,8 @@ go/forms.py
 """
 
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib Imports
 from datetime import datetime, timedelta
@@ -21,7 +22,8 @@ from go.models import URL, RegisteredUser
 # Other Imports
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
-from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
+from crispy_forms.bootstrap import (StrictButton, PrependedText, Accordion, 
+                                    AccordionGroup)
 from bootstrap3_datetime.widgets import DateTimePicker
 
 class URLForm(forms.ModelForm):

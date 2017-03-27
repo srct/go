@@ -1,5 +1,10 @@
+"""
+go/commands/test_expirelinks.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib Imports
 from datetime import timedelta
