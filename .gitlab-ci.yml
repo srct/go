@@ -12,6 +12,7 @@ before_script:
   - apt-get update -qy
   - apt-get install -y mysql-client libmysqlclient-dev python-mysqldb redis-server
   - pip install -r requirements/ci.txt
+  - nohup redis-server &
   - cd go/
   - cp settings/settings.py.template settings/settings.py
   - cp settings/secret.py.template settings/secret.py
