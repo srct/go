@@ -193,29 +193,6 @@ def view(request, short):
     })
 
 @login_required
-def my_links(request):
-    """
-    This view displays all the information about all of your URLs. You
-    obviously need to be logged in to view your URLs.
-    """
-
-    # Do not display this page to unapproved users
-    if not request.user.registereduser.approved:
-        return render(request, 'not_registered.html')
-
-    # Get the current domain info
-    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
-
-    # Grab a list of all the URL's that are currently owned by the user
-    urls = URL.objects.filter(owner=request.user.registereduser)
-
-    # Render my_links.html passing the list of URL's and Domain to the template
-    return render(request, 'my_links.html', {
-        'urls': urls,
-        'domain': domain,
-    })
-
-@login_required
 def delete(request, short):
     """
     This view deletes a URL if you have the permission to. User must be
