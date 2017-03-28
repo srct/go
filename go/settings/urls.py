@@ -31,7 +31,7 @@ urlpatterns = [
     # /signup - Signup page for access. Cached for 15 minutes
     url(r'^signup/?$', cache_page(60*15)(go.views.signup), name='signup'),
 
-    # /new - My-Links page, view and review links.
+    # /newLink - My-Links page, view and review links.
     url(r'^newLink/?$', go.views.new_link, name='new_link'),
 
     # /myLinks - My-Links page, view and review links.

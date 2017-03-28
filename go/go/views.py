@@ -46,7 +46,7 @@ def index(request):
     # Grab a list of all the URL's that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
 
-    # Render my_links.html passing the list of URL's and Domain to the template
+    # Render my_links passing the list of URL's and Domain to the template
     return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
