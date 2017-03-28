@@ -1,5 +1,6 @@
 services:
   - mysql:latest
+  - redis:latest
 
 types:
   - test
