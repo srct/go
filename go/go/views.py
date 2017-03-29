@@ -203,22 +203,17 @@ def edit(request, short):
 
     # Do not allow unapproved users to edit links
     if not request.user.registereduser.approved:
-        return render(request, 'not_registered.html')
+        if request.user.registereduser.blocked:
+            return render(request, 'banned.html')
+        else:
+            return render(request, 'not_registered.html')
+
 
     # Get the URL that is going to be edited
     url = get_object_or_404(URL, short__iexact=short)
 
     # If the RegisteredUser is the owner of the URL
     if url.owner == request.user.registereduser:
-
-        # Initialize a URL form
-        url_form = URLForm(host=request.META.get('HTTP_HOST'), initial={
-            'target': url.target,
-            'short': url.short
-            # figure out how to set expires (lambda?)
-        })  # unbound form
-
-        # Initial data set here
 
         # If a POST request is received, then the user has submitted a form and it's
         # time to parse the form and edit that URL object
@@ -238,6 +233,23 @@ def edit(request, short):
                     'form': url_form
                 })
         else:
+            # Initial data set here
+            if url.expires != None:
+                # Initialize a URL form with an expire date
+                url_form = URLForm(host=request.META.get('HTTP_HOST'), initial={
+                    'target': url.target,
+                    'short': url.short,
+                    'expires': 'Custom Date',
+                    'expires_custom': url.expires
+                })  # unbound form
+            else:
+                # Initialize a URL form without an expire date
+                url_form = URLForm(host=request.META.get('HTTP_HOST'), initial={
+                    'target': url.target,
+                    'short': url.short,
+                    'expires': 'Never',
+                })  # unbound form
+
             # Render index.html passing the form to the template
             return render(request, 'core/edit_link.html', {
                 'form': url_form
