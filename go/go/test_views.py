@@ -104,6 +104,18 @@ class ViewTest(TestCase):
         response = self.client.get('/view/test')
         self.assertEqual(response.status_code, 200)
 
+class EditTest(TestCase):
+    """
+    Test cases for the edit view
+    """
+    
+    def test_django_test(self):
+        """
+        Default test case, does not actually test anything
+        """
+
+        self.assertEqual("Hello World!", "Hello World!")
+
 class DeleteTest(TestCase):
     """
     Test cases for the delete view

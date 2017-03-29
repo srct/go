@@ -194,6 +194,31 @@ def view(request, short):
     })
 
 @login_required
+def edit(request, short):
+    """
+    This view allows a logged in user to edit the details of a Go link that they
+    own. They can modify any value that they wish. If `short` is modified then
+    we will need to create a new link and copy over stats from the previous.
+    """
+
+    # Do not allow unapproved users to edit links
+    if not request.user.registereduser.approved:
+        return render(request, 'not_registered.html')
+
+    # Get the URL that is going to be edited
+    url = get_object_or_404(URL, short__iexact=short)
+
+    # If the RegisteredUser is the owner of the URL
+    if url.owner == request.user.registereduser:
+        # render the edit URL form
+        # TODO
+        # redirect to my_links
+        return redirect('my_links')
+    else:
+        # do not allow them to edit
+        raise PermissionDenied()
+
+@login_required
 def delete(request, short):
     """
     This view deletes a URL if you have the permission to. User must be
@@ -211,7 +236,7 @@ def delete(request, short):
     if url.owner == request.user.registereduser:
         # remove the URL
         url.delete()
-        # rediret to my_links
+        # redirect to my_links
         return redirect('my_links')
     else:
         # do not allow them to delete
