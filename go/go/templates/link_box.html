@@ -95,17 +95,17 @@
 
             <strong>Expires:</strong> {{url.expires|default_if_none:"Never"}}
             <br></br>
+            
             <!-- Delete Button  -->
             <a class="button btn btn-danger btn-sm fa" data-target="#deletionModal-{{url.short}}" data-toggle="modal">
                 <i class="fa fa-trash-o fa-lg"></i> Delete
             </a>
 
-            <!-- edit button -->
-            <a tabindex="0" class="button btn btn-info btn-sm fa" role="button" data-toggle="popover" title="Not Implemented Quite Yet :(" data-content="We are working on adding this feature in a future
-            release of Go. If you'd like to check that progress or potentially
-            contribute code, head to git.gmu.edu/srct/go">
-                <i class="fa fa-cog"></i> Edit
+            <!-- Edit Button -->
+            <a href="{{domain}}edit/{{url.short}}" class="button btn btn-info btn-sm fa">
+                <i class="fa fa-cog fa-lg"></i> Edit
             </a>
+
             <!--Define Delete Modal-->
             <div id="deletionModal-{{url.short}}" class="modal fade" role="dialog" tabindex="-1">
                 <div class="modal-dialog">
