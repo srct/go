@@ -222,11 +222,16 @@ def edit(request, short):
             # request
             url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
 
+            # Make a copy of the old URL
+            copy = url
+            # Remove the old one
+            url.delete()
+
             # Django will check the form to make sure it's valid
             if url_form.is_valid():
                 # If the short changed then we need to create a new object and
                 # migrate some data over
-                if url_form.cleaned_data.get('short').strip() != url.short:
+                if url_form.cleaned_data.get('short').strip() != copy.short:
                     # Parse the form and create a new URL object
                     res = post(request, url_form)
 
@@ -237,12 +242,9 @@ def edit(request, short):
                     # We can procede with the editing process
                     else:
                         # Migrate clicks data
-                        res.clicks = url.clicks
-                        res.qrclicks = url.clicks
-                        res.socialclicks = url.clicks
-
-                        # Remove the old one
-                        url.delete()
+                        res.clicks = copy.clicks
+                        res.qrclicks = copy.clicks
+                        res.socialclicks = copy.clicks
 
                         # Save the new URL
                         res.save()
@@ -252,9 +254,9 @@ def edit(request, short):
 
                 # The short was not edited and thus, we can directly edit the url
                 else:
-                    if url_form.cleaned_data.get('target').strip() != url.target:
-                        url.target = url_form.cleaned_data.get('target').strip()
-                        url.save()
+                    if url_form.cleaned_data.get('target').strip() != copy.target:
+                        copy.target = url_form.cleaned_data.get('target').strip()
+                        copy.save()
 
                     # Grab the expiration field value. It's currently an unsable
                     # string value, so we need to parse it into a datetime object
@@ -273,12 +275,12 @@ def edit(request, short):
                     else:
                         pass  # leave the field NULL
 
-                    if edited_expires != url.expires:
-                        url.expires = edited_expires
-                        url.save()
+                    if edited_expires != copy.expires:
+                        copy.expires = edited_expires
+                        copy.save()
 
                     # Redirect to the shiny new *edited URL
-                    return redirect('view', res.short)
+                    return redirect('view', copy.short)
 
             # Else, there is an error, redisplay the form with the validation errors
             else:
@@ -308,9 +310,6 @@ def edit(request, short):
             return render(request, 'core/edit_link.html', {
                 'form': url_form
             })
-
-        # redirect to my_links
-        # return redirect('my_links')
     else:
         # do not allow them to edit
         raise PermissionDenied()
