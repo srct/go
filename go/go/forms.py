@@ -235,6 +235,76 @@ class URLForm(ModelForm):
         # what attributes are included
         fields = ['target']
 
+class EditForm(URLForm):
+
+    def __init__(self, *args, **kwargs):
+        """
+        On initialization of the form, crispy forms renders this layout
+        """
+
+        # Grab that host info
+        self.host = kwargs.pop('host', None)
+        super(URLForm, self).__init__(*args, **kwargs)
+        # Define the basics for crispy-forms
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+
+        # Some xtra vars for form css purposes
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-1'
+        self.helper.field_class = 'col-md-6'
+
+        # The main "layout" defined
+        self.helper.layout = Layout(
+            Fieldset('',
+            #######################
+                Accordion(
+                    # Step 1: Long URL
+                    AccordionGroup('Step 1: Long URL',
+                        Div(
+                            HTML("""
+                                <h4>Modify the URL you would like to shorten:</h4>
+                                <br />"""),
+                            'target',
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html'),
+
+                    # Step 2: Short URL
+                    AccordionGroup('Step 2: Short URL',
+                        Div(
+                            HTML("""
+                                <h4>Modify the Go address:</h4>
+                                <br />"""),
+                            PrependedText(
+                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html',),
+
+                    # Step 3: Expiration
+                    AccordionGroup('Step 3: URL Expiration',
+                        Div(
+                            HTML("""
+                                <h4>Modify the expiration date:</h4>
+                                <br />"""),
+                            'expires',
+                            Field('expires_custom', template="crispy/customDateField.html"),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html'),
+
+                # FIN
+                template='crispy/accordian.html'),
+            #######################
+            HTML("""
+                <br />"""),
+            StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
+    
+    class Meta(URLForm.Meta):
+        # what attributes are included
+        fields = URLForm.Meta.fields
+
 class SignupForm(ModelForm):
     """
     The form that is used when a user is signing up to be a RegisteredUser

@@ -24,7 +24,7 @@ from django.utils import timezone
 from ratelimit.decorators import ratelimit
 
 # App Imports
-from go.forms import SignupForm, URLForm
+from go.forms import SignupForm, URLForm, EditForm
 from go.models import URL, RegisteredUser
 
 
@@ -220,7 +220,7 @@ def edit(request, short):
         if request.method == 'POST':
             # Now we initialize the form again but this time we have the POST
             # request
-            url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
+            url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
 
             # Make a copy of the old URL
             copy = url
@@ -292,7 +292,7 @@ def edit(request, short):
             # Initial data set here
             if url.expires != None:
                 # Initialize a URL form with an expire date
-                url_form = URLForm(host=request.META.get('HTTP_HOST'), initial={
+                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
                     'target': url.target,
                     'short': url.short,
                     'expires': 'Custom Date',
@@ -300,7 +300,7 @@ def edit(request, short):
                 })  # unbound form
             else:
                 # Initialize a URL form without an expire date
-                url_form = URLForm(host=request.META.get('HTTP_HOST'), initial={
+                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
                     'target': url.target,
                     'short': url.short,
                     'expires': 'Never',
