@@ -11,8 +11,10 @@ from datetime import datetime, timedelta
 from six.moves import urllib
 
 # Django Imports
-from django import forms
 from django.core.exceptions import ValidationError
+from django.forms import (BooleanField, CharField, ChoiceField, DateTimeField,
+                          ModelForm, RadioSelect, SlugField, Textarea,
+                          TextInput, URLField, URLInput)
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 
@@ -27,7 +29,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
 
 
-class URLForm(forms.ModelForm):
+class URLForm(ModelForm):
     """
     The form that is used in URL creation.
     """
@@ -66,11 +68,11 @@ class URLForm(forms.ModelForm):
         return target
 
     # Custom target URL field
-    target = forms.URLField(
+    target = URLField(
         required=True,
         label='Long URL (Required)',
         max_length=1000,
-        widget=forms.URLInput(attrs={
+        widget=URLInput(attrs={
             'placeholder': 'https://yoursite.com/'
         })
     )
@@ -92,10 +94,10 @@ class URLForm(forms.ModelForm):
         raise ValidationError('Short url already exists.')
 
     # Custom short-url field with validators.
-    short = forms.SlugField(
+    short = SlugField(
         required=False,
         label='Short URL (Optional)',
-        widget=forms.TextInput(),
+        widget=TextInput(),
         validators=[unique_short],
         max_length=20,
         min_length=3,
@@ -120,12 +122,12 @@ class URLForm(forms.ModelForm):
     )
 
     # Add preset expiration choices.
-    expires = forms.ChoiceField(
+    expires = ChoiceField(
         required=True,
         label='Expiration (Required)',
         choices=EXPIRATION_CHOICES,
         initial=NEVER,
-        widget=forms.RadioSelect(),
+        widget=RadioSelect(),
     )
 
     def valid_date(value):
@@ -142,7 +144,7 @@ class URLForm(forms.ModelForm):
 
 
     # Add a custom expiration choice.
-    expires_custom = forms.DateTimeField(
+    expires_custom = DateTimeField(
         required=False,
         label='Custom Date',
         input_formats=['%m-%d-%Y'],
@@ -233,37 +235,37 @@ class URLForm(forms.ModelForm):
         # what attributes are included
         fields = ['target']
 
-class SignupForm(forms.ModelForm):
+class SignupForm(ModelForm):
     """
     The form that is used when a user is signing up to be a RegisteredUser
     """
 
     # The full name of the RegisteredUser
-    full_name = forms.CharField(
+    full_name = CharField(
         required=True,
         label='Full Name (Required)',
         max_length=100,
-        widget=forms.TextInput(),
+        widget=TextInput(),
     )
 
     # The RegisteredUser's chosen organization
-    organization = forms.CharField(
+    organization = CharField(
         required=True,
         label='Organization (Required)',
         max_length=100,
-        widget=forms.TextInput(),
+        widget=TextInput(),
     )
 
     # The RegisteredUser's reason for signing up to us Go
-    description = forms.CharField(
+    description = CharField(
         required=False,
         label='Description (Optional)',
         max_length=200,
-        widget=forms.Textarea(),
+        widget=Textarea(),
     )
 
     # A user becomes registered when they agree to the TOS
-    registered = forms.BooleanField(
+    registered = BooleanField(
         required=True,
         # ***Need to replace lower url with production URL***
         # ie. go.gmu.edu/about#terms

@@ -210,12 +210,38 @@ def edit(request, short):
 
     # If the RegisteredUser is the owner of the URL
     if url.owner == request.user.registereduser:
-        # render the edit URL form
 
-        # Render index.html passing the form to the template
-        return render(request, 'core/edit_link.html', {
-        })
+        # Initialize a URL form
+        url_form = URLForm(host=request.META.get('HTTP_HOST'), initial={
+            'target': url.target,
+            'short': url.short
+            # figure out how to set expires (lambda?)
+        })  # unbound form
 
+        # Initial data set here
+
+        # If a POST request is received, then the user has submitted a form and it's
+        # time to parse the form and edit that URL object
+        if request.method == 'POST':
+            # Now we initialize the form again but this time we have the POST
+            # request
+            url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
+
+            # Django will check the form to make sure it's valid
+            if url_form.is_valid():
+                return redirect('view', None)
+
+            # Else, there is an error, redisplay the form with the validation errors
+            else:
+                # Render index.html passing the form to the template
+                return render(request, 'core/edit_link.html', {
+                    'form': url_form
+                })
+        else:
+            # Render index.html passing the form to the template
+            return render(request, 'core/edit_link.html', {
+                'form': url_form
+            })
 
         # redirect to my_links
         # return redirect('my_links')
