@@ -82,6 +82,39 @@ class UrlsTest(TestCase):
         url = reverse('my_links')
         self.assertEqual(url, '/myLinks')
 
+    def test_edit_reverse_chars(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['dhaynes'])
+        self.assertEqual(url, '/edit/dhaynes')
+
+    def test_edit_reverse_ints(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['123456789'])
+        self.assertEqual(url, '/edit/123456789')
+
+    def test_edit_reverse_chars_ints(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['dhaynes123'])
+        self.assertEqual(url, '/edit/dhaynes123')
+
+    def test_edit_reverse_full_slug(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['dhaynes123_-'])
+        self.assertEqual(url, '/edit/dhaynes123_-')
+
+
     def test_delete_reverse_chars(self):
         """
         /delete/<short> - Delete a link, no content display.

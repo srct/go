@@ -42,6 +42,9 @@ urlpatterns = [
     # /myLinks - My-Links page, view and review links.
     url(r'^myLinks/?$', go.views.my_links, name='my_links'),
 
+    # /edit/<short> - Edit link form
+    url(r'^edit/(?P<short>[-\w]+)$', go.views.edit, name='edit'),
+
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
 
