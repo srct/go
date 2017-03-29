@@ -224,7 +224,61 @@ def edit(request, short):
 
             # Django will check the form to make sure it's valid
             if url_form.is_valid():
-                return redirect('view', None)
+                # If the short changed then we need to create a new object and
+                # migrate some data over
+                if url_form.cleaned_data.get('short').strip() != url.short:
+                    # Parse the form and create a new URL object
+                    res = post(request, url_form)
+
+                    # If there is a 500 error returned, handle it
+                    if res == 500:
+                        return HttpResponseServerError(render(request, '500.html'))
+
+                    # We can procede with the editing process
+                    else:
+                        # Migrate clicks data
+                        res.clicks = url.clicks
+                        res.qrclicks = url.clicks
+                        res.socialclicks = url.clicks
+
+                        # Remove the old one
+                        url.delete()
+
+                        # Save the new URL
+                        res.save()
+
+                        # Redirect to the shiny new *edited URL
+                        return redirect('view', res.short)
+
+                # The short was not edited and thus, we can directly edit the url
+                else:
+                    if url_form.cleaned_data.get('target').strip() != url.target:
+                        url.target = url_form.cleaned_data.get('target').strip()
+                        url.save()
+
+                    # Grab the expiration field value. It's currently an unsable
+                    # string value, so we need to parse it into a datetime object
+                    # relative to right now.
+                    expires = url_form.cleaned_data.get('expires')
+
+                    # Determine what the expiration date is
+                    if expires == URLForm.DAY:
+                        edited_expires = timezone.now() + timedelta(days=1)
+                    elif expires == URLForm.WEEK:
+                        edited_expires = timezone.now() + timedelta(weeks=1)
+                    elif expires == URLForm.MONTH:
+                        edited_expires = timezone.now() + timedelta(weeks=3)
+                    elif expires == URLForm.CUSTOM:
+                        edited_expires = url_form.cleaned_data.get('expires_custom')
+                    else:
+                        pass  # leave the field NULL
+
+                    if edited_expires != url.expires:
+                        url.expires = edited_expires
+                        url.save()
+
+                    # Redirect to the shiny new *edited URL
+                    return redirect('view', res.short)
 
             # Else, there is an error, redisplay the form with the validation errors
             else:
