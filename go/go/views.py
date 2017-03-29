@@ -243,8 +243,8 @@ def edit(request, short):
                     else:
                         # Migrate clicks data
                         res.clicks = copy.clicks
-                        res.qrclicks = copy.clicks
-                        res.socialclicks = copy.clicks
+                        res.qrclicks = copy.qrclicks
+                        res.socialclicks = copy.socialclicks
 
                         # Save the new URL
                         res.save()
