@@ -7,8 +7,8 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 # Django Imports
-from django.contrib.auth.models import User
 from django.conf import settings
+from django.contrib.auth.models import User
 
 # Other Imports
 import requests

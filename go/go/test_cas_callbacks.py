@@ -13,7 +13,6 @@ class CasCallbacksTest(TestCase):
     Test cases for the functions in call_callbacks.
     """
 
-
     def test_pf_peoplefinder_method(self):
         """
         Presently enrolled student who has been added to peoplefinder

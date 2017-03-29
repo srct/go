@@ -6,7 +6,6 @@ go/commands/expirelinks.py
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-
 # Django Imports
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -25,7 +24,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        The handle function handles the main component of the django-admin command.
+        The handle function handles the main component of the django-admin 
+        command.
         """
 
         # Loop through a list of all URL objects that have expired

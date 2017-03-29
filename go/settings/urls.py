@@ -1,9 +1,14 @@
+"""
+settings/urls.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
-from django.conf.urls import url
 import django.contrib.auth.views
+from django.conf.urls import url
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView

@@ -11,21 +11,22 @@ from datetime import timedelta
 
 # Django Imports
 from django.conf import settings
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied  # ValidationError
+from django.core.mail import EmailMessage, send_mail
 from django.http import HttpResponseServerError  # Http404
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.core.exceptions import PermissionDenied  # ValidationError
-from django.core.mail import send_mail, EmailMessage
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.decorators import user_passes_test, login_required
-from django.shortcuts import render, get_object_or_404, redirect
 
 # Other imports
 from ratelimit.decorators import ratelimit
 
 # App Imports
+from go.forms import SignupForm, URLForm
 from go.models import URL, RegisteredUser
-from go.forms import URLForm, SignupForm
+
 
 def index(request):
     """

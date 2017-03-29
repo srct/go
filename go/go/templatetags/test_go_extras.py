@@ -7,12 +7,12 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 # Django Imports
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 
 # App Imports
-from .go_extras import is_registered, is_approved
 from go.models import RegisteredUser
+from .go_extras import is_approved, is_registered
 
 class GoExtrasTest(TestCase):
     """
@@ -30,7 +30,7 @@ class GoExtrasTest(TestCase):
 
     def test_is_registered_false(self):
         """
-        Test the is_registered function to see if it gives correct false 
+        Test the is_registered function to see if it gives correct false
         answers
         """
 

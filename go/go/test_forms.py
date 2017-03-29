@@ -13,11 +13,11 @@ from __future__ import (absolute_import, division, print_function,
 from datetime import datetime, timedelta
 
 # Django Imports
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 
 # App Imports
-from go.forms import URLForm, SignupForm
+from go.forms import SignupForm, URLForm
 from go.models import URL, RegisteredUser
 
 class URLFormTest(TestCase):
