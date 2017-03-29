@@ -211,9 +211,14 @@ def edit(request, short):
     # If the RegisteredUser is the owner of the URL
     if url.owner == request.user.registereduser:
         # render the edit URL form
-        # TODO
+
+        # Render index.html passing the form to the template
+        return render(request, 'core/edit_link.html', {
+        })
+
+
         # redirect to my_links
-        return redirect('my_links')
+        # return redirect('my_links')
     else:
         # do not allow them to edit
         raise PermissionDenied()
