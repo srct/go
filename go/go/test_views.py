@@ -108,13 +108,28 @@ class EditTest(TestCase):
     """
     Test cases for the edit view
     """
-    
-    def test_django_test(self):
+
+    def setUp(self):
         """
-        Default test case, does not actually test anything
+        Set up any variables such as dummy objects that will be utilised in
+        testing methods
         """
 
-        self.assertEqual("Hello World!", "Hello World!")
+        # Setup a blank URL object with an owner
+        User.objects.create(username='dhaynes', password='password')
+        get_user = User.objects.get(username='dhaynes')
+        get_registered_user = RegisteredUser.objects.get(user=get_user)
+        URL.objects.create(owner=get_registered_user, short='test')
+
+    def test_edit_get_anon(self):
+        """
+        Test that the delete view redirects anons to login with cas on an EXTERNAL
+        CAS link, so 302 REDIRECT.
+        """
+
+        response = self.client.get('/edit/test')
+        self.assertEqual(response.status_code, 302)
+
 
 class DeleteTest(TestCase):
     """
