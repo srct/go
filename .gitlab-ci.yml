@@ -14,15 +14,21 @@ before_script:
   - pip install -r requirements/ci.txt
   - nohup redis-server &
   - cd go/
-  - cp settings/settings.py.template settings/settings.py
-  - cp settings/secret.py.template settings/secret.py
-  - export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
-  - export DJANGO_DEBUG="True"
-  - sed -i settings/secret.py -e 's/DB_NAME.*/DB_NAME = \"go\"/'
-  - sed -i settings/secret.py -e 's/DB_USER.*/DB_USER = \"root\"/'
-  - sed -i settings/secret.py -e 's/DB_PASSWORD.*/DB_PASSWORD = \"root\"/'
-  - sed -i settings/secret.py -e 's/DB_HOST.*/DB_HOST = \"mysql\"/'
-  - sed -i settings/secret.py -e 's/SECRET_KEY.*/SECRET_KEY = \"${SECRET_KEY}\"/'
+  - export GO_SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
+  - export GO_DB_NAME="go"
+  - export GO_DB_USER="root"
+  - export GO_DB_PASSWORD="root"
+  - export GO_DB_HOST="mysql"
+  - export GO_DB_PORT=3306
+  - export GO_ALLOWED_HOSTS="*"
+  - export GO_EMAIL_DOMAIN="@masonlive.gmu.edu"
+  - export GO_CAS_URL="https://cas.srct.gmu.edu/"
+  - export GO_EMAIL_HOST=
+  - export GO_EMAIL_PORT=
+  - export GO_EMAIL_HOST_USER=
+  - export GO_EMAIL_HOST_PASSWORD=
+  - export GO_EMAIL_FROM=
+  - export GO_EMAIL_TO=
   - python manage.py makemigrations
   - python manage.py makemigrations go
   - python manage.py migrate

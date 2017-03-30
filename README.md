@@ -202,6 +202,7 @@ it set up, open a merge request and I'll merge it in.
     cd /vagrant
     source venv/bin/activate
     cd go
+    source sourceme.sh
     python manage.py test
 
 #### Manual Setup
