@@ -16,3 +16,4 @@ htmlcov/
 .idea
 __pycache__/
 .vscode
+go/sourceme.sh
