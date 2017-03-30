@@ -166,7 +166,7 @@ class UrlsTest(TestCase):
         url = reverse('useradmin')
         self.assertEqual(url, '/useradmin')
 
-    def test_useradmin(self):
+    def test_login(self):
         """
         /login - login portal
         """
@@ -174,7 +174,7 @@ class UrlsTest(TestCase):
         url = reverse('go_login')
         self.assertEqual(url, '/login')
 
-    def test_useradmin(self):
+    def test_logout(self):
         """
         /logout - logout portal
         """
