@@ -73,7 +73,6 @@ TEMPLATES = [
             'loaders': [
                 'django.template.loaders.app_directories.Loader'
             ],
-            'debug': DEBUG
         }
     }
 ]
