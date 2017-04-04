@@ -315,6 +315,7 @@ class SignupForm(ModelForm):
         required=True,
         label='Full Name (Required)',
         max_length=100,
+        value=request.user.first_name + " " + request.user.last_name,
         widget=TextInput(),
     )
 
