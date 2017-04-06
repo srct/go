@@ -1,5 +1,10 @@
+"""
+go/commands/expirelinks.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
 from django.core.management.base import BaseCommand
@@ -19,7 +24,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        The handle function handles the main component of the django-admin command.
+        The handle function handles the main component of the django-admin 
+        command.
         """
 
         # Loop through a list of all URL objects that have expired

@@ -1,35 +1,38 @@
-# Create a new file 'settings.py' and copy these contents into that file
-from . import secret
+"""
+settings/base.py
+
+Base Settings
+"""
+
+# Future Imports
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
+# Python stdlib Imports
 import os
 import sys
 
+# STANDALONE VARS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# DEBUG mode is used to view more details when errors occur
-# Do not have set True in production
-DEBUG = False
-
-ADMINS = ()
-MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': secret.DB_NAME,
-        'USER': secret.DB_USER,
-        'PASSWORD': secret.DB_PASSWORD,
-        'HOST': secret.DB_HOST,
-        'PORT': '',
-    }
-}
-
-# The domains this application will be deployed on
-# e.g. Which domains this app should listen to requests from.
-ALLOWED_HOSTS = ['127.0.0.1']
+# You can generate a secret key from the following link:
+# http://www.miniwebtool.com/django-secret-key-generator/
+# export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
+# assert 'SECRET_KEY' in os.environ, 'You need to set the SECRET_KEY enviornment variable!'
+SECRET_KEY = os.environ['GO_SECRET_KEY']
 
 # Peoplefinder API
 PF_URL = "https://api.srct.gmu.edu/pf/v1/"
 
+# The domains this application will be deployed on
+# e.g. Which domains this app should listen to requests from.
+# ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = [os.environ['GO_ALLOWED_HOSTS']]
+
+ADMINS = ()
+MANAGERS = ADMINS
+
+# TIME
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
@@ -37,16 +40,17 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# MEDIA/STATIC FILE CONFIGURATION
 MEDIA_URL = '/media/'
 MEDIA_ROOT = ''
 MEDIAFILES_DIRS = (
-  os.path.join(BASE_DIR, 'media/'),
+    os.path.join(BASE_DIR, 'media/'),
 )
 
 STATIC_URL = '/static/'
 STATIC_ROOT = ''
 STATICFILES_DIRS = (
-  os.path.join(BASE_DIR, 'static/'),
+    os.path.join(BASE_DIR, 'static/'),
 )
 
 STATICFILES_FINDERS = (
@@ -54,8 +58,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-SECRET_KEY = secret.SECRET_KEY
-
+# TEMPLATING
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -70,39 +73,58 @@ TEMPLATES = [
             'loaders': [
                 'django.template.loaders.app_directories.Loader'
             ],
-            'debug': DEBUG
         }
     }
 ]
 
+########## DATABASE CONFIGURATION
+# Use the same DB everywhere.
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ['GO_DB_NAME'],
+        'USER': os.environ['GO_DB_USER'],
+        'PASSWORD': os.environ['GO_DB_PASSWORD'],
+        'HOST': os.environ['GO_DB_HOST'],
+        'PORT': os.environ['GO_DB_PORT'],
+    }
+}
+
+
+# MIDDLEWARE
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'cas.middleware.CASMiddleware',
 )
 
+# URL CONF
 ROOT_URLCONF = 'settings.urls'
-
 WSGI_APPLICATION = 'settings.wsgi.application'
 
+# APPS
 INSTALLED_APPS = (
-  'django.contrib.auth',
-  'django.contrib.contenttypes',
-  'django.contrib.sessions',
-  'django.contrib.sites',
-  'django.contrib.messages',
-  'django.contrib.staticfiles',
-  'go',
-  'django.contrib.admin',
-  'qrcode',
-  'crispy_forms',
-  'bootstrap3_datetime',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'go',
+    'qrcode',
+    'crispy_forms',
+    'bootstrap3_datetime',
+    'cas',
 )
 
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+# LOGGING
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -137,56 +159,35 @@ LOGGING = {
     }
 }
 
-
+# CAS AUTH
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-)
-
-CAS_SERVER_URL = "https://login.gmu.edu"
-CAS_LOGOUT_COMPLETELY = True
-CAS_PROVIDE_URL_TO_LOGOUT = True
-
-AUTHENTICATION_BACKENDS += (
     'cas.backends.CASBackend',
 )
+
+CAS_SERVER_URL = os.environ['GO_CAS_URL']
+CAS_LOGOUT_COMPLETELY = True
+CAS_PROVIDE_URL_TO_LOGOUT = True
 
 CAS_RESPONSE_CALLBACKS = (
     'go.cas_callbacks.create_user',
 )
 
-INSTALLED_APPS += (
-    'cas',
-)
 
-MIDDLEWARE_CLASSES += (
-    'cas.middleware.CASMiddleware',
-)
+# MAIL
+EMAIL_HOST = os.environ['GO_EMAIL_HOST']
+EMAIL_PORT = os.environ['GO_EMAIL_PORT']
+EMAIL_HOST_USER = os.environ['GO_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['GO_EMAIL_HOST_PASSWORD']
+# example@example.com
+EMAIL_FROM = os.environ['GO_EMAIL_FROM']
+# to@example.com
+EMAIL_TO = os.environ['GO_EMAIL_TO']
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
-# Mail settings
-EMAIL_HOST = secret.EMAIL_HOST
-EMAIL_PORT = secret.EMAIL_PORT
-EMAIL_HOST_USER = secret.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = secret.EMAIL_HOST_PASSWORD
-EMAIL_FROM = "example@example.com"
-EMAIL_TO = "to@example.com"
-
-# Domain used to email to users. See line 231 in views.py
+# Domain used to email to users. See implementation in views.py
 # ie. in Mason's case '@masonlive.gmu.edu'
-EMAIL_DOMAIN = "@example.com"
-
-# Use redis cache when not in local development
-if DEBUG:
-    pass
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'redis_cache.RedisCache',
-            'LOCATION': '/var/run/redis/redis.sock',
-        },
-    }
+EMAIL_DOMAIN = os.environ['GO_EMAIL_DOMAIN']

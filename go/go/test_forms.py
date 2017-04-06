@@ -6,17 +6,18 @@ References:
 """
 
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib Imports
 from datetime import datetime, timedelta
 
 # Django Imports
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 
 # App Imports
-from go.forms import URLForm, SignupForm
+from go.forms import SignupForm, URLForm, EditForm
 from go.models import URL, RegisteredUser
 
 class URLFormTest(TestCase):
@@ -132,6 +133,21 @@ class URLFormTest(TestCase):
         form = URLForm(data=form_data)
         print(form.errors)
         self.assertFalse(form.is_valid())
+
+class EditForm(TestCase):
+    """
+    Test cases for the edit URL form.
+
+    As currently this form inherits from the URLForm and does not add any fields,
+    we cannot test any values. It exists purely for aesthetics.
+    """
+
+    def test_django_test(self):
+        """
+        Default test case, does not actually test anything
+        """
+
+        self.assertEqual("Hello World!", "Hello World!")
 
 class SignupFormTest(TestCase):
     """

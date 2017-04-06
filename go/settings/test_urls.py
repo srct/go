@@ -1,11 +1,17 @@
+"""
+settings/test_urls.py
+
+References:
+    - https://stackoverflow.com/questions/18987051/how-do-i-unit-test-django-urls
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
 from django.test import TestCase
 from django.urls import reverse
-
-# https://stackoverflow.com/questions/18987051/how-do-i-unit-test-django-urls
 
 class UrlsTest(TestCase):
     """
@@ -76,6 +82,39 @@ class UrlsTest(TestCase):
         url = reverse('my_links')
         self.assertEqual(url, '/myLinks')
 
+    def test_edit_reverse_chars(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['dhaynes'])
+        self.assertEqual(url, '/edit/dhaynes')
+
+    def test_edit_reverse_ints(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['123456789'])
+        self.assertEqual(url, '/edit/123456789')
+
+    def test_edit_reverse_chars_ints(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['dhaynes123'])
+        self.assertEqual(url, '/edit/dhaynes123')
+
+    def test_edit_reverse_full_slug(self):
+        """
+        /edit/<short> - Delete a link, no content display.
+        """
+
+        url = reverse('edit', args=['dhaynes123_-'])
+        self.assertEqual(url, '/edit/dhaynes123_-')
+
+
     def test_delete_reverse_chars(self):
         """
         /delete/<short> - Delete a link, no content display.
@@ -127,7 +166,7 @@ class UrlsTest(TestCase):
         url = reverse('useradmin')
         self.assertEqual(url, '/useradmin')
 
-    def test_useradmin(self):
+    def test_login(self):
         """
         /login - login portal
         """
@@ -135,7 +174,7 @@ class UrlsTest(TestCase):
         url = reverse('go_login')
         self.assertEqual(url, '/login')
 
-    def test_useradmin(self):
+    def test_logout(self):
         """
         /logout - logout portal
         """

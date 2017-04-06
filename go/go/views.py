@@ -1,27 +1,32 @@
+"""
+go/views.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib imports
 from datetime import timedelta
 
 # Django Imports
 from django.conf import settings
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied  # ValidationError
+from django.core.mail import EmailMessage, send_mail
 from django.http import HttpResponseServerError  # Http404
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-from django.core.exceptions import PermissionDenied  # ValidationError
-from django.core.mail import send_mail, EmailMessage
-from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test, login_required
-from django.shortcuts import render, get_object_or_404, redirect
 
 # Other imports
 from ratelimit.decorators import ratelimit
 
 # App Imports
+from go.forms import SignupForm, URLForm, EditForm
 from go.models import URL, RegisteredUser
-from go.forms import URLForm, SignupForm
+
 
 def index(request):
     """
@@ -42,7 +47,7 @@ def index(request):
     # Grab a list of all the URL's that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
 
-    # Render my_links.html passing the list of URL's and Domain to the template
+    # Render my_links passing the list of URL's and Domain to the template
     return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
@@ -83,9 +88,7 @@ def new_link(request):
 
             # If there is a 500 error returned, handle it
             if res == 500:
-                return HttpResponseServerError(
-                    render(request, 'admin/500.html', {})
-                )
+                return HttpResponseServerError(render(request, '500.html'))
 
             # Redirect to the shiny new URL
             return redirect('view', res.short)
@@ -93,7 +96,7 @@ def new_link(request):
         # Else, there is an error, redisplay the form with the validation errors
         else:
             # Render index.html passing the form to the template
-            return render(request, 'core/index.html', {
+            return render(request, 'core/new_link.html', {
                 'form': url_form,
             })
 
@@ -122,7 +125,7 @@ def my_links(request):
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
 def post(request, url_form):
     """
-    Function that handles POST requests for the URL creation ProcessLookupError
+    Helper function that handles POST requests for the URL creation
     """
 
     # We don't commit the url object yet because we need to add its
@@ -174,8 +177,8 @@ def post(request, url_form):
 
 def view(request, short):
     """
-    This view allows the user to view details about a URL. Note that they
-    do not need to be logged in to view info.
+    This view allows the user to "view details" about a URL. Note that they
+    do not need to be logged in to view this information.
     """
 
     # Get the current domain info
@@ -191,27 +194,125 @@ def view(request, short):
     })
 
 @login_required
-def my_links(request):
+def edit(request, short):
     """
-    This view displays all the information about all of your URLs. You
-    obviously need to be logged in to view your URLs.
+    This view allows a logged in user to edit the details of a Go link that they
+    own. They can modify any value that they wish. If `short` is modified then
+    we will need to create a new link and copy over stats from the previous.
     """
 
-    # Do not display this page to unapproved users
+    # Do not allow unapproved users to edit links
     if not request.user.registereduser.approved:
-        return render(request, 'not_registered.html')
+        if request.user.registereduser.blocked:
+            return render(request, 'banned.html')
+        else:
+            return render(request, 'not_registered.html')
 
-    # Get the current domain info
-    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
-    # Grab a list of all the URL's that are currently owned by the user
-    urls = URL.objects.filter(owner=request.user.registereduser)
+    # Get the URL that is going to be edited
+    url = get_object_or_404(URL, short__iexact=short)
 
-    # Render my_links.html passing the list of URL's and Domain to the template
-    return render(request, 'my_links.html', {
-        'urls': urls,
-        'domain': domain,
-    })
+    # If the RegisteredUser is the owner of the URL
+    if url.owner == request.user.registereduser:
+
+        # If a POST request is received, then the user has submitted a form and it's
+        # time to parse the form and edit that URL object
+        if request.method == 'POST':
+            # Now we initialize the form again but this time we have the POST
+            # request
+            url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
+
+            # Make a copy of the old URL
+            copy = url
+            # Remove the old one
+            url.delete()
+
+            # Django will check the form to make sure it's valid
+            if url_form.is_valid():
+                # If the short changed then we need to create a new object and
+                # migrate some data over
+                if url_form.cleaned_data.get('short').strip() != copy.short:
+                    # Parse the form and create a new URL object
+                    res = post(request, url_form)
+
+                    # If there is a 500 error returned, handle it
+                    if res == 500:
+                        return HttpResponseServerError(render(request, '500.html'))
+
+                    # We can procede with the editing process
+                    else:
+                        # Migrate clicks data
+                        res.clicks = copy.clicks
+                        res.qrclicks = copy.qrclicks
+                        res.socialclicks = copy.socialclicks
+
+                        # Save the new URL
+                        res.save()
+
+                        # Redirect to the shiny new *edited URL
+                        return redirect('view', res.short)
+
+                # The short was not edited and thus, we can directly edit the url
+                else:
+                    if url_form.cleaned_data.get('target').strip() != copy.target:
+                        copy.target = url_form.cleaned_data.get('target').strip()
+                        copy.save()
+
+                    # Grab the expiration field value. It's currently an unsable
+                    # string value, so we need to parse it into a datetime object
+                    # relative to right now.
+                    expires = url_form.cleaned_data.get('expires')
+
+                    # Determine what the expiration date is
+                    if expires == URLForm.DAY:
+                        edited_expires = timezone.now() + timedelta(days=1)
+                    elif expires == URLForm.WEEK:
+                        edited_expires = timezone.now() + timedelta(weeks=1)
+                    elif expires == URLForm.MONTH:
+                        edited_expires = timezone.now() + timedelta(weeks=3)
+                    elif expires == URLForm.CUSTOM:
+                        edited_expires = url_form.cleaned_data.get('expires_custom')
+                    else:
+                        pass  # leave the field NULL
+
+                    if edited_expires != copy.expires:
+                        copy.expires = edited_expires
+                        copy.save()
+
+                    # Redirect to the shiny new *edited URL
+                    return redirect('view', copy.short)
+
+            # Else, there is an error, redisplay the form with the validation errors
+            else:
+                # Render index.html passing the form to the template
+                return render(request, 'core/edit_link.html', {
+                    'form': url_form
+                })
+        else:
+            # Initial data set here
+            if url.expires != None:
+                # Initialize a URL form with an expire date
+                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
+                    'target': url.target,
+                    'short': url.short,
+                    'expires': 'Custom Date',
+                    'expires_custom': url.expires
+                })  # unbound form
+            else:
+                # Initialize a URL form without an expire date
+                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
+                    'target': url.target,
+                    'short': url.short,
+                    'expires': 'Never',
+                })  # unbound form
+
+            # Render index.html passing the form to the template
+            return render(request, 'core/edit_link.html', {
+                'form': url_form
+            })
+    else:
+        # do not allow them to edit
+        raise PermissionDenied()
 
 @login_required
 def delete(request, short):
@@ -231,7 +332,7 @@ def delete(request, short):
     if url.owner == request.user.registereduser:
         # remove the URL
         url.delete()
-        # rediret to my_links
+        # redirect to my_links
         return redirect('my_links')
     else:
         # do not allow them to delete
@@ -240,7 +341,8 @@ def delete(request, short):
 @login_required
 def signup(request):
     """
-    This view presents the user with a registration form. You can register yourself.
+    This view presents the user with a registration form. You can register
+    yourself.
     """
 
     # Do not display signup page to registered or approved users
@@ -357,7 +459,7 @@ def redirection(request, short):
         return redirect('go/404.html')
     # If the user is trying to make a Go link to itself, we 404 them
     if url.target == domain + short:
-        return redirect('go/404.html')
+        return redirect('404.html')
 
     # If the user is coming from a QR request then increment qrclicks
     if 'qr' in request.GET:
@@ -379,8 +481,8 @@ def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, lo
 
     return user_passes_test(
         lambda u: u.is_active and u.is_staff,
-        login_url = login_url,
-        redirect_field_name = redirect_field_name
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
     )(view_func)
 
 @staff_member_required

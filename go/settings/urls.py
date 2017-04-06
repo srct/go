@@ -1,9 +1,14 @@
+"""
+settings/urls.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
-from django.conf.urls import url
 import django.contrib.auth.views
+from django.conf.urls import url
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
@@ -31,11 +36,14 @@ urlpatterns = [
     # /signup - Signup page for access. Cached for 15 minutes
     url(r'^signup/?$', cache_page(60*15)(go.views.signup), name='signup'),
 
-    # /new - My-Links page, view and review links.
+    # /newLink - My-Links page, view and review links.
     url(r'^newLink/?$', go.views.new_link, name='new_link'),
 
     # /myLinks - My-Links page, view and review links.
     url(r'^myLinks/?$', go.views.my_links, name='my_links'),
+
+    # /edit/<short> - Edit link form
+    url(r'^edit/(?P<short>[-\w]+)$', go.views.edit, name='edit'),
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),

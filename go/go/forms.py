@@ -1,26 +1,35 @@
+"""
+go/forms.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib Imports
 from datetime import datetime, timedelta
 from six.moves import urllib
 
 # Django Imports
-from django import forms
 from django.core.exceptions import ValidationError
-from django.utils.safestring import mark_safe
+from django.forms import (BooleanField, CharField, ChoiceField, DateTimeField,
+                          ModelForm, RadioSelect, SlugField, Textarea,
+                          TextInput, URLField, URLInput)
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 
 # App Imports
 from go.models import URL, RegisteredUser
 
 # Other Imports
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Submit, HTML, Div, Field
-from crispy_forms.bootstrap import StrictButton, PrependedText, Accordion, AccordionGroup
 from bootstrap3_datetime.widgets import DateTimePicker
+from crispy_forms.bootstrap import (Accordion, AccordionGroup, PrependedText,
+                                    StrictButton)
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
 
-class URLForm(forms.ModelForm):
+
+class URLForm(ModelForm):
     """
     The form that is used in URL creation.
     """
@@ -59,11 +68,11 @@ class URLForm(forms.ModelForm):
         return target
 
     # Custom target URL field
-    target = forms.URLField(
+    target = URLField(
         required=True,
         label='Long URL (Required)',
         max_length=1000,
-        widget=forms.URLInput(attrs={
+        widget=URLInput(attrs={
             'placeholder': 'https://yoursite.com/'
         })
     )
@@ -85,10 +94,10 @@ class URLForm(forms.ModelForm):
         raise ValidationError('Short url already exists.')
 
     # Custom short-url field with validators.
-    short = forms.SlugField(
+    short = SlugField(
         required=False,
         label='Short URL (Optional)',
-        widget=forms.TextInput(),
+        widget=TextInput(),
         validators=[unique_short],
         max_length=20,
         min_length=3,
@@ -113,12 +122,12 @@ class URLForm(forms.ModelForm):
     )
 
     # Add preset expiration choices.
-    expires = forms.ChoiceField(
+    expires = ChoiceField(
         required=True,
         label='Expiration (Required)',
         choices=EXPIRATION_CHOICES,
         initial=NEVER,
-        widget=forms.RadioSelect(),
+        widget=RadioSelect(),
     )
 
     def valid_date(value):
@@ -135,7 +144,7 @@ class URLForm(forms.ModelForm):
 
 
     # Add a custom expiration choice.
-    expires_custom = forms.DateTimeField(
+    expires_custom = DateTimeField(
         required=False,
         label='Custom Date',
         input_formats=['%m-%d-%Y'],
@@ -226,37 +235,107 @@ class URLForm(forms.ModelForm):
         # what attributes are included
         fields = ['target']
 
-class SignupForm(forms.ModelForm):
+class EditForm(URLForm):
+
+    def __init__(self, *args, **kwargs):
+        """
+        On initialization of the form, crispy forms renders this layout
+        """
+
+        # Grab that host info
+        self.host = kwargs.pop('host', None)
+        super(URLForm, self).__init__(*args, **kwargs)
+        # Define the basics for crispy-forms
+        self.helper = FormHelper()
+        self.helper.form_method = 'POST'
+
+        # Some xtra vars for form css purposes
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-1'
+        self.helper.field_class = 'col-md-6'
+
+        # The main "layout" defined
+        self.helper.layout = Layout(
+            Fieldset('',
+            #######################
+                Accordion(
+                    # Step 1: Long URL
+                    AccordionGroup('Step 1: Long URL',
+                        Div(
+                            HTML("""
+                                <h4>Modify the URL you would like to shorten:</h4>
+                                <br />"""),
+                            'target',
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html'),
+
+                    # Step 2: Short URL
+                    AccordionGroup('Step 2: Short URL',
+                        Div(
+                            HTML("""
+                                <h4>Modify the Go address:</h4>
+                                <br />"""),
+                            PrependedText(
+                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html',),
+
+                    # Step 3: Expiration
+                    AccordionGroup('Step 3: URL Expiration',
+                        Div(
+                            HTML("""
+                                <h4>Modify the expiration date:</h4>
+                                <br />"""),
+                            'expires',
+                            Field('expires_custom', template="crispy/customDateField.html"),
+                        style="background: rgb(#F6F6F6);"),
+                    active=True,
+                    template='crispy/accordian-group.html'),
+
+                # FIN
+                template='crispy/accordian.html'),
+            #######################
+            HTML("""
+                <br />"""),
+            StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
+    
+    class Meta(URLForm.Meta):
+        # what attributes are included
+        fields = URLForm.Meta.fields
+
+class SignupForm(ModelForm):
     """
     The form that is used when a user is signing up to be a RegisteredUser
     """
 
     # The full name of the RegisteredUser
-    full_name = forms.CharField(
+    full_name = CharField(
         required=True,
         label='Full Name (Required)',
         max_length=100,
-        widget=forms.TextInput(),
+        widget=TextInput(),
     )
 
     # The RegisteredUser's chosen organization
-    organization = forms.CharField(
+    organization = CharField(
         required=True,
         label='Organization (Required)',
         max_length=100,
-        widget=forms.TextInput(),
+        widget=TextInput(),
     )
 
     # The RegisteredUser's reason for signing up to us Go
-    description = forms.CharField(
+    description = CharField(
         required=False,
         label='Description (Optional)',
         max_length=200,
-        widget=forms.Textarea(),
+        widget=Textarea(),
     )
 
     # A user becomes registered when they agree to the TOS
-    registered = forms.BooleanField(
+    registered = BooleanField(
         required=True,
         # ***Need to replace lower url with production URL***
         # ie. go.gmu.edu/about#terms

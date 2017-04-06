@@ -1,28 +1,35 @@
+"""
+go/models.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib Imports
 import string
 
 # Django Imports
-from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.core.cache import cache
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 
 # Other Imports
-from hashids import Hashids # http://hashids.org/python/
+from hashids import Hashids  # http://hashids.org/python/
 
 # generate the salt and initialize Hashids
-hashids = Hashids(salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits))
+HASHIDS = Hashids(
+    salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits)
+)
 
 @python_2_unicode_compatible
 class RegisteredUser(models.Model):
     """
-    This is simply a wrapper model for the user object  which, if an object
+    This is simply a wrapper model for the user object which, if an object
     exists, indicates that that user is registered.
     """
 
@@ -58,13 +65,15 @@ class RegisteredUser(models.Model):
         str(RegisteredUser)
         """
 
-        return '<Registered User: %s - Approval Status: %s>' % (self.user, self.approved)
+        return '<Registered User: %s - Approval Status: %s>' % (
+            self.user, self.approved
+        )
 
 
 @receiver(post_save, sender=User)
 def handle_regUser_creation(sender, instance, created, **kwargs):
     """
-    When a post_save is called on a User object (and it is newly created), this 
+    When a post_save is called on a User object (and it is newly created), this
     is called to create an associated RegisteredUser
     """
 
@@ -105,7 +114,9 @@ class URL(models.Model):
         print(URL)
         """
 
-        return '<Owner: %s - Target URL: %s>' % (self.owner.user, self.target)
+        return '<Owner: %s - Target URL: %s>' % (
+            self.owner.user, self.target
+        )
 
     class Meta:
         """
@@ -124,13 +135,14 @@ class URL(models.Model):
         if cache.get("hashids_counter") is None:
             cache.set("hashids_counter", URL.objects.count())
         cache.incr("hashids_counter")
-        short = hashids.encrypt(cache.get("hashids_counter"))
+        short = HASHIDS.encrypt(cache.get("hashids_counter"))
         tries = 1
         while tries < 100:
             try:
-                URL.objects.get(short__iexact = short)
+                URL.objects.get(short__iexact=short)
                 tries += 1
                 cache.incr("hashids_counter")
             except URL.DoesNotExist as ex:
+                print(ex)
                 return short
         return None

@@ -1,17 +1,21 @@
+"""
+go/commands/test_expirelinks.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Python stdlib Imports
 from datetime import timedelta
 
 # Django Imports
-from django.test import TestCase
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.core.management import call_command
+from django.test import TestCase
+from django.utils import timezone
 
 # App Imports
-from .expirelinks import Command
 from go.models import URL, RegisteredUser
 
 class ExpireLinksTest(TestCase):
@@ -44,6 +48,7 @@ class ExpireLinksTest(TestCase):
         current_url.expires = yesterday
         second_url.expires = tomorrow
         current_url.save()
+        second_url.save()
 
     def test_expirelinks(self):
         """

@@ -1,5 +1,10 @@
+"""
+go/templatetags/go_extras.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
 from django import template
@@ -15,10 +20,10 @@ register = template.Library()
 @register.filter
 def is_registered(given_user):
     """
-        Helper template function to check if a user is registered.
+    Helper template function to check if a user is registered.
 
-        given_user: The User object that we are checking to see if they are registered
-        or not.
+    given_user: The User object that we are checking to see if they are
+    registered or not.
     """
 
     # try getting the RegisteredUser of the current user
@@ -35,10 +40,10 @@ def is_registered(given_user):
 @register.filter
 def is_approved(given_user):
     """
-        Helper template function to check if a user is approved.
+    Helper template function to check if a user is approved.
 
-        given_user: The User object that we are checking to see if they are approved
-        or not.
+    given_user: The User object that we are checking to see if they are approved
+    or not.
     """
 
     # try getting the RegisteredUser of the current user

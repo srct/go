@@ -95,7 +95,7 @@ Vagrant.configure(2) do |config|
         venv_path: "/vagrant/venv",
         cas_url: "https://cas.srct.gmu.edu/",
         app_path: "/vagrant/go",
-        settings_path: "/vagrant/go/settings",
+        sourceme_dest: "/vagrant/go/",
         superuser: "dhaynes3"
       }
     }

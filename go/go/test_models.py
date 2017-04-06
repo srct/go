@@ -1,10 +1,15 @@
+"""
+go/test_models.py
+"""
+
 # Future Imports
-from __future__ import unicode_literals, absolute_import, print_function, division
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 # Django Imports
-from django.test import TestCase
 from django.contrib.auth.models import User
 from django.db.utils import DataError, IntegrityError
+from django.test import TestCase
 from django.utils import timezone
 
 # App Imports

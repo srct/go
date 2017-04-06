@@ -8,6 +8,23 @@
 # - Django
 
 - hosts: all
+  environment:
+    GO_SECRET_KEY: "{{ django['secret_key'] }}"
+    GO_ALLOWED_HOSTS: "{{ django['host'] }}"
+    GO_EMAIL_DOMAIN: "{{ django['email_domain'] }}"
+    GO_CAS_URL: "{{ django['cas_url'] }}"
+    GO_DB_NAME: "{{ mysql['db'] }}"
+    GO_DB_USER: "{{ mysql['user'] }}"
+    GO_DB_PASSWORD: "{{ mysql['pass'] }}"
+    GO_DB_HOST: localhost
+    GO_DB_PORT: 3306
+    GO_EMAIL_HOST: ""
+    GO_EMAIL_PORT: ""
+    GO_EMAIL_HOST_USER: ""
+    GO_EMAIL_HOST_PASSWORD: ""
+    GO_EMAIL_FROM: ""
+    GO_EMAIL_TO: ""
+
   tasks:
     - name: Install Python 3.4.3 and related packages
       apt:
@@ -30,6 +47,7 @@
 
     - name: Create the virtualenv
       command: virtualenv -p python3 /vagrant/venv
+      ignore_errors: true
 
     - name: Install go packages
       apt:
@@ -75,17 +93,6 @@
         priv: test_{{ mysql['db'] }}.*:ALL
         append_privs: yes
 
-    - name: install django settings.py
-      template:
-        src: templates/settings.py.j2
-        dest: "{{ django['settings_path'] }}/settings.py"
-        backup: yes
-
-    - name: install django secret.py
-      template:
-        src: templates/secret.py.j2
-        dest: "{{ django['settings_path'] }}/secret.py"
-
     - name: setup django database
       django_manage:
         command: "{{ item }}"
@@ -106,6 +113,12 @@
     - name: killing old screen sessions
       shell: screen -ls | grep -q django && screen -X -S django quit
       ignore_errors: true
+
+    - name: install env variable convenience script
+      template:
+        src: templates/sourceme.j2
+        dest: "{{ django['sourceme_dest'] }}/sourceme.sh"
+        backup: yes
 
     - name: start django runserver (access via localhost:8000)
       command: screen -dmS django bash -c "echo Starting on port {{ nginx['port'] }}; cd /vagrant/go; source ../venv/bin/activate; python3 manage.py runserver 0.0.0.0:8000;"
