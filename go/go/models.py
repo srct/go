@@ -134,14 +134,13 @@ class URL(models.Model):
         """
         if cache.get("hashids_counter") is None:
             cache.set("hashids_counter", URL.objects.count())
-        cache.incr("hashids_counter")
-        short = HASHIDS.encrypt(cache.get("hashids_counter"))
         tries = 1
         while tries < 100:
             try:
-                URL.objects.get(short__iexact=short)
+                short = HASHIDS.encrypt(cache.get("hashids_counter"))
                 tries += 1
                 cache.incr("hashids_counter")
+                URL.objects.get(short__iexact=short)
             except URL.DoesNotExist as ex:
                 print(ex)
                 return short
