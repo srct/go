@@ -1,5 +1,5 @@
 Django>=1.11
-django-crispy-forms==1.6.0
+django-crispy-forms==1.6.1
 django-ratelimit==1.0.1
 django-redis-cache==1.6.4
 git+https://github.com/dhaynespls/django-qrcode.git
