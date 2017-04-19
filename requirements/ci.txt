@@ -1,6 +1,5 @@
 -r base.txt
-flake8==3.0.4
+flake8==3.3.0
 pep8==1.7.0
-pyflakes==1.2.3
+pyflakes==1.5.0
 coverage
-django-redis-cache==1.6.4
