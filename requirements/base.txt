@@ -11,3 +11,4 @@ redis==2.10.5
 requests==2.13.0
 simplejson==3.10.0
 six
+setuptools==35.0.1
