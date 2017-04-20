@@ -17,7 +17,24 @@ $("#div_id_expires").click(function () {
         // display the field
         $("#div_id_expires_custom").slideDown();
     } else {
-        // keep it hidden 
+        // keep it hidden
         $("#div_id_expires_custom").slideUp();
     }
 })
+
+function httpErrorPopover() {
+  var url = document.getElementById("id_target").value
+  $.ajax(url,
+      {
+         statusCode: {
+         404: function() {
+           console.log("url not found")
+           $(this).popover({
+             content: "popover text here",
+             trigger: 'manual'
+           });
+           $(this).popover('show');
+         }
+      }
+   });
+}
