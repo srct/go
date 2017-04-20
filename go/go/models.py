@@ -40,6 +40,7 @@ class RegisteredUser(models.Model):
     full_name = models.CharField(
         blank=False,
         max_length=100,
+        
     )
 
     # What organization are you associated with?

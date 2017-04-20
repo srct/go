@@ -380,7 +380,7 @@ def signup(request):
         signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
 
         # Django will check the form to make sure it's valid
-        if signup_form.is_valid():
+        if signup_form.is_valid() and (signup_form.cleaned_data.get('full_name') == request.user.first_name + " " + request.user.last_name):
             # Grab data from the form and store into variables
             description = signup_form.cleaned_data.get('description')
             full_name = signup_form.cleaned_data.get('full_name')
