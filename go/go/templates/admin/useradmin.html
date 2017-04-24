@@ -7,17 +7,20 @@
 <!-- define the content block for the page -->
 {% block content %}
 
+<!-- Tell Django to load static files -->
+{% load staticfiles %}
+
 <!-- define the page header div -->
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
-      <h1><strong>
+      <h1>
         <span class="fa-stack fa-lg">
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-balance-scale fa-stack-1x fa-inverse"></i>
         </span>
-        <i class="fa">Moderation Panel</i>
-      </strong></h1>
+        Moderation Panel
+      </h1>
     </div>
   </div>
 </div>
@@ -309,8 +312,7 @@
     </form>
   </div>
 </div>
-<script src="../../static/js/useradmin.js">
 
-</script>
+<script src="{% static "js/useradmin.js" %}"></script>
 
 {% endblock %}
