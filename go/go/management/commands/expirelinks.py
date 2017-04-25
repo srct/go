@@ -11,7 +11,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 # App Imports
-from .models import URL
+from go.models import URL
 
 class Command(BaseCommand):
     """

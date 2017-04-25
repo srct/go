@@ -10,7 +10,7 @@ from __future__ import (absolute_import, division, print_function,
 from django import template
 
 # App Imports
-from .models import RegisteredUser
+from go.models import RegisteredUser
 
 # To be a valid tag library, the module must contain a module-level variable
 # named register that is a template.Library instance, in which all the tags and

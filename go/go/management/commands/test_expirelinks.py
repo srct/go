@@ -16,7 +16,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 # App Imports
-from .models import URL, RegisteredUser
+from go.models import URL, RegisteredUser
 
 class ExpireLinksTest(TestCase):
     """
