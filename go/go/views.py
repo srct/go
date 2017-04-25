@@ -42,7 +42,7 @@ def index(request):
         return render(request, 'not_registered.html')
 
     # Get the current domain info
-    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
+    domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Grab a list of all the URL's that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
