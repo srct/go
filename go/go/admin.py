@@ -12,7 +12,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 # App Imports
-from go.models import URL, RegisteredUser
+from .models import URL, RegisteredUser
 
 class URLAdmin(admin.ModelAdmin):
     """

@@ -24,8 +24,8 @@ from django.utils import timezone
 from ratelimit.decorators import ratelimit
 
 # App Imports
-from go.forms import SignupForm, URLForm, EditForm
-from go.models import URL, RegisteredUser
+from .forms import SignupForm, URLForm, EditForm
+from .models import URL, RegisteredUser
 
 
 def index(request):
@@ -329,7 +329,7 @@ def delete(request, short):
     url = get_object_or_404(URL, short__iexact=short)
 
     # If the RegisteredUser is the owner of the URL
-    if url.owner == request.user.registereduser:
+    if url.owner == request.user.registereduser and request.META['HTTP_REFERER'] == request.META['HTTP_HOST']:
         # remove the URL
         url.delete()
         # redirect to my_links

@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 
 # App Imports
-from go.models import URL, RegisteredUser
+from .models import URL, RegisteredUser
 
 class IndexTest(TestCase):
     """
