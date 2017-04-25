@@ -182,7 +182,7 @@ def view(request, short):
     """
 
     # Get the current domain info
-    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
+    domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Get the URL that is being requested
     url = get_object_or_404(URL, short__iexact=short)
