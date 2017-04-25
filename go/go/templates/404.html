@@ -6,11 +6,26 @@
 404 Error &bull; Page Not Found
 {% endblock %}
 
+<!-- Tell Django to load static files -->
+{% load staticfiles %}
+
 <!-- define the content block for the page -->
 {% block content %}
 
-<!-- Tell Django to load static files -->
-{% load staticfiles %}
+<!-- define the page header div -->
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+        </span>
+        404 Error!
+      </h1>
+    </div>
+  </div>
+</div>
 
 <!-- div that contains the 404 page content -->
 <div class="row">
