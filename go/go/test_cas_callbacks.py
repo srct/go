@@ -6,7 +6,7 @@ from __future__ import (absolute_import, division, print_function,
 from django.test import TestCase
 
 # App Imports
-from go.cas_callbacks import pfparse, pfinfo
+from .cas_callbacks import pfparse, pfinfo
 
 class CasCallbacksTest(TestCase):
     """
