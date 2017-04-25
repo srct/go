@@ -316,6 +316,7 @@ class SignupForm(ModelForm):
         label='Full Name (Required)',
         max_length=100,
         widget=TextInput(),
+        help_text="We can fill in this field based on information provided by https://peoplefinder.gmu.edu.",
     )
 
     # The RegisteredUser's chosen organization
@@ -324,6 +325,7 @@ class SignupForm(ModelForm):
         label='Organization (Required)',
         max_length=100,
         widget=TextInput(),
+        help_text="Or whatever \"group\" you would associate with on campus.",
     )
 
     # The RegisteredUser's reason for signing up to us Go
@@ -332,6 +334,7 @@ class SignupForm(ModelForm):
         label='Description (Optional)',
         max_length=200,
         widget=Textarea(),
+        help_text="Describe what type of links you would intend to create with Go.",
     )
 
     # A user becomes registered when they agree to the TOS
@@ -342,6 +345,7 @@ class SignupForm(ModelForm):
         label=mark_safe(
             'Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'
         ),
+        help_text="Esssentially the GMU Responsible Use of Computing policies.",
     )
 
     def __init__(self, request, *args, **kwargs):
