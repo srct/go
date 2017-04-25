@@ -189,5 +189,5 @@ EMAIL_FROM = os.environ['GO_EMAIL_FROM']
 EMAIL_TO = os.environ['GO_EMAIL_TO']
 
 # Domain used to email to users. See implementation in views.py
-# ie. in Mason's case '@masonlive.gmu.edu'
+# ie. in Mason's case '@gmu.edu'
 EMAIL_DOMAIN = os.environ['GO_EMAIL_DOMAIN']
