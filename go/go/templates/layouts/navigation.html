@@ -22,7 +22,7 @@
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <!-- The left side -->
         <ul class="nav navbar-nav navbar-left">
-            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'about' %}" data-jslicense="1">About</a></li>
             <!-- only show if the current user is authenticated -->
             {% if user.is_authenticated %}
                 <!-- only if they are an approved user -->

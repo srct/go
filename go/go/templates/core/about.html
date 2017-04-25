@@ -1,6 +1,9 @@
 <!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
+<!-- Tell Django to load static files -->
+{% load staticfiles %}
+
 <!-- define the page title block -->
 {% block title %}
 SRCT Go &bull; About
@@ -115,6 +118,63 @@ SRCT Go &bull; About
       board from 2014-present</a>, and our academic advisor,
       <a href="https://cs.gmu.edu/~kdobolyi/">Professor Kinga Dobolyi</a>.
     </p>
+  </div>
+</div>
+
+<!-- define the LibreJS License Table -->
+<div class="row">
+  <div class="col-md-12">
+    <h4>JavaScript License Information</h4>
+    <legend></legend>
+    <table class="table" id="jslicense-labels1">
+      <thead>
+        <tr>
+          <th>Source File</th>
+          <th>License</th>
+          <th>Uncompressed Source</th>
+        </tr>
+      </thead>
+      <tr>
+        <td><a href="{% static "js/jquery.min.js" %}">jquery.min.js</a></td>
+        <td><a href="http://jquery.org/license">Expat</a></td>
+        <td><a href="http://code.jquery.com/jquery-2.1.1.js">jquery-2.1.1.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/bootstrap.min.js" %}">bootstrap.js</a></td>
+        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
+        <td><a href="{% static "js/bootstrap.js" %}">bootstrap.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/clipboard.min.js" %}">clipboard.min.js</a></td>
+        <td><a href="https://zenorocha.mit-license.org/">Expat</a></td>
+        <td><a href="{% static "js/clipboard.js" %}">clipboard.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/copy.js" %}">copy.js</a></td>
+        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
+        <td><a href="{% static "js/copy.js" %}">copy.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/new_link.js" %}">new_link.js</a></td>
+        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
+        <td><a href="{% static "js/new_link.js" %}">new_link.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/tab.js" %}">tab.js</a></td>
+        <td><a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">Expat</a></td>
+        <td><a href="{% static "js/tab.js" %}">tab.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/tooltip.js" %}">tooltip.js</a></td>
+        <td><a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">Expat</a></td>
+        <td><a href="{% static "js/tooltip.js" %}">tooltip.js</a></td>
+      </tr>
+      <tr>
+        <td><a href="{% static "js/useradmin.js" %}">useradmin.js</a></td>
+        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
+        <td><a href="{% static "js/useradmin.js" %}">useradmin.js</a></td>
+      </tr>
+    </table>
   </div>
 </div>
 
