@@ -17,8 +17,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 # App Imports
-from go.forms import SignupForm, URLForm, EditForm
-from go.models import URL, RegisteredUser
+from .forms import SignupForm, URLForm, EditForm
+from .models import URL, RegisteredUser
 
 class URLFormTest(TestCase):
     """

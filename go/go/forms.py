@@ -19,7 +19,7 @@ from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 # App Imports
-from go.models import URL, RegisteredUser
+from .models import URL, RegisteredUser
 
 # Other Imports
 from bootstrap3_datetime.widgets import DateTimePicker

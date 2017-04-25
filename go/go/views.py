@@ -24,8 +24,8 @@ from django.utils import timezone
 from ratelimit.decorators import ratelimit
 
 # App Imports
-from go.forms import SignupForm, URLForm, EditForm
-from go.models import URL, RegisteredUser
+from .forms import SignupForm, URLForm, EditForm
+from .models import URL, RegisteredUser
 
 
 def index(request):
