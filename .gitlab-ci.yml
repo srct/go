@@ -66,4 +66,4 @@ Go-flake8:
   stage: lint
   script:
     - pip install flake8
-    - flake8 go/
+    - flake8 go/ --statistics --exit-zero
