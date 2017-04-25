@@ -1,8 +1,9 @@
 services:
   - mysql:latest
 
-types:
+stages:
   - test
+  - lint
 
 variables:
   MYSQL_DATABASE: go
@@ -36,26 +37,33 @@ before_script:
 
 Go-py2.7:
   image: library/python:2.7
-  type: test
+  stage: test
   script:
     - python manage.py test
 
 Go-py3.4:
   image: library/python:3.4
-  type: test
+  stage: test
   script:
     - python manage.py test
 
 Go-py3.5:
   image: library/python:3.5
-  type: test
+  stage: test
   script:
     - python manage.py test
 
 Go-py3.6:
   image: library/python:3.6
-  type: test
+  stage: test
   script:
     - if pip list --outdated | grep "Latest" | wc -l > 0; then pip list --outdated && exit 1; else exit 0; fi
     - coverage run --source=go --omit=*migrations/*,*admin.py,*manage.py,*wsgi.py,*settings.py,*secret.py,*__init__.py,*.pyc,*templates/*,*static/* manage.py test
     - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
+
+Go-flake8:
+  image: library/python:3.5
+  stage: lint
+  script:
+    - pip install flake8
+    - flake8 go/ --statistics --exit-zero
