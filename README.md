@@ -1,14 +1,15 @@
 # Go
 
-[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.1.1-yellowgreen.svg)]()
+[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7,3.6-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.10-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.1.1-yellowgreen.svg)]()
 
-#### A project of [GMU SRCT](http://srct.gmu.edu).
+#### A project of [GMU SRCT](https://srct.gmu.edu).
 
 Go is a drop-in URL shortening service. This project aims to provide an easy to use
 URL branding service for institutions that wish to widely disseminate information
 without unnecessarily outsourcing branding.
 
-Go is currently a `Python 2.7` project written in the `Django` web framework, with
+Go is currently a `Python 3` (with backwards compatability foor `Python 2.7` until
+Django 2.0 in December 2017) project written in the `Django` web framework, with
 `MySQL` as our backend database.
 
 # Setup instructions for local development
@@ -66,16 +67,36 @@ Finally we can install git with:
 
 ### On Windows
 
-Instructions on how to setup git on Windows goes here.
+We recommend that if you are on Windows 10 AE (Anniversary Edition) or above to make use of the
+Windows Subsystem for Linux (WSL). The following link should get you up and running: 
+
+[https://msdn.microsoft.com/en-us/commandline/wsl/install_guide](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
+
+
+#### Contributing with Windows
+
+After that is setup, you should be able to follow the Linux instructions for _manual setup_ to
+contribute to the project. 
+
+If you are not on Windows 10 or would rather prefer to not use the WSL you may download Git for
+Windows here:
+
+[https://git-scm.com/download/win](https://git-scm.com/download/win)
+
+You'll want to follow the Vagrant setup method as it is designed to run on all platforms 
+including Windows. 
+
+I have also successfully ran the project with Docker, though you need
+access to Hyper-V which is only available on "Professional" versions of Windows. 
 
 ## 2) Clone the Go codebase.
 
-Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](http://git.gmu.edu/srct/go),
+Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](https://git.gmu.edu/srct/go),
 the SRCT code respository with SSH.
 
 **a)** Configure your ssh keys by following the directions at:
 
-[git.gmu.edu/help/ssh/README](http://git.gmu.edu/help/ssh/README).
+[git.gmu.edu/help/ssh/README](https://git.gmu.edu/help/ssh/README).
 
 **b)** Now, on your computer, navigate to the directory in which you want to download the project (ie. perhaps one called `development/SRCT`), and run
 
@@ -176,6 +197,40 @@ https://git.gmu.edu/srct/go/wikis/manual-setup
 
 # Some words about contributing to Go.
 
+## Testing
+
+You are _very strongly_ encouraged to write test cases where applicible for
+code that you contribute to the repo. This is not a rule at the moment but rather
+a strong suggestion. It's good practice for corporate land and will also ensure
+your code works. Additionally, there are quite a few example ones to look at in
+the repo and on Google.
+
+### Running Unit Tests
+
+Unit tests are run on every commit sent to gitlab though that can be a pain to
+rely on. Here's how to run them locally:
+
+#### Docker
+
+Docker is not supported currently for running unit tests. If you're able to get
+it set up, open a merge request and I'll merge it in.
+
+#### Vagrant
+
+    vagrant up
+    vagrant ssh
+    cd /vagrant
+    source venv/bin/activate
+    cd go
+    source sourceme.sh
+    python manage.py test
+
+#### Manual Setup
+
+Assuming you are within your virtualenv:
+
+    python manage.py test
+
 ## CONTRIBUTING.md
 
 This document goes into detail about how to contribute to the repo, plus some
@@ -197,6 +252,7 @@ Once in the admin page go to "registered users", and create a new registered use
 use the same username and Full Name as your main account and select "approved" in the bottom row.
 
 ## Coding style
+
 You should adhere to the style of the repo code. Consistancy is key! PEP8 guidelines
 are strongly reccomended but not enforced at the time. Please comment your code,
 I will not accept commits that contain uncommented code.

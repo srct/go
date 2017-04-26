@@ -1,31 +1,42 @@
+"""
+go/admin.py
+"""
+
+# Future Imports
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
 # Django Imports
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 # App Imports
-from go.models import URL, RegisteredUser
+from .models import URL, RegisteredUser
 
-"""
-    Define what attributes display in the URL Admin
-"""
 class URLAdmin(admin.ModelAdmin):
+    """
+    Define what attributes display in the URL Admin
+    """
+
     list_display = ("target", "short", "owner", "clicks", "date_created", "expires")
 
 # Register URLAdmin
 admin.site.register(URL, URLAdmin)
 
-"""
-    Define an inline admin descriptor for User model
-"""
 class RegisteredUserInline(admin.StackedInline):
+    """
+    Define an inline admin descriptor for User model
+    """
+
     model = RegisteredUser
     can_delete = False
 
-"""
-    Define a new User admin
-"""
 class UserAdmin(UserAdmin):
+    """
+    Define a new User admin
+    """
+
     # see above class that we defined
     inlines = (RegisteredUserInline, )
 

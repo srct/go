@@ -1,8 +1,16 @@
+"""
+settings/urls.py
+"""
+
+# Future Imports
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
 # Django Imports
-from django.conf.urls import include, url
 import django.contrib.auth.views
+from django.conf.urls import url
 from django.contrib import admin
-from django.conf import settings
+from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 
 # App Imports
@@ -12,58 +20,54 @@ import go.views
 # application. Such modules are expected to register models with the admin.
 admin.autodiscover()
 
-# Handle 404 and 500 errors with custom pages
-handle404 = TemplateView.as_view(template_name="admin/404.html")
-handle500 = TemplateView.as_view(template_name="admin/500.html")
-
 # Main list of project URL's
 urlpatterns = [
-    # / - Homepage url.
-    url(r'^$', go.views.index, name='index'),
+    # / - Homepage url. Cached for 1 second (this is the page you see after
+    # logging in, so having it show as not logged in is strange)
+    url(r'^$', cache_page(1)(go.views.index), name='index'),
 
-    # /view/<short> - View URL data.
-    url(r'^view/(?P<short>[-\w]+)$', go.views.view, name='view'),
+    # /view/<short> - View URL data. Cached for 15 minutes
+    url(r'^view/(?P<short>[-\w]+)$', cache_page(60*15)(go.views.view), name='view'),
 
-    # /about - About page.
-    url(r'^about/?$', TemplateView.as_view(template_name='core/about.html'), name='about'),
+    # /about - About page. Cached for 15 minutes
+    url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='core/about.html')),
+        name='about'),
 
-    # /signup - Signup page for access.
-    url(r'^signup/?$', go.views.signup, name='signup'),
+    # /signup - Signup page for access. Cached for 15 minutes
+    url(r'^signup/?$', cache_page(60*15)(go.views.signup), name='signup'),
 
-    # /my - My-Links page, view and review links.
+    # /newLink - My-Links page, view and review links.
+    url(r'^newLink/?$', go.views.new_link, name='new_link'),
+
+    # /myLinks - My-Links page, view and review links.
     url(r'^myLinks/?$', go.views.my_links, name='my_links'),
+
+    # /edit/<short> - Edit link form
+    url(r'^edit/(?P<short>[-\w]+)$', go.views.edit, name='edit'),
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
 
-    # /registered - registration complete page
-    url(r'^registered/?$', TemplateView.as_view(template_name='registered.html'), name='registered'),
+    # /registered - registration complete page. Cached for 15 minutes
+    url(r'^registered/?$', cache_page(60*15)(TemplateView.as_view(template_name='registered.html')),
+        name='registered'),
 
     # /admin - Administrator interface.
-    url(r'^admin/?', admin.site.urls),
+    url(r'^admin/?', admin.site.urls, name='go_admin'),
 
     # /useradmin - user approval interface
     url(r'^useradmin/?$', go.views.useradmin, name='useradmin'),
 ]
 
 # Handle authentication pages
-if settings.AUTH_MODE.lower() == "ldap":
-    urlpatterns += [
-        # Auth pages
-        url(r'^login$', django.contrib.auth.views.login, {'template_name' : 'core/login.html'}, name='go_login'),
-        url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
-            name='go_logout'),
-    ]
-else:
-    urlpatterns += [
-        # Auth pages
-        url(r'^login$', django.contrib.auth.views.login, name='go_login'),
-        url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
-            name='go_logout'),
-    ]
+urlpatterns += [
+    # Auth pages
+    url(r'^login$', django.contrib.auth.views.login, name='go_login'),
+    url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
+        name='go_logout'),
+]
 
 urlpatterns += [
     # Redirection regex.
     url(r'^(?P<short>[-\w]+)$', go.views.redirection, name='redirection'),
-
 ]

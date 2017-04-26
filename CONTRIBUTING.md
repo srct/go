@@ -1,9 +1,14 @@
 # On Contributing
 
 ## git
+
 First take a look at [github flow](https://guides.github.com/introduction/flow/)
 as this page gives a good starting point on understanding how to work with `git`
 in an open source repo.
+
+**Note:**
+
+You will need to be a member before making any contributions. Join the slack #go channel and ask nicely.
 
 ### Branches
 
@@ -73,7 +78,13 @@ Example commit description:
 
 ### Merging to the current development branch
 
-Once you've finished work in a branch open a [pull request](https://git.gmu.edu/srct/go/merge_requests/new)
+Once you've finished work in a branch you will need to push your commits to gitlab.
+
+    git push origin ##-branchname
+
+`Origin` is gitlab.
+
+Open a [merge request](https://git.gmu.edu/srct/go/merge_requests/new)
 to start the process of getting your code into the repo. Your code wil be reviewed
 by another member before being merged. Your code must pass our tests and include
 in the description:

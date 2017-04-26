@@ -1,9 +1,15 @@
 <!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
+<!-- Tell Django to load static files -->
+{% load staticfiles %}
+
+<!-- load django crispy forms' tags -->
+{% load crispy_forms_tags %}
+
 <!-- define the page title block -->
 {% block title %}
-SRCT Go &bull; Link View
+SRCT Go &bull; New Link
 {% endblock %}
 
 <!-- define the content block for the page -->
@@ -18,21 +24,16 @@ SRCT Go &bull; Link View
           <i class="fa fa-circle fa-stack-2x"></i>
           <i class="fa fa-link fa-stack-1x fa-inverse"></i>
         </span>
-        Link View
+        Shorten URL
       </h1>
     </div>
   </div>
 </div>
 
-<!-- just display one link  -->
-<div class="row">
-    {% if url %}
-      {% include 'link_box.html' %}
-    {% else %}
-      <div class="col-md-12">
-        <p>Nothing here.</p>
-      </div>
-    {% endif %}
-</div>
+<!-- call django crispy forms to render the go link creation form here -->
+{% crispy form %}
+
+<!-- load some JS to hide/show the custom date field -->
+<script src="{% static "js/new_link.js" %}"></script>
 
 {% endblock %}

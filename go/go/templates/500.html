@@ -6,8 +6,26 @@
 500 Error &bull; Internal Server Error
 {% endblock %}
 
+<!-- Tell Django to load static files -->
+{% load staticfiles %}
+
 <!-- define the content block for the page -->
 {% block content %}
+
+<!-- define the page header div -->
+<div class="page-header" id="banner">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>
+        <span class="fa-stack fa-lg">
+          <i class="fa fa-circle fa-stack-2x"></i>
+          <i class="fa fa-exclamation-triangle fa-stack-1x fa-inverse"></i>
+        </span>
+        500 Error!
+      </h1>
+    </div>
+  </div>
+</div>
 
 <!-- div that contains the 500 page content -->
 <div class="row">
