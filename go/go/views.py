@@ -314,6 +314,7 @@ def edit(request, short):
         # do not allow them to edit
         raise PermissionDenied()
 
+
 @login_required
 def delete(request, short):
     """
@@ -329,14 +330,28 @@ def delete(request, short):
     url = get_object_or_404(URL, short__iexact=short)
 
     # If the RegisteredUser is the owner of the URL
-    if url.owner == request.user.registereduser and request.META['HTTP_REFERER'] == request.META['HTTP_HOST']:
-        # remove the URL
-        url.delete()
-        # redirect to my_links
-        return redirect('my_links')
+    if url.owner == request.user.registereduser:
+        # There are some instances where this request header does not exist, in
+        # this case we fallback to the insecure method
+        if request.META.get('HTTP_REFERER') is not None:
+            # Make sure that the requestee is from the same domain (go.gmu.edu)
+            if request.META.get('HTTP_REFERER') == request.META.get('HTTP_HOST'):
+                # remove the URL
+                url.delete()
+                # redirect to my_links
+                return redirect('my_links')
+            else:
+                raise PermissionDenied()
+        # Fallback and delete
+        else:
+            # remove the URL
+            url.delete()
+            # redirect to my_links
+            return redirect('my_links')
     else:
         # do not allow them to delete
         raise PermissionDenied()
+
 
 @login_required
 def signup(request):

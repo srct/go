@@ -1,6 +1,63 @@
 # Change Log
-All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/).
+All notable changes to this project will be documented in this file. This 
+project adheres (to the best of our ability) to [Semantic Versioning](http://semver.org/).
+
+## [2.2.0] - 2017-26-04
+
+### Added
+
+- LibreJS Compatible
+- Current version of Go displayed in footer
+- Warning model when interacting with /useradmin
+- Can block users
+    - Blocked users may log in but cannot interact with the site
+    - Blocked users may be managed from /useradmin
+    - " " may be unblocked
+- "New Link" button added to my_links view
+- Python 3.4-3.6 support
+- Django 1.11 upgrade
+- Unit tests for all major Django components
+    - models
+    - views
+    - URLs
+    - forms
+    - random python files (cas_callbacks)
+- Search bar in /useradmin
+- Windows instructions in README
+- Flake8 run on CI time
+- Help text on the signup form
+- Twitter card metadata
+- Facebook/Opengraph metadata
+
+### Changed
+
+- Design consistency across error pages
+- Project requirements follow two scoops style
+- Go links cannot be rendered to itself
+- Settings files inherit from one another
+    - Enviornment variables used instead of .template
+    - secret.py dropped
+    - local settings and prod settings
+- Cache static pages
+- Rate limit POST requests
+- Homepage now defaults to my_links
+- Imports are now explicit 
+- IE Compatible
+- CSRF Protection for /delete
+
+### Fixed
+
+- Error pages are rendered correctly now
+- HTTPS Go links displayed everywhere
+- All content is served with HTTPS
+- Dependecies are checked at CI time for updates
+- Standardization of fonts 
+
+### Removed
+
+- .template files
+- secret.py
+- LDAP support
 
 ## [2.1.1] - 2017-01-07
 ### Added
