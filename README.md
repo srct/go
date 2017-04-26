@@ -67,7 +67,27 @@ Finally we can install git with:
 
 ### On Windows
 
-Instructions on how to setup git on Windows goes here.
+We recommend that if you are on Windows 10 AE (Anniversary Edition) or above to make use of the
+Windows Subsystem for Linux (WSL). The following link should get you up and running: 
+
+[https://msdn.microsoft.com/en-us/commandline/wsl/install_guide](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
+
+
+#### Contributing with Windows
+
+After that is setup, you should be able to follow the Linux instructions for _manual setup_ to
+contribute to the project. 
+
+If you are not on Windows 10 or would rather prefer to not use the WSL you may download Git for
+Windows here:
+
+[https://git-scm.com/download/win](https://git-scm.com/download/win)
+
+You'll want to follow the Vagrant setup method as it is designed to run on all platforms 
+including Windows. 
+
+I have also successfully ran the project with Docker, though you need
+access to Hyper-V which is only available on "Professional" versions of Windows. 
 
 ## 2) Clone the Go codebase.
 
