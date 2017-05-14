@@ -8,7 +8,7 @@ git+https://github.com/dhaynespls/django-bootstrap3-datetimepicker.git
 hashids==1.2.0
 mysqlclient
 redis==2.10.5
-requests==2.13.0
+requests==2.14.2
 simplejson==3.10.0
 six
-setuptools==35.0.1
+setuptools==35.0.2

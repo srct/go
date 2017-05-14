@@ -16,3 +16,10 @@ from .base import *
 DEBUG = True
 
 CAS_SERVER_URL = "https://cas.srct.gmu.edu"
+
+# dummy cache for development-- doesn't actually cache things
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
