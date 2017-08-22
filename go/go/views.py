@@ -321,7 +321,6 @@ def delete(request, short):
     This view deletes a URL if you have the permission to. User must be
     logged in and registered, and must also be the owner of the URL.
     """
-
     # Do not allow unapproved users to delete links
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
@@ -331,27 +330,13 @@ def delete(request, short):
 
     # If the RegisteredUser is the owner of the URL
     if url.owner == request.user.registereduser:
-        # There are some instances where this request header does not exist, in
-        # this case we fallback to the insecure method
-        if request.META.get('HTTP_REFERER') is not None:
-            # Make sure that the requestee is from the same domain (go.gmu.edu)
-            if request.META.get('HTTP_REFERER') == request.META.get('HTTP_HOST'):
-                # remove the URL
-                url.delete()
-                # redirect to my_links
-                return redirect('my_links')
-            else:
-                raise PermissionDenied()
-        # Fallback and delete
-        else:
-            # remove the URL
-            url.delete()
-            # redirect to my_links
-            return redirect('my_links')
+        # remove the URL
+        url.delete()
+        # redirect to my_links
+        return redirect('my_links')
     else:
         # do not allow them to delete
         raise PermissionDenied()
-
 
 @login_required
 def signup(request):
