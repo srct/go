@@ -44,7 +44,7 @@ class URLFormTest(TestCase):
         """
 
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'target': 'http://srct.gmu.edu',
             'short': 'pls',
             'expires': '1 Day',
             'expires_custom': ''
@@ -60,7 +60,7 @@ class URLFormTest(TestCase):
         """
 
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'target': 'http://srct.gmu.edu',
             'short': 'pls',
             'expires': 'Custom Date',
             'expires_custom': datetime.now() + timedelta(days=1)
@@ -92,7 +92,7 @@ class URLFormTest(TestCase):
         """
 
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'target': 'http://srct.gmu.edu',
             'short': 'test',
             'expires': '1 Day',
             'expires_custom': ''
@@ -108,7 +108,7 @@ class URLFormTest(TestCase):
         """
 
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'target': 'http://srct.gmu.edu',
             'short': 'pls',
             'expires': 'None',
             'expires_custom': ''
@@ -124,7 +124,7 @@ class URLFormTest(TestCase):
         """
 
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'target': 'http://srct.gmu.edu',
             'short': 'pls',
             'expires': 'Custom Date',
             'expires_custom': datetime.now() - timedelta(days=1)
