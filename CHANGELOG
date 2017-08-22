@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. This 
 project adheres (to the best of our ability) to [Semantic Versioning](http://semver.org/).
 
+## [2.2.2] - 2017-21-08
+
+### Removed
+
+- Removed CSRF check on delete function
+
 ## [2.2.1] - 2017-13-05
 
 ### Fixed

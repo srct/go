@@ -1,14 +1,12 @@
 """
 go/forms.py
 """
-
 # Future Imports
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 # Python stdlib Imports
 from datetime import datetime, timedelta
-from six.moves import urllib
 
 # Django Imports
 from django.core.exceptions import ValidationError
@@ -26,7 +24,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.bootstrap import (Accordion, AccordionGroup, PrependedText,
                                     StrictButton)
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout, Submit
+from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout
 
 
 class URLForm(ModelForm):
@@ -40,21 +38,8 @@ class URLForm(ModelForm):
         """
         Prevent redirect loop links
         """
-
         # get the entered target link
         target = self.cleaned_data.get('target')
-
-        try:
-            final_url = urllib.request.urlopen(target).geturl()
-        # if visiting the provided url results in an HTTP error, or redirects
-        # to a page that results in an HTTP error
-        except urllib.error.URLError as e:
-            # to permit users to enter sites that return most errors, but
-            # prevent them from entering sites that result in an HTTP 300 error
-            if any(int(str(e)[11:14]) == errorNum for errorNum in range(300, 308)):
-                raise ValidationError("Link results in a 300 error")
-            else:
-                final_url = ""
 
         # Commented out as this check cannont properly be tested since we cannot
         # dynamically generate request.META.get('HTTP_HOST')
