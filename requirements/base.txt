@@ -7,8 +7,8 @@ git+https://github.com/kstateome/django-cas.git
 git+https://github.com/dhaynespls/django-bootstrap3-datetimepicker.git
 hashids==1.2.0
 mysqlclient
-redis==2.10.5
-requests==2.14.2
-simplejson==3.10.0
+redis==2.10.6
+requests==2.18.4
+simplejson==3.11.1
 six
-setuptools==35.0.2
+setuptools==36.2.7
