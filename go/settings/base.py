@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = os.environ['GO_SECRET_KEY']
 
 # Peoplefinder API
-PF_URL = "https://api.srct.gmu.edu/pf/v1/"
+PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
 
 # The domains this application will be deployed on
 # e.g. Which domains this app should listen to requests from.
