@@ -8,15 +8,14 @@ Go is a drop-in URL shortening service. This project aims to provide an easy to 
 URL branding service for institutions that wish to widely disseminate information
 without unnecessarily outsourcing branding.
 
-Go is currently a `Python 3` (with backwards compatability foor `Python 2.7` until
+Go is currently a `Python 3` (with backwards compatability for `Python 2.7` until
 Django 2.0 in December 2017) project written in the `Django` web framework, with
 `MySQL` as our backend database.
 
 # Setup instructions for local development
 
 Go currently supports developers on Linux, macOS and Windows platforms through
-both the Docker and Vagrant virtualization platforms. You may use either one
-though we have included instructions for manual setup as well. Here's our walk-through
+the Docker container platform. We have included instructions for manual setup as well. Here's our walk-through
 of steps we will take:
 
 1. Install `git` on your system.
@@ -83,11 +82,8 @@ Windows here:
 
 [https://git-scm.com/download/win](https://git-scm.com/download/win)
 
-You'll want to follow the Vagrant setup method as it is designed to run on all platforms 
-including Windows. 
-
-I have also successfully ran the project with Docker, though you need
-access to Hyper-V which is only available on "Professional" versions of Windows. 
+I have successfully ran the project with Docker, though you need access to
+Hyper-V which is only available on "Professional" versions of Windows. 
 
 ## 2) Clone the Go codebase.
 
@@ -127,8 +123,7 @@ Pros:
     - Can be run on most machines without needing significant resources.
     - SRCT members report minimal battery impact on laptops.
  - Fast
-    - Compared to other methods, Docker is comparatively faster than
-    Vagrant or manual setup.
+    - Compared to other methods, Docker is comparatively faster to setup than manual setup.
  - Minimal setup
     - You run one command. Really easy to get up and running once you install
     Docker.
@@ -146,42 +141,11 @@ Cons:
 
 There are instructions on how to setup/develop with Docker at the [docker-configuration page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/docker-configuration).
 
-### Vagrant + Ansible
-
-Vagrant boots up a full virtual machine (VM) through VirtualBox that then runs Go. A
-script written with Ansible will then run on that VM to automate the setup process
-for you. It is similar in a way to running Go on a legitimate server.
-
-Pros:
-
-  - Very similar to a production environment
-  - Can use `vagrant ssh` to "ssh" into the VM to debug things such as the
-    database.
-  - Relatively straightforward and easy setup.
-    - One Command.
-  - Can easily destroy and rebuild the VM.
-  - Loads in changes to code on the fly.
-  - Fast-ish (Initial provision takes a bit).
-
-Cons:
-
-  - Heavier on resources.
-    - It's literally a full VM.
-  - Occasional issues/hiccups.
-    - Documented fixes are in the wiki.
-
-There are instructions on how to setup with Vagrant at the [vagrant-configuration
-page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/vagrant-configuration).
-
-Additionally, there is documentation about developing with Vagrant at
-the [vagrant-usage page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/vagrant-usage).
-
 ### Manual Setup
 
 Manual setup (or: the old fashioned way) is where you install all dependecies on
 your system and run Go as a local server with Django. Granted you are technically
-doing that with Vagrant and Docker except those platforms automate the steps that
-are laid out in this section.
+doing that with Docker except it automates the steps that are laid out in this section.
 
 Pros:
   - Experience setting up a Django project for local development
@@ -214,16 +178,6 @@ rely on. Here's how to run them locally:
 
 Docker is not supported currently for running unit tests. If you're able to get
 it set up, open a merge request and I'll merge it in.
-
-#### Vagrant
-
-    vagrant up
-    vagrant ssh
-    cd /vagrant
-    source venv/bin/activate
-    cd go
-    source sourceme.sh
-    python manage.py test
 
 #### Manual Setup
 
