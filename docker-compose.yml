@@ -4,10 +4,6 @@ services:
     image: mysql
     deploy:
       replicas: 1
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 100M
       restart_policy:
         condition: on-failure
     networks:
@@ -24,10 +20,6 @@ services:
     image: go_web
     deploy:
       replicas: 1
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 100M
       restart_policy:
         condition: on-failure
     networks:
