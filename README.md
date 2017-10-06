@@ -8,7 +8,7 @@ Go is a drop-in URL shortening service. This project aims to provide an easy to 
 URL branding service for institutions that wish to widely disseminate information
 without unnecessarily outsourcing branding.
 
-Go is currently a `Python 3` (with backwards compatability foor `Python 2.7` until
+Go is currently a `Python 3` (with backwards compatability for `Python 2.7` until
 Django 2.0 in December 2017) project written in the `Django` web framework, with
 `MySQL` as our backend database.
 
