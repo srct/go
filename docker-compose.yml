@@ -1,8 +1,29 @@
-version: '2'
+version: "3"
 services:
+  db:
+    image: mysql
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - gonet
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: go
+      MYSQL_USER: go
+      MYSQL_PASSWORD: go
+
   web:
-    build: .
-    restart: always
+    image: go_web
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - gonet
     ports:
       - '8000:8000'
     command: /bin/bash ./startup.sh -python go/manage.py runserver 0.0.0.0:8000
@@ -27,10 +48,5 @@ services:
       - GO_EMAIL_TO=
       - superuser=dhaynes3
 
-  db:
-    image: mysql
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: go
-      MYSQL_USER: go
-      MYSQL_PASSWORD: go
+networks:
+  gonet:

@@ -71,7 +71,6 @@ Windows Subsystem for Linux (WSL). The following link should get you up and runn
 
 [https://msdn.microsoft.com/en-us/commandline/wsl/install_guide](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
 
-
 #### Contributing with Windows
 
 After that is setup, you should be able to follow the Linux instructions for _manual setup_ to
@@ -83,7 +82,7 @@ Windows here:
 [https://git-scm.com/download/win](https://git-scm.com/download/win)
 
 I have successfully ran the project with Docker, though you need access to
-Hyper-V which is only available on "Professional" versions of Windows. 
+Hyper-V which is only available on "Professional" versions of Windows.
 
 ## 2) Clone the Go codebase.
 
@@ -113,7 +112,7 @@ language.
 Instead of running a full VM that runs Go, we package up all the
 various bits that make up Go and run that as a container (two
 containers: one for Go and the other for mysql) that act as normal
-processes to the OS.   
+processes to the OS.
 
 Check out [docker.com](https://www.docker.com/what-docker) for more details.
 
@@ -132,12 +131,6 @@ Pros:
     - Great docs to help if you get stuck.
  - Can easily destroy and rebuild the docker images
  - Loads in changes to code on the fly
-
-Cons:
-
- - Challenging to debug problems
-    - Cannot interact with attached images and as a result, you cannot really
-    interact with the database.
 
 There are instructions on how to setup/develop with Docker at the [docker-configuration page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/docker-configuration).
 
@@ -207,9 +200,9 @@ use the same username and Full Name as your main account and select "approved" i
 
 ## Coding style
 
-You should adhere to the style of the repo code. Consistancy is key! PEP8 guidelines
-are strongly reccomended but not enforced at the time. Please comment your code,
-I will not accept commits that contain uncommented code.
+You should adhere to the style of the repo code. Consistency is key! PEP8 guidelines
+are strongly recommended but not enforced at the time. Please comment your code,
+I will not accept commits that contain undocumented code.
 
 ## Getting Help
 
