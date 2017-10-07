@@ -15,7 +15,7 @@ from .base import *
 # Do not have set True in production
 DEBUG = True
 
-CAS_SERVER_URL = "https://login.gmu.edu/login"
+CAS_SERVER_URL = "https://cas.srct.gmu.edu/"
 
 # dummy cache for development-- doesn't actually cache things
 CACHES = {

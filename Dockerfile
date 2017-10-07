@@ -1,11 +1,15 @@
+# Build on top of the python image and install any external packages
 FROM python:3.6
-ENV PYTHONUNBUFFERED 1
-
 RUN apt-get update
 RUN apt-get install netcat -y
 
-RUN mkdir /go
-WORKDIR /go
-ADD /requirements/ /go/
-RUN pip install -r base.txt
+# Set enviornment variables
+ENV PYTHONUNBUFFERED 1
+
+# Copy over all project files into /go/
+RUN mkdir /go/
+WORKDIR /go/
 ADD . /go/
+
+# Install pip dependecies
+RUN pip install -r /go/requirements/dev.txt
