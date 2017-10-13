@@ -27,6 +27,34 @@ SRCT Go &bull; My Links
   </div>
 </div>
 
+<!-- display sort menu if there are any links -->
+{% if urls %}
+    <div class="dropdown" style="text-align:right;">
+        <!-- button for the dropdown menu -->
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Sort By <i class="fa fa-caret-down fa-fw"></i>
+        </button>
+        <!-- generate the list of sorting options based on given sort_methods -->
+        <ul class="dropdown-menu dropdown-menu-right" style="margin-top: 2px;">
+            {% for method, name in sort_methods.items %}
+                <!-- check if currently selected sort method is this one to highlight -->
+                {% if request.GET.sort == method %}
+                    <li style="background: #eee;" {# class="active" Properly implmenet the .active class#}>
+                <!-- if there is no currently selected sort method, highlight the default case "Most Recent" -->
+                {% elif request.GET.sort == null and method == "-date_created" %}
+                    <li style="background: #eee;" {# class="active" Properly implmenet the .active class#}>
+                <!-- no styling -->
+                {% else %}
+                    <li>
+                {% endif %}
+                    <!-- create link to sort method -->
+                    <a href="?sort={{ method }}" style="color: #262626;">{{ name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 <!-- show all of the links -->
 <div class="row">
     <!-- for every url in the urls list-->

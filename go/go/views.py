@@ -41,16 +41,37 @@ def index(request):
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
+    # List of sort methods and their display name "Column" : "Name"
+    SORT_METHODS = {
+        "-date_created":"Most Recent",
+        "date_created": "Oldest",
+        "short":"Alphabetical (A-Z)",
+        "-short":"Alphabetical (Z-A)",
+        "-clicks":"Most Popular",
+        "clicks":"Least Popular",
+        "-expires":"Expiring Soon"
+    }
+    
+    # Get the requested sort method, default to "-date_created" : "Most Recent"
+    sort_method = request.GET.get('sort', '-date_created')
+
     # Get the current domain info
     domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Grab a list of all the URL's that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
 
-    # Render my_links passing the list of URL's and Domain to the template
+    # Check if provided sort method is valid, otherwise default
+    if sort_method in SORT_METHODS:
+        urls = urls.order_by(sort_method)
+    else:
+        urls = urls.order_by("-date_created")
+
+    # Render my_links passing the list of URL's, Domain, and Sort Methods to the template
     return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
+        'sort_methods': SORT_METHODS
     })
 
 @login_required
