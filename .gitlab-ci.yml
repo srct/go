@@ -17,6 +17,7 @@ before_script:
   - cd go/
   - export GO_SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
   - export GO_DB_NAME="go"
+  - export GO_ENV="production"
   - export GO_DB_USER="root"
   - export GO_DB_PASSWORD="root"
   - export GO_DB_HOST="mysql"
