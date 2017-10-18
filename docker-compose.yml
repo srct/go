@@ -26,15 +26,15 @@ services:
       - gonet
     ports:
       - '8000:8000'
-    command: /bin/bash ./startup.sh -python go/manage.py runserver 0.0.0.0:8000
+    command: /bin/bash ./startup.sh
     volumes:
       - .:/go
     depends_on:
       - db
     environment:
+      - GO_ENV=dev
       - GO_ALLOWED_HOSTS=*
       - GO_EMAIL_DOMAIN=@masonlive.gmu.edu
-      - GO_CAS_URL=https://cas.srct.gmu.edu/
       - GO_DB_NAME=go
       - GO_DB_USER=go
       - GO_DB_PASSWORD=go
