@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # You can generate a secret key from the following link:
 # http://www.miniwebtool.com/django-secret-key-generator/
 # export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
-# assert 'SECRET_KEY' in os.environ, 'You need to set the SECRET_KEY enviornment variable!'
+# assert 'SECRET_KEY' in os.environ, 'You need to set the SECRET_KEY environment variable!'
 SECRET_KEY = os.environ['GO_SECRET_KEY']
 
 # Peoplefinder API

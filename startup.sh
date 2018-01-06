@@ -1,3 +1,5 @@
+#! /bin/bash
+
 until nc -z db 3306; do
     echo "waiting for database to start..."
     sleep 1

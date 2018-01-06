@@ -17,15 +17,14 @@ add, modify, or remove features/bugs from Go. Our list of tasks can be found on
 the issues page.
 
 If you decide to take on an issue for Go you will need to work in a branch off
-of the current development branch (ie. `2.2-dev` with 2.2 being the version in
+of the current development branch (ie. `2.3-dev` with 2.3 being the version in
     development).
 
 This can be done with the following chain of `git` commands within `go/`:
 
     git pull
-    git checkout 2.2-dev
+    git checkout 2.3-dev
     git checkout -B ##-shortdescription
-
 
 **Note:**
 
@@ -36,7 +35,7 @@ does.
 **Example:**
 
     git pull
-    git checkout 2.2-dev
+    git checkout 2.3-dev
     git checkout -B 102-readmeUpdates
 
 If you are working on something that does not have an issue please open a new

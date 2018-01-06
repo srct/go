@@ -66,5 +66,4 @@ Go-flake8:
   image: library/python:3.5
   stage: lint
   script:
-    - pip install flake8
     - flake8 go/ --statistics --exit-zero

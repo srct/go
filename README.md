@@ -2,7 +2,7 @@
 
 [![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7,3.4+-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.11-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.2.3-yellowgreen.svg)]()
 
-#### A project of [GMU SRCT](https://srct.gmu.edu).
+A project of [GMU SRCT](https://srct.gmu.edu).
 
 Go is a drop-in URL shortening service. This project aims to provide an easy to use
 URL branding service for institutions that wish to widely disseminate information
@@ -12,21 +12,21 @@ Go is currently a `Python 3` (with backwards compatability for `Python 2.7` unti
 Django 2.0 in December 2017) project written in the `Django` web framework, with
 `MySQL` as our backend database.
 
-# Setup instructions for local development
+## Setup instructions for local development
 
 Go currently supports developers on Linux, macOS and Windows platforms through
 the Docker container platform. We have included instructions for manual setup as well. Here's our walk-through
 of steps we will take:
 
 1. Install `git` on your system.
-2. Clone the Go codebase.
-3. Get Go up and running with the method of your choice.
+1. Clone the Go codebase.
+1. Get Go up and running with the method of your choice.
 
-## 1) Install `git` on your system.
+### 1) Install `git` on your system
 
 `git` is the version control system used for SRCT projects.
 
-### On Linux Based Systems
+#### On Linux Based Systems
 
 **with apt:**
 
@@ -42,7 +42,7 @@ Next, with:
 
 you install `git` onto your system.
 
-### On macOS
+#### On macOS
 
 We recommend that you use the third party Homebrew package manager for macOS,
 which allows you to install packages from your terminal just as easily as you
@@ -64,7 +64,7 @@ Finally we can install git with:
 
     brew install git
 
-### On Windows
+#### On Windows
 
 We recommend that if you are on Windows 10 AE (Anniversary Edition) or above to make use of the
 Windows Subsystem for Linux (WSL). The following link should get you up and running: 
@@ -84,7 +84,7 @@ Windows here:
 I have successfully ran the project with Docker, though you need access to
 Hyper-V which is only available on "Professional" versions of Windows.
 
-## 2) Clone the Go codebase.
+### 2) Clone the Go codebase
 
 Now, we're going to clone down a copy of the Go codebase from [git.gmu.edu](https://git.gmu.edu/srct/go),
 the SRCT code respository with SSH.
@@ -97,7 +97,7 @@ the SRCT code respository with SSH.
 
     git clone git@git.gmu.edu:srct/go.git
 
-## 3) Get Go up and running with the method of your choice.
+### 3) Get Go up and running with the method of your choice
 
 Now that we have `git` setup and cloned down the code you can
 
@@ -105,7 +105,7 @@ Now that we have `git` setup and cloned down the code you can
 
 and get to working on setting up a development environment!
 
-### Docker
+#### Docker
 
 Docker is an emerging containerization platform written in Google's Go
 language.
@@ -118,43 +118,43 @@ Check out [docker.com](https://www.docker.com/what-docker) for more details.
 
 Pros:
 
- - Lightweight
-    - Can be run on most machines without needing significant resources.
+- Lightweight
+  - Can be run on most machines without needing significant resources.
     - SRCT members report minimal battery impact on laptops.
- - Fast
-    - Compared to other methods, Docker is comparatively faster to setup than manual setup.
- - Minimal setup
-    - You run one command. Really easy to get up and running once you install
-    Docker.
- - Good cross platform support
-    - Runs smoothly on macOS, Linux, and Windows
-    - Great docs to help if you get stuck.
- - Can easily destroy and rebuild the docker images
- - Loads in changes to code on the fly
+- Fast
+  - Compared to other methods, Docker is comparatively faster to setup than manual setup.
+- Minimal setup
+  - You run one command. Really easy to get up and running once you install Docker.
+- Good cross platform support
+  - Runs smoothly on macOS, Linux, and Windows
+  - Great docs to help if you get stuck.
+- Can easily destroy and rebuild the docker images
+- Loads in changes to code on the fly
 
 There are instructions on how to setup/develop with Docker at the [docker-configuration page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/docker-configuration).
 
-### Manual Setup
+#### Manual Setup
 
 Manual setup (or: the old fashioned way) is where you install all dependecies on
 your system and run Go as a local server with Django. Granted you are technically
 doing that with Docker except it automates the steps that are laid out in this section.
 
 Pros:
-  - Experience setting up a Django project for local development
+
+- Experience setting up a Django project for local development
 
 Cons:
-  - Greater potential for things to go wrong
-  - Way more steps
+
+- Greater potential for things to go wrong
+- Way more steps
 
 Head to:
 
 https://git.gmu.edu/srct/go/wikis/manual-setup
 
+## Some words about contributing to Go
 
-# Some words about contributing to Go.
-
-## Testing
+### Testing
 
 You are _very strongly_ encouraged to write test cases where applicible for
 code that you contribute to the repo. This is not a rule at the moment but rather
@@ -167,28 +167,28 @@ the repo and on Google.
 Unit tests are run on every commit sent to gitlab though that can be a pain to
 rely on. Here's how to run them locally:
 
-#### Docker
+### Docker
 
 Docker is not supported currently for running unit tests. If you're able to get
 it set up, open a merge request and I'll merge it in.
 
-#### Manual Setup
+### Manual Setup
 
 Assuming you are within your virtualenv:
 
     python manage.py test
 
-## CONTRIBUTING.md
+### CONTRIBUTING.md
 
 This document goes into detail about how to contribute to the repo, plus some
 opinions about using `git`.
 
-## Opening issues
+### Opening issues
 
 There is a template for issue descriptions located on the new issue page. I will
 close issues with poor descriptions or who do not follow the standard.
 
-## Authentication
+### Authentication
 
 The authentication service used for Go is CAS. In local development however we
 utilize a test server. You can log in with just your CAS username to simulate logging
@@ -198,18 +198,18 @@ In order to approve yourself to be an 'approved user' you must navigate to 127.0
 Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to
 use the same username and Full Name as your main account and select "approved" in the bottom row.
 
-## Coding style
+### Coding style
 
 You should adhere to the style of the repo code. Consistency is key! PEP8 guidelines
 are strongly recommended but not enforced at the time. Please comment your code,
 I will not accept commits that contain undocumented code.
 
-## Getting Help
+### Getting Help
 
 I encourage you to join the [#go channel](https://srct.slack.com/messages/go/details/) in SRCT's [Slack Group](https://srct.slack.com)
 if you have any questions on setup or would like to contribute.
 
-# Some words about deploying Go.
+## Some words about deploying Go.
 
 Check out our admin guide:
 
