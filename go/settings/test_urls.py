@@ -74,13 +74,20 @@ class UrlsTest(TestCase):
         url = reverse('signup')
         self.assertEqual(url, '/signup')
 
+    def test_new(self):
+        """
+        /new - Create a new Go Link
+        """
+        url = reverse("new_link")
+        self.assertEqual(url, '/new')
+
     def test_my_links_reverse(self):
         """
-        /myLinks - My-Links page, view and review links.
+        /my - My-Links page, view and review links.
         """
 
         url = reverse('my_links')
-        self.assertEqual(url, '/myLinks')
+        self.assertEqual(url, '/my')
 
     def test_edit_reverse_chars(self):
         """
@@ -113,7 +120,6 @@ class UrlsTest(TestCase):
 
         url = reverse('edit', args=['dhaynes123_-'])
         self.assertEqual(url, '/edit/dhaynes123_-')
-
 
     def test_delete_reverse_chars(self):
         """
