@@ -169,8 +169,8 @@ class UrlsTest(TestCase):
         /useradmin - user approval interface
         """
 
-        url = reverse('useradmin')
-        self.assertEqual(url, '/useradmin')
+        url = reverse('manage')
+        self.assertEqual(url, '/manage')
 
     def test_login(self):
         """
