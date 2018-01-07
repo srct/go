@@ -50,7 +50,7 @@ class NewLinkTest(TestCase):
         CAS link, so 302 REDIRECT.
         """
 
-        response = self.client.get('/newLink')
+        response = self.client.get('/new')
         self.assertEqual(response.status_code, 302)
 
 class MyLinksTest(TestCase):
@@ -64,7 +64,7 @@ class MyLinksTest(TestCase):
         CAS link, so 302 REDIRECT.
         """
 
-        response = self.client.get('/myLinks')
+        response = self.client.get('/my')
         self.assertEqual(response.status_code, 302)
 
 class PostTest(TestCase):
@@ -219,5 +219,5 @@ class UserAdminTest(TestCase):
         CAS link, so 302 REDIRECT.
         """
 
-        response = self.client.get('/useradmin')
+        response = self.client.get('/manage')
         self.assertEqual(response.status_code, 302)
