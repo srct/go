@@ -37,7 +37,7 @@ def index(request):
 
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
-        return render(request, 'public_landing.html')
+        return render(request, 'landing.html')
     # Do not display this page to unapproved users
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
@@ -648,7 +648,7 @@ def useradmin(request):
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
-    return render(request, 'admin/useradmin.html', {
+    return render(request, 'manage.html', {
         'need_approval': need_approval,
         'current_users': current_users,
         'blocked_users': blocked_users
