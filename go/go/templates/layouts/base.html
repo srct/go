@@ -1,30 +1,23 @@
 <!-- Tell Django to load static files -->
 {% load staticfiles %}
 
-<!-- HTML 5 definition -->
-<!DOCTYPE html>
-
-<!-- Start the HTML page for Go -->
 <html>
-  <!-- load in our header content for every page  -->
   <head>
-    <!-- load in the title block defined on each html page -->
+    <!-- title block defined on each html page -->
     <title>
       {% block title %}
       {% endblock %}
     </title>
 
-    <!-- Metatags -->
     <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Chrome on Android navbar color -->
     <meta name="theme-color" content="#006633">
     <!-- FB/Opengraph tags -->
     <meta property="og:url" content="https://go.gmu.edu/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="SRCT Go">
-    <!--<meta property="og:image" content="https://git.gmu.edu/uploads/project/avatar/10/noun_534670_cc.png">-->
     <meta property="og:description" content="University-branded URL shortening.">
     <meta property="og:site_name" content="SRCT Go">
     <meta property="og:locale" content="en_US">
@@ -34,38 +27,31 @@
     <meta name="twitter:site" content="@MasonSRCT">
     <meta name="twitter:creator" content="@MasonSRCT">
     <meta name="twitter:url" content="https://go.gmu.edu/">
-    <meta name="twitter:title" content="SRCT Gp">
+    <meta name="twitter:title" content="SRCT Go">
     <meta name="twitter:description" content="University-branded URL shortening.">
-    <!--<meta name="twitter:image" content="https://git.gmu.edu/uploads/project/avatar/10/noun_534670_cc.png">-->
 
-    <!-- Load in our icon -->
+    <!-- Global favicon -->
     <link rel="icon" type="image/ico" href="{% static "img/favicon.ico" %}" />
 
-    <!-- Load in global CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{% static "css/bootswatch.min.css" %}" />
-    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
-
-    <!-- Load in global JS -->
-    <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/clipboard.min.js" %}"></script>
+    <!-- Global CSS -->
+    <link href="https://srct.gmu.io/masonstrap/css/masonstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/global.css" %}" />
   </head>
 
-  <!-- Load in the body of a Go page -->
   <body>
-    <!-- Load in the navbar template -->
-    {% include 'layouts/navigation.html' %}
+    <!-- Load in the navbar -->
+    {% include 'layouts/navbar.html' %}
 
-    <!-- Wrap the page content in a bootstrap container -->
-    <div class="container">
+    <div class="container begin">
       <!-- Load in the main page content -->
       {% block content %}
       {% endblock %}
     </div>
-
-    <!-- Load in the footer template -->
-    {% include 'layouts/footer.html' %}
   </body>
+
+  <!-- Load in the footer template -->
+  {% include 'layouts/footer.html' %}
+
+  <!-- Global JS -->
+  <script src="https://srct.gmu.io/masonstrap/js/masonstrap.min.js"></script>
 </html>

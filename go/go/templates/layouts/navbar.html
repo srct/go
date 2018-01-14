@@ -1,0 +1,64 @@
+<!-- load in go templatetags -->
+{% load go_extras %}
+
+<header class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary" role="navigation">
+    <div class="container">
+        <!-- Brand -->
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-link"></i> Go
+        </a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#collapse" aria-controls="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!--  -->
+        <div class="collapse navbar-collapse" id="collapse">
+            <!--  -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>        
+                <!--  -->
+                {% if user.is_authenticated %}
+                    {% if user.registereduser.approved %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'new_link' %}">New Link</a>
+                        </li>
+                    {% endif %}
+                    {% if not user.registereduser.registered %}
+                        <li class="nav-item">
+                            <a href="{% url 'signup' %}">Register</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+            <!--  -->
+            <ul class="navbar-nav ml-auto">
+                <!--  -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'go_logout' %}">
+                            Log Out <i class="fa fa-sign-out fa-fw"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'go_login' %}">
+                            Log In <i class="fa fa-sign-in fa-fw"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                <!--  -->
+                {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'useradmin' %}">
+                            User Moderation <i class="fa fa-users fa-fw"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>

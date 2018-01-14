@@ -1,18 +1,15 @@
 <!-- include the base html template -->
 {% extends 'layouts/base.html' %}
 
-<!-- Tell Django to load static files -->
 {% load staticfiles %}
 
-<!-- define the page title block -->
 {% block title %} 
 SRCT Go &bull; About 
 {% endblock %}
 
-<!-- define the content block for the page -->
 {% block content %}
 
-<!-- define the page header div -->
+<!--  page header -->
 <div class="page-header" id="banner">
   <div class="row">
     <div class="col-md-12">
@@ -26,41 +23,32 @@ SRCT Go &bull; About
   </div>
 </div>
 
-<!-- define the terms of use div -->
+<!-- terms of use -->
 <div class="row" id="terms">
   <div class="col-md-12">
-    <h4>Terms of Use</h4>
-    <legend></legend>
+    <h2>Terms of Use</h2>
     <p>
       By using Go you acknowledge that you are a current George Mason Student or faculty
       member.
-      <br></br>
       Additionally, any link that you create is subject to removal by Go admins if it is
-      deemed to associate the univeristy with any
-      <br /> derogatory or controversial matters.
-      <br></br>
+      deemed to associate the univeristy with any derogatory or controversial matters.
       Go admins also reserve the right to remove and ban any users who attempt to abuse
       the link creation system in any manner.
-      <br></br>
       Since Go falls under the gmu.edu domain, users who use this service will act in compliance
-      with the GMU <a href="https://universitypolicy.gmu.edu/policies/responsible-use-of-computing/">
-      Responsible Use of Computing</a> policies.
+      with the GMU <a href="https://universitypolicy.gmu.edu/policies/responsible-use-of-computing/">Responsible Use of Computing</a> policies.
     </p>
-    <br />
   </div>
 </div>
 
-<!-- define the who made go? div -->
+<!-- who made go? -->
 <div class="row">
   <div class="col-md-12">
-    <h4>Who made Go?</h4>
-    <legend></legend>
+    <h2>Who made Go?</h2>
     <p>
       Members of the
       <a href="//srct.gmu.edu">Student-Run Computing and Technology</a> registered
       student organization at <a href="//gmu.edu">George Mason University</a> are
-      the clever,
-      <br /> talented student developers behind Go.
+      the clever, talented student developers behind Go.
     </p>
     <p>
       We are a group of creative people that like making software and want to give back
@@ -68,22 +56,18 @@ SRCT Go &bull; About
     </p>
     <p>
       <a href="//srct.gmu.edu/contact/">Contact us</a> to get involved!
-      <p>
-        <br />
+    </p>
   </div>
 </div>
 
 <!-- define the thanks! div -->
 <div class="row">
   <div class="col-md-12">
-    <h4>Thanks!</h4>
-    <legend></legend>
+    <h2>Thanks!</h2>
     <p>
-      This project was made possible through the collective contributions of multiple Mason
-      SRCT members.
-      <br></br>
+      This project was made possible through the collective contributions of
+      multiple Mason SRCT members.
       <a href="https://git.gmu.edu/srct/go/milestones/3">Go 2.2</a>:
-      <br />
       <a href="https://github.com/dhaynespls">David Haynes</a>,
       <a href="https://github.com/ocelotsloth">Mark Stenglein</a>,
       <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Andres Villogas</a>,
@@ -97,9 +81,7 @@ SRCT Go &bull; About
       <a href="https://github.com/nanderson94">Nicholas Anderson</a>,
       <a href="">Kevin Mckigney</a>,
       and <a href="https://github.com/dwbond">Daniel Bond</a>.
-      <br></br>
       <a href="https://git.gmu.edu/srct/go/milestones/2">Go 2.1</a>:
-      <br />
       <a href="https://github.com/dhaynespls">David Haynes</a>,
       <a href="https://github.com/zosman1">Zach Osman</a>,
       <a href="https://github.com/roberthitt">Robert Hitt</a>,
@@ -109,84 +91,22 @@ SRCT Go &bull; About
       <a href="https://github.com/mdsecurity">Mattias Duffy</a>,
       <a href="https://github.com/IAmEyad">Eyad Hasan</a>, 
       and <a href="https://github.com/danielkim1">Danny Kim</a>.
-      <br></br>
       <a href="https://git.gmu.edu/srct/go/milestones/1">Go 2.0</a>:
-      <br />
       <a href="https://github.com/dhaynespls">David Haynes</a>,
       <a href="">Matthew Rodgers</a>,
       <a href="https://github.com/nanderson94">Nicholas Anderson</a>,
       and <a href="https://github.com/dwbond">Daniel Bond</a>.
-      <br></br>
       Go 1.0:
-      <br />
       <a href="https://github.com/jrouly">Michel Rouly</a>,
       <a href="https://github.com/creffett">Chris Reffett</a>,
       <a href="https://github.com/nanderson94">Nicholas Anderson</a>, and <a href="https://github.com/akshaykarthik">Akshay Karthik</a>.
-      <br></br>
     </p>
     <p>
       Additional thanks are due to the <a href="https://wiki.srct.gmu.edu/Executive_Board">
       Student-Run Computing and Technology executive
-      board from 2014-present</a>, and our academic advisor,
+      board from 2014-present</a>,and our academic advisor,
       <a href="https://cs.gmu.edu/~kdobolyi/">Professor Kinga Dobolyi</a>.
     </p>
-  </div>
-</div>
-
-<!-- define the LibreJS License Table -->
-<div class="row">
-  <div class="col-md-12">
-    <h4>JavaScript License Information</h4>
-    <legend></legend>
-    <table class="table" id="jslicense-labels1">
-      <thead>
-        <tr>
-          <th>Source File</th>
-          <th>License</th>
-          <th>Uncompressed Source</th>
-        </tr>
-      </thead>
-      <tr>
-        <td><a href="{% static "js/jquery.min.js" %}">jquery.min.js</a></td>
-        <td><a href="http://jquery.org/license">Expat</a></td>
-        <td><a href="http://code.jquery.com/jquery-2.1.1.js">jquery-2.1.1.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/bootstrap.min.js" %}">bootstrap.js</a></td>
-        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
-        <td><a href="{% static "js/bootstrap.js" %}">bootstrap.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/clipboard.min.js" %}">clipboard.min.js</a></td>
-        <td><a href="https://zenorocha.mit-license.org/">Expat</a></td>
-        <td><a href="{% static "js/clipboard.js" %}">clipboard.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/copy.js" %}">copy.js</a></td>
-        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
-        <td><a href="{% static "js/copy.js" %}">copy.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/new_link.js" %}">new_link.js</a></td>
-        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
-        <td><a href="{% static "js/new_link.js" %}">new_link.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/tab.js" %}">tab.js</a></td>
-        <td><a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">Expat</a></td>
-        <td><a href="{% static "js/tab.js" %}">tab.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/tooltip.js" %}">tooltip.js</a></td>
-        <td><a href="https://github.com/twbs/bootstrap/blob/master/LICENSE">Expat</a></td>
-        <td><a href="{% static "js/tooltip.js" %}">tooltip.js</a></td>
-      </tr>
-      <tr>
-        <td><a href="{% static "js/useradmin.js" %}">useradmin.js</a></td>
-        <td><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a></td>
-        <td><a href="{% static "js/useradmin.js" %}">useradmin.js</a></td>
-      </tr>
-    </table>
   </div>
 </div>
 
