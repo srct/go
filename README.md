@@ -221,6 +221,18 @@ repository and is named go-cleanlinks.cron. Drop this in cron.hourly and
 change the paths so that they point to the virtualenv activate script and
 manage.py.
 
+## Production cron job
+
+```sh
+#!/bin/bash
+# Cron job to automatically expire outdated links, put this in cron.hourly
+ACTIVATE_PATH=/path/to/virtualenv/activate
+MANAGE_PATH=/path/to/go/manage.py
+
+source ${ACTIVATE_PATH}
+python ${MANAGE_PATH} expirelinks
+```
+
 ---
 **Note:**
 
