@@ -3,10 +3,6 @@ go/commands/expirelinks.py
 
 Remove expired links from the database.
 """
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django.core.management.base import BaseCommand
 from django.utils import timezone

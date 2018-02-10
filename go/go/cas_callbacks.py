@@ -1,11 +1,8 @@
 """
 go/cas_callbacks.py
+
+Parse the CAS/PF responses and create users in the database.
 """
-
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -17,7 +14,6 @@ def pfparse(pf_name_result):
     """
     Parse what peoplefinder sends back to us and make a list out of it
     """
-
     # name comes in format of Anderson, Nicholas J
     name_list = pf_name_result.split(',')
     # there's random whitespace with the first name
@@ -37,7 +33,6 @@ def pfinfo(uname):
     """
     Get information from peoplefinder
     """
-
     base_url = settings.PF_URL
     url = base_url + "basic/all/" + str(uname)
     try:
@@ -80,9 +75,8 @@ def pfinfo(uname):
 
 def create_user(tree):
     """
-    Create a django user based off of the peoplefinder info we parsed earlier
+    Create a django user based off of the peoplefinder info we parsed earlier.
     """
-
     print("Parsing CAS information.")
     try:
         username = tree[0][0].text
@@ -112,10 +106,8 @@ def create_user(tree):
             print("Added user's name, %s %s." % (info_name[0], info_name[1]))
 
             print("User object creation process completed.")
-
         else:
             print("User object already exists.")
-
         print("CAS callback successful.")
     except Exception as ex:
         print("Unhandled user creation error:", ex)

@@ -4,10 +4,6 @@ go/views.py
 The functions that handle a request to a given URL. Get some data, manipulate
 it, and return a rendered template.
 """
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib imports
 from datetime import timedelta
 
@@ -32,13 +28,10 @@ from .models import URL, RegisteredUser
 def index(request):
     """
     If a user is logged in, this view displays all the information about all
-    of their URLs. Otherwise, it will show the public landing page
+    of their URLs. Otherwise, it will show the public landing page.
     """
-
-    # If the user is not authenticated, show them a public landing page.
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, 'landing.html')
-    # Do not display this page to unapproved users
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
 
@@ -59,7 +52,7 @@ def index(request):
     # Get the current domain info
     domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
-    # Grab a list of all the URL's that are currently owned by the user
+    # Grab a list of all the URLs that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
 
     # Check if provided sort method is valid, otherwise default
@@ -68,7 +61,7 @@ def index(request):
     else:
         urls = urls.order_by("-date_created")
 
-    # Render my_links passing the list of URL's, Domain, and Sort Methods to
+    # Render my_links passing the list of URLs, Domain, and Sort Methods to
     # the template
     return render(request, 'core/index.html', {
         'urls': urls,
@@ -118,12 +111,12 @@ def new_link(request):
         # errors
         else:
             # Render index.html passing the form to the template
-            return render(request, 'core/new_link.html', {
+            return render(request, 'core/new.html', {
                 'form': url_form,
             })
 
     # Render index.html passing the form to the template
-    return render(request, 'core/new_link.html', {
+    return render(request, 'core/new.html', {
         'form': url_form,
     })
 

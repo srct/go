@@ -1,10 +1,8 @@
 """
 go/forms.py
-"""
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
 
+Configure the layout and styling of the Go's forms.
+"""
 # Python stdlib Imports
 from datetime import datetime, timedelta
 
@@ -30,29 +28,10 @@ from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout
 class URLForm(ModelForm):
     """
     The form that is used in URL creation.
+
+    Define custom fields and then render them onto the template.
     """
-
-    # target -------------------------------------------------------------------
-
-    def clean_target(self):
-        """
-        Prevent redirect loop links
-        """
-        # get the entered target link
-        target = self.cleaned_data.get('target')
-
-        # Commented out as this check cannont properly be tested since we cannot
-        # dynamically generate request.META.get('HTTP_HOST')
-
-        # # if the host (go.gmu.edu) is in the entered target link or where it
-        # # redirects
-        # if self.host in final_url or self.host in target:
-        #     raise ValidationError("You can't make a Go link to Go silly!")
-        # else:
-        #     return target
-        return target
-
-    # Custom target URL field
+    # target ------------------------------------------------------------------
     target = URLField(
         required=True,
         label='Long URL (Required)',
@@ -62,23 +41,21 @@ class URLForm(ModelForm):
         })
     )
 
-    # short --------------------------------------------------------------------
-
+    # short -------------------------------------------------------------------
     def unique_short(value):
         """
         Check to make sure the short url has not been used
         """
-
         try:
             # if we're able to get a URL with the same short url
             URL.objects.get(short__iexact=value)
         except URL.DoesNotExist as ex:
+            print(ex)
             return
 
         # then raise a ValidationError
         raise ValidationError('Short url already exists.')
 
-    # Custom short-url field with validators.
     short = SlugField(
         required=False,
         label='Short URL (Optional)',
@@ -88,9 +65,7 @@ class URLForm(ModelForm):
         min_length=3,
     )
 
-    # expires ------------------------------------------------------------------
-
-    # Define some string date standards
+    # expires -----------------------------------------------------------------
     DAY = '1 Day'
     WEEK = '1 Week'
     MONTH = '1 Month'
@@ -106,7 +81,6 @@ class URLForm(ModelForm):
         (CUSTOM, CUSTOM),
     )
 
-    # Add preset expiration choices.
     expires = ChoiceField(
         required=True,
         label='Expiration (Required)',
@@ -119,7 +93,6 @@ class URLForm(ModelForm):
         """
         Check if the selected date is a valid date
         """
-
         # a valid date is one that is greater than today
         if value > timezone.now():
             return
@@ -127,30 +100,18 @@ class URLForm(ModelForm):
         else:
             raise ValidationError('Date must be after today.')
 
-
-    # Add a custom expiration choice.
     expires_custom = DateTimeField(
         required=False,
         label='Custom Date',
         input_formats=['%m-%d-%Y'],
         validators=[valid_date],
-        initial=lambda: datetime.now() + timedelta(days=1),
-        widget=DateTimePicker(
-            options={
-                "format": "MM-DD-YYYY",
-                "pickTime": False,
-            },
-            icon_attrs={
-                "class": "fa fa-calendar",
-            },
-        )
+        initial=lambda: datetime.now() + timedelta(days=1)
     )
 
     def __init__(self, *args, **kwargs):
         """
-        On initialization of the form, crispy forms renders this layout
+        On initialization of the form, crispy forms renders this layout.
         """
-
         # Grab that host info
         self.host = kwargs.pop('host', None)
         super(URLForm, self).__init__(*args, **kwargs)
@@ -158,7 +119,7 @@ class URLForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
 
-        # Some xtra vars for form css purposes
+        # Some extra vars for form css purposes
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-1'
         self.helper.field_class = 'col-md-6'
@@ -198,7 +159,7 @@ class URLForm(ModelForm):
                                 <h4>Set when you would like your Go address to expire:</h4>
                                 <br />"""),
                             'expires',
-                            Field('expires_custom', template="crispy/customDateField.html"),
+                            Field('expires_custom'),
                         style="background: rgb(#F6F6F6);"),
                     active=True,
                     template='crispy/accordian-group.html'),
@@ -214,19 +175,22 @@ class URLForm(ModelForm):
         """
         Metadata about this ModelForm
         """
-
         # what model this form is for
         model = URL
         # what attributes are included
         fields = ['target']
 
 class EditForm(URLForm):
+    """
+    The form that is used in editing URLs.
 
+    A modification of the URL creation form... now for editing URLs. Inherit
+    custom form fields for DRY purposes.
+    """
     def __init__(self, *args, **kwargs):
         """
-        On initialization of the form, crispy forms renders this layout
+        On initialization of the form, crispy forms renders this layout.
         """
-
         # Grab that host info
         self.host = kwargs.pop('host', None)
         super(URLForm, self).__init__(*args, **kwargs)
@@ -285,8 +249,11 @@ class EditForm(URLForm):
             HTML("""
                 <br />"""),
             StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
-    
+
     class Meta(URLForm.Meta):
+        """
+        Metadata about this ModelForm
+        """
         # what attributes are included
         fields = URLForm.Meta.fields
 
@@ -294,8 +261,6 @@ class SignupForm(ModelForm):
     """
     The form that is used when a user is signing up to be a RegisteredUser
     """
-
-    # The full name of the RegisteredUser
     full_name = CharField(
         required=True,
         label='Full Name (Required)',
@@ -304,7 +269,6 @@ class SignupForm(ModelForm):
         help_text="We can fill in this field based on information provided by https://peoplefinder.gmu.edu.",
     )
 
-    # The RegisteredUser's chosen organization
     organization = CharField(
         required=True,
         label='Organization (Required)',
@@ -313,7 +277,6 @@ class SignupForm(ModelForm):
         help_text="Or whatever \"group\" you would associate with on campus.",
     )
 
-    # The RegisteredUser's reason for signing up to us Go
     description = CharField(
         required=False,
         label='Description (Optional)',
@@ -328,16 +291,15 @@ class SignupForm(ModelForm):
         # ***Need to replace lower url with production URL***
         # ie. go.gmu.edu/about#terms
         label=mark_safe(
-            'Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'
+            'Do you accept the <a href="about">Terms of Service</a>?'
         ),
         help_text="Esssentially the GMU Responsible Use of Computing policies.",
     )
 
     def __init__(self, request, *args, **kwargs):
         """
-        On initialization of the form, crispy forms renders this layout
+        On initialization of the form, crispy forms renders this layout.
         """
-
         # Necessary to call request in forms.py, is otherwise restricted to
         # views.py and models.py
         self.request = request
@@ -366,7 +328,6 @@ class SignupForm(ModelForm):
         """
         Metadata about this ModelForm
         """
-
         # what model this form is for
         model = RegisteredUser
         # what attributes are included

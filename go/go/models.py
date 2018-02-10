@@ -1,11 +1,9 @@
 """
 go/models.py
+
+The core of Go: define the business logic through classes that represent
+tables containing structured data in the database.
 """
-
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 import string
 
@@ -16,7 +14,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 
 # Other Imports
 from hashids import Hashids  # http://hashids.org/python/
@@ -26,15 +23,13 @@ HASHIDS = Hashids(
     salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits)
 )
 
-@python_2_unicode_compatible
 class RegisteredUser(models.Model):
     """
-    This is simply a wrapper model for the user object which, if an object
+    This is simply a wrapper model for the User model which, if an object
     exists, indicates that that user is registered.
     """
-
     # Let's associate a User to this RegisteredUser
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete="cascade")
 
     # What is your name?
     full_name = models.CharField(
@@ -62,35 +57,29 @@ class RegisteredUser(models.Model):
 
     def __str__(self):
         """
-        str(RegisteredUser)
+        String representation of this object.
         """
-
         return '<Registered User: %s - Approval Status: %s>' % (
             self.user, self.approved
         )
-
 
 @receiver(post_save, sender=User)
 def handle_regUser_creation(sender, instance, created, **kwargs):
     """
     When a post_save is called on a User object (and it is newly created), this
-    is called to create an associated RegisteredUser
+    is called to create an associated RegisteredUser.
     """
-
     if created:
         RegisteredUser.objects.create(user=instance)
 
-
-@python_2_unicode_compatible
 class URL(models.Model):
     """
     This model represents a stored URL redirection rule. Each URL has an
     owner, target url, short identifier, click counter, and expiration
     date.
     """
-
     # Who is the owner of this Go link
-    owner = models.ForeignKey(RegisteredUser)
+    owner = models.ForeignKey(RegisteredUser, on_delete="cascade")
     # When was this link created?
     date_created = models.DateTimeField(default=timezone.now)
 
@@ -111,18 +100,16 @@ class URL(models.Model):
 
     def __str__(self):
         """
-        print(URL)
+        String representation of this object.
         """
-
         return '<Owner: %s - Target URL: %s>' % (
             self.owner.user, self.target
         )
 
     class Meta:
         """
-        metadata for URLs
+        Meta information for this object.
         """
-
         # they should be ordered by their short links
         ordering = ['short']
 
