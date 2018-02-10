@@ -1,13 +1,8 @@
 """
 settings/base.py
 
-Base Settings
+Base Settings.
 """
-
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 import os
 import sys
@@ -17,8 +12,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # You can generate a secret key from the following link:
 # http://www.miniwebtool.com/django-secret-key-generator/
-# export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
-# assert 'SECRET_KEY' in os.environ, 'You need to set the SECRET_KEY environment variable!'
 SECRET_KEY = os.environ['GO_SECRET_KEY']
 
 # Peoplefinder API
@@ -26,7 +19,6 @@ PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
 
 # The domains this application will be deployed on
 # e.g. Which domains this app should listen to requests from.
-# ALLOWED_HOSTS = ['127.0.0.1']
 ALLOWED_HOSTS = [os.environ['GO_ALLOWED_HOSTS']]
 
 ADMINS = ()
@@ -77,7 +69,6 @@ TEMPLATES = [
     }
 ]
 
-########## DATABASE CONFIGURATION
 # Use the same DB everywhere.
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
@@ -91,23 +82,20 @@ DATABASES = {
     }
 }
 
-
-# MIDDLEWARE
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'cas.middleware.CASMiddleware',
-)
+]
 
-# URL CONF
 ROOT_URLCONF = 'settings.urls'
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-# APPS
 INSTALLED_APPS = (
+    # Django apps
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -116,15 +104,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'go',
+    # Third party
     'qrcode',
     'crispy_forms',
     'bootstrap3_datetime',
     'cas',
 )
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# LOGGING
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -159,7 +147,9 @@ LOGGING = {
     }
 }
 
-# CAS AUTH
+"""
+CAS Authentication Settings
+"""
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
@@ -177,16 +167,16 @@ CAS_RESPONSE_CALLBACKS = (
 )
 
 
-# MAIL
+"""
+Mail Settings
+"""
 EMAIL_HOST = os.environ['GO_EMAIL_HOST']
 EMAIL_PORT = os.environ['GO_EMAIL_PORT']
 EMAIL_HOST_USER = os.environ['GO_EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['GO_EMAIL_HOST_PASSWORD']
-# example@example.com
 EMAIL_FROM = os.environ['GO_EMAIL_FROM']
-# to@example.com
 EMAIL_TO = os.environ['GO_EMAIL_TO']
 
 # Domain used to email to users. See implementation in views.py
-# ie. in Mason's case '@gmu.edu'
+# ie. '@gmu.edu'
 EMAIL_DOMAIN = os.environ['GO_EMAIL_DOMAIN']

@@ -3,10 +3,6 @@ go/commands/test_expirelinks.py
 
 Test that the function to expire Go links actually works.
 """
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 from datetime import timedelta
 

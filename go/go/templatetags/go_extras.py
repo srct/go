@@ -1,11 +1,9 @@
 """
 go/templatetags/go_extras.py
+
+Template functions that can be included to help out with rendering correct
+data based on the status of the user.
 """
-
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django import template
 
@@ -20,12 +18,11 @@ register = template.Library()
 @register.filter
 def is_registered(given_user):
     """
-    Helper template function to check if a user is registered.
+    Check if a user is registered.
 
     given_user: The User object that we are checking to see if they are
     registered or not.
     """
-
     # try getting the RegisteredUser of the current user
     try:
         getRegisteredUser = RegisteredUser.objects.get(user=given_user)
@@ -40,12 +37,11 @@ def is_registered(given_user):
 @register.filter
 def is_approved(given_user):
     """
-    Helper template function to check if a user is approved.
+    Check if a user is approved.
 
-    given_user: The User object that we are checking to see if they are approved
-    or not.
+    given_user: The User object that we are checking to see if they are
+    approved or not.
     """
-
     # try getting the RegisteredUser of the current user
     try:
         get_registered_user = RegisteredUser.objects.get(user=given_user)
