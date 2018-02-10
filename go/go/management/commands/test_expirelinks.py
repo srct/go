@@ -1,7 +1,8 @@
 """
 go/commands/test_expirelinks.py
-"""
 
+Test that the function to expire Go links actually works.
+"""
 # Future Imports
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
@@ -19,16 +20,11 @@ from django.utils import timezone
 from go.models import URL, RegisteredUser
 
 class ExpireLinksTest(TestCase):
-    """
-    Test cases for the functions in expirelinks
-    """
-
     def setUp(self):
         """
-        Set up any variables such as dummy objects that will be utilised in
+        Set up any variables such as dummy objects that will be utilized in
         testing methods
         """
-
         # Setup a blank URL object with an owner
         User.objects.create(username='dhaynes', password='password')
         get_user = User.objects.get(username='dhaynes')
@@ -52,9 +48,8 @@ class ExpireLinksTest(TestCase):
 
     def test_expirelinks(self):
         """
-        Test that the expirelinks django admin command functions as intentioned.
+        Make a call to expire Go links and assert that the number of links has
+        been reduced.
         """
-
         call_command('expirelinks')
-
         self.assertTrue(len(URL.objects.all()) == 1)

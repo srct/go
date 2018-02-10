@@ -7,7 +7,7 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - gonet
+      - go
     ports:
       - "3306:3306"
     environment:
@@ -23,10 +23,10 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-      - gonet
+      - go
     ports:
       - '8000:8000'
-    command: /bin/bash ./startup.sh
+    command: ./startup.sh
     volumes:
       - .:/go
     depends_on:
@@ -46,7 +46,7 @@ services:
       - GO_EMAIL_HOST_PASSWORD=
       - GO_EMAIL_FROM=
       - GO_EMAIL_TO=
-      - superuser=dhaynes3
+      - SUPERUSER=dhaynes3
 
 networks:
-  gonet:
+  go:

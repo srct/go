@@ -18,13 +18,15 @@ the issues page.
 
 If you decide to take on an issue for Go you will need to work in a branch off
 of the current development branch (ie. `2.3-dev` with 2.3 being the version in
-    development).
+development).
 
 This can be done with the following chain of `git` commands within `go/`:
 
-    git pull
-    git checkout 2.3-dev
-    git checkout -B ##-shortdescription
+```sh
+git pull
+git checkout 2.3-dev
+git checkout -B ##-shortdescription
+```
 
 **Note:**
 
@@ -34,9 +36,11 @@ does.
 
 **Example:**
 
-    git pull
-    git checkout 2.3-dev
-    git checkout -B 102-readmeUpdates
+```sh
+git pull
+git checkout 2.3-dev
+git checkout -B 102-readmeUpdates
+```
 
 If you are working on something that does not have an issue please open a new
 issue before creating your branch.

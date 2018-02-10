@@ -139,7 +139,7 @@ class UrlsTest(TestCase):
 
     def test_delete_reverse_chars_ints(self):
         """
-            /delete/<short> - Delete a link, no content display.
+        /delete/<short> - Delete a link, no content display.
         """
 
         url = reverse('delete', args=['dhaynes123'])
@@ -161,12 +161,12 @@ class UrlsTest(TestCase):
         url = reverse('registered')
         self.assertEqual(url, '/registered')
 
-    # The /admin URL is not tested as it is never resolves in source and generally
-    # Django yells at you if the admin page breaks
+    # The /admin URL is not tested as it is never resolves in source and
+    # generally Django yells at you if the admin page breaks
 
     def test_useradmin(self):
         """
-        /useradmin - user approval interface
+        /manage - user approval interface
         """
 
         url = reverse('useradmin')

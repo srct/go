@@ -37,7 +37,7 @@ def index(request):
 
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
-        return render(request, 'public_landing.html')
+        return render(request, 'landing.html')
     # Do not display this page to unapproved users
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
@@ -68,7 +68,8 @@ def index(request):
     else:
         urls = urls.order_by("-date_created")
 
-    # Render my_links passing the list of URL's, Domain, and Sort Methods to the template
+    # Render my_links passing the list of URL's, Domain, and Sort Methods to
+    # the template
     return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
@@ -94,8 +95,8 @@ def new_link(request):
     # Initialize a URL form
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
 
-    # If a POST request is received, then the user has submitted a form and it's
-    # time to parse the form and create a new URL object
+    # If a POST request is received, then the user has submitted a form and
+    # it's time to parse the form and create a new URL object
     if request.method == 'POST':
         # Now we initialize the form again but this time we have the POST
         # request
@@ -113,7 +114,8 @@ def new_link(request):
             # Redirect to the shiny new URL
             return redirect('view', res.short)
 
-        # Else, there is an error, redisplay the form with the validation errors
+        # Else, there is an error, redisplay the form with the validation
+        # errors
         else:
             # Render index.html passing the form to the template
             return render(request, 'core/new_link.html', {
@@ -648,7 +650,7 @@ def useradmin(request):
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
-    return render(request, 'admin/useradmin.html', {
+    return render(request, 'manage.html', {
         'need_approval': need_approval,
         'current_users': current_users,
         'blocked_users': blocked_users
