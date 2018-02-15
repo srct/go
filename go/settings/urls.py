@@ -6,7 +6,6 @@ The URLs of the project and their associated view that requests are routed to.
 # Django Imports
 import django.contrib.auth.views
 from django.urls import path
-from django.conf.urls import re_path
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
