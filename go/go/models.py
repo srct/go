@@ -30,7 +30,7 @@ similar_chars = set(['b', 'G', '6',
 
 alphanumerics = set(string.ascii_letters + string.digits)
 
-link_chars = alphanumerics - similar_chars
+link_chars = ''.join(alphanumerics - similar_chars)
 
 HASHIDS = Hashids(
     salt="srct.gmu.edu", alphabet=(link_chars)
