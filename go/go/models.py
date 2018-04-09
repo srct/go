@@ -22,7 +22,7 @@ from hashids import Hashids  # http://hashids.org/python/
 # note: the Hashids library already implements several restrictions
 # on character placement, including repeating or incrementing numbers,
 # or placing curse word characters adjacent to one another
-similar_chars = set(['b', 'G', 6,
+similar_chars = set(['b', 'G', '6',
                      'g', 'q',
                      'l', '1', 'I',
                      'S', '5',
