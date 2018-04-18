@@ -82,6 +82,33 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
 
 
 @python_2_unicode_compatible
+class OpenGraph(models.Model):
+    """
+    Separates out the fields related to open graph data for search from the main
+    URL model of clarity.
+    See http://ogp.me/ for information on all fields, descriptions of which are
+    copied below for the ones that we are including.
+    """
+
+    # Basic Metadata
+    # The title of your object as it should appear within the graph, e.g., "The Rock".
+    og_title = models.CharField(max_length=100)
+    # An image URL which should represent your object within the graph.
+    og_image = models.URLField(max_length=1000)
+    # The type of your object, e.g., "video.movie". Depending on the type you specify,
+    # other properties may also be required.
+    og_type = models.CharField(max_length=100)
+    # If your object is part of a larger web site, the name which should be displayed
+    # for the overall site. e.g., "IMDb".
+    og_site_name = models.CharField(max_length=100)
+    #  A one to two sentence description of your object.
+    og_description = models.CharField(max_length=1000)
+    # If your object is part of a larger web site, the name which should be displayed
+    # for the overall site. e.g., "IMDb".
+    og_site_name = models.CharField(max_length=100)
+
+
+@python_2_unicode_compatible
 class URL(models.Model):
     """
     This model represents a stored URL redirection rule. Each URL has an
@@ -108,6 +135,10 @@ class URL(models.Model):
 
     # does this Go link expire on a certain date
     expires = models.DateTimeField(blank=True, null=True)
+
+    # OpenGraph data for improved search when there are a large number of links
+    # created by a single user
+    open_graph = models.ForeignKey(OpenGraph)
 
     def __str__(self):
         """
