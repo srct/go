@@ -47,7 +47,7 @@ class CasCallbacksTest(TestCase):
         """
 
         actual = pfinfo('nander13')
-        expected = ['Nicholas', 'Anderson']
+        expected = ['Nicholas J', 'Anderson']
         self.assertEqual(expected, actual)
 
     def test_pfinfo_dne(self):
