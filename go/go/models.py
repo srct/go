@@ -72,14 +72,13 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
     if created:
         RegisteredUser.objects.create(user=instance)
 
-@python_2_unicode_compatible
+
 class ClickThroughLog(models.Model):
     username = models.CharField(max_length=20)  # how long are Mason usernames?
     name = models.CharField(max_length=50)
     clicked = models.DateTimeField(auto_now=True)
 
 
-@python_2_unicode_compatible
 class URL(models.Model):
     """
     This model represents a stored URL redirection rule. Each URL has an
