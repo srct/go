@@ -72,6 +72,14 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
     if created:
         RegisteredUser.objects.create(user=instance)
 
+@python_2_unicode_compatible
+class ClickThroughLog(models.Model):
+    username = models.CharField(max_length=20)  # how long are Mason usernames?
+    name = models.CharField(max_length=50)
+    clicked = models.DateTimeField(auto_now=True)
+
+
+@python_2_unicode_compatible
 class URL(models.Model):
     """
     This model represents a stored URL redirection rule. Each URL has an
@@ -94,6 +102,13 @@ class URL(models.Model):
     qrclicks = models.IntegerField(default=0)
     # how many people have visited the go link through social media
     socialclicks = models.IntegerField(default=0)
+
+    # is the link available to anyone, or only to Mason students
+    track_Mason = models.BooleanField(default=False)
+
+    # track Mason-authenticated users clickthroughs
+    clickthroughlog = models.ForeignKey(ClickThroughLog,
+                                        on_delete=models.CASCADE)
 
     # does this Go link expire on a certain date
     expires = models.DateTimeField(blank=True, null=True)
