@@ -1,0 +1,35 @@
+.begin {
+    margin-top: 6rem;
+}
+
+.landing-card {
+    box-shadow: 0 0 4px 2px rgba(0,0,0,.2);
+}
+
+.pointer:hover,.shadow-hover {
+    cursor:pointer
+}
+
+.shadow-hover {
+    position:relative;
+    transition:all .5s cubic-bezier(.165,.84,.44,1)
+}
+
+.shadow-hover:after {
+    content:"";
+    box-shadow:0 0 16px 2px rgba(0,0,0,.2);
+    border-radius:inherit;
+    opacity:0;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    transition:opacity .5s cubic-bezier(.165,.84,.44,1)
+}
+
+.shadow-hover:focus:after,.shadow-hover:hover:after {
+    opacity:1
+}
+   

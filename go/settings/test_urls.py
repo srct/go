@@ -1,28 +1,20 @@
 """
 settings/test_urls.py
 
+Test that all the URLs route properly.
+
 References:
     - https://stackoverflow.com/questions/18987051/how-do-i-unit-test-django-urls
 """
-
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django.test import TestCase
 from django.urls import reverse
 
 class UrlsTest(TestCase):
-    """
-    Test cases for the urls
-    """
-
     def test_index_reverse(self):
         """
         / - Homepage url.
         """
-
         url = reverse('index')
         self.assertEqual(url, '/')
 
@@ -30,7 +22,6 @@ class UrlsTest(TestCase):
         """
         /view/<short> - View URL data.
         """
-
         url = reverse('view', args=['dhaynes'])
         self.assertEqual(url, '/view/dhaynes')
 
@@ -38,7 +29,6 @@ class UrlsTest(TestCase):
         """
         /view/<short> - View URL data.
         """
-
         url = reverse('view', args=['123456789'])
         self.assertEqual(url, '/view/123456789')
 
@@ -46,7 +36,6 @@ class UrlsTest(TestCase):
         """
         /view/<short> - View URL data.
         """
-
         url = reverse('view', args=['dhaynes123'])
         self.assertEqual(url, '/view/dhaynes123')
 
@@ -54,7 +43,6 @@ class UrlsTest(TestCase):
         """
         /view/<short> - View URL data.
         """
-
         url = reverse('view', args=['dhaynes123_-'])
         self.assertEqual(url, '/view/dhaynes123_-')
 
@@ -62,7 +50,6 @@ class UrlsTest(TestCase):
         """
         /about - About page.
         """
-
         url = reverse('about')
         self.assertEqual(url, '/about')
 
@@ -70,23 +57,27 @@ class UrlsTest(TestCase):
         """
         /signup - Signup page for access.
         """
-
         url = reverse('signup')
         self.assertEqual(url, '/signup')
 
+    def test_new(self):
+        """
+        /new - Create a new Go Link
+        """
+        url = reverse("new_link")
+        self.assertEqual(url, '/new')
+
     def test_my_links_reverse(self):
         """
-        /myLinks - My-Links page, view and review links.
+        /my - My-Links page, view and review links.
         """
-
         url = reverse('my_links')
-        self.assertEqual(url, '/myLinks')
+        self.assertEqual(url, '/my')
 
     def test_edit_reverse_chars(self):
         """
         /edit/<short> - Delete a link, no content display.
         """
-
         url = reverse('edit', args=['dhaynes'])
         self.assertEqual(url, '/edit/dhaynes')
 
@@ -94,7 +85,6 @@ class UrlsTest(TestCase):
         """
         /edit/<short> - Delete a link, no content display.
         """
-
         url = reverse('edit', args=['123456789'])
         self.assertEqual(url, '/edit/123456789')
 
@@ -102,7 +92,6 @@ class UrlsTest(TestCase):
         """
         /edit/<short> - Delete a link, no content display.
         """
-
         url = reverse('edit', args=['dhaynes123'])
         self.assertEqual(url, '/edit/dhaynes123')
 
@@ -110,16 +99,13 @@ class UrlsTest(TestCase):
         """
         /edit/<short> - Delete a link, no content display.
         """
-
         url = reverse('edit', args=['dhaynes123_-'])
         self.assertEqual(url, '/edit/dhaynes123_-')
-
 
     def test_delete_reverse_chars(self):
         """
         /delete/<short> - Delete a link, no content display.
         """
-
         url = reverse('delete', args=['dhaynes'])
         self.assertEqual(url, '/delete/dhaynes')
 
@@ -127,15 +113,13 @@ class UrlsTest(TestCase):
         """
         /delete/<short> - Delete a link, no content display.
         """
-
         url = reverse('delete', args=['123456789'])
         self.assertEqual(url, '/delete/123456789')
 
     def test_delete_reverse_chars_ints(self):
         """
-            /delete/<short> - Delete a link, no content display.
+        /delete/<short> - Delete a link, no content display.
         """
-
         url = reverse('delete', args=['dhaynes123'])
         self.assertEqual(url, '/delete/dhaynes123')
 
@@ -143,7 +127,6 @@ class UrlsTest(TestCase):
         """
         /delete/<short> - Delete a link, no content display.
         """
-
         url = reverse('delete', args=['dhaynes123_-'])
         self.assertEqual(url, '/delete/dhaynes123_-')
 
@@ -151,26 +134,23 @@ class UrlsTest(TestCase):
         """
         /registered - registration complete page
         """
-
         url = reverse('registered')
         self.assertEqual(url, '/registered')
 
-    # The /admin URL is not tested as it is never resolves in source and generally
-    # Django yells at you if the admin page breaks
+    # The /admin URL is not tested as it is never resolves in source and
+    # generally Django yells at you if the admin page breaks
 
     def test_useradmin(self):
         """
-        /useradmin - user approval interface
+        /manage - user approval interface
         """
-
         url = reverse('useradmin')
-        self.assertEqual(url, '/useradmin')
+        self.assertEqual(url, '/manage')
 
     def test_login(self):
         """
         /login - login portal
         """
-
         url = reverse('go_login')
         self.assertEqual(url, '/login')
 
@@ -178,7 +158,6 @@ class UrlsTest(TestCase):
         """
         /logout - logout portal
         """
-
         url = reverse('go_logout')
         self.assertEqual(url, '/logout')
 
@@ -186,7 +165,6 @@ class UrlsTest(TestCase):
         """
         /<short> - Redirect to a go link.
         """
-
         url = reverse('redirection', args=['dhaynes'])
         self.assertEqual(url, '/dhaynes')
 
@@ -194,7 +172,6 @@ class UrlsTest(TestCase):
         """
         /<short> - Redirect to a go link.
         """
-
         url = reverse('redirection', args=['123456789'])
         self.assertEqual(url, '/123456789')
 
@@ -202,7 +179,6 @@ class UrlsTest(TestCase):
         """
         /<short> - Redirect to a go link.
         """
-
         url = reverse('redirection', args=['dhaynes123'])
         self.assertEqual(url, '/dhaynes123')
 
@@ -210,6 +186,5 @@ class UrlsTest(TestCase):
         """
         /<short> - Redirect to a go link.
         """
-
         url = reverse('redirection', args=['dhaynes123_-'])
         self.assertEqual(url, '/dhaynes123_-')

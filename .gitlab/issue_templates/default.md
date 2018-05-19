@@ -5,7 +5,7 @@ about the current issue. Maybe a picture? Some details that could best help some
 especially someone new, understand the goal of the issue and how they should best
 approach the problem.
 
-# Helpful Links
+## Helpful Links
 
 Here you should include a bullet point list of links to documentation, stack overflow,
 whatever, that could help guide someone on what it is they are trying to do.

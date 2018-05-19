@@ -1,11 +1,9 @@
 """
 go/views.py
+
+The functions that handle a request to a given URL. Get some data, manipulate
+it, and return a rendered template.
 """
-
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib imports
 from datetime import timedelta
 
@@ -27,30 +25,48 @@ from ratelimit.decorators import ratelimit
 from .forms import SignupForm, URLForm, EditForm
 from .models import URL, RegisteredUser
 
-
 def index(request):
     """
     If a user is logged in, this view displays all the information about all
-    of their URLs. Otherwise, it will show the public landing page
+    of their URLs. Otherwise, it will show the public landing page.
     """
-
-    # If the user is not authenticated, show them a public landing page.
-    if not request.user.is_authenticated():
-        return render(request, 'public_landing.html')
-    # Do not display this page to unapproved users
+    if not request.user.is_authenticated:
+        return render(request, 'landing.html')
     if not request.user.registereduser.approved:
         return render(request, 'not_registered.html')
+
+    # List of sort methods and their display name "Column" : "Name"
+    SORT_METHODS = {
+        "-date_created": "Most Recent",
+        "date_created": "Oldest",
+        "short": "Alphabetical (A-Z)",
+        "-short": "Alphabetical (Z-A)",
+        "-clicks": "Most Popular",
+        "clicks": "Least Popular",
+        "-expires": "Expiring Soon"
+    }
+
+    # Get the requested sort method, default to "-date_created" : "Most Recent"
+    sort_method = request.GET.get('sort', '-date_created')
 
     # Get the current domain info
     domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
-    # Grab a list of all the URL's that are currently owned by the user
+    # Grab a list of all the URLs that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
 
-    # Render my_links passing the list of URL's and Domain to the template
+    # Check if provided sort method is valid, otherwise default
+    if sort_method in SORT_METHODS:
+        urls = urls.order_by(sort_method)
+    else:
+        urls = urls.order_by("-date_created")
+
+    # Render my_links passing the list of URLs, Domain, and Sort Methods to
+    # the template
     return render(request, 'core/index.html', {
         'urls': urls,
         'domain': domain,
+        'sort_methods': SORT_METHODS
     })
 
 @login_required
@@ -62,7 +78,6 @@ def new_link(request):
     not_registered error page. If they are logged in AND registered, they
     get the URL registration form.
     """
-
     # If the user isn't approved, then display the you're not approved page.
     if not request.user.registereduser.approved:
         if request.user.registereduser.blocked:
@@ -70,12 +85,11 @@ def new_link(request):
         else:
             return render(request, 'not_registered.html')
 
-
     # Initialize a URL form
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
 
-    # If a POST request is received, then the user has submitted a form and it's
-    # time to parse the form and create a new URL object
+    # If a POST request is received, then the user has submitted a form and
+    # it's time to parse the form and create a new URL object
     if request.method == 'POST':
         # Now we initialize the form again but this time we have the POST
         # request
@@ -86,23 +100,23 @@ def new_link(request):
             # Call our post method to assemble our new URL object
             res = post(request, url_form)
 
-            # If there is a 500 error returned, handle it
+            # 500 error
             if res == 500:
                 return HttpResponseServerError(render(request, '500.html'))
 
             # Redirect to the shiny new URL
             return redirect('view', res.short)
 
-        # Else, there is an error, redisplay the form with the validation errors
+        # Else, there is an error, redisplay the form with the validation
+        # errors
         else:
             # Render index.html passing the form to the template
-            return render(request, 'core/new_link.html', {
+            return render(request, 'core/new.html', {
                 'form': url_form,
             })
 
-
     # Render index.html passing the form to the template
-    return render(request, 'core/new_link.html', {
+    return render(request, 'core/new.html', {
         'form': url_form,
     })
 
@@ -393,15 +407,18 @@ def signup(request):
                 to_admin = EmailMessage(
                     'Signup from %s' % (request.user.registereduser.user),
                     ######################
-                    '%s signed up at %s\n\n'
-                    'Username: %s\n'
-                    'Organization: %s\n\n'
-                    'Message: %s\n\n'
-                    'You can contact the user directly by replying to this email or '
-                    'reply all to contact the user and notfiy the mailing list.\n'
-                    'Please head to go.gmu.edu/useradmin to approve or '
-                    'deny this application.'
-                    %(
+                    """
+                    %s signed up at %s\n\n
+
+                    Username: %s\n
+                    Organization: %s\n\n
+
+                    Message: %s\n\n
+
+                    You can contact the user directly by replying to this email or reply all to contact the user and notify the mailing list.\n
+                    Please head to go.gmu.edu/manage to approve or deny this application.'
+                    """
+                    % (
                         str(full_name), str(timezone.now()).strip(),
                         str(request.user.registereduser.user), str(organization),
                         str(description)
@@ -416,12 +433,15 @@ def signup(request):
                 send_mail(
                     'We have received your Go application!',
                     ######################
-                    'Hey there %s,\n\n'
-                    'The Go admins have received your application and are '
-                    'currently in the process of reviewing it.\n\n'
-                    'You will receive another email when you have been '
-                    'approved.\n\n'
-                    '- Go Admins'
+                    """
+                    Hey there %s,\n\n
+
+                    The Go admins have received your application and are currently in the process of reviewing it.\n\n
+
+                    You will receive another email when you have been approved.\n\n
+
+                    - Go Admins
+                    """
                     % (str(full_name)),
                     ######################
                     settings.EMAIL_FROM,
@@ -447,7 +467,7 @@ def redirection(request, short):
 
     # Get the current domain info
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
-    
+
     # Get the URL object that relates to the requested Go link
     url = get_object_or_404(URL, short__iexact=short)
     # Increment our clicks by one
@@ -469,7 +489,7 @@ def redirection(request, short):
     if 'social' in request.GET:
         url.socialclicks += 1
 
-    # Save our data and redirect the user towards thier destination
+    # Save our data and redirect the user towards their destination
     url.save()
     return redirect(url.target)
 
@@ -478,7 +498,6 @@ def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, lo
     Decorator function for views that checks that the user is logged in and is
     a staff member, displaying the login page if necessary.
     """
-
     return user_passes_test(
         lambda u: u.is_active and u.is_staff,
         login_url=login_url,
@@ -543,7 +562,7 @@ def useradmin(request):
                     )
                 # Delete their associated RegisteredUsers
                 to_deny.user.delete()
-                return HttpResponseRedirect('useradmin')
+                return HttpResponseRedirect('manage')
 
         # If we're blocking users
         elif '_block' in request.POST:
@@ -592,7 +611,7 @@ def useradmin(request):
                     )
                 to_un_block.blocked = False
                 to_un_block.save()
-                return HttpResponseRedirect('useradmin')
+                return HttpResponseRedirect('manage')
 
         # If we're removing existing users
         elif '_remove' in request.POST:
@@ -614,19 +633,17 @@ def useradmin(request):
                         [user_mail]
                     )
                 to_remove.user.delete()
-                return HttpResponseRedirect('useradmin')
+                return HttpResponseRedirect('manage')
 
     # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(
-        approved=False).filter(blocked=False)
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
     # Get a list of all RegisteredUsers that are currently users
-    current_users = RegisteredUser.objects.filter(approved=True).filter(
-        registered=True).filter(blocked=False)
+    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
     # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
-    return render(request, 'admin/useradmin.html', {
+    return render(request, 'manage.html', {
         'need_approval': need_approval,
         'current_users': current_users,
         'blocked_users': blocked_users

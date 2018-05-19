@@ -33,7 +33,7 @@
     <input class="inputfilter" type="text" id="appliedInput"
       placeholder="Search Usernames or Full Names">
     <h3>Users awaiting moderation</h3>
-    <form method="post" action="useradmin">
+    <form method="post" action="manage">
       <!-- csrf protection  -->
       {% csrf_token %}
       <!-- define out table of users that need approval  -->
@@ -151,7 +151,7 @@
     <input class="inputfilter" type="text" id="blockedInput"
       placeholder="Search Usernames or Full Names">
     <h3>Blocked Users</h3>
-    <form method="post" action="useradmin">
+    <form method="post" action="manage">
       <!-- csrf protection  -->
       {% csrf_token %}
       <table class="table table-striped table-hover" id="blockedTable">
@@ -226,7 +226,7 @@
     <input class="inputfilter" type="text" id="currentInput" 
       placeholder="Search Usernames or Full Names">
     <h3>Current Users</h3>
-    <form method="post" action="useradmin">
+    <form method="post" action="manage">
       <!-- csrf protection  -->
       {% csrf_token %}
       <table class="table table-striped table-hover " id="currentTable">
