@@ -19,8 +19,21 @@ from django.utils import timezone
 from hashids import Hashids  # http://hashids.org/python/
 
 # generate the salt and initialize Hashids
+# note: the Hashids library already implements several restrictions
+# on character placement, including repeating or incrementing numbers,
+# or placing curse word characters adjacent to one another
+similar_chars = set(['b', 'G', '6',
+                     'g', 'q',
+                     'l', '1', 'I',
+                     'S', '5',
+                     'O', '0',])
+
+alphanumerics = set(string.ascii_letters + string.digits)
+
+link_chars = ''.join(alphanumerics - similar_chars)
+
 HASHIDS = Hashids(
-    salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits)
+    salt="srct.gmu.edu", alphabet=(link_chars)
 )
 
 
