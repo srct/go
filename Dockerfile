@@ -12,4 +12,5 @@ WORKDIR /go/
 ADD . /go/
 
 # Install pip dependecies
-RUN pip install -r /go/requirements/dev.txt
+RUN pip install pipenv
+RUN pipenv install --system --deploy

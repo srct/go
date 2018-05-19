@@ -25,6 +25,7 @@ from ratelimit.decorators import ratelimit
 from .forms import SignupForm, URLForm, EditForm
 from .models import URL, RegisteredUser
 
+
 def index(request):
     """
     If a user is logged in, this view displays all the information about all
@@ -68,6 +69,7 @@ def index(request):
         'domain': domain,
         'sort_methods': SORT_METHODS
     })
+
 
 @login_required
 def new_link(request):
@@ -120,6 +122,7 @@ def new_link(request):
         'form': url_form,
     })
 
+
 @login_required
 def my_links(request):
     """
@@ -135,6 +138,8 @@ def my_links(request):
     return index(request)
 
 # Rate limits are completely arbitrary
+
+
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
 def post(request, url_form):
@@ -189,6 +194,7 @@ def post(request, url_form):
     url.save()
     return url
 
+
 def view(request, short):
     """
     This view allows the user to "view details" about a URL. Note that they
@@ -207,6 +213,7 @@ def view(request, short):
         'domain': domain,
     })
 
+
 @login_required
 def edit(request, short):
     """
@@ -222,7 +229,6 @@ def edit(request, short):
         else:
             return render(request, 'not_registered.html')
 
-
     # Get the URL that is going to be edited
     url = get_object_or_404(URL, short__iexact=short)
 
@@ -234,7 +240,8 @@ def edit(request, short):
         if request.method == 'POST':
             # Now we initialize the form again but this time we have the POST
             # request
-            url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
+            url_form = EditForm(
+                request.POST, host=request.META.get('HTTP_HOST'))
 
             # Make a copy of the old URL
             copy = url
@@ -269,7 +276,8 @@ def edit(request, short):
                 # The short was not edited and thus, we can directly edit the url
                 else:
                     if url_form.cleaned_data.get('target').strip() != copy.target:
-                        copy.target = url_form.cleaned_data.get('target').strip()
+                        copy.target = url_form.cleaned_data.get(
+                            'target').strip()
                         copy.save()
 
                     # Grab the expiration field value. It's currently an unsable
@@ -285,7 +293,8 @@ def edit(request, short):
                     elif expires == URLForm.MONTH:
                         edited_expires = timezone.now() + timedelta(weeks=3)
                     elif expires == URLForm.CUSTOM:
-                        edited_expires = url_form.cleaned_data.get('expires_custom')
+                        edited_expires = url_form.cleaned_data.get(
+                            'expires_custom')
                     else:
                         pass  # leave the field NULL
 
@@ -351,6 +360,7 @@ def delete(request, short):
     else:
         # do not allow them to delete
         raise PermissionDenied()
+
 
 @login_required
 def signup(request):
@@ -460,6 +470,7 @@ def signup(request):
         'registered': False,
     })
 
+
 def redirection(request, short):
     """
     This view redirects a user based on the short URL they requested.
@@ -493,6 +504,7 @@ def redirection(request, short):
     url.save()
     return redirect(url.target)
 
+
 def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):
     """
     Decorator function for views that checks that the user is logged in and is
@@ -503,6 +515,7 @@ def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, lo
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )(view_func)
+
 
 @staff_member_required
 def useradmin(request):
@@ -518,7 +531,8 @@ def useradmin(request):
         # If we're approving users
         if '_approve' in request.POST:
             for name in userlist:
-                to_approve = RegisteredUser.objects.get(user__username__exact=name)
+                to_approve = RegisteredUser.objects.get(
+                    user__username__exact=name)
                 to_approve.approved = True
                 to_approve.save()
 
@@ -542,7 +556,8 @@ def useradmin(request):
         # If we're denying users
         elif '_deny' in request.POST:
             for name in userlist:
-                to_deny = RegisteredUser.objects.get(user__username__exact=name)
+                to_deny = RegisteredUser.objects.get(
+                    user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
                     user_mail = to_deny.user.username + settings.EMAIL_DOMAIN
                     # Send an email letting them know they are denied
@@ -567,7 +582,8 @@ def useradmin(request):
         # If we're blocking users
         elif '_block' in request.POST:
             for name in userlist:
-                to_block = RegisteredUser.objects.get(user__username__exact=name)
+                to_block = RegisteredUser.objects.get(
+                    user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
                     user_mail = to_block.user.username + settings.EMAIL_DOMAIN
                     send_mail(
@@ -592,7 +608,8 @@ def useradmin(request):
         # If we're un-blocking users
         elif '_unblock' in request.POST:
             for name in userlist:
-                to_un_block = RegisteredUser.objects.get(user__username__exact=name)
+                to_un_block = RegisteredUser.objects.get(
+                    user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
                     user_mail = to_un_block.user.username + settings.EMAIL_DOMAIN
                     send_mail(
@@ -616,7 +633,8 @@ def useradmin(request):
         # If we're removing existing users
         elif '_remove' in request.POST:
             for name in userlist:
-                to_remove = RegisteredUser.objects.get(user__username__exact=name)
+                to_remove = RegisteredUser.objects.get(
+                    user__username__exact=name)
                 if settings.EMAIL_HOST and settings.EMAIL_PORT:
                     user_mail = to_remove.user.username + settings.EMAIL_DOMAIN
                     send_mail(
@@ -636,9 +654,11 @@ def useradmin(request):
                 return HttpResponseRedirect('manage')
 
     # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
+    need_approval = RegisteredUser.objects.filter(
+        registered=True).filter(approved=False).filter(blocked=False)
     # Get a list of all RegisteredUsers that are currently users
-    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
+    current_users = RegisteredUser.objects.filter(
+        approved=True).filter(registered=True).filter(blocked=False)
     # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 

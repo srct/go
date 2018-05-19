@@ -127,49 +127,49 @@ class URLForm(ModelForm):
         # The main "layout" defined
         self.helper.layout = Layout(
             Fieldset('',
-            #######################
-                Accordion(
-                    # Step 1: Long URL
-                    AccordionGroup('Step 1: Long URL',
-                        Div(
-                            HTML("""
+                     #######################
+                     Accordion(
+                         # Step 1: Long URL
+                         AccordionGroup('Step 1: Long URL',
+                                        Div(
+                                            HTML("""
                                 <h4>Paste the URL you would like to shorten:</h4>
                                 <br />"""),
-                            'target',
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
+                                            'target',
+                                            style="background: rgb(#F6F6F6);"),
+                                        active=True,
+                                        template='crispy/accordian-group.html'),
 
-                    # Step 2: Short URL
-                    AccordionGroup('Step 2: Short URL',
-                        Div(
-                            HTML("""
+                         # Step 2: Short URL
+                         AccordionGroup('Step 2: Short URL',
+                                        Div(
+                                            HTML("""
                                 <h4>Create a custom Go address:</h4>
                                 <br />"""),
-                            PrependedText(
-                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html',),
+                                            PrependedText(
+                                                'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
+                                            style="background: rgb(#F6F6F6);"),
+                                        active=True,
+                                        template='crispy/accordian-group.html',),
 
-                    # Step 3: Expiration
-                    AccordionGroup('Step 3: URL Expiration',
-                        Div(
-                            HTML("""
+                         # Step 3: Expiration
+                         AccordionGroup('Step 3: URL Expiration',
+                                        Div(
+                                            HTML("""
                                 <h4>Set when you would like your Go address to expire:</h4>
                                 <br />"""),
-                            'expires',
-                            Field('expires_custom'),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
+                                            'expires',
+                                            Field('expires_custom'),
+                                            style="background: rgb(#F6F6F6);"),
+                                        active=True,
+                                        template='crispy/accordian-group.html'),
 
-                # FIN
-                template='crispy/accordian.html'),
-            #######################
-            HTML("""
+                         # FIN
+                         template='crispy/accordian.html'),
+                     #######################
+                     HTML("""
                 <br />"""),
-            StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit')))
+                     StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit')))
 
     class Meta:
         """
@@ -180,6 +180,7 @@ class URLForm(ModelForm):
         # what attributes are included
         fields = ['target']
 
+
 class EditForm(URLForm):
     """
     The form that is used in editing URLs.
@@ -187,6 +188,7 @@ class EditForm(URLForm):
     A modification of the URL creation form... now for editing URLs. Inherit
     custom form fields for DRY purposes.
     """
+
     def __init__(self, *args, **kwargs):
         """
         On initialization of the form, crispy forms renders this layout.
@@ -206,49 +208,50 @@ class EditForm(URLForm):
         # The main "layout" defined
         self.helper.layout = Layout(
             Fieldset('',
-            #######################
-                Accordion(
-                    # Step 1: Long URL
-                    AccordionGroup('Step 1: Long URL',
-                        Div(
-                            HTML("""
+                     #######################
+                     Accordion(
+                         # Step 1: Long URL
+                         AccordionGroup('Step 1: Long URL',
+                                        Div(
+                                            HTML("""
                                 <h4>Modify the URL you would like to shorten:</h4>
                                 <br />"""),
-                            'target',
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
+                                            'target',
+                                            style="background: rgb(#F6F6F6);"),
+                                        active=True,
+                                        template='crispy/accordian-group.html'),
 
-                    # Step 2: Short URL
-                    AccordionGroup('Step 2: Short URL',
-                        Div(
-                            HTML("""
+                         # Step 2: Short URL
+                         AccordionGroup('Step 2: Short URL',
+                                        Div(
+                                            HTML("""
                                 <h4>Modify the Go address:</h4>
                                 <br />"""),
-                            PrependedText(
-                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html',),
+                                            PrependedText(
+                                                'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
+                                            style="background: rgb(#F6F6F6);"),
+                                        active=True,
+                                        template='crispy/accordian-group.html',),
 
-                    # Step 3: Expiration
-                    AccordionGroup('Step 3: URL Expiration',
-                        Div(
-                            HTML("""
+                         # Step 3: Expiration
+                         AccordionGroup('Step 3: URL Expiration',
+                                        Div(
+                                            HTML("""
                                 <h4>Modify the expiration date:</h4>
                                 <br />"""),
-                            'expires',
-                            Field('expires_custom', template="crispy/customDateField.html"),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
+                                            'expires',
+                                            Field('expires_custom',
+                                                  template="crispy/customDateField.html"),
+                                            style="background: rgb(#F6F6F6);"),
+                                        active=True,
+                                        template='crispy/accordian-group.html'),
 
-                # FIN
-                template='crispy/accordian.html'),
-            #######################
-            HTML("""
+                         # FIN
+                         template='crispy/accordian.html'),
+                     #######################
+                     HTML("""
                 <br />"""),
-            StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
+                     StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
 
     class Meta(URLForm.Meta):
         """
@@ -256,6 +259,7 @@ class EditForm(URLForm):
         """
         # what attributes are included
         fields = URLForm.Meta.fields
+
 
 class SignupForm(ModelForm):
     """
@@ -311,18 +315,19 @@ class SignupForm(ModelForm):
 
         self.helper.layout = Layout(
             Fieldset('',
-                Div(
-                    # Place in form fields
-                    Div(
-                        'full_name',
-                        'organization',
-                        'description',
-                        'registered',
-                        css_class='well'),
+                     Div(
+                         # Place in form fields
+                         Div(
+                             'full_name',
+                             'organization',
+                             'description',
+                             'registered',
+                             css_class='well'),
 
-                    # Extras at bottom
-                    StrictButton('Submit',css_class='btn btn-primary btn-md col-md-4', type='submit'),
-                    css_class='col-md-6')))
+                         # Extras at bottom
+                         StrictButton(
+                             'Submit', css_class='btn btn-primary btn-md col-md-4', type='submit'),
+                         css_class='col-md-6')))
 
     class Meta:
         """

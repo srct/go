@@ -23,6 +23,7 @@ HASHIDS = Hashids(
     salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits)
 )
 
+
 class RegisteredUser(models.Model):
     """
     This is simply a wrapper model for the User model which, if an object
@@ -63,6 +64,7 @@ class RegisteredUser(models.Model):
             self.user, self.approved
         )
 
+
 @receiver(post_save, sender=User)
 def handle_regUser_creation(sender, instance, created, **kwargs):
     """
@@ -71,6 +73,7 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
     """
     if created:
         RegisteredUser.objects.create(user=instance)
+
 
 class URL(models.Model):
     """

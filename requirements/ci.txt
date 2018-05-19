@@ -1,5 +1,0 @@
--r base.txt
-flake8==3.4.1
-pep8==1.7.0
-pyflakes==1.6.0
-coverage==4.5
