@@ -1,13 +1,8 @@
 version: "3"
+
 services:
   db:
     image: mysql
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    networks:
-      - go
     ports:
       - "3306:3306"
     environment:
@@ -18,15 +13,9 @@ services:
 
   web:
     image: go_web
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    networks:
-      - go
     ports:
       - '8000:8000'
-    command: ./startup.sh
+    command: ./docker-startup.sh
     volumes:
       - .:/go
     depends_on:
@@ -47,6 +36,3 @@ services:
       - GO_EMAIL_FROM=
       - GO_EMAIL_TO=
       - SUPERUSER=dhaynes3
-
-networks:
-  go:
