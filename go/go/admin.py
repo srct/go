@@ -11,27 +11,25 @@ from django.contrib.auth.models import User
 # App Imports
 from .models import URL, RegisteredUser
 
-class URLAdmin(admin.ModelAdmin):
-    """
-    Define what attributes display in the URL Admin
-    """
-    list_display = ("target", "short", "owner", "clicks", "date_created", "expires")
-
-# Register URLAdmin
-admin.site.register(URL, URLAdmin)
 
 class RegisteredUserInline(admin.StackedInline):
     """
-    Define an inline admin descriptor for User model
+    Allow for RegisteredUsers to be displayed alongside their Django user
+    objects.
     """
     model = RegisteredUser
     can_delete = False
 
-class UserAdmin(UserAdmin):
+
+class RegUserAdmin(UserAdmin):
     """
-    Define a new User admin
+    Stick information about RegisteredUsers into its own Admin panel.
     """
     inlines = (RegisteredUserInline, )
 
+
+# Default ModelAdmin
+admin.site.register(URL)
+# Define a new User admin
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, RegUserAdmin)

@@ -18,7 +18,6 @@ from django.utils.safestring import mark_safe
 from .models import URL, RegisteredUser
 
 # Other Imports
-from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.bootstrap import (Accordion, AccordionGroup, PrependedText,
                                     StrictButton)
 from crispy_forms.helper import FormHelper

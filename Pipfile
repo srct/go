@@ -13,11 +13,10 @@ django = "<2.1,>=2.0"
 django-crispy-forms = "==1.7.0"
 django-ratelimit = "==1.0.1"
 django-redis-cache = "==1.7.1"
-django-qrcode = {git = "https://github.com/dhaynespls/django-qrcode.git", editable = true}
-django-cas-client = {git = "https://github.com/kstateome/django-cas.git", editable = true}
-"django-bootstrap3-datetimepicker" = {git = "https://github.com/dhaynespls/django-bootstrap3-datetimepicker.git", editable = true}
 hashids = "==1.2.0"
 mysqlclient = "*"
+django-cas-client = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"

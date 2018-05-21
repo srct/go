@@ -16,70 +16,83 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 # Other Imports
-from hashids import Hashids  # http://hashids.org/python/
+from hashids import Hashids
 
-# generate the salt and initialize Hashids
-# note: the Hashids library already implements several restrictions
-# on character placement, including repeating or incrementing numbers,
-# or placing curse word characters adjacent to one another
-similar_chars = set(['b', 'G', '6',
-                     'g', 'q',
-                     'l', '1', 'I',
-                     'S', '5',
-                     'O', '0',])
+"""
+Generate the salt and initialize Hashids
 
-alphanumerics = set(string.ascii_letters + string.digits)
-
-link_chars = ''.join(alphanumerics - similar_chars)
+Note: the Hashids library already implements several restrictions on character
+placement, including repeating or incrementing numbers, or placing curse word
+characters adjacent to one another.
+"""
+SIMILAR_CHARS = set(['b', 'G', '6', 'g', 'q', 'l',
+                     '1', 'I', 'S', '5', 'O', '0'])
+ALPHANUMERICS = set(string.ascii_letters + string.digits)
+LINK_CHARS = ''.join(ALPHANUMERICS - SIMILAR_CHARS)
 
 HASHIDS = Hashids(
-    salt="srct.gmu.edu", alphabet=(link_chars)
+    salt="srct.gmu.edu", alphabet=(LINK_CHARS)
 )
 
 
 class RegisteredUser(models.Model):
     """
-    This is simply a wrapper model for the User model which, if an object
-    exists, indicates that that user is registered.
+    Wrapper model for the built in User model which stores data pertaining to
+    the registration / approval / blocked status of a django user.
     """
-    # Let's associate a User to this RegisteredUser
-    user = models.OneToOneField(User, on_delete="cascade")
+    user = models.OneToOneField(
+        User,
+        on_delete="cascade",
+        verbose_name="Django User Object"
+    )
 
-    # What is your name?
     full_name = models.CharField(
-        blank=False,
+        "verbose name",
         max_length=100,
+        default="",
+        help_text=""
     )
 
-    # What organization are you associated with?
     organization = models.CharField(
-        blank=False,
+        "verbose name",
         max_length=100,
+        default="",
+        help_text=""
     )
 
-    # Why do you want to use Go?
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        "verbose name",
+        blank=True,
+        default="",
+        help_text=""
+    )
 
-    # Have you filled out the registration form?
-    registered = models.BooleanField(default=False)
+    registered = models.BooleanField(
+        "verbose name",
+        default=False,
+        help_text=""
+    )
 
-    # Are you approved to use Go?
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(
+        "verbose name",
+        default=False,
+        help_text=""
+    )
 
-    # Is this User Blocked?
-    blocked = models.BooleanField(default=False)
+    blocked = models.BooleanField(
+        "verbose name",
+        default=False,
+        help_text=""
+    )
 
     def __str__(self):
-        """
-        String representation of this object.
-        """
-        return '<Registered User: %s - Approval Status: %s>' % (
+        return "<Registered User: {0} - Approval Status: {1}>".format(
             self.user, self.approved
         )
 
 
 @receiver(post_save, sender=User)
-def handle_regUser_creation(sender, instance, created, **kwargs):
+def handle_reguser_creation(sender, instance, created, **kwargs):
     """
     When a post_save is called on a User object (and it is newly created), this
     is called to create an associated RegisteredUser.
@@ -90,61 +103,82 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
 
 class URL(models.Model):
     """
-    This model represents a stored URL redirection rule. Each URL has an
-    owner, target url, short identifier, click counter, and expiration
-    date.
+    The representation of a stored URL redirection rule. Each URL has
+    attributes that are used for analytic purposes.
     """
-    # Who is the owner of this Go link
-    owner = models.ForeignKey(RegisteredUser, on_delete="cascade")
-    # When was this link created?
-    date_created = models.DateTimeField(default=timezone.now)
+    # DAY = '1 Day'
+    # WEEK = '1 Week'
+    # MONTH = '1 Month'
+    # CUSTOM = 'Custom Date'
+    # NEVER = 'Never'
 
-    # What is the target URL for this Go link
-    target = models.URLField(max_length=1000)
-    # What is the actual go link (short url) for this URL
-    short = models.SlugField(max_length=20, primary_key=True)
+    # EXPIRATION_CHOICES = (
+    #     (DAY, DAY),
+    #     (WEEK, WEEK),
+    #     (MONTH, MONTH),
+    #     (NEVER, NEVER),
+    #     (CUSTOM, CUSTOM),
+    # ) TODO
 
-    # how many people have visited this Go link
-    clicks = models.IntegerField(default=0)
-    # how many people have visited this Go link through the qr code
-    qrclicks = models.IntegerField(default=0)
-    # how many people have visited the go link through social media
-    socialclicks = models.IntegerField(default=0)
+    owner = models.ForeignKey(
+        RegisteredUser,
+        on_delete="cascade",
+        verbose_name="verbose name"
+    )
 
-    # does this Go link expire on a certain date
-    expires = models.DateTimeField(blank=True, null=True)
+    date_created = models.DateTimeField(
+        "verbose name",
+        default=timezone.now,
+        help_text=""
+    )
+
+    date_expires = models.DateTimeField(
+        "verbose name",
+        blank=True,
+        null=True,
+        # choices=EXPIRATION_CHOICES, TODO
+        # default=NEVER, TODO
+        help_text=""
+    )
+
+    destination = models.URLField(
+        max_length=1000,
+        default="https://go.gmu.edu",
+        help_text=""
+    )
+
+    short = models.SlugField(
+        max_length=20,
+        unique=True,
+        help_text=""
+    )
+
+    # TODO Abstract analytics into their own model
+    clicks = models.IntegerField(default=0, help_text="")
+    qrclicks = models.IntegerField(default=0, help_text="")
+    socialclicks = models.IntegerField(default=0, help_text="")
 
     def __str__(self):
-        """
-        String representation of this object.
-        """
         return '<Owner: %s - Target URL: %s>' % (
             self.owner.user, self.target
         )
 
     class Meta:
-        """
-        Meta information for this object.
-        """
-        # they should be ordered by their short links
         ordering = ['short']
 
     @staticmethod
     def generate_valid_short():
         """
-        legacy method to ensure that generated short URL's are valid
-        should be updated to be simpler
+        Generate a short to be used as a default go link if the user does not
+        provide a custom one.
         """
         if cache.get("hashids_counter") is None:
             cache.set("hashids_counter", URL.objects.count())
-        tries = 1
-        while tries < 100:
-            try:
-                short = HASHIDS.encrypt(cache.get("hashids_counter"))
-                tries += 1
-                cache.incr("hashids_counter")
-                URL.objects.get(short__iexact=short)
-            except URL.DoesNotExist as ex:
-                print(ex)
-                return short
-        return None
+
+        short = HASHIDS.encrypt(cache.get("hashids_counter"))
+
+        # Continually generate new shorts until there are no conflicts
+        while URL.objects.filter(short__iexact=short).count() > 0:
+            short = HASHIDS.encrypt(cache.get("hashids_counter"))
+
+        return short

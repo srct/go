@@ -24,10 +24,11 @@ ALLOWED_HOSTS = [os.environ['GO_ALLOWED_HOSTS']]
 ADMINS = ()
 MANAGERS = ADMINS
 
-# TIME
-TIME_ZONE = 'America/New_York'
+# Internationalization
+# https://docs.djangoproject.com/en/2.0/topics/i18n/
+
 LANGUAGE_CODE = 'en-us'
-SITE_ID = 1
+TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -57,15 +58,15 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'templates')
         ],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.request'
+                'django.contrib.messages.context_processors.messages',
             ],
-            'loaders': [
-                'django.template.loaders.app_directories.Loader'
-            ],
-        }
+        },
     }
 ]
 
@@ -105,9 +106,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'go',
     # Third party
-    'qrcode',
     'crispy_forms',
-    'bootstrap3_datetime',
     'cas',
 )
 

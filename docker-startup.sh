@@ -1,4 +1,9 @@
 #! /bin/bash
+until nc -z db 3306; do
+    echo "waiting for database to start..."
+    sleep 1
+done
+
 export GO_SECRET_KEY
 export GO_CREATE_SUPERUSER
 
