@@ -486,10 +486,10 @@ def redirection(request, short):
     # Get the URL short link
     doesExist = URL.objects.get(short__iexact=short)
     # Checks to see if the link exists, if not we 404 the user.
-    if doesExist.target is None:
+    if doesExist.destination is None:
         return redirect('go/404.html')
     # If the user is trying to make a Go link to itself, we 404 them
-    if url.target == domain + short:
+    if url.destination == domain + short:
         return redirect('404.html')
 
     # If the user is coming from a QR request then increment qrclicks
@@ -502,7 +502,7 @@ def redirection(request, short):
 
     # Save our data and redirect the user towards their destination
     url.save()
-    return redirect(url.target)
+    return redirect(url.destination)
 
 
 def staff_member_required(view_func, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/'):

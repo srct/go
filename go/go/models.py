@@ -147,7 +147,14 @@ class URL(models.Model):
         help_text=""
     )
 
-    short = models.SlugField(
+    # TODO Validator for Slug + Emoji
+    """
+    # http://stackoverflow.com/a/13752628/6762004
+    RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
+    slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z')
+    slug_re = _lazy_re_compile(r'^[-a-zA-Z0-9_]+\Z')
+    """
+    short = models.CharField(
         max_length=20,
         unique=True,
         help_text=""
@@ -160,7 +167,7 @@ class URL(models.Model):
 
     def __str__(self):
         return '<Owner: %s - Target URL: %s>' % (
-            self.owner.user, self.target
+            self.owner.user, self.destination
         )
 
     class Meta:

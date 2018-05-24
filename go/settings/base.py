@@ -80,6 +80,7 @@ DATABASES = {
         'PASSWORD': os.environ['GO_DB_PASSWORD'],
         'HOST': os.environ['GO_DB_HOST'],
         'PORT': os.environ['GO_DB_PORT'],
+        'OPTIONS': {'charset': 'utf8mb4'}
     }
 }
 

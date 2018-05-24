@@ -5,7 +5,7 @@ The URLs of the project and their associated view that requests are routed to.
 """
 # Django Imports
 import django.contrib.auth.views
-from django.urls import path
+from django.urls import path, re_path
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
@@ -26,7 +26,8 @@ urlpatterns = [
     path('view/<slug:short>', cache_page(60 * 15)(go.views.view), name='view'),
 
     # /about - About page. Cached for 15 minutes
-    path('about',cache_page(60 * 15)(TemplateView.as_view(template_name='core/about.html')), name='about'),
+    path('about', cache_page(60 * 15)
+         (TemplateView.as_view(template_name='core/about.html')), name='about'),
 
     # /signup - Signup page for access. Cached for 15 minutes
     path('signup', cache_page(60 * 15)(go.views.signup), name='signup'),
@@ -44,7 +45,8 @@ urlpatterns = [
     path('delete/<slug:short>', go.views.delete, name='delete'),
 
     # /registered - registration complete page. Cached for 15 minutes
-    path('registered', cache_page(60 * 15)(TemplateView.as_view(template_name='registered.html')), name='registered'),
+    path('registered', cache_page(60 * 15)
+         (TemplateView.as_view(template_name='registered.html')), name='registered'),
 
     # /admin - Administrator interface.
     path('admin', admin.site.urls, name='go_admin'),
@@ -54,8 +56,10 @@ urlpatterns = [
 
     # Authentication URLs
     path('login', django.contrib.auth.views.login, name='go_login'),
-    path('logout', django.contrib.auth.views.logout, {'next_page': '/'}, name='go_logout'),
+    path('logout', django.contrib.auth.views.logout,
+         {'next_page': '/'}, name='go_logout'),
 
     # Redirection regex.
-    path('<slug:short>', go.views.redirection, name='redirection'),
+    re_path(r'^(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
+            go.views.redirection, name='redirection'),
 ]

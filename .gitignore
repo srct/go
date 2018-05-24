@@ -10,7 +10,6 @@ venv
 /go/settings/secret.py
 /go/static/admin
 /go/media
-/go/go/migrations
 .coverage
 htmlcov/
 .idea
