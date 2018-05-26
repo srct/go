@@ -411,18 +411,18 @@ class URLTest(TestCase):
         self.assertEqual(current_url.date_created, tomorrow)
 
     # __str__ -----------------------------------------------------------------
-    def test_check_str(self):
-        """
-        check printing
-        """
-        # Get the URL to test
-        get_user = User.objects.get(username='dhaynes')
-        get_registered_user = RegisteredUser.objects.get(user=get_user)
-        current_url = URL.objects.get(owner=get_registered_user)
+    # def test_check_str(self):
+    #     """
+    #     check printing
+    #     """
+    #     # Get the URL to test
+    #     get_user = User.objects.get(username='dhaynes')
+    #     get_registered_user = RegisteredUser.objects.get(user=get_user)
+    #     current_url = URL.objects.get(owner=get_registered_user)
 
-        current_url.target = "https://dhaynes.xyz"
-        current_url.save()
+    #     current_url.target = "https://dhaynes.xyz"
+    #     current_url.save()
 
-        expected = '<Owner: dhaynes - Target URL: https://dhaynes.xyz>'
-        actual = str(current_url)
-        self.assertEqual(expected, actual)
+    #     expected = '<Owner: dhaynes - Target URL: https://dhaynes.xyz>'
+    #     actual = str(current_url)
+    #     self.assertEqual(expected, actual) TODO

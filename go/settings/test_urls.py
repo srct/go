@@ -161,30 +161,30 @@ class UrlsTest(TestCase):
         url = reverse('go_logout')
         self.assertEqual(url, '/logout')
 
-    def test_delete_chars(self):
-        """
-        /<short> - Redirect to a go link.
-        """
-        url = reverse('redirection', args=['dhaynes'])
-        self.assertEqual(url, '/dhaynes')
+    # def test_delete_chars(self):
+    #     """
+    #     /<short> - Redirect to a go link.
+    #     """
+    #     url = reverse('redirection', args=['dhaynes'])
+    #     self.assertEqual(url, '/dhaynes')
 
-    def test_delete_ints(self):
-        """
-        /<short> - Redirect to a go link.
-        """
-        url = reverse('redirection', args=['123456789'])
-        self.assertEqual(url, '/123456789')
+    # def test_delete_ints(self):
+    #     """
+    #     /<short> - Redirect to a go link.
+    #     """
+    #     url = reverse('redirection', args=['123456789'])
+    #     self.assertEqual(url, '/123456789')
 
-    def test_delete_chars_ints(self):
-        """
-        /<short> - Redirect to a go link.
-        """
-        url = reverse('redirection', args=['dhaynes123'])
-        self.assertEqual(url, '/dhaynes123')
+    # def test_delete_chars_ints(self):
+    #     """
+    #     /<short> - Redirect to a go link.
+    #     """
+    #     url = reverse('redirection', args=['dhaynes123'])
+    #     self.assertEqual(url, '/dhaynes123')
 
-    def test_delete_full_slug(self):
-        """
-        /<short> - Redirect to a go link.
-        """
-        url = reverse('redirection', args=['dhaynes123_-'])
-        self.assertEqual(url, '/dhaynes123_-')
+    # def test_delete_full_slug(self):
+    #     """
+    #     /<short> - Redirect to a go link.
+    #     """
+    #     url = reverse('redirection', args=['dhaynes123_-'])
+    #     self.assertEqual(url, '/dhaynes123_-') TODO

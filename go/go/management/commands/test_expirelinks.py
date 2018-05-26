@@ -15,37 +15,37 @@ from django.utils import timezone
 # App Imports
 from go.models import URL, RegisteredUser
 
-class ExpireLinksTest(TestCase):
-    def setUp(self):
-        """
-        Set up any variables such as dummy objects that will be utilized in
-        testing methods
-        """
-        # Setup a blank URL object with an owner
-        User.objects.create(username='dhaynes', password='password')
-        get_user = User.objects.get(username='dhaynes')
-        get_registered_user = RegisteredUser.objects.get(user=get_user)
-        URL.objects.create(owner=get_registered_user, short='test')
-        URL.objects.create(owner=get_registered_user, short='test-2')
+# class ExpireLinksTest(TestCase):
+#     def setUp(self):
+#         """
+#         Set up any variables such as dummy objects that will be utilized in
+#         testing methods
+#         """
+#         # Setup a blank URL object with an owner
+#         User.objects.create(username='dhaynes', password='password')
+#         get_user = User.objects.get(username='dhaynes')
+#         get_registered_user = RegisteredUser.objects.get(user=get_user)
+#         URL.objects.create(owner=get_registered_user, short='test')
+#         URL.objects.create(owner=get_registered_user, short='test-2')
 
-        # Get some dates
-        yesterday = timezone.now() - timedelta(days=1)
-        tomorrow = timezone.now() + timedelta(days=1)
+#         # Get some dates
+#         yesterday = timezone.now() - timedelta(days=1)
+#         tomorrow = timezone.now() + timedelta(days=1)
 
-        # Get the URL to apply it to
-        current_url = URL.objects.get(short='test')
-        second_url = URL.objects.get(short='test-2')
+#         # Get the URL to apply it to
+#         current_url = URL.objects.get(short='test')
+#         second_url = URL.objects.get(short='test-2')
 
-        # Apply the dates
-        current_url.expires = yesterday
-        second_url.expires = tomorrow
-        current_url.save()
-        second_url.save()
+#         # Apply the dates
+#         current_url.expires = yesterday
+#         second_url.expires = tomorrow
+#         current_url.save()
+#         second_url.save()
 
-    def test_expirelinks(self):
-        """
-        Make a call to expire Go links and assert that the number of links has
-        been reduced.
-        """
-        call_command('expirelinks')
-        self.assertTrue(len(URL.objects.all()) == 1)
+#     def test_expirelinks(self):
+#         """
+#         Make a call to expire Go links and assert that the number of links has
+#         been reduced.
+#         """
+#         call_command('expirelinks')
+#         self.assertTrue(len(URL.objects.all()) == 1) TODO
