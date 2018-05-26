@@ -1,5 +1,5 @@
 services:
-  - mysql:latest
+  - mysql:5.7
 
 stages:
   - test
@@ -10,7 +10,7 @@ variables:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y mysql-client libmysqlclient-dev python-mysqldb redis-server
+  - apt-get install -y redis-server
   - pip install pipenv
   - pipenv install --system --deploy
   - nohup redis-server &
