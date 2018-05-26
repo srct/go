@@ -36,7 +36,7 @@ def pfinfo(uname):
     base_url = settings.PF_URL
     url = base_url + "basic/all/" + str(uname)
     try:
-        metadata = requests.get(url, timeout=5)
+        metadata = requests.get(url, timeout=30)
         print("Retrieving information from the peoplefinder api.")
         metadata.raise_for_status()
     except requests.exceptions.RequestException as ex:
