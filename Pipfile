@@ -6,6 +6,7 @@ name = "pypi"
 [dev-packages]
 pylint = "*"
 pylint-django = "*"
+coverage = "*"
 
 [packages]
 django = "<2.1,>=2.0"
