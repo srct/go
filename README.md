@@ -2,8 +2,8 @@
 
 [![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master)
 [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master)
-[![python version](https://img.shields.io/badge/python-2.7,3.4+-blue.svg)]()
-[![Django version](https://img.shields.io/badge/Django-1.11-brightgreen.svg)]()
+[![python version](https://img.shields.io/badge/python-3.6-blue.svg)]()
+[![Django version](https://img.shields.io/badge/Django-2.0-brightgreen.svg)]()
 
 A project of [GMU SRCT](https://srct.gmu.edu).
 
@@ -11,9 +11,8 @@ Go is a drop-in URL shortening service. This project aims to provide an easy to
 use URL branding service for institutions that wish to widely disseminate
 information without unnecessarily outsourcing branding.
 
-Go is currently a `Python 3` (with backwards compatability for `Python 2.7`
-until Django 2.0 in December 2017) project written in the `Django` web
-framework, with `MySQL` as our backend database.
+Go is currently a `Python 3` project written in the `Django` web framework,
+with `MySQL` as our backend database.
 
 ## Setup instructions for local development
 
@@ -70,9 +69,8 @@ Finally we can install git with:
 
 #### On Windows
 
-We recommend that if you are on Windows 10 AE (Anniversary Edition) or above to
-make use of the Windows Subsystem for Linux (WSL). The following link should
-get you up and running:
+We recommend that if you are on Windows 10 to make use of the Windows Subsystem
+for Linux (WSL). The following link should get you up and running:
 
 [https://msdn.microsoft.com/en-us/commandline/wsl/install_guide](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
 
@@ -210,9 +208,7 @@ bottom row.
 
 ### Coding style
 
-You should adhere to the style of the repo code. Consistency is key! PEP8
-guidelines are strongly recommended but not enforced at the time. Please
-comment your code, I will not accept commits that contain undocumented code.
+TODO
 
 ### Getting Help
 
@@ -220,26 +216,3 @@ I encourage you to join the
 [#go channel](https://srct.slack.com/messages/go/details/) in SRCT's
 [Slack Group](https://srct.slack.com) if you have any questions on setup or
 would like to contribute.
-
-## Some words about deploying Go.
-
-Check out our admin guide:
-
-https://git.gmu.edu/srct/go/wikis/administration-guide
-
-In order to expire links, you need to set up a cron job to run the manage.py
-expirelinks command regularly. A sample cron script is available in the
-repository and is named go-cleanlinks.cron. Drop this in cron.hourly and change
-the paths so that they point to the virtualenv activate script and manage.py.
-
-## Production cron job
-
-```sh
-#!/bin/bash
-# Cron job to automatically expire outdated links, put this in cron.hourly
-ACTIVATE_PATH=/path/to/virtualenv/activate
-MANAGE_PATH=/path/to/go/manage.py
-
-source ${ACTIVATE_PATH}
-python ${MANAGE_PATH} expirelinks
-```
