@@ -275,9 +275,9 @@ def edit(request, short):
 
                 # The short was not edited and thus, we can directly edit the url
                 else:
-                    if url_form.cleaned_data.get('target').strip() != copy.target:
-                        copy.target = url_form.cleaned_data.get(
-                            'target').strip()
+                    if url_form.cleaned_data.get('destination').strip() != copy.destination:
+                        copy.destination = url_form.cleaned_data.get(
+                            'destination').strip()
                         copy.save()
 
                     # Grab the expiration field value. It's currently an unsable
@@ -316,7 +316,7 @@ def edit(request, short):
             if url.expires != None:
                 # Initialize a URL form with an expire date
                 url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
-                    'target': url.target,
+                    'destination': url.destination,
                     'short': url.short,
                     'expires': 'Custom Date',
                     'expires_custom': url.expires
@@ -324,7 +324,7 @@ def edit(request, short):
             else:
                 # Initialize a URL form without an expire date
                 url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
-                    'target': url.target,
+                    'destination': url.destination,
                     'short': url.short,
                     'expires': 'Never',
                 })  # unbound form

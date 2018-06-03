@@ -166,7 +166,7 @@ class URL(models.Model):
     socialclicks = models.IntegerField(default=0, help_text="")
 
     def __str__(self):
-        return '<Owner: %s - Target URL: %s>' % (
+        return '<Owner: %s - destination URL: %s>' % (
             self.owner.user, self.destination
         )
 
