@@ -61,7 +61,7 @@ class URLForm(ModelForm):
         widget=TextInput(),
         validators=[unique_short],
         max_length=20,
-        min_length=3,
+        min_length=1,
     )
 
     # expires -----------------------------------------------------------------
