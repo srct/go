@@ -30,8 +30,8 @@ class URLForm(ModelForm):
 
     Define custom fields and then render them onto the template.
     """
-    # target ------------------------------------------------------------------
-    target = URLField(
+    # destination ------------------------------------------------------------------
+    destination = URLField(
         required=True,
         label='Long URL (Required)',
         max_length=1000,
@@ -55,7 +55,7 @@ class URLForm(ModelForm):
         # then raise a ValidationError
         raise ValidationError('Short url already exists.')
 
-    short = SlugField(
+    short = CharField(
         required=False,
         label='Short URL (Optional)',
         widget=TextInput(),
@@ -134,7 +134,7 @@ class URLForm(ModelForm):
                                             HTML("""
                                 <h4>Paste the URL you would like to shorten:</h4>
                                 <br />"""),
-                                            'target',
+                                            'destination',
                                             style="background: rgb(#F6F6F6);"),
                                         active=True,
                                         template='crispy/accordian-group.html'),
@@ -177,7 +177,7 @@ class URLForm(ModelForm):
         # what model this form is for
         model = URL
         # what attributes are included
-        fields = ['target']
+        fields = ['destination']
 
 
 class EditForm(URLForm):
@@ -215,7 +215,7 @@ class EditForm(URLForm):
                                             HTML("""
                                 <h4>Modify the URL you would like to shorten:</h4>
                                 <br />"""),
-                                            'target',
+                                            'destination',
                                             style="background: rgb(#F6F6F6);"),
                                         active=True,
                                         template='crispy/accordian-group.html'),

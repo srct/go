@@ -23,7 +23,10 @@ urlpatterns = [
     path('', cache_page(1)(go.views.index), name='index'),
 
     # /view/<short> - View URL data. Cached for 15 minutes
-    path('view/<slug:short>', cache_page(60 * 15)(go.views.view), name='view'),
+    re_path(r'^view/(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
+            cache_page(60 * 15)(go.views.view), name='view'),
+    re_path(r'^view/(?P<short>[-\w]+)$',
+            cache_page(60 * 15)(go.views.view), name='view'),
 
     # /about - About page. Cached for 15 minutes
     path('about', cache_page(60 * 15)
@@ -61,5 +64,7 @@ urlpatterns = [
 
     # Redirection regex.
     re_path(r'^(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
+            go.views.redirection, name='redirection'),
+    re_path(r'^(?P<short>[-\w]+)$',
             go.views.redirection, name='redirection'),
 ]

@@ -243,10 +243,10 @@ class URLTest(TestCase):
 
         self.assertEqual(current_url.date_created, now)
 
-    # target ------------------------------------------------------------------
-    def test_target(self):
+    # destination ------------------------------------------------------------------
+    def test_destination(self):
         """
-        Test that the target field properly accepts a URL
+        Test that the destination field properly accepts a URL
         """
         # Get a URL
         test_url = "https://dhaynes.xyz"
@@ -257,12 +257,12 @@ class URLTest(TestCase):
         current_url = URL.objects.get(owner=get_registered_user)
 
         # Apply the URL
-        current_url.target = test_url
+        current_url.destination = test_url
         current_url.save()
 
-        self.assertEqual(current_url.target, test_url)
+        self.assertEqual(current_url.destination, test_url)
 
-    def test_target_length(self):
+    def test_destination_length(self):
         """
         Test that we can't input a URL longer than 1000 chars
         """
@@ -275,7 +275,7 @@ class URLTest(TestCase):
         current_url = URL.objects.get(owner=get_registered_user)
 
         # Apply the URL
-        current_url.target = test_url
+        current_url.destination = test_url
 
         try:
             current_url.save()
@@ -420,9 +420,9 @@ class URLTest(TestCase):
     #     get_registered_user = RegisteredUser.objects.get(user=get_user)
     #     current_url = URL.objects.get(owner=get_registered_user)
 
-    #     current_url.target = "https://dhaynes.xyz"
+    #     current_url.destination = "https://dhaynes.xyz"
     #     current_url.save()
 
-    #     expected = '<Owner: dhaynes - Target URL: https://dhaynes.xyz>'
+    #     expected = '<Owner: dhaynes - destination URL: https://dhaynes.xyz>'
     #     actual = str(current_url)
     #     self.assertEqual(expected, actual) TODO

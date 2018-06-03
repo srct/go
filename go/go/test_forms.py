@@ -34,7 +34,7 @@ class URLFormTest(TestCase):
         Test that form fields are validated correctly given valid data.
         """
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'destination': 'https://srct.gmu.edu',
             'short': 'pls',
             'expires': '1 Day',
             'expires_custom': ''
@@ -49,7 +49,7 @@ class URLFormTest(TestCase):
         Test that form fields are validated correctly given valid data.
         """
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'destination': 'https://srct.gmu.edu',
             'short': 'pls',
             'expires': 'Custom Date',
             'expires_custom': datetime.now() + timedelta(days=1)
@@ -59,12 +59,12 @@ class URLFormTest(TestCase):
         print(form.errors)
         self.assertTrue(form.is_valid())
 
-    def test_invalid_target(self):
+    def test_invalid_destination(self):
         """
         Test that form fields are validated correctly given valid data.
         """
         form_data = {
-            'target': '.gmu.edu',
+            'destination': '.gmu.edu',
             'short': 'pls',
             'expires': '1 Day',
             'expires_custom': ''
@@ -79,7 +79,7 @@ class URLFormTest(TestCase):
         Test that form fields are validated correctly given valid data.
         """
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'destination': 'https://srct.gmu.edu',
             'short': 'test',
             'expires': '1 Day',
             'expires_custom': ''
@@ -94,7 +94,7 @@ class URLFormTest(TestCase):
         Test that form fields are validated correctly given valid data.
         """
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'destination': 'https://srct.gmu.edu',
             'short': 'pls',
             'expires': 'None',
             'expires_custom': ''
@@ -109,7 +109,7 @@ class URLFormTest(TestCase):
         Test that form fields are validated correctly given valid data.
         """
         form_data = {
-            'target': 'https://srct.gmu.edu',
+            'destination': 'https://srct.gmu.edu',
             'short': 'pls',
             'expires': 'Custom Date',
             'expires_custom': datetime.now() - timedelta(days=1)

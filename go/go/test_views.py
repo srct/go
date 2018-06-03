@@ -135,7 +135,7 @@ class RedirectionTest(TestCase):
         User.objects.create(username='dhaynes', password='password')
         get_user = User.objects.get(username='dhaynes')
         get_registered_user = RegisteredUser.objects.get(user=get_user)
-        URL.objects.create(owner=get_registered_user, short='test', target='https://srct.gmu.edu')
+        URL.objects.create(owner=get_registered_user, short='test', destination='https://srct.gmu.edu')
 
     # def test_redirect_get_anon(self):
     #     """
