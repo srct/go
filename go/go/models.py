@@ -6,6 +6,7 @@ tables containing structured data in the database.
 """
 # Python stdlib Imports
 import string
+import re
 
 # Django Imports
 from django.contrib.auth.models import User
@@ -14,6 +15,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 # Other Imports
 from hashids import Hashids
@@ -144,20 +146,38 @@ class URL(models.Model):
     destination = models.URLField(
         max_length=1000,
         default="https://go.gmu.edu",
-        help_text=""
+        help_text="The URL to be redirected to when visiting the shortlink."
     )
 
-    # TODO Validator for Slug + Emoji
-    """
-    # http://stackoverflow.com/a/13752628/6762004
-    RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
-    slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z')
-    slug_re = _lazy_re_compile(r'^[-a-zA-Z0-9_]+\Z')
-    """
+    def unique_short_validator(value):
+        """
+        Check to make sure the short url has not been used
+        """
+        try:
+            # if we're able to get a URL with the same short url
+            URL.objects.get(short__iexact=value)
+            raise ValidationError(f"Short url already exists.")
+        except URL.DoesNotExist as ex:
+            print(ex)
+            return
+
+    def regex_short_validator(value):
+        """
+        Run the short through our regex validation before insertion into the
+        database.
+        """
+        # http://stackoverflow.com/a/13752628/6762004
+        re_emoji = re.compile('^(([\U00010000-\U0010ffff][\U0000200D]?)+)$')
+        re_str = re.compile('^([-\w]+)$')
+        if not re_emoji.match(value) and not re_str.match(value):
+            raise ValidationError(f"Short url fails regex check.")
+
+    # Note: min_length cannot exist on a model so it is enforced in forms.py
     short = models.CharField(
         max_length=20,
         unique=True,
-        help_text=""
+        validators=[unique_short_validator, regex_short_validator],
+        help_text="The shortcode that acts as the unique go link."
     )
 
     # TODO Abstract analytics into their own model
@@ -166,9 +186,7 @@ class URL(models.Model):
     socialclicks = models.IntegerField(default=0, help_text="")
 
     def __str__(self):
-        return '<Owner: %s - destination URL: %s>' % (
-            self.owner.user, self.destination
-        )
+        return f"<Owner: {self.owner.user} - destination URL: {self.destination}>"
 
     class Meta:
         ordering = ['short']

@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 # Django Imports
 from django.core.exceptions import ValidationError
 from django.forms import (BooleanField, CharField, ChoiceField, DateTimeField,
-                          ModelForm, RadioSelect, SlugField, Textarea,
-                          TextInput, URLField, URLInput)
+                          ModelForm, RadioSelect, Textarea, TextInput,
+                          URLField, URLInput)
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 
@@ -41,25 +41,10 @@ class URLForm(ModelForm):
     )
 
     # short -------------------------------------------------------------------
-    def unique_short(value):
-        """
-        Check to make sure the short url has not been used
-        """
-        try:
-            # if we're able to get a URL with the same short url
-            URL.objects.get(short__iexact=value)
-        except URL.DoesNotExist as ex:
-            print(ex)
-            return
-
-        # then raise a ValidationError
-        raise ValidationError('Short url already exists.')
-
     short = CharField(
         required=False,
         label='Short URL (Optional)',
         widget=TextInput(),
-        validators=[unique_short],
         max_length=20,
         min_length=1,
     )
