@@ -185,7 +185,7 @@ class RegisteredUserTest(TestCase):
         """
         get_user = User.objects.get(username='dhaynes')
         get_registered_user = RegisteredUser.objects.get(user=get_user)
-        expected = '<Registered User: dhaynes - Approval Status: False>'
+        expected = '<RegisteredUser: dhaynes - Approval Status: False>'
         actual = str(get_registered_user)
         self.assertEqual(expected, actual)
 
