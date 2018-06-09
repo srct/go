@@ -138,8 +138,6 @@ def my_links(request):
     return index(request)
 
 # Rate limits are completely arbitrary
-
-
 @ratelimit(key='user', rate='3/m', method='POST', block=True)
 @ratelimit(key='user', rate='25/d', method='POST', block=True)
 def post(request, url_form):
@@ -475,7 +473,6 @@ def redirection(request, short):
     """
     This view redirects a user based on the short URL they requested.
     """
-
     # Get the current domain info
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
@@ -654,11 +651,9 @@ def useradmin(request):
                 return HttpResponseRedirect('manage')
 
     # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(
-        registered=True).filter(approved=False).filter(blocked=False)
+    need_approval = RegisteredUser.objects.filter(registered=True).filter(approved=False).filter(blocked=False)
     # Get a list of all RegisteredUsers that are currently users
-    current_users = RegisteredUser.objects.filter(
-        approved=True).filter(registered=True).filter(blocked=False)
+    current_users = RegisteredUser.objects.filter(approved=True).filter(registered=True).filter(blocked=False)
     # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 

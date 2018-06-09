@@ -10,9 +10,9 @@ from django.contrib.auth.models import User
 # Other Imports
 import requests
 
-def pfparse(pf_name_result):
+def pfparse(pf_name_result: str) -> list:
     """
-    Parse what peoplefinder sends back to us and make a list out of it
+    Parse what peoplefinder sends back to us and make a list out of it.
     """
     # name comes in format of Anderson, Nicholas J
     name_list = pf_name_result.split(',')
@@ -29,12 +29,11 @@ def pfparse(pf_name_result):
     new_name_list = [first_name, name_list[0]]
     return new_name_list
 
-def pfinfo(uname):
+def pfinfo(uname: str) -> list:
     """
-    Get information from peoplefinder
+    Get information from peoplefinder.
     """
-    base_url = settings.PF_URL
-    url = base_url + "basic/all/" + str(uname)
+    url = f"{settings.PF_URL}basic/all/{uname}"
     try:
         metadata = requests.get(url, timeout=30)
         print("Retrieving information from the peoplefinder api.")
@@ -73,7 +72,7 @@ def pfinfo(uname):
             print("Returning empty user info tuple.")
             return ['', '']
 
-def create_user(tree):
+def create_user(tree: list):
     """
     Create a django user based off of the peoplefinder info we parsed earlier.
     """

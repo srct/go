@@ -17,14 +17,12 @@ from django.utils import timezone
 
 # Other Imports
 from hashids import Hashids
+from .validators import regex_short_validator, unique_short_validator
 
-"""
-Generate the salt and initialize Hashids
-
-Note: the Hashids library already implements several restrictions on character
-placement, including repeating or incrementing numbers, or placing curse word
-characters adjacent to one another.
-"""
+# Generate the salt and initialize Hashids
+# Note: the Hashids library already implements several restrictions oncharacter
+# placement, including repeating or incrementing numbers, or placing curse word
+# characters adjacent to one another.
 SIMILAR_CHARS = set(['b', 'G', '6', 'g', 'q', 'l',
                      '1', 'I', 'S', '5', 'O', '0'])
 ALPHANUMERICS = set(string.ascii_letters + string.digits)
@@ -33,7 +31,6 @@ LINK_CHARS = ''.join(ALPHANUMERICS - SIMILAR_CHARS)
 HASHIDS = Hashids(
     salt="srct.gmu.edu", alphabet=(LINK_CHARS)
 )
-
 
 class RegisteredUser(models.Model):
     """
@@ -47,49 +44,40 @@ class RegisteredUser(models.Model):
     )
 
     full_name = models.CharField(
-        "verbose name",
+        "Full Name",
         max_length=100,
         default="",
-        help_text=""
     )
 
     organization = models.CharField(
-        "verbose name",
+        "Organization",
         max_length=100,
         default="",
-        help_text=""
     )
 
     description = models.TextField(
-        "verbose name",
+        "Signup Description",
         blank=True,
         default="",
-        help_text=""
     )
 
     registered = models.BooleanField(
-        "verbose name",
+        "Registration Status",
         default=False,
-        help_text=""
     )
 
     approved = models.BooleanField(
-        "verbose name",
+        "Approval Status",
         default=False,
-        help_text=""
     )
 
     blocked = models.BooleanField(
-        "verbose name",
+        "Blocked Status",
         default=False,
-        help_text=""
     )
 
     def __str__(self):
-        return "<Registered User: {0} - Approval Status: {1}>".format(
-            self.user, self.approved
-        )
-
+        return f"<RegisteredUser: {self.user} - Approval Status: {self.approved}>"
 
 @receiver(post_save, sender=User)
 def handle_reguser_creation(sender, instance, created, **kwargs):
@@ -100,64 +88,40 @@ def handle_reguser_creation(sender, instance, created, **kwargs):
     if created:
         RegisteredUser.objects.create(user=instance)
 
-
 class URL(models.Model):
     """
     The representation of a stored URL redirection rule. Each URL has
     attributes that are used for analytic purposes.
     """
-    # DAY = '1 Day'
-    # WEEK = '1 Week'
-    # MONTH = '1 Month'
-    # CUSTOM = 'Custom Date'
-    # NEVER = 'Never'
-
-    # EXPIRATION_CHOICES = (
-    #     (DAY, DAY),
-    #     (WEEK, WEEK),
-    #     (MONTH, MONTH),
-    #     (NEVER, NEVER),
-    #     (CUSTOM, CUSTOM),
-    # ) TODO
-
     owner = models.ForeignKey(
         RegisteredUser,
         on_delete="cascade",
-        verbose_name="verbose name"
+        verbose_name="RegisteredUser Owner"
     )
 
     date_created = models.DateTimeField(
-        "verbose name",
+        "Go Link Creation Date",
         default=timezone.now,
-        help_text=""
     )
 
     date_expires = models.DateTimeField(
-        "verbose name",
+        "Go Link Expiry Date",
         blank=True,
         null=True,
-        # choices=EXPIRATION_CHOICES, TODO
-        # default=NEVER, TODO
-        help_text=""
     )
 
     destination = models.URLField(
+        "Go Link Destination URL",
         max_length=1000,
         default="https://go.gmu.edu",
-        help_text=""
     )
 
-    # TODO Validator for Slug + Emoji
-    """
-    # http://stackoverflow.com/a/13752628/6762004
-    RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
-    slug_unicode_re = _lazy_re_compile(r'^[-\w]+\Z')
-    slug_re = _lazy_re_compile(r'^[-a-zA-Z0-9_]+\Z')
-    """
+    # Note: min_length cannot exist on a model so it is enforced in forms.py
     short = models.CharField(
+        "Go Shortcode",
         max_length=20,
         unique=True,
-        help_text=""
+        validators=[unique_short_validator, regex_short_validator],
     )
 
     # TODO Abstract analytics into their own model
@@ -166,9 +130,7 @@ class URL(models.Model):
     socialclicks = models.IntegerField(default=0, help_text="")
 
     def __str__(self):
-        return '<Owner: %s - destination URL: %s>' % (
-            self.owner.user, self.destination
-        )
+        return f"<Owner: {self.owner.user} - Destination URL: {self.destination}>"
 
     class Meta:
         ordering = ['short']

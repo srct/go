@@ -3,26 +3,23 @@ go/forms.py
 
 Configure the layout and styling of the Go's forms.
 """
-# Python stdlib Imports
-from datetime import datetime, timedelta
-
 # Django Imports
-from django.core.exceptions import ValidationError
 from django.forms import (BooleanField, CharField, ChoiceField, DateTimeField,
-                          ModelForm, RadioSelect, SlugField, Textarea,
-                          TextInput, URLField, URLInput)
-from django.utils import timezone
+                          ModelForm, RadioSelect, Textarea, TextInput,
+                          URLField, URLInput)
 from django.utils.safestring import mark_safe
+from django.utils import timezone
 
-# App Imports
-from .models import URL, RegisteredUser
-
-# Other Imports
+# Third party imports
 from crispy_forms.bootstrap import (Accordion, AccordionGroup, PrependedText,
                                     StrictButton)
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout
 
+
+# App Imports
+from .models import URL, RegisteredUser
+from .validators import regex_short_validator, valid_date
 
 class URLForm(ModelForm):
     """
@@ -30,7 +27,7 @@ class URLForm(ModelForm):
 
     Define custom fields and then render them onto the template.
     """
-    # destination ------------------------------------------------------------------
+    # destination -------------------------------------------------------------
     destination = URLField(
         required=True,
         label='Long URL (Required)',
@@ -41,25 +38,11 @@ class URLForm(ModelForm):
     )
 
     # short -------------------------------------------------------------------
-    def unique_short(value):
-        """
-        Check to make sure the short url has not been used
-        """
-        try:
-            # if we're able to get a URL with the same short url
-            URL.objects.get(short__iexact=value)
-        except URL.DoesNotExist as ex:
-            print(ex)
-            return
-
-        # then raise a ValidationError
-        raise ValidationError('Short url already exists.')
-
     short = CharField(
         required=False,
         label='Short URL (Optional)',
         widget=TextInput(),
-        validators=[unique_short],
+        validators=[regex_short_validator],
         max_length=20,
         min_length=1,
     )
@@ -88,29 +71,15 @@ class URLForm(ModelForm):
         widget=RadioSelect(),
     )
 
-    def valid_date(value):
-        """
-        Check if the selected date is a valid date
-        """
-        # a valid date is one that is greater than today
-        if value > timezone.now():
-            return
-        # raise a ValidationError if the date is invalid
-        else:
-            raise ValidationError('Date must be after today.')
-
     expires_custom = DateTimeField(
         required=False,
         label='Custom Date',
         input_formats=['%m-%d-%Y'],
         validators=[valid_date],
-        initial=lambda: datetime.now() + timedelta(days=1)
+        initial=lambda: timezone.now() + timezone.timedelta(days=1)
     )
 
     def __init__(self, *args, **kwargs):
-        """
-        On initialization of the form, crispy forms renders this layout.
-        """
         # Grab that host info
         self.host = kwargs.pop('host', None)
         super(URLForm, self).__init__(*args, **kwargs)
