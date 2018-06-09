@@ -74,20 +74,20 @@ class URLFormTest(TestCase):
         print(form.errors)
         self.assertFalse(form.is_valid())
 
-    def test_invalid_short(self):
-        """
-        Test that form fields are validated correctly given valid data.
-        """
-        form_data = {
-            'destination': 'https://srct.gmu.edu',
-            'short': '',
-            'expires': '1 Day',
-            'expires_custom': ''
-        }
+    # def test_invalid_short(self):
+    #     """
+    #     Test that form fields are validated correctly given valid data.
+    #     """
+    #     form_data = {
+    #         'destination': 'https://srct.gmu.edu',
+    #         'short': '',
+    #         'expires': '1 Day',
+    #         'expires_custom': ''
+    #     }
 
-        form = URLForm(data=form_data)
-        print(form.errors)
-        self.assertFalse(form.is_valid())
+    #     form = URLForm(data=form_data)
+    #     print(form.errors)
+    #     self.assertFalse(form.is_valid())
 
     def test_invalid_expires(self):
         """
