@@ -80,7 +80,7 @@ class URLFormTest(TestCase):
         """
         form_data = {
             'destination': 'https://srct.gmu.edu',
-            'short': 'test',
+            'short': '',
             'expires': '1 Day',
             'expires_custom': ''
         }
@@ -96,7 +96,7 @@ class URLFormTest(TestCase):
         form_data = {
             'destination': 'https://srct.gmu.edu',
             'short': 'pls',
-            'expires': 'None',
+            'expires': '',
             'expires_custom': ''
         }
 
