@@ -14,9 +14,10 @@ django-crispy-forms = "==1.7.0"
 django-ratelimit = "==1.0.1"
 django-redis-cache = "==1.7.1"
 hashids = "==1.2.0"
-mysqlclient = "*"
 django-cas-client = "*"
 requests = "*"
+mysqlclient = "*"
+djangorestframework = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"

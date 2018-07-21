@@ -14,10 +14,14 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Other Imports
 from hashids import Hashids
 from .validators import regex_short_validator, unique_short_validator
+from rest_framework.authtoken.models import Token
 
 # Generate the salt and initialize Hashids
 # Note: the Hashids library already implements several restrictions oncharacter
@@ -87,6 +91,12 @@ def handle_reguser_creation(sender, instance, created, **kwargs):
     """
     if created:
         RegisteredUser.objects.create(user=instance)
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        token = Token.objects.create(user=instance)
+        print(token.key)
 
 class URL(models.Model):
     """
