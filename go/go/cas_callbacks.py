@@ -3,12 +3,12 @@ go/cas_callbacks.py
 
 Parse the CAS/PF responses and create users in the database.
 """
+# Other Imports
+import requests
 # Django Imports
 from django.conf import settings
 from django.contrib.auth.models import User
 
-# Other Imports
-import requests
 
 def pfparse(pf_name_result: str) -> list:
     """

@@ -17,12 +17,11 @@ from django.http import HttpResponseServerError  # Http404
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-
 # Other imports
 from ratelimit.decorators import ratelimit
 
 # App Imports
-from .forms import SignupForm, URLForm, EditForm
+from .forms import EditForm, SignupForm, URLForm
 from .models import URL, RegisteredUser
 
 

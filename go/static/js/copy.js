@@ -17,5 +17,3 @@ clipboard.on('success', function (e) {
     e.clearSelection();
     $('#copy-button').attr('data-original-title', 'Copied!').tooltip('show');
 });
-
-
