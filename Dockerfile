@@ -1,5 +1,5 @@
 # Build on top of the python image and install any external packages
-FROM python:3.6
+FROM python:3.7
 RUN apt-get update
 RUN apt-get install netcat -y
 
