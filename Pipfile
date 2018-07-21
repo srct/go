@@ -17,6 +17,7 @@ hashids = "==1.2.0"
 django-cas-client = "*"
 requests = "*"
 mysqlclient = "*"
+djangorestframework = "*"
 
 [requires]
 python_version = "3.7"
