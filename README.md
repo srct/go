@@ -13,3 +13,10 @@ Docs may not exist.
 I wouldn't go so far as to say we are hitting the reset button.
 
 But it's close.
+
+```sh
+pipenv install
+pipenv shell
+code .
+docker-compose up
+```

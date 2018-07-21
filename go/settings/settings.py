@@ -1,11 +1,29 @@
 """
-settings/base.py
+settings/settings.py
 
-Base Settings.
+Settings that are applied project wide. 
 """
 # Python stdlib Imports
 import os
 import sys
+
+# DEV vs PROD
+if os.environ['GO_ENV'] != 'production':
+    DEBUG = True
+    # dummy cache for development-- doesn't actually cache things
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
+else:
+    DEBUG = False
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': 'localhost:6379',
+        },
+    }
 
 # STANDALONE VARS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -109,6 +127,8 @@ INSTALLED_APPS = (
     # Third party
     'crispy_forms',
     'cas',
+    'rest_framework',
+    'rest_framework.authtoken'
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -166,6 +186,7 @@ CAS_RESPONSE_CALLBACKS = (
     'go.cas_callbacks.create_user',
 )
 
+CAS_SERVER_URL = "https://login.gmu.edu"
 
 """
 Mail Settings
@@ -180,3 +201,16 @@ EMAIL_TO = os.environ['GO_EMAIL_TO']
 # Domain used to email to users. See implementation in views.py
 # ie. '@gmu.edu'
 EMAIL_DOMAIN = os.environ['GO_EMAIL_DOMAIN']
+
+"""
+Django Rest Framework Settings
+"""
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
