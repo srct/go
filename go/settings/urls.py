@@ -11,20 +11,35 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 
 # App Imports
-from go import views 
+from go import views
+from cas import views as cas_views
 
 # Third Party
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('users', views.UserViewSet)
-router.register('groups', views.GroupViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
+router.register(r'my', views.URLViewSet, base_name="my")
+router.register(r'registereduser', views.RegisteredUserViewSet)
 
 # This function attempts to import an admin module in each installed
 # application. Such modules are expected to register models with the admin.
 admin.autodiscover()
 
 urlpatterns = [
+    # Root API URL
+    path("", include(router.urls)),
+
+    # Authentication URLs
+    path('auth/login/', cas_views.login, name='cas_login'),
+    path('auth/logout/', cas_views.logout, {'next_page': '/'}, name='cas_logout'),
+
+    # /admin - Administrator interface.
+    path('admin/', admin.site.urls, name='go_admin'),
+    path('auth/', include('rest_framework.urls'))
+
+
 #     # / - Homepage url. Cached for 1 second (this is the page you see after
 #     # logging in, so having it show as not logged in is strange)
 #     path('', cache_page(1)(go.views.index), name='index'),
@@ -58,21 +73,12 @@ urlpatterns = [
 #     path('registered', cache_page(60 * 15)
 #          (TemplateView.as_view(template_name='registered.html')), name='registered'),
 
-#     # /admin - Administrator interface.
-#     path('admin', admin.site.urls, name='go_admin'),
-
 #     # /manage - user approval interface
 #     path('manage', go.views.useradmin, name='useradmin'),
-
-     # Authentication URLs
-     path('login', django.contrib.auth.views.login, name='go_login'),
-     path('logout', django.contrib.auth.views.logout, {'next_page': '/'}, name='go_logout'),
 
 #     # Redirection regex.
 #     re_path(r'^(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
 #             go.views.redirection, name='redirection'),
 #     re_path(r'^(?P<short>[-\w]+)$',
 #             go.views.redirection, name='redirection'),
-    
-    path("", include(router.urls)),
 ]
