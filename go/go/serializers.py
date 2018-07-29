@@ -3,16 +3,13 @@ go/serializers.py
 
 Define how data is translated from the database to json/API representation.
 """
-from django.contrib.auth.models import User, Group
+# App Imports
+from .models import URL, RegisteredUser
+
+# Third Party Imports
 from rest_framework import serializers
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class URLSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ('url', 'name')
+        model = URL
+        fields = ('destination', 'short', 'date_expires')

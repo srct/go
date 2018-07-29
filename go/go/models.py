@@ -90,7 +90,7 @@ def handle_reguser_creation(sender, instance, created, **kwargs):
     is called to create an associated RegisteredUser.
     """
     if created:
-        RegisteredUser.objects.create(user=instance)
+        RegisteredUser.objects.create(user=instance, full_name=instance.get_full_name())
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
