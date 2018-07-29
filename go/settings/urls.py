@@ -18,8 +18,8 @@ from cas import views as cas_views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+router.register(r'my', views.URLViewSet)
 router.register(r'users', views.UserViewSet)
-router.register(r'my', views.URLViewSet, base_name="my")
 router.register(r'registereduser', views.RegisteredUserViewSet)
 
 # This function attempts to import an admin module in each installed
@@ -39,41 +39,11 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls'))
 
 
-#     # / - Homepage url. Cached for 1 second (this is the page you see after
-#     # logging in, so having it show as not logged in is strange)
-#     path('', cache_page(1)(go.views.index), name='index'),
-
 #     # /view/<short> - View URL data. Cached for 15 minutes
 #     re_path(r'^view/(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
 #             cache_page(60 * 15)(go.views.view), name='view'),
 #     re_path(r'^view/(?P<short>[-\w]+)$',
 #             cache_page(60 * 15)(go.views.view), name='view'),
-
-#     # /about - About page. Cached for 15 minutes
-#     path('about', cache_page(60 * 15)
-#          (TemplateView.as_view(template_name='core/about.html')), name='about'),
-
-#     # /signup - Signup page for access. Cached for 15 minutes
-#     path('signup', cache_page(60 * 15)(go.views.signup), name='signup'),
-
-#     # /new - Create a new Go Link
-#     path('new', go.views.new_link, name='new_link'),
-
-#     # /my - My-Links page, view and review links.
-#     path('my', go.views.my_links, name='my_links'),
-
-#     # /edit/<short> - Edit link form
-#     path('edit/<slug:short>', go.views.edit, name='edit'),
-
-#     # /delete/<short> - Delete a link, no content display.
-#     path('delete/<slug:short>', go.views.delete, name='delete'),
-
-#     # /registered - registration complete page. Cached for 15 minutes
-#     path('registered', cache_page(60 * 15)
-#          (TemplateView.as_view(template_name='registered.html')), name='registered'),
-
-#     # /manage - user approval interface
-#     path('manage', go.views.useradmin, name='useradmin'),
 
 #     # Redirection regex.
 #     re_path(r'^(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
