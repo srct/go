@@ -77,36 +77,29 @@ def create_user(tree: list):
     Create a django user based off of the peoplefinder info we parsed earlier.
     """
     print("Parsing CAS information.")
+
     try:
         username = tree[0][0].text
-        user, user_created = User.objects.get_or_create(username=username)
-    except Exception as ex:
-        print("CAS callback unsuccessful:", ex)
+        # error handling in pfinfo function
+        info_name = pfinfo(username)
+        # set and save the user's email
+        email_str = "%s%s" % (username, settings.EMAIL_DOMAIN)
 
-    # error handling in pfinfo function
-    info_name = pfinfo(username)
+        user, user_created = User.objects.get_or_create(
+            username=username,
+            email=email_str,
+            first_name=info_name[0],
+            last_name=info_name[1]
+        )
+        # Password is a required User object field, though doesn't matter for our
+        # purposes because all user auth is handled through CAS, not Django's login.
+        user.set_password('cas_used_instead')
+        user.save()
 
-    try:
         if user_created:
             print("Created user object %s." % username)
-
-            # set and save the user's email
-            email_str = "%s%s" % (username, settings.EMAIL_DOMAIN)
-            user.email = email_str
-            # Password is a required User object field, though doesn't matter for our
-            # purposes because all user auth is handled through CAS, not Django's login.
-            user.set_password('cas_used_instead')
-            user.save()
-            print("Added user's email, %s." % email_str)
-
-            user.first_name = info_name[0]
-            user.last_name = info_name[1]
-            user.save()
-            print("Added user's name, %s %s." % (info_name[0], info_name[1]))
-
-            print("User object creation process completed.")
         else:
             print("User object already exists.")
-        print("CAS callback successful.")
+
     except Exception as ex:
-        print("Unhandled user creation error:", ex)
+        print("CAS callback unsuccessful:", ex)

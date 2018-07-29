@@ -36,4 +36,3 @@ services:
       - GO_EMAIL_HOST_PASSWORD=
       - GO_EMAIL_FROM=
       - GO_EMAIL_TO=
-      - SUPERUSER=dhaynes3

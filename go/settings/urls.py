@@ -19,7 +19,6 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
 router.register(r'my', views.URLViewSet, base_name="my")
 router.register(r'registereduser', views.RegisteredUserViewSet)
 
