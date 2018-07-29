@@ -12,4 +12,5 @@ from rest_framework import serializers
 class URLSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = URL
+        lookup_field = 'short'
         fields = ('destination', 'short', 'date_expires')

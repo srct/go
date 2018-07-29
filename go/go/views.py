@@ -44,6 +44,7 @@ class URLViewSet(viewsets.ModelViewSet):
     """
     serializer_class = URLSerializer
     permission_classes = (URLPermission,)
+    lookup_field = 'short'
 
     def get_queryset(self):
         if not self.request.user.is_staff:
