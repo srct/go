@@ -18,9 +18,7 @@ from cas import views as cas_views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'my', views.URLViewSet)
-router.register(r'users', views.UserViewSet)
-router.register(r'registereduser', views.RegisteredUserViewSet)
+router.register(r'golinks', views.URLViewSet, base_name="golinks")
 
 # This function attempts to import an admin module in each installed
 # application. Such modules are expected to register models with the admin.

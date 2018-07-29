@@ -5,6 +5,8 @@ Parse the CAS/PF responses and create users in the database.
 """
 # Other Imports
 import requests
+import os
+
 # Django Imports
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -94,6 +96,9 @@ def create_user(tree: list):
         # Password is a required User object field, though doesn't matter for our
         # purposes because all user auth is handled through CAS, not Django's login.
         user.set_password('cas_used_instead')
+        if os.environ['GO_ENV'] != 'production':
+            user.is_staff = True
+            user.is_superuser = True
         user.save()
 
         if user_created:
