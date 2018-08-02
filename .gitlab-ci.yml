@@ -32,7 +32,8 @@ before_script:
   - export GO_EMAIL_FROM=
   - export GO_EMAIL_TO=
   - python manage.py makemigrations
-  - python manage.py makemigrations go
+  - python manage.py makemigrations go_ahead
+  - python manage.py makemigrations go_back
   - python manage.py migrate
   - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
 
