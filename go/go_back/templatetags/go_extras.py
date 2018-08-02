@@ -8,7 +8,7 @@ data based on the status of the user.
 from django import template
 
 # App Imports
-from go.models import RegisteredUser
+from go_back.models import RegisteredUser
 
 # To be a valid tag library, the module must contain a module-level variable
 # named register that is a template.Library instance, in which all the tags and

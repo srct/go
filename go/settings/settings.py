@@ -77,7 +77,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            './go/go_forward/templates/'
+            './go/go_ahead/templates/'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -126,8 +126,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'go',
-    'go_forward',
+    'go_back',
+    'go_ahead',
     # Third party
     'crispy_forms',
     'cas',

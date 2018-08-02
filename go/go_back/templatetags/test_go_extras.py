@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 # App Imports
-from go.models import RegisteredUser
+from go_back.models import RegisteredUser
 from .go_extras import is_approved, is_registered
 
 class GoExtrasTest(TestCase):

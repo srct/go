@@ -1,6 +1,6 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('go.urls')),
-    path('', include('go_forward.urls')),
+    path('', include('go_back.urls')),
+    path('', include('go_ahead.urls')),
 ]
