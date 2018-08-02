@@ -26,6 +26,8 @@ else:
     }
 
 # STANDALONE VARS
+
+# /go/go
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # You can generate a secret key from the following link:
@@ -74,7 +76,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates'),
+            './go/go_forward/templates/'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -124,6 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'go',
+    'go_forward',
     # Third party
     'crispy_forms',
     'cas',
