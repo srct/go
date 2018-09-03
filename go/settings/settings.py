@@ -26,6 +26,8 @@ else:
     }
 
 # STANDALONE VARS
+
+# /go/go
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # You can generate a secret key from the following link:
@@ -62,6 +64,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = ''
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
+    './go/static/'
 )
 
 STATICFILES_FINDERS = (
@@ -74,7 +77,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates'),
+            './go/go_ahead/templates/'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,7 +127,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'go',
+    'go_back',
+    'go_ahead',
     # Third party
     'crispy_forms',
     'cas',
@@ -183,7 +188,7 @@ CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
 
 CAS_RESPONSE_CALLBACKS = (
-    'go.cas_callbacks.create_user',
+    'go_back.cas_callbacks.create_user',
 )
 
 CAS_SERVER_URL = "https://login.gmu.edu"
