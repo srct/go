@@ -25,7 +25,7 @@ admin.autodiscover()
 
 urlpatterns = [
     # Root API URL
-    path("api", include(router.urls)),
+    path("api/", include(router.urls)),
 
     # Authentication URLs
     path('auth/login/', cas_views.login, name='cas_login'),

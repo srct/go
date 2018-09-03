@@ -188,7 +188,7 @@ CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
 
 CAS_RESPONSE_CALLBACKS = (
-    'go.cas_callbacks.create_user',
+    'go_back.cas_callbacks.create_user',
 )
 
 CAS_SERVER_URL = "https://login.gmu.edu"

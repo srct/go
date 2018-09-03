@@ -26,12 +26,28 @@ operations on Go links as well as RegisteredUser account management.
 There's a workflow involved with getting started contributing but once you do
 it once or twice it'll seem a lot less daunting.
 
-1.  Docker
+1. React / Webpack
 
-    So we use docker.
 
-2.  Actually coding
+    ```sh
+    yarn
+    yarn dev
+    ```
 
-    You pick an issue
+2.  Docker
 
-3.  Deployment of changes
+    In another terminal tab:
+    ```sh
+    docker-compose up
+    ```
+
+3.  Actually coding
+
+    All JS changes will require a refresh (Webpack rebuilds the app in the background).
+
+    All Python changes will require a refresh. 
+
+
+4.  Deployment of changes
+
+    See me.
