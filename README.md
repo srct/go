@@ -1,6 +1,15 @@
-# Go
+# Go 2
 
 [![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7,3.4+-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.11-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.2.3-yellowgreen.svg)]()
+
+** Make sure to switch to the [go-three](https://git.gmu.edu/srct/go/tree/go-three) branch for development! **
+
+In the terminal,
+
+```
+git checkout -B go-three
+git pull origin go-three
+``` 
 
 #### A project of [GMU SRCT](https://srct.gmu.edu).
 
