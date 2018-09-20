@@ -98,6 +98,9 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         token = Token.objects.create(user=instance)
         print(token.key)
 
+def handle_user_deletion():
+
+
 class URL(models.Model):
     """
     The representation of a stored URL redirection rule. Each URL has
