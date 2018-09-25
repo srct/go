@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Authentication URLs
     path('auth/login/', cas_views.login, name='cas_login'),
-    path('auth/logout/', cas_views.logout, {'next_page': '/'}, name='cas_logout'),
+    path('auth/logout/', cas_views.logout, name='cas_logout'),
 
     # /admin - Administrator interface.
     path('admin/', admin.site.urls, name='go_admin'),
