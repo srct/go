@@ -13,7 +13,12 @@ class GolinksList extends React.Component {
 
   componentDidMount() {
     if (window.django.user.is_authenticated == "True") {
-      fetch("/api/golinks")
+      fetch("/api/golinks/", {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          Authorization: "Token {props.token}"
+        }
+      })
         .then(res => res.json())
         .then(
           result => {

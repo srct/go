@@ -28,6 +28,7 @@ from .models import URL, RegisteredUser
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework.authentication import TokenAuthentication
 from .serializers import URLSerializer
 
 class URLPermission(permissions.BasePermission):
@@ -42,6 +43,7 @@ class URLViewSet(viewsets.ModelViewSet):
     """
     API endpoint that handles creation/read/update/deletion of URL objects.
     """
+    authentication_classes = (TokenAuthentication, )
     serializer_class = URLSerializer
     permission_classes = (URLPermission,)
     lookup_field = 'short'
