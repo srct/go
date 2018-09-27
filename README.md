@@ -21,33 +21,52 @@ operations on Go links as well as RegisteredUser account management.
 
 ### `go_ahead`
 
+`go_ahead` is the ReactJS frontend of the project. It is built with the React
+JavaScript framework to allow for rapid development and experimentation. There
+is also a lot of interactivty that the framework allows that we can leverage
+for a smooth user experience.
+
 ## Getting started with contributing
 
 There's a workflow involved with getting started contributing but once you do
 it once or twice it'll seem a lot less daunting.
 
-1. React / Webpack
+1. Running `go_ahead` | React / Webpack
 
+   You'll need node installed.
 
-    ```sh
-    yarn
-    yarn dev
-    ```
+   ```sh
+   npm install -g yarn
+   yarn
+   yarn dev
+   ```
 
-2.  Docker
+   This starts a foreground process that will rebuild the React site whenever
+   there is a change.
 
-    In another terminal tab:
-    ```sh
-    docker-compose up
-    ```
+2. Running `go_back` | Docker
 
-3.  Actually coding
+   You'll need Docker and docker-compose installed.
 
-    All JS changes will require a refresh (Webpack rebuilds the app in the background).
+   In another terminal tab from the `yarn` one:
 
-    All Python changes will require a refresh. 
+   ```sh
+   docker-compose up
+   ```
 
+3. Misc. | Actually coding
 
-4.  Deployment of changes
+   All JS changes will require a refresh (Webpack rebuilds the app in the background).
+
+   All Python changes will require a refresh.
+
+   To pull in python dependecies and work in a contained environment we use `pipenv`.
+
+   ```
+   pipenv install
+   pipenv shell
+   ```
+
+4)  Deployment of changes
 
     See me.
