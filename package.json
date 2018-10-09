@@ -8,6 +8,7 @@
     "license": "Apache-2.0",
     "private": false,
     "scripts": {
+	"start": "yarn dev",
         "dev": "webpack --mode development ./go/go_ahead/src/index.js --output ./go/static/main.js --watch",
         "build": "webpack --mode production ./project/frontend/src/index.js --output ./go/static/main.js"
     },
