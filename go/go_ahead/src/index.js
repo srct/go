@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route, Link } from 'react-router-dom';
 
-import { HomePage } from './Components';
-import { ABoutPage } from './Components';
+import { HomePage, AboutPage } from './Components';
 
 const Dhaynes = () => <p>dhaynes</p>;
 
@@ -22,7 +21,7 @@ const App = () => (
          </ul>
         <Route path="/" exact component={HomePage} />
         <Route path="/dhaynes" component={Dhaynes} />
-        <Route path="/About" component={AboutPage} />
+        <Route path="/about" component={AboutPage} />
     </div>
 );
 
