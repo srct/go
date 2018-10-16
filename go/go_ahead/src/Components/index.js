@@ -1,5 +1,5 @@
 import { PageTemplate } from './Templates';
-import { HomePage, AboutPage } from './Pages';
+import { HomePage, AboutPage, DhaynesPage } from './Pages';
 import { NavBar } from './Organisms';
 
 export {
@@ -8,6 +8,7 @@ export {
     //Pages
     HomePage,
     AboutPage,
+    DhaynesPage,
     //Organisms
     NavBar,
 };

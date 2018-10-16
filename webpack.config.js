@@ -14,6 +14,7 @@ module.exports = {
         extensions: ['*', '.js', '.jsx'],
         alias: {
             Components: path.resolve(__dirname, './go/go_ahead/src/Components'),
+            Utils: path.resolve(__dirname, './go/go_ahead/src/Utils'),
         },
     },
 };

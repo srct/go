@@ -2,12 +2,12 @@ import React from 'react';
 
 import { PageTemplate } from 'Components';
 
-export default class AboutPage extends React.Component {
+export default class DhaynesPage extends React.Component {
     state = {};
     render() {
         return (
-            <PageTemplate page={'about'}>
-                <p>About page</p>
+            <PageTemplate page={'dhaynes'}>
+                <h2>DAVID HAYNES</h2>
             </PageTemplate>
         );
     }
