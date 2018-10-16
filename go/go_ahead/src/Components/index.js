@@ -1,3 +1,4 @@
 import { HomePage, AboutPage } from './Pages';
+import { NavBar } from './Organisms';
 
-export { HomePage, AboutPage };
+export { HomePage, AboutPage, NavBar };
