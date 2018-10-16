@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     module: {
         rules: [
@@ -10,5 +12,8 @@ module.exports = {
     },
     resolve: {
         extensions: ['*', '.js', '.jsx'],
+        alias: {
+            Components: path.resolve(__dirname, './go/go_ahead/src/Components'),
+        },
     },
 };

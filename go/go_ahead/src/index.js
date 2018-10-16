@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { HashRouter, Route, Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
 
-import { HomePage, AboutPage, NavBar } from './Components';
+import { HomePage, AboutPage, NavBar } from 'Components';
 
 const Dhaynes = () => <p>dhaynes</p>;
 
