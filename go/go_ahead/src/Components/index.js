@@ -1,3 +1,14 @@
-import { HomePage } from './Pages';
+import { PageTemplate } from './Templates';
+import { HomePage, AboutPage, DhaynesPage } from './Pages';
+import { NavBar } from './Organisms';
 
-export { HomePage };
+export {
+    //Tempaltes
+    PageTemplate,
+    //Pages
+    HomePage,
+    AboutPage,
+    DhaynesPage,
+    //Organisms
+    NavBar,
+};
