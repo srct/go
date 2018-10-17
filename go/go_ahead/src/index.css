@@ -1,5 +1,8 @@
+.active {
+  background-color: #0099FF;
+}
 body {
-  background-color: #FFCC00;
+  background-color: #00CC00;
   padding: 20px;
   margin: 0;
 }

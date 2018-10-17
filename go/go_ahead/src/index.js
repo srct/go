@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Route, Link } from 'react-router-dom';
+import { HashRouter, Route, NavLink } from 'react-router-dom';
 
 import './index.css';
 
@@ -10,16 +10,16 @@ const Dhaynes = () => <p>dhaynes</p>;
 
 const App = () => (
     <div>
-	<h1>Simple SPA</h1>
+	<h1>SRCT Go</h1>
         <ul className="header">
             <li>
-                <Link to="/">Home</Link>
+                <NavLink exact to="/">Home</NavLink>
             </li>
             <li>
-                <Link to="/dhaynes">dhaynes</Link>
+                <NavLink to="/dhaynes">dhaynes</NavLink>
             </li>
             <li>
-                <Link to="/About">About</Link>
+                <NavLink to="/About">About</NavLink>
             </li>
          </ul>
 	<div className="content">
@@ -36,3 +36,7 @@ ReactDOM.render(
     </HashRouter>,
     document.getElementById('root')
 );
+
+//References
+//https://www.kirupa.com/react/creating_single_page_app_react_using_react_router.htm
+
