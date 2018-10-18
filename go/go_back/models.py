@@ -15,8 +15,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 # Other Imports
 from hashids import Hashids
@@ -27,61 +25,38 @@ from rest_framework.authtoken.models import Token
 # Note: the Hashids library already implements several restrictions oncharacter
 # placement, including repeating or incrementing numbers, or placing curse word
 # characters adjacent to one another.
-SIMILAR_CHARS = set(['b', 'G', '6', 'g', 'q', 'l',
-                     '1', 'I', 'S', '5', 'O', '0'])
+SIMILAR_CHARS = set(["b", "G", "6", "g", "q", "l", "1", "I", "S", "5", "O", "0"])
 ALPHANUMERICS = set(string.ascii_letters + string.digits)
-LINK_CHARS = ''.join(ALPHANUMERICS - SIMILAR_CHARS)
+LINK_CHARS = "".join(ALPHANUMERICS - SIMILAR_CHARS)
 
-HASHIDS = Hashids(
-    salt="srct.gmu.edu", alphabet=(LINK_CHARS)
-)
+HASHIDS = Hashids(salt="srct.gmu.edu", alphabet=(LINK_CHARS))
+
 
 class RegisteredUser(models.Model):
     """
     Wrapper model for the built in User model which stores data pertaining to
     the registration / approval / blocked status of a django user.
     """
+
     user = models.OneToOneField(
-        User,
-        on_delete="cascade",
-        verbose_name="Django User Object"
+        User, on_delete="cascade", verbose_name="Django User Object"
     )
 
-    full_name = models.CharField(
-        "Full Name",
-        max_length=100,
-        default="",
-    )
+    full_name = models.CharField("Full Name", max_length=100, default="")
 
-    organization = models.CharField(
-        "Organization",
-        max_length=100,
-        default="",
-    )
+    organization = models.CharField("Organization", max_length=100, default="")
 
-    description = models.TextField(
-        "Signup Description",
-        blank=True,
-        default="",
-    )
+    description = models.TextField("Signup Description", blank=True, default="")
 
-    registered = models.BooleanField(
-        "Registration Status",
-        default=False,
-    )
+    registered = models.BooleanField("Registration Status", default=False)
 
-    approved = models.BooleanField(
-        "Approval Status",
-        default=False,
-    )
+    approved = models.BooleanField("Approval Status", default=False)
 
-    blocked = models.BooleanField(
-        "Blocked Status",
-        default=False,
-    )
+    blocked = models.BooleanField("Blocked Status", default=False)
 
     def __str__(self):
         return f"<RegisteredUser: {self.user} - Approval Status: {self.approved}>"
+
 
 @receiver(post_save, sender=User)
 def handle_reguser_creation(sender, instance, created, **kwargs):
@@ -92,38 +67,29 @@ def handle_reguser_creation(sender, instance, created, **kwargs):
     if created:
         RegisteredUser.objects.create(user=instance, full_name=instance.get_full_name())
 
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
-        token = Token.objects.create(user=instance)
-        print(token.key)
+        Token.objects.create(user=instance)
+
 
 class URL(models.Model):
     """
     The representation of a stored URL redirection rule. Each URL has
     attributes that are used for analytic purposes.
     """
+
     owner = models.ForeignKey(
-        RegisteredUser,
-        on_delete="cascade",
-        verbose_name="RegisteredUser Owner"
+        RegisteredUser, on_delete="cascade", verbose_name="RegisteredUser Owner"
     )
 
-    date_created = models.DateTimeField(
-        "Go Link Creation Date",
-        default=timezone.now,
-    )
+    date_created = models.DateTimeField("Go Link Creation Date", default=timezone.now)
 
-    date_expires = models.DateTimeField(
-        "Go Link Expiry Date",
-        blank=True,
-        null=True,
-    )
+    date_expires = models.DateTimeField("Go Link Expiry Date", blank=True, null=True)
 
     destination = models.URLField(
-        "Go Link Destination URL",
-        max_length=1000,
-        default="https://go.gmu.edu",
+        "Go Link Destination URL", max_length=1000, default="https://go.gmu.edu"
     )
 
     # Note: min_length cannot exist on a model so it is enforced in forms.py
@@ -143,7 +109,7 @@ class URL(models.Model):
         return f"<Owner: {self.owner.user} - Destination URL: {self.destination}>"
 
     class Meta:
-        ordering = ['short']
+        ordering = ["short"]
 
     @staticmethod
     def generate_valid_short():
