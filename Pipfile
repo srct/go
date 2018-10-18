@@ -7,7 +7,6 @@ name = "pypi"
 pylint = "*"
 pylint-django = "*"
 coverage = "*"
-black = "*"
 
 [packages]
 django = "<2.1,>=2.0"
@@ -17,8 +16,8 @@ django-redis-cache = "==1.7.1"
 hashids = "==1.2.0"
 django-cas-client = "*"
 requests = "*"
-mysqlclient = "*"
 djangorestframework = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.7"
