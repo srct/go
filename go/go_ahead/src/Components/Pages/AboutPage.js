@@ -3,16 +3,24 @@ import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button } from 'reactstrap';
 
 //Using Card class: reactstrap.github.io/components/card/
-
 import { PageTemplate } from 'Components';
+
+// Apply Global Masonstrap styling
+import 'masonstrap/build/css/masonstrap.min.css';
+import 'masonstrap/build/js/masonstrap.min.js';
 
 export default class AboutPage extends React.Component {
     state = {};
+
+   componentDidMount(){
+     document.title = "About"
+    }
+
     render() {
         return (
             <PageTemplate page={'about'}>
                 <p>About page</p>
-	      <Card>
+	      <Card className="shadow-lg p-3 mb-5 bg-white rounded">
 	        <CardBody>
         	  <CardTitle>Terms of Use</CardTitle>
         	  <CardText>
@@ -32,7 +40,7 @@ export default class AboutPage extends React.Component {
 		   </CardText>
         	</CardBody>
 	      </Card>
-       	      <Card>
+       	      <Card className="shadow-lg p-3 mb-5 bg-white rounded">
 	        <CardBody>
         	  <CardTitle>Who made Go?</CardTitle>
         	  <CardText>
@@ -53,7 +61,7 @@ export default class AboutPage extends React.Component {
 	 	  </CardText>
         	</CardBody>
 	      </Card>
-       	      <Card>
+       	      <Card className="shadow-lg p-3 mb-5 bg-white rounded">
 	        <CardBody>
         	  <CardTitle>Thanks!</CardTitle>
         	  <CardText>
