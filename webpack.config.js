@@ -1,12 +1,12 @@
+const path = require("path");
+
 module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+        use: ["babel-loader"]
       },
       {
         test: /\.css$/,
@@ -20,5 +20,12 @@ module.exports = {
         ]
       }
     ]
+  },
+  resolve: {
+    extensions: ["*", ".js", ".jsx"],
+    alias: {
+      Components: path.resolve(__dirname, "./go/go_ahead/src/Components"),
+      Utils: path.resolve(__dirname, "./go/go_ahead/src/Utils")
+    }
   }
 };
