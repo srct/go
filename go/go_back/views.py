@@ -4,15 +4,16 @@ go/views.py
 The functions that handle a request to a given URL. Get some data, manipulate
 it, and return a rendered template.
 """
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from .serializers import URLSerializer
-from .models import URL
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+
+from .serializers import URLSerializer
+from .models import URL
 
 
 class URLPermission(permissions.BasePermission):
@@ -46,11 +47,6 @@ class URLViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user.registereduser)
 
 
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
-
-
 class CustomAuthToken(ObtainAuthToken):
     authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticated,)
@@ -59,3 +55,20 @@ class CustomAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=request.user)
         return Response({"token": token.key})
 
+
+class GetSessionInfo(APIView):
+    """Handy endpoint to return current user session status & information to the frontend."""
+
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        token, created = Token.objects.get_or_create(user=request.user)
+        session_info = {
+            "username": request.user.username,
+            # "full_name": f"{request.user.get_full_name}",
+            "last_login": request.user.last_login,
+            "is_authenticated": request.user.is_authenticated,
+            "token": token.key,
+        }
+        return Response(session_info)
