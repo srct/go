@@ -4,17 +4,15 @@ settings/urls.py
 The URLs of the project and their associated view that requests are routed to.
 """
 # Django Imports
-from django.urls import path, re_path, include
+from django.urls import path, include
 from django.contrib import admin
-from django.views.decorators.cache import cache_page
-from django.views.generic import TemplateView
-
-# App Imports
-from . import views
-from cas import views as cas_views
 
 # Third Party
 from rest_framework import routers
+from cas import views as cas_views
+
+# App Imports
+from . import views
 
 router = routers.DefaultRouter()
 router.register(r"golinks", views.URLViewSet, base_name="golinks")
@@ -32,7 +30,8 @@ urlpatterns = [
     # /admin - Administrator interface.
     path("admin/", admin.site.urls, name="go_admin"),
     path("auth/", include("rest_framework.urls")),
-    path("auth/token/", views.CustomAuthToken.as_view())
+    path("auth/token/", views.CustomAuthToken.as_view()),
+    path("auth/status/", views.GetSessionInfo.as_view())
     #     # /view/<short> - View URL data. Cached for 15 minutes
     #     re_path(r'^view/(?P<short>([\U00010000-\U0010ffff][\U0000200D]?)+)$',
     #             cache_page(60 * 15)(go.views.view), name='view'),
