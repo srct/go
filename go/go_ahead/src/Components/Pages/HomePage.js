@@ -1,12 +1,14 @@
 import React from 'react';
 
+import { PageTemplate, AuthButton } from 'Components';
+
 export default class HomePage extends React.Component {
-    state = {};
     render() {
         return (
-            <div>
+            <PageTemplate page={'home'}>
                 <p>Hello World! 1</p>
-            </div>
+                <AuthButton />
+            </PageTemplate>
         );
     }
 }
