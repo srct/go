@@ -1,14 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import { NavBar } from 'Components';
+import { NavBar } from "Components";
 
-export default class PageTemplate extends React.Component {
-    render() {
-        return (
-            <div>
-                <NavBar page={this.props.page} />
-                <div>{this.props.children}</div>
-            </div>
-        );
-    }
-}
+const PageTemplate = props => (
+  <div>
+    <NavBar page={props.page} />
+    <div>{props.children}</div>
+  </div>
+);
+
+export default PageTemplate;

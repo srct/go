@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter, Route, Link } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import { Routes } from "Utils";
 

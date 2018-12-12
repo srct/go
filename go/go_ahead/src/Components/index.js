@@ -4,7 +4,7 @@ import { NavBar } from "./Organisms";
 import { AuthButton } from "./Molecules";
 
 export {
-  //Tempaltes
+  //Templates
   PageTemplate,
   //Pages
   HomePage,
