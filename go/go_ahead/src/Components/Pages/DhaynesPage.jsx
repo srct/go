@@ -3,7 +3,7 @@ import React from "react";
 import { PageTemplate } from "Components";
 
 const DhaynesPage = () => (
-  <PageTemplate page={"dhaynes"}>
+  <PageTemplate>
     <h2>DAVID HAYNES</h2>
   </PageTemplate>
 );

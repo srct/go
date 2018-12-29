@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { PageTemplate } from "Components";
 
 const SignupSchema = Yup.object().shape({
   password: Yup.string()
@@ -12,9 +13,80 @@ const SignupSchema = Yup.object().shape({
 });
 
 const DebugCRUD = () => (
-  <div>
-    <h1>Debug CRUD Page</h1>
+  <PageTemplate>
     <div>
+      <h1>Debug CRUD Page</h1>
+
+      <h3>Create</h3>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={SignupSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            console.log(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+        render={({ isSubmitting }) => (
+          <Form>
+            <Field type="email" name="email" placeholder="Email" />
+            <ErrorMessage name="email" component="div" />
+            <Field type="password" name="password" />
+            <ErrorMessage name="password" />
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+        )}
+      />
+
+      <h3>Read</h3>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={SignupSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            console.log(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+        render={({ isSubmitting }) => (
+          <Form>
+            <Field type="email" name="email" placeholder="Email" />
+            <ErrorMessage name="email" component="div" />
+            <Field type="password" name="password" />
+            <ErrorMessage name="password" />
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+        )}
+      />
+
+      <h3>Update</h3>
+      <Formik
+        initialValues={{ email: "", password: "" }}
+        validationSchema={SignupSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            console.log(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+        render={({ isSubmitting }) => (
+          <Form>
+            <Field type="email" name="email" placeholder="Email" />
+            <ErrorMessage name="email" component="div" />
+            <Field type="password" name="password" />
+            <ErrorMessage name="password" />
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+        )}
+      />
+
+      <h3>Delete</h3>
       <Formik
         initialValues={{ email: "", password: "" }}
         validationSchema={SignupSchema}
@@ -37,7 +109,7 @@ const DebugCRUD = () => (
         )}
       />
     </div>
-  </div>
+  </PageTemplate>
 );
 
 export default DebugCRUD;

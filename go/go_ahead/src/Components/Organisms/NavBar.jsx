@@ -9,6 +9,7 @@ import {
   NavbarToggler,
   Collapse
 } from "reactstrap";
+import { AuthButton } from "../";
 
 class NavBar extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { page } = this.props;
+    const { pathname } = this.props.location;
     return (
       <Navbar dark color="dark" expand="md">
         <Container>
@@ -45,20 +46,21 @@ class NavBar extends React.Component {
           <Collapse isOpen={!this.state.collapsed} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="#/dhaynes" active={page == "dhaynes"}>
+                <NavLink href="#/dhaynes" active={pathname == "/dhaynes"}>
                   Dhaynes
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#/about" active={page == "about"}>
+                <NavLink href="#/about" active={pathname == "/about"}>
                   About
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#/debug" active={page == "debug"}>
+                <NavLink href="#/debug" active={pathname == "/debug"}>
                   Debug
                 </NavLink>
               </NavItem>
+              <AuthButton />
             </Nav>
           </Collapse>
         </Container>

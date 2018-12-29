@@ -6,7 +6,7 @@ import { PageTemplate } from "Components";
 const AboutPage = () => {
   document.title = "About";
   return (
-    <PageTemplate page={"about"}>
+    <PageTemplate>
       <p>About page</p>
       <Card className="shadow-lg p-3 mb-5 bg-white rounded">
         <CardBody>
