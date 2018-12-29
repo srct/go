@@ -34,6 +34,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^1.0.0",
+    "formik": "^1.4.1",
     "masonstrap": "https://git.gmu.edu/srct/masonstrap.git",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
@@ -41,6 +42,7 @@
     "reactstrap": "^6.5.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.16.4",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "yup": "^0.26.6"
   }
 }
