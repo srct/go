@@ -4,6 +4,7 @@ go/views.py
 The functions that handle a request to a given URL. Get some data, manipulate
 it, and return a rendered template.
 """
+from django.shortcuts import get_object_or_404, redirect
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.views import APIView
@@ -72,3 +73,13 @@ class GetSessionInfo(APIView):
             "token": token.key,
         }
         return Response(session_info)
+
+
+def redirection(request, short):
+    """
+    This view redirects a user based on the short URL they requested.
+    """
+    # Get the URL object that relates to the requested Go link
+    url = get_object_or_404(URL, short__iexact=short)
+
+    return redirect(url.destination)

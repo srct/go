@@ -17,19 +17,20 @@ def pfparse(pf_name_result: str) -> list:
     Parse what peoplefinder sends back to us and make a list out of it.
     """
     # name comes in format of Anderson, Nicholas J
-    name_list = pf_name_result.split(',')
+    name_list = pf_name_result.split(",")
     # there's random whitespace with the first name
     first_name_section = name_list[1].strip()
     # check if there's a middle initial
-    mi_q = first_name_section.split(' ')
+    mi_q = first_name_section.split(" ")
     # make sure that the additional elements aren't multiple names
     if len(mi_q[-1]) == 1:
-        first_name = ' '.join(mi_q[:-1])
+        first_name = " ".join(mi_q[:-1])
     else:
         first_name = first_name_section
     # our list containing the name of the person in a usable list
     new_name_list = [first_name, name_list[0]]
     return new_name_list
+
 
 def pfinfo(uname: str) -> list:
     """
@@ -43,36 +44,43 @@ def pfinfo(uname: str) -> list:
     except requests.exceptions.RequestException as ex:
         print("Cannot resolve to peoplefinder api:", ex)
         print("Returning empty user info tuple.")
-        return ['', '']
+        return ["", ""]
     else:
         pfjson = metadata.json()
         try:
-            if len(pfjson['results']) == 1:
-                if pfjson['method'] == 'peoplefinder':
-                    name_str = pfjson['results'][0]['name']
+            if len(pfjson["results"]) == 1:
+                if pfjson["method"] == "peoplefinder":
+                    name_str = pfjson["results"][0]["name"]
                     name = pfparse(name_str)
-                elif pfjson['method'] == 'ldap':
-                    name = [pfjson['results'][0]['givenname'], pfjson['results'][0]['surname']]
+                elif pfjson["method"] == "ldap":
+                    name = [
+                        pfjson["results"][0]["givenname"],
+                        pfjson["results"][0]["surname"],
+                    ]
                 else:
-                    name = pfjson['results'][0]['name']
+                    name = pfjson["results"][0]["name"]
                 return name
             else:
-                if pfjson['method'] == 'peoplefinder':
-                    name_str = pfjson['results'][1]['name']
+                if pfjson["method"] == "peoplefinder":
+                    name_str = pfjson["results"][1]["name"]
                     name = pfparse(name_str)
-                elif pfjson['method'] == 'ldap':
-                    name = [pfjson['results'][1]['givenname'], pfjson['results'][1]['surname']]
+                elif pfjson["method"] == "ldap":
+                    name = [
+                        pfjson["results"][1]["givenname"],
+                        pfjson["results"][1]["surname"],
+                    ]
                 else:
-                    name = pfjson['results'][0]['name']
+                    name = pfjson["results"][0]["name"]
                 return name
         # if the name is not in peoplefinder, return empty first and last name
         except IndexError as ex:
             print("Name not found in peoplefinder.")
-            return ['', '']
+            return ["", ""]
         except Exception as ex:
             print("Unknown peoplefinder error:", ex)
             print("Returning empty user info tuple.")
-            return ['', '']
+            return ["", ""]
+
 
 def create_user(tree: list):
     """
@@ -83,7 +91,8 @@ def create_user(tree: list):
     try:
         username = tree[0][0].text
         # error handling in pfinfo function
-        info_name = pfinfo(username)
+        # info_name = pfinfo(username)
+        info_name = ["", ""]
         # set and save the user's email
         email_str = "%s%s" % (username, settings.EMAIL_DOMAIN)
 
@@ -91,12 +100,12 @@ def create_user(tree: list):
             username=username,
             email=email_str,
             first_name=info_name[0],
-            last_name=info_name[1]
+            last_name=info_name[1],
         )
         # Password is a required User object field, though doesn't matter for our
         # purposes because all user auth is handled through CAS, not Django's login.
-        user.set_password('cas_used_instead')
-        if os.environ['GO_ENV'] != 'production':
+        user.set_password("cas_used_instead")
+        if os.environ["GO_ENV"] != "production":
             user.is_staff = True
             user.is_superuser = True
         user.save()
@@ -105,6 +114,5 @@ def create_user(tree: list):
             print("Created user object %s." % username)
         else:
             print("User object already exists.")
-
     except Exception as ex:
         print("CAS callback unsuccessful:", ex)
