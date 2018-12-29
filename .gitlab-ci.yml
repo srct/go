@@ -39,6 +39,13 @@ before_script:
 
 Go-py3.7:
   image: library/python:3.7
-  stage: test
+  stage: build
   script:
     - echo "done :)"
+
+Go-node11:
+  image: library/node:11
+  stage: build
+  script:
+    - yarn
+    - yarn build
