@@ -2,7 +2,7 @@ services:
   - mysql:5.7
 
 stages:
-  - test
+  - build
 
 variables:
   MYSQL_DATABASE: go
