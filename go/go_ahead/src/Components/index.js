@@ -1,17 +1,17 @@
-import { PageTemplate } from "./Templates";
-import { HomePage, AboutPage, DhaynesPage } from "./Pages";
-import { NavBar } from "./Organisms";
 import { AuthButton } from "./Molecules";
+import { NavBar } from "./Organisms";
+import { HomePage, AboutPage, DhaynesPage } from "./Pages";
+import { PageTemplate } from "./Templates";
 
 export {
-  //Templates
-  PageTemplate,
+  //Molecules
+  AuthButton,
+  //Organisms
+  NavBar,
   //Pages
   HomePage,
   AboutPage,
   DhaynesPage,
-  //Organisms
-  NavBar,
-  //Molecules
-  AuthButton
+  //Templates
+  PageTemplate
 };

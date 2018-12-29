@@ -9,8 +9,8 @@
   "private": false,
   "scripts": {
     "start": "yarn dev",
-    "dev": "webpack --mode development ./go/go_ahead/src/App.js --output ./go/static/main.js --watch",
-    "build": "webpack --mode production ./go/go_ahead/src/App.js --output ./go/static/main.js"
+    "dev": "webpack --mode development ./go/go_ahead/src/App.jsx --output ./go/static/main.js --watch",
+    "build": "webpack --mode production ./go/go_ahead/src/App.jsx --output ./go/static/main.js"
   },
   "babel": {
     "presets": [
