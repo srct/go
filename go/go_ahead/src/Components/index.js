@@ -1,6 +1,6 @@
 import { AuthButton } from "./Molecules";
 import { NavBar } from "./Organisms";
-import { HomePage, AboutPage, DhaynesPage } from "./Pages";
+import { HomePage, AboutPage, DhaynesPage, DebugCRUD } from "./Pages";
 import { PageTemplate } from "./Templates";
 
 export {
@@ -12,6 +12,7 @@ export {
   HomePage,
   AboutPage,
   DhaynesPage,
+  DebugCRUD,
   //Templates
   PageTemplate
 };
