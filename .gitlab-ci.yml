@@ -8,39 +8,37 @@ variables:
   MYSQL_DATABASE: go
   MYSQL_ROOT_PASSWORD: root
 
-before_script:
-  - apt-get update -qy
-  - apt-get install -y redis-server
-  - pip install pipenv
-  - pipenv install -d --system --deploy
-  - nohup redis-server &
-  - cd go/
-  - export GO_SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
-  - export GO_DB_NAME="go"
-  - export GO_ENV="production"
-  - export GO_DB_USER="root"
-  - export GO_DB_PASSWORD="root"
-  - export GO_DB_HOST="mysql"
-  - export GO_DB_PORT=3306
-  - export GO_ALLOWED_HOSTS="*"
-  - export GO_EMAIL_DOMAIN="@masonlive.gmu.edu"
-  - export GO_CAS_URL="https://cas.srct.gmu.edu/"
-  - export GO_EMAIL_HOST=
-  - export GO_EMAIL_PORT=
-  - export GO_EMAIL_HOST_USER=
-  - export GO_EMAIL_HOST_PASSWORD=
-  - export GO_EMAIL_FROM=
-  - export GO_EMAIL_TO=
-  - python manage.py makemigrations
-  - python manage.py makemigrations go_ahead
-  - python manage.py makemigrations go_back
-  - python manage.py migrate
-  - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
-
 Go-py3.7:
   image: library/python:3.7
   stage: build
   script:
+    - apt-get update -qy
+    - apt-get install -y redis-server
+    - pip install pipenv
+    - pipenv install -d --system --deploy
+    - nohup redis-server &
+    - cd go/
+    - export GO_SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
+    - export GO_DB_NAME="go"
+    - export GO_ENV="production"
+    - export GO_DB_USER="root"
+    - export GO_DB_PASSWORD="root"
+    - export GO_DB_HOST="mysql"
+    - export GO_DB_PORT=3306
+    - export GO_ALLOWED_HOSTS="*"
+    - export GO_EMAIL_DOMAIN="@masonlive.gmu.edu"
+    - export GO_CAS_URL="https://cas.srct.gmu.edu/"
+    - export GO_EMAIL_HOST=
+    - export GO_EMAIL_PORT=
+    - export GO_EMAIL_HOST_USER=
+    - export GO_EMAIL_HOST_PASSWORD=
+    - export GO_EMAIL_FROM=
+    - export GO_EMAIL_TO=
+    - python manage.py makemigrations
+    - python manage.py makemigrations go_ahead
+    - python manage.py makemigrations go_back
+    - python manage.py migrate
+    - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
     - echo "done :)"
 
 Go-node11:
