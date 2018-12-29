@@ -17,4 +17,4 @@ __pycache__/
 go/sourceme.sh
 .DS_STORE
 node_modules/
-go/static/
+go/static/main.js
