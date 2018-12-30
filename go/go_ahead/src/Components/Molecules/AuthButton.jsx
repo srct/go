@@ -27,7 +27,11 @@ class AuthButton extends React.Component {
   render() {
     const { is_auth, error } = this.state;
     if (error) {
-      return <div>Error: {error.message}</div>;
+      return (
+        <Button outline color="accent">
+          Error: {error.message}
+        </Button>
+      );
     } else {
       return (
         <div>

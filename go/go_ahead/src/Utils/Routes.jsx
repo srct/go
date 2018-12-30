@@ -10,14 +10,57 @@ import {
 
 const NavBarWithRouter = withRouter(props => <NavBar {...props} />);
 
-const Routes = () => (
-  <div>
-    <NavBarWithRouter />
-    <Route path="/" exact component={HomePage} />
-    <Route path="/dhaynes" component={DhaynesPage} />
-    <Route path="/about" component={AboutPage} />
-    <Route path="/debug" component={DebugCRUD} />
-  </div>
-);
+class Routes extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      authToken: null
+    };
+  }
+
+  componentDidMount() {
+    fetch("/auth/token")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            authToken: result.token
+          });
+        },
+        error => {
+          this.setState({
+            error
+          });
+        }
+      );
+  }
+
+  render() {
+    const { authToken } = this.state;
+    return (
+      <div>
+        <NavBarWithRouter />
+        <Route
+          path="/"
+          exact
+          render={props => <HomePage {...props} authToken={authToken} />}
+        />
+        <Route
+          path="/dhaynes"
+          render={props => <DhaynesPage {...props} authToken={authToken} />}
+        />
+        <Route
+          path="/about"
+          render={props => <AboutPage {...props} authToken={authToken} />}
+        />
+        <Route
+          path="/debug"
+          render={props => <DebugCRUD {...props} authToken={authToken} />}
+        />
+      </div>
+    );
+  }
+}
 
 export default Routes;
