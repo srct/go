@@ -2,6 +2,7 @@ import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { PageTemplate } from "Components";
+import { GetAllGoLinks } from "../../Utils";
 
 const SignupSchema = Yup.object().shape({
   password: Yup.string()
@@ -12,104 +13,123 @@ const SignupSchema = Yup.object().shape({
     .required("Required")
 });
 
-const DebugCRUD = () => (
-  <PageTemplate>
-    <div>
-      <h1>Debug CRUD Page</h1>
+class DebugCRUD extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { AllGoLinks: "", error: null };
+  }
 
-      <h3>Create</h3>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={SignupSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
-        render={({ isSubmitting }) => (
-          <Form>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </Form>
-        )}
-      />
+  async componentDidMount() {
+    GetAllGoLinks(this.props.authToken)
+      .then(data =>
+        this.setState({
+          AllGoLinks: data
+        })
+      )
+      .catch(reason => this.setState({ error: reason }));
+  }
 
-      <h3>Read</h3>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={SignupSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
-        render={({ isSubmitting }) => (
-          <Form>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </Form>
-        )}
-      />
+  render() {
+    return (
+      <PageTemplate>
+        <div>
+          <h1>Debug CRUD Page</h1>
 
-      <h3>Update</h3>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={SignupSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
-        render={({ isSubmitting }) => (
-          <Form>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </Form>
-        )}
-      />
+          <h3>Create</h3>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={SignupSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                console.log(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 400);
+            }}
+            render={({ isSubmitting }) => (
+              <Form>
+                <Field type="email" name="email" placeholder="Email" />
+                <ErrorMessage name="email" component="div" />
+                <Field type="password" name="password" />
+                <ErrorMessage name="password" />
+                <button type="submit" disabled={isSubmitting}>
+                  Submit
+                </button>
+              </Form>
+            )}
+          />
 
-      <h3>Delete</h3>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        validationSchema={SignupSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
-        render={({ isSubmitting }) => (
-          <Form>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" />
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </Form>
-        )}
-      />
-    </div>
-  </PageTemplate>
-);
+          <h3>Read</h3>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={SignupSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                console.log(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 400);
+            }}
+            render={({ isSubmitting }) => (
+              <Form>
+                <Field type="email" name="email" placeholder="Email" />
+                <ErrorMessage name="email" component="div" />
+                <Field type="password" name="password" />
+                <ErrorMessage name="password" />
+                <button type="submit" disabled={isSubmitting}>
+                  Submit
+                </button>
+              </Form>
+            )}
+          />
+
+          <h3>Update</h3>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={SignupSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                console.log(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 400);
+            }}
+            render={({ isSubmitting }) => (
+              <Form>
+                <Field type="email" name="email" placeholder="Email" />
+                <ErrorMessage name="email" component="div" />
+                <Field type="password" name="password" />
+                <ErrorMessage name="password" />
+                <button type="submit" disabled={isSubmitting}>
+                  Submit
+                </button>
+              </Form>
+            )}
+          />
+
+          <h3>Delete</h3>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={SignupSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              setTimeout(() => {
+                console.log(JSON.stringify(values, null, 2));
+                setSubmitting(false);
+              }, 400);
+            }}
+            render={({ isSubmitting }) => (
+              <Form>
+                <Field type="email" name="email" placeholder="Email" />
+                <ErrorMessage name="email" component="div" />
+                <Field type="password" name="password" />
+                <ErrorMessage name="password" />
+                <button type="submit" disabled={isSubmitting}>
+                  Submit
+                </button>
+              </Form>
+            )}
+          />
+        </div>
+      </PageTemplate>
+    );
+  }
+}
 
 export default DebugCRUD;
