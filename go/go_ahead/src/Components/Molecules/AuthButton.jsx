@@ -32,11 +32,11 @@ class AuthButton extends React.Component {
       return (
         <div>
           {is_auth ? (
-            <Button color="info" href="/auth/logout">
+            <Button outline color="accent" href="/auth/logout">
               Logout <i className="fas fa-sign-out-alt" />
             </Button>
           ) : (
-            <Button color="info" href="/auth/login">
+            <Button outline color="accent" href="/auth/login">
               Login <i className="fas fa-sign-in-alt" />
             </Button>
           )}

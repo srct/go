@@ -36,15 +36,14 @@ class NavBar extends React.Component {
             <img
               src="static/go.svg"
               className="d-inline-block align-top"
-              width="30"
-              height="30"
+              width="42"
+              height="42"
               alt="SRCT Go"
             />
-            Go
           </NavbarBrand>
-          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+          <NavbarToggler onClick={this.toggleNavbar} className="ml-auto" />
           <Collapse isOpen={!this.state.collapsed} navbar>
-            <Nav className="ml-auto" navbar>
+            <Nav className="mx-auto" navbar>
               <NavItem>
                 <NavLink href="#/dhaynes" active={pathname == "/dhaynes"}>
                   Dhaynes
@@ -60,8 +59,8 @@ class NavBar extends React.Component {
                   Debug
                 </NavLink>
               </NavItem>
-              <AuthButton />
             </Nav>
+            <AuthButton className="ml-auto" />
           </Collapse>
         </Container>
       </Navbar>
