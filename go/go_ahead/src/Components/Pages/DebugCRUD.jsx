@@ -16,11 +16,11 @@ const SignupSchema = Yup.object().shape({
 class DebugCRUD extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { AllGoLinks: "", error: null };
+    this.state = { AllGoLinks: [], error: null };
   }
 
   async componentDidMount() {
-    GetAllGoLinks(this.props.authToken)
+    GetAllGoLinks()
       .then(data =>
         this.setState({
           AllGoLinks: data

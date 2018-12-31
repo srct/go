@@ -34,7 +34,7 @@ class URLViewSet(viewsets.ModelViewSet):
     API endpoint that handles creation/read/update/deletion of URL objects.
     """
 
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
     serializer_class = URLSerializer
     permission_classes = (URLPermission, IsAuthenticated)
     lookup_field = "short"
