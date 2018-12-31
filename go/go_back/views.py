@@ -23,10 +23,10 @@ class URLPermission(permissions.BasePermission):
     message = "You do not have the necessary approvals to perform that action."
 
     def has_permission(self, request, view):
-        return request.user.registereduser.approved or request.user.is_staff
+        return True
 
     def has_object_permission(self, request, view, obj):
-        return obj.owner == request.user.registereduser or request.user.is_staff
+        return obj.owner == request.user.registereduser
 
 
 class URLViewSet(viewsets.ModelViewSet):
@@ -40,9 +40,7 @@ class URLViewSet(viewsets.ModelViewSet):
     lookup_field = "short"
 
     def get_queryset(self):
-        if not self.request.user.is_staff:
-            return URL.objects.filter(owner=self.request.user.registereduser)
-        return URL.objects.all()
+        return URL.objects.filter(owner=self.request.user.registereduser)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.registereduser)

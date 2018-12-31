@@ -59,27 +59,13 @@ class DebugCRUD extends React.Component {
           />
 
           <h3>Read</h3>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            validationSchema={SignupSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                console.log(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
-            }}
-            render={({ isSubmitting }) => (
-              <Form>
-                <Field type="email" name="email" placeholder="Email" />
-                <ErrorMessage name="email" component="div" />
-                <Field type="password" name="password" />
-                <ErrorMessage name="password" />
-                <button type="submit" disabled={isSubmitting}>
-                  Submit
-                </button>
-              </Form>
-            )}
-          />
+
+          {this.state.AllGoLinks.map(golink => (
+            <li key={golink.short}>
+              <a href={`/${golink.short}`}> /{golink.short}</a> |{" "}
+              {golink.destination}
+            </li>
+          ))}
 
           <h3>Update</h3>
           <Formik
