@@ -1,8 +1,7 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { PageTemplate } from "Components";
-import { GetAllGoLinks } from "../../Utils";
+import { PageTemplate, DebugRead } from "Components";
 
 const SignupSchema = Yup.object().shape({
   password: Yup.string()
@@ -16,17 +15,7 @@ const SignupSchema = Yup.object().shape({
 class DebugCRUD extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { AllGoLinks: [], error: null };
-  }
-
-  async componentDidMount() {
-    GetAllGoLinks()
-      .then(data =>
-        this.setState({
-          AllGoLinks: data
-        })
-      )
-      .catch(reason => this.setState({ error: reason }));
+    this.state = {};
   }
 
   render() {
@@ -59,13 +48,7 @@ class DebugCRUD extends React.Component {
           />
 
           <h3>Read</h3>
-
-          {this.state.AllGoLinks.map(golink => (
-            <li key={golink.short}>
-              <a href={`/${golink.short}`}> /{golink.short}</a> |{" "}
-              {golink.destination}
-            </li>
-          ))}
+          <DebugRead />
 
           <h3>Update</h3>
           <Formik
