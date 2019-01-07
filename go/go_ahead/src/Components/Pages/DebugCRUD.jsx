@@ -1,5 +1,5 @@
 import React from "react";
-import { PageTemplate, DebugRead, DebugCreate } from "Components";
+import { PageTemplate, DebugRead, DebugCreate, DebugDelete } from "Components";
 
 class DebugCRUD extends React.Component {
   constructor(props) {
@@ -21,6 +21,7 @@ class DebugCRUD extends React.Component {
 
           <h3>Update</h3>
           <h3>Delete</h3>
+          <DebugDelete />
         </div>
       </PageTemplate>
     );

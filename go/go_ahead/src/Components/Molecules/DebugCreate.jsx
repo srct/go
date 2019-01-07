@@ -28,7 +28,9 @@ const DebugCreate = () => (
             "X-CSRFToken": GetCSRFToken()
           },
           body: JSON.stringify(values)
-        }).then(response => console.log(response));
+        })
+          .then(response => console.log(response))
+          .then(setSubmitting(false));
       }}
       render={({ isSubmitting }) => (
         <Form>

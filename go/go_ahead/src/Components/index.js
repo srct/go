@@ -1,4 +1,4 @@
-import { AuthButton, DebugRead, DebugCreate } from "./Molecules";
+import { AuthButton, DebugRead, DebugCreate, DebugDelete } from "./Molecules";
 import { NavBar } from "./Organisms";
 import { HomePage, AboutPage, DhaynesPage, DebugCRUD } from "./Pages";
 import { PageTemplate } from "./Templates";
@@ -8,6 +8,7 @@ export {
   AuthButton,
   DebugRead,
   DebugCreate,
+  DebugDelete,
   //Organisms
   NavBar,
   //Pages
