@@ -17,6 +17,7 @@ class RegisteredUserInline(admin.StackedInline):
     Allow for RegisteredUsers to be displayed alongside their Django user
     objects.
     """
+
     model = RegisteredUser
     can_delete = False
 
@@ -25,7 +26,8 @@ class RegUserAdmin(UserAdmin):
     """
     Stick information about RegisteredUsers into its own Admin panel.
     """
-    inlines = (RegisteredUserInline, )
+
+    inlines = (RegisteredUserInline,)
 
 
 # Default ModelAdmin

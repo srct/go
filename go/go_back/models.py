@@ -18,8 +18,8 @@ from django.conf import settings
 
 # Other Imports
 from hashids import Hashids
-from .validators import regex_short_validator, unique_short_validator
 from rest_framework.authtoken.models import Token
+from .validators import regex_short_validator, unique_short_validator
 
 # Generate the salt and initialize Hashids
 # Note: the Hashids library already implements several restrictions oncharacter

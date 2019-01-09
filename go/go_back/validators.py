@@ -11,6 +11,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+
 def regex_short_validator(value):
     """
     Run the short through our regex validation before insertion into the
@@ -29,6 +30,7 @@ def valid_date(value):
     """
     if value < timezone.now():
         raise ValidationError("Date must be after today.")
+
 
 def unique_short_validator(value):
     """
