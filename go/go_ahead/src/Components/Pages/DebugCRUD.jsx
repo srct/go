@@ -17,8 +17,6 @@ class DebugCRUD extends React.Component {
     return (
       <PageTemplate>
         <div>
-          <h1>Debug CRUD Page</h1>
-
           <h3>Create</h3>
           <DebugCreate />
 

@@ -54,18 +54,22 @@ const DebugUpdate = () => (
           {"Old Short: "}
           <Field name="oldshort" />
           <ErrorMessage name="oldshort" />
+          <br />
 
           {"New Destination: "}
           <Field name="destination" placeholder="https://longwebsitelink.com" />
           <ErrorMessage name="destination" component="div" />
+          <br />
 
           {"New Short: "}
           <Field name="newshort" />
           <ErrorMessage name="newshort" />
+          <br />
 
           {"New Expires: "}
           <Field type="select" name="expires" placeholder="leave blank" />
           <ErrorMessage name="expires" />
+          <br />
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>

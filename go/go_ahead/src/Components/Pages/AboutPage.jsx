@@ -7,7 +7,6 @@ const AboutPage = () => {
   document.title = "About";
   return (
     <PageTemplate>
-      <h1>About page</h1>
       <Card className="shadow-lg p-3 mb-5 bg-white rounded">
         <CardBody>
           <CardTitle>Terms of Use</CardTitle>

@@ -37,12 +37,15 @@ const DebugCreate = () => (
           {"Destination: "}
           <Field name="destination" placeholder="https://longwebsitelink.com" />
           <ErrorMessage name="destination" component="div" />
+          <br />
           {"Short: "}
           <Field name="short" />
           <ErrorMessage name="short" />
+          <br />
           {"Expires: "}
           <Field type="select" name="expires" placeholder="leave blank" />
           <ErrorMessage name="expires" />
+          <br />
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>

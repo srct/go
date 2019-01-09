@@ -31,6 +31,7 @@ const DebugDelete = () => (
           {"Short: "}
           <Field name="short" />
           <ErrorMessage name="short" />
+          <br />
           <button type="submit" disabled={isSubmitting}>
             Submit
           </button>
