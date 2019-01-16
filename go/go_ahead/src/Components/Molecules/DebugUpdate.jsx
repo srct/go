@@ -25,7 +25,7 @@ const DebugUpdate = () => (
         oldshort: "",
         newshort: "",
         newdestination: "",
-        expires: null
+        expires: new Date()
       }}
       validationSchema={DebugUpdateYup}
       onSubmit={(

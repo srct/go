@@ -7,6 +7,10 @@ import { Routes } from "Utils";
 import "masonstrap/build/css/masonstrap.min.css";
 import "masonstrap/build/js/masonstrap.min.js";
 
+// Other
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+
 ReactDOM.render(
   <HashRouter>
     <Routes />

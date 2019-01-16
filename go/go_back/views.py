@@ -23,9 +23,11 @@ class URLPermission(permissions.BasePermission):
     message = "You do not have the necessary approvals to perform that action."
 
     def has_permission(self, request, view):
+        """Has permission to interact with URL"""
         return True
 
     def has_object_permission(self, request, view, obj):
+        """Has permission to interact with a specific object"""
         return obj.owner == request.user.registereduser
 
 
