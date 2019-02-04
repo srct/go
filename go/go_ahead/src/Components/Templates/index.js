@@ -1,3 +1,4 @@
 import PageTemplate from "./PageTemplate";
+import AuthedPageTemplate from "./AuthedPageTemplate";
 
-export { PageTemplate };
+export { PageTemplate, AuthedPageTemplate };

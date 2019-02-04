@@ -10,7 +10,7 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from .serializers import URLSerializer
@@ -60,17 +60,12 @@ class CustomAuthToken(ObtainAuthToken):
 class GetSessionInfo(APIView):
     """Handy endpoint to return current user session status & information to the frontend."""
 
-    authentication_classes = (SessionAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
-        token, created = Token.objects.get_or_create(user=request.user)
         session_info = {
             "username": request.user.username,
-            # "full_name": f"{request.user.get_full_name}",
-            "last_login": request.user.last_login,
             "is_authenticated": request.user.is_authenticated,
-            "token": token.key,
         }
         return Response(session_info)
 

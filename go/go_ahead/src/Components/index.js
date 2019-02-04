@@ -7,7 +7,7 @@ import {
 } from "./Molecules";
 import { NavBar } from "./Organisms";
 import { HomePage, AboutPage, DhaynesPage, DebugCRUD } from "./Pages";
-import { PageTemplate } from "./Templates";
+import { PageTemplate, AuthedPageTemplate } from "./Templates";
 
 export {
   //Molecules
@@ -24,5 +24,6 @@ export {
   DhaynesPage,
   DebugCRUD,
   //Templates
-  PageTemplate
+  PageTemplate,
+  AuthedPageTemplate
 };
