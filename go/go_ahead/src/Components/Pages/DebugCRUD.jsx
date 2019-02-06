@@ -16,16 +16,21 @@ class DebugCRUD extends React.Component {
   render() {
     return (
       <AuthedPageTemplate>
-        <DebugCreate />
+        <div className="my-3">
+          <DebugCreate />
+        </div>
 
-        <h3>Read</h3>
-        <DebugRead />
+        <div className="my-3">
+          <DebugRead />
+        </div>
 
-        <h3>Update</h3>
-        <DebugUpdate />
+        <div className="my-3">
+          <DebugUpdate />
+        </div>
 
-        <h3>Delete</h3>
-        <DebugDelete />
+        <div className="my-3">
+          <DebugDelete />
+        </div>
       </AuthedPageTemplate>
     );
   }

@@ -1,6 +1,6 @@
 import React from "react";
 import { GetAllGoLinks } from "../../Utils";
-import { Button } from "reactstrap";
+import { Button, Card, CardBody, CardTitle, Table } from "reactstrap";
 
 class DebugRead extends React.Component {
   constructor(props) {
@@ -30,15 +30,42 @@ class DebugRead extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={this.refreshGoLinks} color="primary">
-          Refresh
-        </Button>{" "}
-        {this.state.GoLinks.map(golink => (
-          <li key={golink.short}>
-            <a href={`/${golink.short}`}> /{golink.short}</a> |{" "}
-            {golink.destination}
-          </li>
-        ))}
+        <Card>
+          <CardBody>
+            <CardTitle className="d-flex">
+              Read{" "}
+              <Button
+                className="ml-auto"
+                onClick={this.refreshGoLinks}
+                outline
+                color="primary"
+              >
+                Refresh
+              </Button>
+            </CardTitle>
+
+            <Table>
+              <thead>
+                <tr>
+                  <th>short</th>
+                  <th>destination</th>
+                  <th>expires</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.GoLinks.map(golink => (
+                  <tr key={golink.short}>
+                    <td>
+                      <a href={`/${golink.short}`}> /{golink.short}</a>
+                    </td>
+                    <td>{golink.destination}</td>
+                    <td>{golink.date_expires}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </CardBody>
+        </Card>
       </div>
     );
   }
