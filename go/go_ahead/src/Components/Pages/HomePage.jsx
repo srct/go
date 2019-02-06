@@ -1,11 +1,9 @@
 import React from "react";
-
-import { PageTemplate, AuthButton } from "Components";
+import { PageTemplate } from "Components";
 
 const HomePage = () => (
-  <PageTemplate page={"home"}>
-    <p>Hello World! 1</p>
-    <AuthButton />
+  <PageTemplate>
+    <p>Hello World!</p>
   </PageTemplate>
 );
 

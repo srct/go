@@ -10,7 +10,7 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from .serializers import URLSerializer
@@ -23,10 +23,12 @@ class URLPermission(permissions.BasePermission):
     message = "You do not have the necessary approvals to perform that action."
 
     def has_permission(self, request, view):
-        return request.user.registereduser.approved or request.user.is_staff
+        """Has permission to interact with URL"""
+        return True
 
     def has_object_permission(self, request, view, obj):
-        return obj.owner == request.user.registereduser or request.user.is_staff
+        """Has permission to interact with a specific object"""
+        return obj.owner == request.user.registereduser
 
 
 class URLViewSet(viewsets.ModelViewSet):
@@ -34,15 +36,13 @@ class URLViewSet(viewsets.ModelViewSet):
     API endpoint that handles creation/read/update/deletion of URL objects.
     """
 
-    authentication_classes = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
     serializer_class = URLSerializer
     permission_classes = (URLPermission, IsAuthenticated)
     lookup_field = "short"
 
     def get_queryset(self):
-        if not self.request.user.is_staff:
-            return URL.objects.filter(owner=self.request.user.registereduser)
-        return URL.objects.all()
+        return URL.objects.filter(owner=self.request.user.registereduser)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.registereduser)
@@ -60,17 +60,12 @@ class CustomAuthToken(ObtainAuthToken):
 class GetSessionInfo(APIView):
     """Handy endpoint to return current user session status & information to the frontend."""
 
-    authentication_classes = (SessionAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
-        token, created = Token.objects.get_or_create(user=request.user)
         session_info = {
             "username": request.user.username,
-            # "full_name": f"{request.user.get_full_name}",
-            "last_login": request.user.last_login,
             "is_authenticated": request.user.is_authenticated,
-            "token": token.key,
         }
         return Response(session_info)
 

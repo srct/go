@@ -1,12 +1,6 @@
 import React from "react";
+import { Container } from "reactstrap";
 
-import { NavBar } from "Components";
-
-const PageTemplate = props => (
-  <div>
-    <NavBar page={props.page} />
-    <div>{props.children}</div>
-  </div>
-);
+const PageTemplate = props => <Container>{props.children}</Container>;
 
 export default PageTemplate;

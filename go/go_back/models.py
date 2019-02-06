@@ -18,8 +18,8 @@ from django.conf import settings
 
 # Other Imports
 from hashids import Hashids
-from .validators import regex_short_validator, unique_short_validator
 from rest_framework.authtoken.models import Token
+from .validators import regex_short_validator, unique_short_validator, valid_date
 
 # Generate the salt and initialize Hashids
 # Note: the Hashids library already implements several restrictions oncharacter
@@ -86,7 +86,9 @@ class URL(models.Model):
 
     date_created = models.DateTimeField("Go Link Creation Date", default=timezone.now)
 
-    date_expires = models.DateTimeField("Go Link Expiry Date", blank=True, null=True)
+    date_expires = models.DateTimeField(
+        "Go Link Expiry Date", blank=True, null=True, validators=[valid_date]
+    )
 
     destination = models.URLField(
         "Go Link Destination URL", max_length=1000, default="https://go.gmu.edu"

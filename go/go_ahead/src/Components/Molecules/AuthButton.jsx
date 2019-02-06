@@ -27,17 +27,21 @@ class AuthButton extends React.Component {
   render() {
     const { is_auth, error } = this.state;
     if (error) {
-      return <div>Error: {error.message}</div>;
+      return (
+        <Button outline color="accent">
+          Error: {error.message}
+        </Button>
+      );
     } else {
       return (
         <div>
           {is_auth ? (
-            <Button color="info" href="/auth/logout">
-              Logout
+            <Button outline color="accent" href="/auth/logout">
+              Logout <i className="fas fa-sign-out-alt" />
             </Button>
           ) : (
-            <Button color="info" href="/auth/login">
-              Login
+            <Button outline color="accent" href="/auth/login">
+              Login <i className="fas fa-sign-in-alt" />
             </Button>
           )}
         </div>
