@@ -20,14 +20,14 @@ from .models import URL
 class URLPermission(permissions.BasePermission):
     """Custom permission check on URL model operations."""
 
-    message = "You do not have the necessary approvals to perform that action."
+    message = "You do not have the necessary permission to perform that action on that URL object."
 
     def has_permission(self, request, view):
         """Has permission to interact with URL"""
         return True
 
     def has_object_permission(self, request, view, obj):
-        """Has permission to interact with a specific object"""
+        """Has permission to interact with a specific URL object"""
         return obj.owner == request.user.registereduser
 
 
