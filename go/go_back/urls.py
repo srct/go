@@ -25,7 +25,6 @@ urlpatterns = [
     # Root API URL
     path("api/", include(ROUTER.urls)),
     # Authentication URLs
-    path("auth/", include("rest_framework.urls")),
     path("auth/login/", cas_views.login, name="cas_login"),
     path("auth/logout/", cas_views.logout, name="cas_logout"),
     path("auth/token/", views.CustomAuthToken.as_view()),
