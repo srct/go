@@ -8,7 +8,10 @@ const NewGoLinkValidator = Yup.object().shape({
   targetURL: Yup.string()
     .required("You must supply a target URL!")
     .url("Not a valid URL!")
-    .max(1000, "URL is too long!")
+    .max(1000, "URL is too long!"),
+  shortcode: Yup.string()
+    .required("Required")
+    .max(20, "Your shortcode is too long!")
 });
 
 export default NewGoLinkValidator;
