@@ -1,15 +1,14 @@
 import * as Yup from "yup";
 
+var today = new Date();
+var tomorrow = new Date();
+tomorrow.setDate(today.getDate() + 1);
+
 const NewGoLinkValidator = Yup.object().shape({
-  destination: Yup.string()
-    .url()
-    .max(1000, "Too Long!"),
-  short: Yup.string()
-    .required("Required")
-    .max(20, "Too Long!"),
-  expires: Yup.date()
-    .nullable()
-    .min(new Date())
+  targetURL: Yup.string()
+    .required("You must supply a target URL!")
+    .url("Not a valid URL!")
+    .max(1000, "URL is too long!")
 });
 
 export default NewGoLinkValidator;
