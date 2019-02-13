@@ -1,3 +1,4 @@
 import NavBar from "./NavBar";
+import NewGoLinkForm from "./NewGoLinkForm";
 
-export { NavBar };
+export { NavBar, NewGoLinkForm };

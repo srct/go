@@ -5,8 +5,8 @@ import {
   DebugDelete,
   DebugUpdate
 } from "./Molecules";
-import { NavBar } from "./Organisms";
-import { HomePage, AboutPage, DhaynesPage, DebugCRUD } from "./Pages";
+import { NavBar, NewGoLinkForm } from "./Organisms";
+import { HomePage, AboutPage, DebugCRUD, NewGoLinkPage } from "./Pages";
 import { PageTemplate, AuthedPageTemplate } from "./Templates";
 
 export {
@@ -18,11 +18,12 @@ export {
   DebugUpdate,
   //Organisms
   NavBar,
+  NewGoLinkForm,
   //Pages
   HomePage,
   AboutPage,
-  DhaynesPage,
   DebugCRUD,
+  NewGoLinkPage,
   //Templates
   PageTemplate,
   AuthedPageTemplate
