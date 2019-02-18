@@ -10,7 +10,7 @@ coverage = "*"
 black = "*"
 
 [packages]
-django = "<2.1,>=2.0"
+django = "<2.2,>=2.1"
 django-crispy-forms = "==1.7.0"
 django-ratelimit = "==1.0.1"
 django-redis-cache = "==1.7.1"

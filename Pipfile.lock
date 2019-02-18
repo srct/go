@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ff4400988dabd456ef6af790269f309a1e60eb9801a14defa18ae693e724e346"
+            "sha256": "f337c8e19b043825a9b6489cb81e5cf6a44d01431ff51d0a74293574a59a7dc5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -32,11 +32,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:0292a7ad7d8ffc9cfc6a77f043d2e81f5bbc360c0c4a1686e130ef3432437d23",
-                "sha256:e89f613e3c1f7ff245ffee3560472f9fa9c07060b11f65e1de3cb763f8dcd4b9"
+                "sha256:275bec66fd2588dd517ada59b8bfb23d4a9abc5a362349139ddda3c7ff6f5ade",
+                "sha256:939652e9d34d7d53d74d5d8ef82a19e5f8bb2de75618f7e5360691b6e9667963"
             ],
             "index": "pypi",
-            "version": "==2.0.10"
+            "version": "==2.1.7"
         },
         "django-cas-client": {
             "hashes": [
@@ -93,12 +93,12 @@
         },
         "mysqlclient": {
             "hashes": [
-                "sha256:041c79d474cd0b4980f1175f1ff24d2796d6e1f1e400583b40d21ed0d5a4f279",
-                "sha256:b95edaa41d6cc47deecabcdcbb5ab437ad9ae6d8955f5cf10d1847b37e66ef5e",
-                "sha256:cd07e321f1f692ecd67e8291ffbacd61c7b42a6cedc84d40971fbddbbce9b79e"
+                "sha256:425e733b05e359a714d6007c0fc44582be66b63e5a3df0a50949274ae16f4bc6",
+                "sha256:62e4770b6a797b9416bcf70488365b7d6b9c9066878108499c559293bb464380",
+                "sha256:f257d250f2675d0ef99bd318906f3cfc05cef4a2f385ea695ff32a3f04b9f9a7"
             ],
             "index": "pypi",
-            "version": "==1.4.2"
+            "version": "==1.4.2.post1"
         },
         "pytz": {
             "hashes": [
@@ -109,10 +109,10 @@
         },
         "redis": {
             "hashes": [
-                "sha256:74c892041cba46078ae1ef845241548baa3bd3634f9a6f0f952f006eb1619c71",
-                "sha256:7ba8612bbfd966dea8c62322543fed0095da2834dbd5a7c124afbc617a156aa7"
+                "sha256:724932360d48e5407e8f82e405ab3650a36ed02c7e460d1e6fddf0f038422b54",
+                "sha256:9b19425a38fd074eb5795ff2b0d9a55b46a44f91f5347995f27e3ad257a7d775"
             ],
-            "version": "==3.1.0"
+            "version": "==3.2.0"
         },
         "requests": {
             "hashes": [
