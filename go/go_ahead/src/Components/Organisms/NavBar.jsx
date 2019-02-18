@@ -34,8 +34,8 @@ const NavBar = props => {
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="mx-auto" navbar>
             <NavItem>
-              <NavLink href="#/dhaynes" active={pathname == "/dhaynes"}>
-                Dhaynes
+              <NavLink href="#/new" active={pathname == "/new"}>
+                New Link
               </NavLink>
             </NavItem>
             <NavItem>

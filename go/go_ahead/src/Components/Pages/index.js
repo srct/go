@@ -1,6 +1,6 @@
 import HomePage from "./HomePage";
 import AboutPage from "./AboutPage";
-import DhaynesPage from "./DhaynesPage";
 import DebugCRUD from "./DebugCRUD";
+import NewGoLinkPage from "./NewGoLinkPage";
 
-export { HomePage, AboutPage, DhaynesPage, DebugCRUD };
+export { HomePage, AboutPage, DebugCRUD, NewGoLinkPage };
