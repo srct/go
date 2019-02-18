@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NewGoLinkValidator from "../Molecules/NewGoLinkValidator";
 import { Formik, Field, Form } from "formik";
-import { GetCSRFToken } from "../../Utils/GetCSRFToken";
+import GetCSRFToken from "../../Utils/GetCSRFToken";
 import { SingleDatePicker } from "react-dates";
+import ParseAPIErrors from "../../Utils/ParseAPIErrors";
 import moment from "moment";
 import {
   FormGroup,
@@ -27,38 +28,64 @@ const style2 = {
 
 const NewGoLinkForm = props => {
   const [focused, setFocused] = useState(false);
+  const [expiresFieldDisabled, setexpiresFieldDisabled] = useState(true);
   var today = new Date();
   var tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
 
+  const toggleExpiresField = () => {
+    setexpiresFieldDisabled(!expiresFieldDisabled);
+  };
+
   return (
     <Formik
-      //
+      // Init our form with some blank values
       initialValues={{
         shortcode: "",
-        targetURL: ""
-        // willExpire: false,
-        // expires="Never"
-        // expires: moment(tomorrow)
+        targetURL: "",
+        expires: moment(tomorrow) // You must set a default date to start with
       }}
-      //
+      // Yup client side validation
       validationSchema={NewGoLinkValidator}
-      //
-      onSubmit={({ targetURL }, { setSubmitting, setFieldError }) => {
-        console.log("submitting..");
-        console.log(targetURL);
+      // Handle form submission
+      onSubmit={(
+        { targetURL, shortcode, expires },
+        { setSubmitting, setErrors }
+      ) => {
+        if (expiresFieldDisabled) {
+          expires = null;
+        } else {
+          expires = expires.format();
+        }
+
+        const APISubmission = {
+          destination: targetURL,
+          short: shortcode,
+          date_expires: expires
+        };
+
+        fetch("/api/golinks/", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": GetCSRFToken()
+          },
+          body: JSON.stringify(APISubmission)
+        }).then(response => {
+          response.json().then(body => {
+            if (!response.ok) {
+              console.log(body);
+              const parsedAPIErrors = ParseAPIErrors(body);
+              setErrors(parsedAPIErrors);
+            } else {
+              props.history.push("/debug");
+            }
+          });
+        });
         setSubmitting(false);
       }}
-      //
-      render={({
-        values,
-        isSubmitting,
-        setFieldValue,
-        errors,
-        touched,
-        handleBlur,
-        handleChange
-      }) => (
+      // Render out our form
+      render={({ values, isSubmitting, setFieldValue, errors }) => (
         <Form>
           <Row>
             <Col md="12">
@@ -125,11 +152,39 @@ const NewGoLinkForm = props => {
                   type="checkbox"
                   className="custom-control-input"
                   id="customCheck1"
+                  onChange={toggleExpiresField}
                 />
-                <label className="custom-control-label" for="customCheck1">
+                <label className="custom-control-label" htmlFor="customCheck1">
                   Expire my Go link.
                 </label>
               </div>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <FormGroup>
+                <Label className="mt-3" htmlFor="expires">
+                  Date of Expiration
+                </Label>{" "}
+                <br />
+                <SingleDatePicker
+                  date={values["expires"]} // momentPropTypes.momentObj or null
+                  onDateChange={date => setFieldValue("expires", date)} // PropTypes.func.isRequired
+                  focused={focused} // PropTypes.bool
+                  onFocusChange={({ focused }) => setFocused(focused)} // PropTypes.func.isRequired
+                  id="expires" // PropTypes.string.isRequired,
+                  disabled={expiresFieldDisabled}
+                  readOnly={true}
+                  showDefaultInputIcon={true}
+                  numberOfMonths={1}
+                />
+                <FormText>
+                  You cannot expire Go links on the same day (or before) they
+                  are created.
+                </FormText>
+                {errors.expires ? <div>{errors.expires}</div> : null}
+              </FormGroup>
             </Col>
           </Row>
 
@@ -158,10 +213,10 @@ const NewGoLinkForm = props => {
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck1"
+                  className="custom-control-input"
+                  disabled={true}
                 />
-                <label className="custom-control-label" for="customCheck1">
+                <label className="custom-control-label">
                   Require GMU login.
                 </label>
               </div>
@@ -196,10 +251,10 @@ const NewGoLinkForm = props => {
               <div className="custom-control custom-checkbox">
                 <input
                   type="checkbox"
-                  class="custom-control-input"
-                  id="customCheck1"
+                  className="custom-control-input"
+                  disabled={true}
                 />
-                <label className="custom-control-label" for="customCheck1">
+                <label className="custom-control-label">
                   Self destruct my Go link.
                 </label>
               </div>

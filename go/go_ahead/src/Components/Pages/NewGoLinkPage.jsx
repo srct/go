@@ -5,7 +5,7 @@ import { Row, Col } from "reactstrap";
 
 const NewGoLinkPage = props => {
   return (
-    <AuthedPageTemplate>
+    <AuthedPageTemplate {...props}>
       <Row>
         <Col>
           <h2 className="mt-4 font-weight-light">Create a new Go link</h2>
@@ -20,7 +20,7 @@ const NewGoLinkPage = props => {
           <legend />
         </Col>
       </Row>
-      <NewGolinkForm />
+      <NewGolinkForm {...props} />
     </AuthedPageTemplate>
   );
 };
