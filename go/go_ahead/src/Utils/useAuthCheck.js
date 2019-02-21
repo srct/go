@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const useAuthCheck = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [authLoaded, setAuthLoaded] = useState(false);
 
   const getAuthStatus = async () => {
     let response = await fetch("/auth/status/", {
@@ -12,14 +12,14 @@ const useAuthCheck = () => {
     });
     let data = await response.json();
     setIsLoggedIn(data.is_authenticated);
-    setLoaded(true);
+    setAuthLoaded(true);
   };
 
   useEffect(() => {
     getAuthStatus();
   }, []);
 
-  return { isLoggedIn, loaded };
+  return { isLoggedIn, authLoaded };
 };
 
 export default useAuthCheck;
