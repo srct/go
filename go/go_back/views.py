@@ -49,6 +49,10 @@ class URLViewSet(viewsets.ModelViewSet):
 
 
 class CustomAuthToken(ObtainAuthToken):
+    """
+    Custom endpoint to provide the currently logged in user's API token.
+    """
+
     authentication_classes = (SessionAuthentication,)
     permission_classes = (IsAuthenticated,)
 
@@ -63,16 +67,28 @@ class GetSessionInfo(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, *args, **kwargs):
-        session_info = {
-            "username": request.user.username,
-            "is_authenticated": request.user.is_authenticated,
-        }
+
+        if not request.user.is_anonymous:
+            session_info = {
+                "username": request.user.username,
+                "is_authenticated": request.user.is_authenticated,
+                "is_registered": request.user.registereduser.registered,
+                "is_approved": request.user.registereduser.approved,
+                "is_blocked": request.user.registereduser.blocked,
+            }
+        else:
+            session_info = {
+                "username": request.user.username,
+                "is_authenticated": request.user.is_authenticated,
+            }
         return Response(session_info)
 
 
 def redirection(request, short):
     """
     This view redirects a user based on the short URL they requested.
+
+    The meat and potatoes of Go.
     """
     # Get the URL object that relates to the requested Go link
     url = get_object_or_404(URL, short__iexact=short)
