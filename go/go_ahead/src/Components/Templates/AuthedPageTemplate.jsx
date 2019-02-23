@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "reactstrap";
 import useAuthCheck from "../../Utils/useAuthCheck";
 import useRegistrationCheck from "../../Utils/useRegistrationCheck";
+import RegisterPage from "../Pages/RegisterPage";
 
 const AuthedPageTemplate = props => {
   const { isLoggedIn, authLoaded } = useAuthCheck();
@@ -16,7 +17,9 @@ const AuthedPageTemplate = props => {
               {isRegistered ? (
                 <Container>{props.children}</Container>
               ) : (
-                <div>You are logged in but not registered!</div>
+                <Container>
+                  <RegisterPage />
+                </Container>
               )}
             </div>
           ) : (
@@ -24,7 +27,7 @@ const AuthedPageTemplate = props => {
           )}
         </div>
       ) : (
-        <div>shits fucked my man</div>
+        <div />
       )}
     </div>
   );

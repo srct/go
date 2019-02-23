@@ -1,23 +1,34 @@
 import React from "react";
 import { PageTemplate } from "Components";
 import useAuthCheck from "../../Utils/useAuthCheck";
+import RegisterPage from "../Pages/RegisterPage";
+import useRegistrationCheck from "../../Utils/useRegistrationCheck";
 
 const HomePage = () => {
-  const { isLoggedIn, loaded } = useAuthCheck();
+  const { isLoggedIn, authLoaded } = useAuthCheck();
+  const { isRegistered, registeredLoaded } = useRegistrationCheck();
 
   return (
     <div>
-      {loaded ? (
+      {authLoaded && registeredLoaded ? (
         <div>
           {isLoggedIn ? (
-            <PageTemplate>
-              <p>
-                You're logged in and looking at the homepage which means you
-                passed the auth check and we are now rendering the new homepage
-                for logged in users but we haven't written it so you're looking
-                at this sentence yeah.
-              </p>
-            </PageTemplate>
+            <div>
+              {isRegistered ? (
+                <PageTemplate>
+                  <p>
+                    You're logged in and looking at the homepage which means you
+                    passed the auth check and we are now rendering the new
+                    homepage for logged in users but we haven't written it so
+                    you're looking at this sentence yeah.
+                  </p>
+                </PageTemplate>
+              ) : (
+                <PageTemplate>
+                  <RegisterPage />
+                </PageTemplate>
+              )}
+            </div>
           ) : (
             <PageTemplate>
               <p>
