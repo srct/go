@@ -16,6 +16,9 @@ from . import views
 
 ROUTER = routers.DefaultRouter()
 ROUTER.register(r"golinks", views.URLViewSet, base_name="golinks")
+ROUTER.register(
+    r"registereduser", views.RegisteredUserViewSet, base_name="registereduser"
+)
 
 # This function attempts to import an admin module in each installed
 # application. Such modules are expected to register models with the admin.

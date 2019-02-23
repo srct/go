@@ -13,8 +13,12 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 
-from .serializers import URLSerializer
-from .models import URL
+from .serializers import (
+    URLSerializer,
+    RegisteredUserSerializerForAdmins,
+    RegisteredUserSerializerForUsers,
+)
+from .models import URL, RegisteredUser
 
 
 class URLPermission(permissions.BasePermission):
@@ -23,12 +27,28 @@ class URLPermission(permissions.BasePermission):
     message = "You do not have the necessary permission to perform that action on that URL object."
 
     def has_permission(self, request, view):
-        """Has permission to interact with URL"""
+        """Has permission to interact with URL, the model"""
         return True
 
     def has_object_permission(self, request, view, obj):
         """Has permission to interact with a specific URL object"""
         return obj.owner == request.user.registereduser
+
+
+class RegisteredUserPermission(permissions.BasePermission):
+    """
+    Custom permission check such that users can only modify their registered status and admins can control all of their statuses.
+    """
+
+    message = "You do not have the necessary permission to perform that action on that RegisteredUser object."
+
+    def has_permission(self, request, view):
+        """Has permission to interact with RegisteredUser, the model"""
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        """Has permission to interact with a specific RegisteredUser object"""
+        return obj.user == request.user
 
 
 class URLViewSet(viewsets.ModelViewSet):
@@ -46,6 +66,23 @@ class URLViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.registereduser)
+
+
+class RegisteredUserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for modifying RegisteredUser attributes.
+    """
+
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (RegisteredUserPermission, IsAuthenticated)
+
+    def get_queryset(self):
+        return RegisteredUser.objects.filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return RegisteredUserSerializerForAdmins
+        return RegisteredUserSerializerForUsers
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -70,6 +107,7 @@ class GetSessionInfo(APIView):
 
         if not request.user.is_anonymous:
             session_info = {
+                "user_id": request.user.id,
                 "username": request.user.username,
                 "is_authenticated": request.user.is_authenticated,
                 "is_registered": request.user.registereduser.registered,
@@ -78,6 +116,7 @@ class GetSessionInfo(APIView):
             }
         else:
             session_info = {
+                "user_id": request.user.id,
                 "username": request.user.username,
                 "is_authenticated": request.user.is_authenticated,
             }
