@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # http://www.miniwebtool.com/django-secret-key-generator/
 # export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
 # assert 'SECRET_KEY' in os.environ, 'You need to set the SECRET_KEY enviornment variable!'
-SECRET_KEY = os.environ['GO_SECRET_KEY']
+SECRET_KEY = os.getenv('GO_SECRET_KEY', 'spookysecret')
 
 # Peoplefinder API
 PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
@@ -27,7 +27,7 @@ PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
 # The domains this application will be deployed on
 # e.g. Which domains this app should listen to requests from.
 # ALLOWED_HOSTS = ['127.0.0.1']
-ALLOWED_HOSTS = [os.environ['GO_ALLOWED_HOSTS']]
+ALLOWED_HOSTS = [os.getenv('GO_ALLOWED_HOSTS', '*')]
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -83,11 +83,11 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['GO_DB_NAME'],
-        'USER': os.environ['GO_DB_USER'],
-        'PASSWORD': os.environ['GO_DB_PASSWORD'],
-        'HOST': os.environ['GO_DB_HOST'],
-        'PORT': os.environ['GO_DB_PORT'],
+        'NAME': os.getenv('GO_DB_NAME', ''),
+        'USER': os.getenv('GO_DB_USER', ''),
+        'PASSWORD': os.getenv('GO_DB_PASSWORD', ''),
+        'HOST': os.getenv('GO_DB_HOST', ''),
+        'PORT': os.getenv('GO_DB_PORT', ''),
     }
 }
 
@@ -169,7 +169,7 @@ AUTHENTICATION_BACKENDS = (
     'cas.backends.CASBackend',
 )
 
-CAS_SERVER_URL = os.environ['GO_CAS_URL']
+CAS_SERVER_URL = os.getenv('GO_CAS_URL', 'https://login.gmu.edu/')
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
 
@@ -179,15 +179,18 @@ CAS_RESPONSE_CALLBACKS = (
 
 
 # MAIL
-EMAIL_HOST = os.environ['GO_EMAIL_HOST']
-EMAIL_PORT = os.environ['GO_EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['GO_EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['GO_EMAIL_HOST_PASSWORD']
+EMAIL_HOST = os.getenv('GO_EMAIL_HOST', '')
+EMAIL_PORT = os.getenv('GO_EMAIL_PORT', '')
+EMAIL_HOST_USER = os.getenv('GO_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('GO_EMAIL_HOST_PASSWORD', '')
 # example@example.com
-EMAIL_FROM = os.environ['GO_EMAIL_FROM']
+EMAIL_FROM = os.getenv('GO_EMAIL_FROM', '')
 # to@example.com
-EMAIL_TO = os.environ['GO_EMAIL_TO']
+EMAIL_TO = os.getenv('GO_EMAIL_TO', '')
 
 # Domain used to email to users. See implementation in views.py
 # ie. in Mason's case '@gmu.edu'
-EMAIL_DOMAIN = os.environ['GO_EMAIL_DOMAIN']
+EMAIL_DOMAIN = os.getenv('GO_EMAIL_DOMAIN', '')
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
