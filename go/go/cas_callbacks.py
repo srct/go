@@ -90,9 +90,6 @@ def create_user(tree):
     except Exception as ex:
         print("CAS callback unsuccessful:", ex)
 
-    # error handling in pfinfo function
-    info_name = pfinfo(username)
-
     try:
         if user_created:
             print("Created user object %s." % username)
@@ -106,11 +103,7 @@ def create_user(tree):
             user.save()
             print("Added user's email, %s." % email_str)
 
-            user.first_name = info_name[0]
-            user.last_name = info_name[1]
             user.save()
-            print("Added user's name, %s %s." % (info_name[0], info_name[1]))
-
             print("User object creation process completed.")
 
         else:

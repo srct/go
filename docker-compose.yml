@@ -25,7 +25,7 @@ services:
       - GO_EMAIL_HOST_PASSWORD=
       - GO_EMAIL_FROM=
       - GO_EMAIL_TO=
-      - superuser=dhaynes3
+      - superuser=zwood2
 
   db:
     image: mysql:5.7

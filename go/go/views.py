@@ -37,9 +37,6 @@ def index(request):
     # If the user is not authenticated, show them a public landing page.
     if not request.user.is_authenticated():
         return render(request, 'public_landing.html')
-    # Do not display this page to unapproved users
-    if not request.user.registereduser.approved:
-        return render(request, 'not_registered.html')
 
     # Get the current domain info
     domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
@@ -63,13 +60,9 @@ def new_link(request):
     get the URL registration form.
     """
 
-    # If the user isn't approved, then display the you're not approved page.
-    if not request.user.registereduser.approved:
-        if request.user.registereduser.blocked:
-            return render(request, 'banned.html')
-        else:
-            return render(request, 'not_registered.html')
-
+    # If the user is blocked, then display the you're blocked page.
+    if request.user.registereduser.blocked:
+        return render(request, 'banned.html')
 
     # Initialize a URL form
     url_form = URLForm(host=request.META.get('HTTP_HOST'))  # unbound form
@@ -113,11 +106,8 @@ def my_links(request):
     shows the same thing as /, but requires login to be consistent with
     /newLink
     """
-    if not request.user.registereduser.approved:
-        if request.user.registereduser.blocked:
-            return render(request, 'banned.html')
-        else:
-            return render(request, 'not_registered.html')
+    if request.user.registereduser.blocked:
+        return render(request, 'banned.html')
     return index(request)
 
 # Rate limits are completely arbitrary
@@ -202,12 +192,8 @@ def edit(request, short):
     """
 
     # Do not allow unapproved users to edit links
-    if not request.user.registereduser.approved:
-        if request.user.registereduser.blocked:
-            return render(request, 'banned.html')
-        else:
-            return render(request, 'not_registered.html')
-
+    if request.user.registereduser.blocked:
+        return render(request, 'banned.html')
 
     # Get the URL that is going to be edited
     url = get_object_or_404(URL, short__iexact=short)
@@ -321,10 +307,7 @@ def delete(request, short):
     This view deletes a URL if you have the permission to. User must be
     logged in and registered, and must also be the owner of the URL.
     """
-    # Do not allow unapproved users to delete links
-    if not request.user.registereduser.approved:
-        return render(request, 'not_registered.html')
-
+    
     # Get the URL that is going to be deleted
     url = get_object_or_404(URL, short__iexact=short)
 

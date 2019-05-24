@@ -52,10 +52,10 @@ class RegisteredUser(models.Model):
     description = models.TextField(blank=True)
 
     # Have you filled out the registration form?
-    registered = models.BooleanField(default=False)
+    registered = models.BooleanField(default=True)
 
     # Are you approved to use Go?
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=True)
 
     # Is this User Blocked?
     blocked = models.BooleanField(default=False)

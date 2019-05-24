@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # http://www.miniwebtool.com/django-secret-key-generator/
 # export SECRET_KEY=$(dd if=/dev/urandom count=100 | tr -dc "A-Za-z0-9" | fold -w 60 | head -n1 2>/dev/null)
 # assert 'SECRET_KEY' in os.environ, 'You need to set the SECRET_KEY enviornment variable!'
-SECRET_KEY = os.getenv('GO_SECRET_KEY', 'spookysecret')
+SECRET_KEY = os.environ['GO_SECRET_KEY']
 
 # Peoplefinder API
 PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
@@ -163,6 +163,7 @@ LOGGING = {
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
+CAS_ADMIN_PREFIX = '/admin'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
