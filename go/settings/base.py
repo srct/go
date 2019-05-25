@@ -67,8 +67,10 @@ TEMPLATES = [
         ],
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.request'
+                'django.contrib.messages.context_processors.messages',
             ],
             'loaders': [
                 'django.template.loaders.app_directories.Loader'
@@ -93,14 +95,14 @@ DATABASES = {
 
 
 # MIDDLEWARE
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'cas.middleware.CASMiddleware',
-)
+]
 
 # URL CONF
 ROOT_URLCONF = 'settings.urls'
