@@ -2,10 +2,6 @@
 settings/urls.py
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 import django.contrib.auth.views
 from django.conf.urls import url

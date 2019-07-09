@@ -2,10 +2,6 @@
 go/test_models.py
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django.contrib.auth.models import User
 from django.db.utils import DataError, IntegrityError

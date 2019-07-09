@@ -4,10 +4,6 @@ settings/base.py
 Base Settings
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 import os
 import sys
@@ -120,7 +116,7 @@ INSTALLED_APPS = (
     'go',
     'qrcode',
     'crispy_forms',
-    'bootstrap3_datetime',
+    'bootstrap_datepicker',
     'cas',
 )
 
@@ -165,7 +161,6 @@ LOGGING = {
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 LOGIN_REDIRECT_URL = '/'
-CAS_ADMIN_PREFIX = '/admin'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -182,18 +177,19 @@ CAS_RESPONSE_CALLBACKS = (
 
 
 # MAIL
-EMAIL_HOST = os.getenv('GO_EMAIL_HOST', '')
-EMAIL_PORT = os.getenv('GO_EMAIL_PORT', '')
+EMAIL_HOST = os.getenv('GO_EMAIL_HOST', '0.0.0.0')
+EMAIL_PORT = os.getenv('GO_EMAIL_PORT', '25')
 EMAIL_HOST_USER = os.getenv('GO_EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('GO_EMAIL_HOST_PASSWORD', '')
 # example@example.com
-EMAIL_FROM = os.getenv('GO_EMAIL_FROM', '')
+EMAIL_FROM = os.getenv('GO_EMAIL_FROM', 'srct@gmu.edu')
 # to@example.com
 EMAIL_TO = os.getenv('GO_EMAIL_TO', '')
 
 # Domain used to email to users. See implementation in views.py
 # ie. in Mason's case '@gmu.edu'
-EMAIL_DOMAIN = os.getenv('GO_EMAIL_DOMAIN', '')
+EMAIL_DOMAIN = os.getenv('GO_EMAIL_DOMAIN', '@gmu.edu')
+
 
 if 'test' in sys.argv:
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}

@@ -12,6 +12,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.conf import settings
+from django.core.mail import EmailMessage, send_mail
 
 # Other Imports
 from hashids import Hashids  # http://hashids.org/python/
@@ -73,6 +75,23 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
 
     if created:
         RegisteredUser.objects.create(user=instance)
+        # Don't send mail for now
+        #
+        # user_mail = instance.username + settings.EMAIL_DOMAIN
+        # send_mail(
+        #             'We have received your Go application!',
+        #             ######################
+        #             'Hey there %s,\n\n'
+        #             'The Go admins have received your application and are '
+        #             'currently in the process of reviewing it.\n\n'
+        #             'You will receive another email when you have been '
+        #             'approved.\n\n'
+        #             '- Go Admins'
+        #             % (str(instance.username)),
+        #             ######################
+        #             settings.EMAIL_FROM,
+        #             [user_mail]
+        #         )
 
 
 class URL(models.Model):
@@ -126,11 +145,17 @@ class URL(models.Model):
         should be updated to be simpler
         """
         if cache.get("hashids_counter") is None:
+            print(URL.objects.count())
             cache.set("hashids_counter", URL.objects.count())
+            print(cache.get("hashids_counter"))
         tries = 1
         while tries < 100:
             try:
-                short = HASHIDS.encrypt(cache.get("hashids_counter"))
+                counter = cache.get("hashids_counter")
+                if counter is None:
+                    short = HASHIDS.encrypt(0)
+                else:
+                    short = HASHIDS.encrypt(counter)
                 tries += 1
                 cache.incr("hashids_counter")
                 URL.objects.get(short__iexact=short)

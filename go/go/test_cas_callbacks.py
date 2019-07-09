@@ -1,6 +1,3 @@
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
 
 # Django Imports
 from django.test import TestCase

@@ -2,10 +2,6 @@
 go/views.py
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib imports
 from datetime import timedelta
 
@@ -35,7 +31,7 @@ def index(request):
     """
 
     # If the user is not authenticated, show them a public landing page.
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, 'public_landing.html')
 
     # Get the current domain info
@@ -154,8 +150,8 @@ def post(request, url_form):
         url.expires = timezone.now() + timedelta(weeks=1)
     elif expires == URLForm.MONTH:
         url.expires = timezone.now() + timedelta(weeks=3)
-    elif expires == URLForm.CUSTOM:
-        url.expires = url_form.cleaned_data.get('expires_custom')
+    # elif expires == URLForm.CUSTOM:
+    #     url.expires = url_form.cleaned_data.get('expires_custom')
     else:
         pass  # leave the field NULL
 
@@ -549,8 +545,6 @@ def useradmin(request):
                         [user_mail]
                     )
                 to_block.blocked = True
-                to_block.approved = False
-                to_block.registered = False
                 to_block.save()
 
         # If we're un-blocking users
@@ -565,7 +559,6 @@ def useradmin(request):
                         'Hey there %s,\n\n'
                         'The Go admins have reviewed your application and have '
                         'Un-Blocked you from using Go.\n\n'
-                        'If you wish to continue Go use please register again. \n\n'
                         'Congratulations! '
                         '- Go Admins'
                         % (str(to_un_block.full_name)),
