@@ -80,7 +80,7 @@ TEMPLATES = [
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': os.getenv('GO_DB_NAME', ''),
         'USER': os.getenv('GO_DB_USER', ''),
         'PASSWORD': os.getenv('GO_DB_PASSWORD', ''),
