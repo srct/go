@@ -11,7 +11,7 @@ variables:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y mysql-client libmysqlclient-dev python-mysqldb redis-server
+  - apt-get install -y mysql-client default-libmysqlclient-dev python-mysqldb redis-server
   - pip install -r requirements/ci.txt
   - nohup redis-server &
   - cd go/
@@ -35,11 +35,11 @@ before_script:
   - python manage.py migrate
   - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
 
-Go-py2.7:
-  image: library/python:2.7
-  stage: test
-  script:
-    - python manage.py test
+# Go-py2.7:
+#   image: library/python:2.7
+#   stage: test
+#   script:
+#     - python manage.py test
 
 Go-py3.4:
   image: library/python:3.4
