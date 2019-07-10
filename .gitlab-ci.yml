@@ -11,7 +11,7 @@ variables:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y mysql-client default-libmysqlclient-dev python-mysqldb redis-server
+  - apt-get install -y mysql-client=5.7 default-libmysqlclient-dev python-mysqldb redis-server
   - pip install -r requirements/ci.txt
   - nohup redis-server &
   - cd go/
