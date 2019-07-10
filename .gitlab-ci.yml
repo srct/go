@@ -41,14 +41,14 @@ before_script:
 #   script:
 #     - python manage.py test
 
-Go-py3.4:
-  image: library/python:3.4
-  stage: test
-  script:
-    - python manage.py test
+# Go-py3.4:
+#   image: library/python:3.4
+#   stage: test
+#   script:
+#     - python manage.py test
 
-Go-py3.5:
-  image: library/python:3.5
+Go-py3.7:
+  image: library/python:3.7
   stage: test
   script:
     - python manage.py test
@@ -61,8 +61,9 @@ Go-py3.5:
 #    - coverage run --source=go --omit=*migrations/*,*admin.py,*manage.py,*wsgi.py,*settings.py,*secret.py,*__init__.py,*.pyc,*templates/*,*static/* manage.py test
 #    - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
 
+
 Go-flake8:
-  image: library/python:3.5
+  image: library/python:3.7
   stage: lint
   script:
     - pip install flake8
