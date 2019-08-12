@@ -4,10 +4,6 @@ settings/base.py
 Base Settings
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 import os
 import sys
@@ -27,7 +23,7 @@ PF_URL = "https://api.srct.gmu.edu/peoplefinder/v1/"
 # The domains this application will be deployed on
 # e.g. Which domains this app should listen to requests from.
 # ALLOWED_HOSTS = ['127.0.0.1']
-ALLOWED_HOSTS = [os.environ['GO_ALLOWED_HOSTS']]
+ALLOWED_HOSTS = [os.getenv('GO_ALLOWED_HOSTS', '*')]
 
 ADMINS = ()
 MANAGERS = ADMINS
@@ -67,8 +63,10 @@ TEMPLATES = [
         ],
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.request'
+                'django.contrib.messages.context_processors.messages',
             ],
             'loaders': [
                 'django.template.loaders.app_directories.Loader'
@@ -82,25 +80,25 @@ TEMPLATES = [
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['GO_DB_NAME'],
-        'USER': os.environ['GO_DB_USER'],
-        'PASSWORD': os.environ['GO_DB_PASSWORD'],
-        'HOST': os.environ['GO_DB_HOST'],
-        'PORT': os.environ['GO_DB_PORT'],
+        'ENGINE': 'mysql.connector.django',
+        'NAME': os.getenv('GO_DB_NAME', ''),
+        'USER': os.getenv('GO_DB_USER', ''),
+        'PASSWORD': os.getenv('GO_DB_PASSWORD', ''),
+        'HOST': os.getenv('GO_DB_HOST', ''),
+        'PORT': os.getenv('GO_DB_PORT', ''),
     }
 }
 
 
 # MIDDLEWARE
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'cas.middleware.CASMiddleware',
-)
+]
 
 # URL CONF
 ROOT_URLCONF = 'settings.urls'
@@ -118,7 +116,7 @@ INSTALLED_APPS = (
     'go',
     'qrcode',
     'crispy_forms',
-    'bootstrap3_datetime',
+    'bootstrap_datepicker',
     'cas',
 )
 
@@ -169,7 +167,7 @@ AUTHENTICATION_BACKENDS = (
     'cas.backends.CASBackend',
 )
 
-CAS_SERVER_URL = os.environ['GO_CAS_URL']
+CAS_SERVER_URL = os.getenv('GO_CAS_URL', 'https://login.gmu.edu/')
 CAS_LOGOUT_COMPLETELY = True
 CAS_PROVIDE_URL_TO_LOGOUT = True
 
@@ -179,15 +177,19 @@ CAS_RESPONSE_CALLBACKS = (
 
 
 # MAIL
-EMAIL_HOST = os.environ['GO_EMAIL_HOST']
-EMAIL_PORT = os.environ['GO_EMAIL_PORT']
-EMAIL_HOST_USER = os.environ['GO_EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['GO_EMAIL_HOST_PASSWORD']
+EMAIL_HOST = os.getenv('GO_EMAIL_HOST', '0.0.0.0')
+EMAIL_PORT = os.getenv('GO_EMAIL_PORT', '25')
+EMAIL_HOST_USER = os.getenv('GO_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('GO_EMAIL_HOST_PASSWORD', '')
 # example@example.com
-EMAIL_FROM = os.environ['GO_EMAIL_FROM']
+EMAIL_FROM = os.getenv('GO_EMAIL_FROM', 'srct@gmu.edu')
 # to@example.com
-EMAIL_TO = os.environ['GO_EMAIL_TO']
+EMAIL_TO = os.getenv('GO_EMAIL_TO', '')
 
 # Domain used to email to users. See implementation in views.py
 # ie. in Mason's case '@gmu.edu'
-EMAIL_DOMAIN = os.environ['GO_EMAIL_DOMAIN']
+EMAIL_DOMAIN = os.getenv('GO_EMAIL_DOMAIN', '@gmu.edu')
+
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}

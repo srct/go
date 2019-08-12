@@ -5,10 +5,6 @@ References:
     - http://stackoverflow.com/a/11887308
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django.contrib.auth.models import User
 from django.test import TestCase, Client

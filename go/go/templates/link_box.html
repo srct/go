@@ -90,7 +90,7 @@
       <strong>Target URL:</strong>
       <a href="{{url.target}}" target="_blank">{{url.target}}</a>
       <br /> 
-      {% if url.owner == request.user.registereduser and request.user.registereduser.approved == True %}
+      {% if url.owner == request.user.registereduser %}
         <strong>Clicks:</strong> {{url.clicks}}
         <br />
 

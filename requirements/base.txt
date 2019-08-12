@@ -1,12 +1,13 @@
-Django>=1.11, < 2.0
-django-crispy-forms==1.6.1
-django-ratelimit==1.0.1
-django-redis-cache==1.7.1
+Django>=2.2, < 2.3
+django-crispy-forms
+django-ratelimit
+django-redis-cache
 git+https://github.com/dhaynespls/django-qrcode.git
 git+https://github.com/kstateome/django-cas.git
-git+https://github.com/dhaynespls/django-bootstrap3-datetimepicker.git
-hashids==1.2.0
+django-bootstrap-datepicker
+hashids
 mysqlclient
+mysql-connector-python
 redis==2.10.6
 requests==2.18.4
 simplejson==3.11.1

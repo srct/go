@@ -1,9 +1,6 @@
 """
 go/forms.py
 """
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
 
 # Python stdlib Imports
 from datetime import datetime, timedelta
@@ -20,7 +17,7 @@ from django.utils.safestring import mark_safe
 from .models import URL, RegisteredUser
 
 # Other Imports
-from bootstrap3_datetime.widgets import DateTimePicker
+# from bootstrap3_datetime.widgets import DateTimePicker
 from crispy_forms.bootstrap import (Accordion, AccordionGroup, PrependedText,
                                     StrictButton)
 from crispy_forms.helper import FormHelper
@@ -94,7 +91,7 @@ class URLForm(ModelForm):
     DAY = '1 Day'
     WEEK = '1 Week'
     MONTH = '1 Month'
-    CUSTOM = 'Custom Date'
+    # CUSTOM = 'Custom Date'
     NEVER = 'Never'
 
     # Define a tuple of string date standards to be used as our date choices
@@ -103,7 +100,7 @@ class URLForm(ModelForm):
         (WEEK, WEEK),
         (MONTH, MONTH),
         (NEVER, NEVER),
-        (CUSTOM, CUSTOM),
+        # (CUSTOM, CUSTOM),
     )
 
     # Add preset expiration choices.
@@ -129,22 +126,22 @@ class URLForm(ModelForm):
 
 
     # Add a custom expiration choice.
-    expires_custom = DateTimeField(
-        required=False,
-        label='Custom Date',
-        input_formats=['%m-%d-%Y'],
-        validators=[valid_date],
-        initial=lambda: datetime.now() + timedelta(days=1),
-        widget=DateTimePicker(
-            options={
-                "format": "MM-DD-YYYY",
-                "pickTime": False,
-            },
-            icon_attrs={
-                "class": "fa fa-calendar",
-            },
-        )
-    )
+    # expires_custom = DateTimeField(
+    #     required=False,
+    #     label='Custom Date',
+    #     input_formats=['%m-%d-%Y'],
+    #     validators=[valid_date],
+    #     initial=lambda: datetime.now() + timedelta(days=1),
+    #     widget=DateTimePicker(
+    #         options={
+    #             "format": "MM-DD-YYYY",
+    #             "pickTime": False,
+    #         },
+    #         icon_attrs={
+    #             "class": "fa fa-calendar",
+    #         },
+    #     )
+    # )
 
     def __init__(self, *args, **kwargs):
         """

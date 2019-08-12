@@ -2,16 +2,13 @@
 settings/urls.py
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 import django.contrib.auth.views
 from django.conf.urls import url
 from django.contrib import admin
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
+from cas import views as cas_views
 
 # App Imports
 import go.views
@@ -62,8 +59,8 @@ urlpatterns = [
 # Handle authentication pages
 urlpatterns += [
     # Auth pages
-    url(r'^login$', django.contrib.auth.views.login, name='go_login'),
-    url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'},
+    url(r'^login$', cas_views.login, name='go_login'),
+    url(r'^logout$', cas_views.logout, {'next_page': '/'},
         name='go_logout'),
 ]
 
