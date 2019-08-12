@@ -2,10 +2,6 @@
 go/models.py
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 import string
 
@@ -16,7 +12,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
+from django.conf import settings
+from django.core.mail import EmailMessage, send_mail
 
 # Other Imports
 from hashids import Hashids  # http://hashids.org/python/
@@ -26,7 +23,6 @@ HASHIDS = Hashids(
     salt="srct.gmu.edu", alphabet=(string.ascii_lowercase + string.digits)
 )
 
-@python_2_unicode_compatible
 class RegisteredUser(models.Model):
     """
     This is simply a wrapper model for the user object which, if an object
@@ -34,7 +30,7 @@ class RegisteredUser(models.Model):
     """
 
     # Let's associate a User to this RegisteredUser
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # What is your name?
     full_name = models.CharField(
@@ -52,10 +48,10 @@ class RegisteredUser(models.Model):
     description = models.TextField(blank=True)
 
     # Have you filled out the registration form?
-    registered = models.BooleanField(default=False)
+    registered = models.BooleanField(default=True)
 
     # Are you approved to use Go?
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=True)
 
     # Is this User Blocked?
     blocked = models.BooleanField(default=False)
@@ -79,9 +75,25 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
 
     if created:
         RegisteredUser.objects.create(user=instance)
+        # Don't send mail for now
+        #
+        # user_mail = instance.username + settings.EMAIL_DOMAIN
+        # send_mail(
+        #             'We have received your Go application!',
+        #             ######################
+        #             'Hey there %s,\n\n'
+        #             'The Go admins have received your application and are '
+        #             'currently in the process of reviewing it.\n\n'
+        #             'You will receive another email when you have been '
+        #             'approved.\n\n'
+        #             '- Go Admins'
+        #             % (str(instance.username)),
+        #             ######################
+        #             settings.EMAIL_FROM,
+        #             [user_mail]
+        #         )
 
 
-@python_2_unicode_compatible
 class URL(models.Model):
     """
     This model represents a stored URL redirection rule. Each URL has an
@@ -90,7 +102,7 @@ class URL(models.Model):
     """
 
     # Who is the owner of this Go link
-    owner = models.ForeignKey(RegisteredUser)
+    owner = models.ForeignKey(RegisteredUser, on_delete=models.CASCADE)
     # When was this link created?
     date_created = models.DateTimeField(default=timezone.now)
 
@@ -133,11 +145,17 @@ class URL(models.Model):
         should be updated to be simpler
         """
         if cache.get("hashids_counter") is None:
+            print(URL.objects.count())
             cache.set("hashids_counter", URL.objects.count())
+            print(cache.get("hashids_counter"))
         tries = 1
         while tries < 100:
             try:
-                short = HASHIDS.encrypt(cache.get("hashids_counter"))
+                counter = cache.get("hashids_counter")
+                if counter is None:
+                    short = HASHIDS.encrypt(0)
+                else:
+                    short = HASHIDS.encrypt(counter)
                 tries += 1
                 cache.incr("hashids_counter")
                 URL.objects.get(short__iexact=short)

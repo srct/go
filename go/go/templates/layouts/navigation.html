@@ -26,13 +26,7 @@
             <!-- only show if the current user is authenticated -->
             {% if user.is_authenticated %}
                 <!-- only if they are an approved user -->
-                {% if user.registereduser.approved %}
-                    <li><a href="{% url 'new_link' %}">New Link</a></li>
-                {% endif %}
-                <!-- only if the current user has not registered to use go -->
-                {% if not user.registereduser.registered %}
-                    <li><a href="{% url 'signup' %}">Register</a></li>
-                {% endif %}
+                <li><a href="{% url 'new_link' %}">New Link</a></li>
             {% endif %}
         </ul>
 

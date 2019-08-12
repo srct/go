@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 services:
   web:
     build: .
@@ -13,7 +13,7 @@ services:
     environment:
       - GO_ALLOWED_HOSTS=*
       - GO_EMAIL_DOMAIN=@masonlive.gmu.edu
-      - GO_CAS_URL=https://cas.srct.gmu.edu/
+      - GO_CAS_URL=https://login.gmu.edu/
       - GO_DB_NAME=go
       - GO_DB_USER=go
       - GO_DB_PASSWORD=go
@@ -25,10 +25,11 @@ services:
       - GO_EMAIL_HOST_PASSWORD=
       - GO_EMAIL_FROM=
       - GO_EMAIL_TO=
-      - superuser=dhaynes3
+      - GO_SECRET_KEY=spookyspecret
+      - superuser=zwood2
 
   db:
-    image: mysql
+    image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_DATABASE: go

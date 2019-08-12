@@ -2,10 +2,6 @@
 go/test_models.py
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Django Imports
 from django.contrib.auth.models import User
 from django.db.utils import DataError, IntegrityError
@@ -162,7 +158,7 @@ class RegisteredUserTest(TestCase):
         get_user = User.objects.get(username='dhaynes')
         get_registered_user = RegisteredUser.objects.get(user=get_user)
 
-        self.assertFalse(get_registered_user.registered)
+        self.assertTrue(get_registered_user.registered)
 
     # approved -----------------------------------------------------------------
 
@@ -222,7 +218,7 @@ class RegisteredUserTest(TestCase):
 
         get_user = User.objects.get(username='dhaynes')
         get_registered_user = RegisteredUser.objects.get(user=get_user)
-        expected = '<Registered User: dhaynes - Approval Status: False>'
+        expected = '<Registered User: dhaynes - Approval Status: True>'
         actual = str(get_registered_user)
         self.assertEqual(expected, actual)
 

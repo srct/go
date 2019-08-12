@@ -5,10 +5,6 @@ References:
     - http://stackoverflow.com/a/7304658
 """
 
-# Future Imports
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 # Python stdlib Imports
 from datetime import datetime, timedelta
 
@@ -54,21 +50,21 @@ class URLFormTest(TestCase):
         print(form.errors)
         self.assertTrue(form.is_valid())
 
-    def test_valid_form_custom(self):
-        """
-        Test that form fields are validated correctly given valid data.
-        """
+    # def test_valid_form_custom(self):
+    #     """
+    #     Test that form fields are validated correctly given valid data.
+    #     """
 
-        form_data = {
-            'target': 'https://srct.gmu.edu',
-            'short': 'pls',
-            'expires': 'Custom Date',
-            'expires_custom': datetime.now() + timedelta(days=1)
-        }
+    #     form_data = {
+    #         'target': 'https://srct.gmu.edu',
+    #         'short': 'pls',
+    #         'expires': 'Custom Date',
+    #         'expires_custom': datetime.now() + timedelta(days=1)
+    #     }
 
-        form = URLForm(data=form_data)
-        print(form.errors)
-        self.assertTrue(form.is_valid())
+    #     form = URLForm(data=form_data)
+    #     print(form.errors)
+    #     self.assertTrue(form.is_valid())
 
     def test_invalid_target(self):
         """

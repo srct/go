@@ -11,7 +11,7 @@ variables:
 
 before_script:
   - apt-get update -qy
-  - apt-get install -y mysql-client libmysqlclient-dev python-mysqldb redis-server
+  - apt-get install -y default-libmysqlclient-dev python-mysqldb redis-server
   - pip install -r requirements/ci.txt
   - nohup redis-server &
   - cd go/
@@ -35,20 +35,20 @@ before_script:
   - python manage.py migrate
   - echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('root', 'root@srct.gmu.edu', 'root') " | python manage.py shell
 
-Go-py2.7:
-  image: library/python:2.7
-  stage: test
-  script:
-    - python manage.py test
+# Go-py2.7:
+#   image: library/python:2.7
+#   stage: test
+#   script:
+#     - python manage.py test
 
-Go-py3.4:
-  image: library/python:3.4
-  stage: test
-  script:
-    - python manage.py test
+# Go-py3.4:
+#   image: library/python:3.4
+#   stage: test
+#   script:
+#     - python manage.py test
 
-Go-py3.5:
-  image: library/python:3.5
+Go-py3.7:
+  image: library/python:3.7
   stage: test
   script:
     - python manage.py test
@@ -61,8 +61,9 @@ Go-py3.5:
 #    - coverage run --source=go --omit=*migrations/*,*admin.py,*manage.py,*wsgi.py,*settings.py,*secret.py,*__init__.py,*.pyc,*templates/*,*static/* manage.py test
 #    - coverage html -i && grep pc_cov htmlcov/index.html | egrep -o "[0-9]+\%" | awk '{ print "covered " $1;}'
 
+
 Go-flake8:
-  image: library/python:3.5
+  image: library/python:3.7
   stage: lint
   script:
     - pip install flake8
