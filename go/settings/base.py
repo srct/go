@@ -191,5 +191,5 @@ EMAIL_TO = os.getenv('GO_EMAIL_TO', '')
 EMAIL_DOMAIN = os.getenv('GO_EMAIL_DOMAIN', '@gmu.edu')
 
 
-if 'test' in sys.argv:
-    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
+# if 'test' in sys.argv:
+#     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
