@@ -15,7 +15,7 @@ before_script:
   - pip install -r requirements/ci.txt
   - nohup redis-server &
   - cd go/
-  - export GO_SECRET_KEY=$(python -c 'import random; import string; print("".join([random.SystemRandom().choice("{}{}{}".format(string.ascii_letters, string.digits, string.punctuation)) for i in range(50)]))')
+  - export GO_SECRET_KEY="secret"
   - export GO_DB_NAME="go"
   - export GO_DB_USER="root"
   - export GO_DB_PASSWORD="root"
