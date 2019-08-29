@@ -1,4 +1,3 @@
-go/settings/settings.py
 go/settings/secret.py
 docker-compose.yml
 **/*.pyc
