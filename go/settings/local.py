@@ -14,8 +14,8 @@ DEBUG = True
 CAS_SERVER_URL = "https://login.gmu.edu/"
 
 # dummy cache for development-- doesn't actually cache things
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}

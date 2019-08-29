@@ -195,7 +195,6 @@ class URLForm(ModelForm):
                                 <h4>Set when you would like your Go address to expire:</h4>
                                 <br />"""),
                             'expires',
-                            Field('expires_custom', template="crispy/customDateField.html"),
                         style="background: rgb(#F6F6F6);"),
                     active=True,
                     template='crispy/accordian-group.html'),
