@@ -1,5 +1,6 @@
 services:
-  - registry.srct.gmu.edu/srct/go/db
+  - name: registry.srct.gmu.edu/srct/go/db
+    alias: mysql
 
 stages:
   - test
@@ -20,7 +21,7 @@ before_script:
   - export GO_DB_NAME="go"
   - export GO_DB_USER="root"
   - export GO_DB_PASSWORD="root"
-  - export GO_DB_HOST="db"
+  - export GO_DB_HOST="mysql"
   - export GO_DB_PORT=3306
   - export GO_ALLOWED_HOSTS="*"
   - export GO_EMAIL_DOMAIN="@masonlive.gmu.edu"
