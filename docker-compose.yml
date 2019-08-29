@@ -11,6 +11,7 @@ services:
     depends_on:
       - db
     environment:
+      - GO_ENV=development
       - GO_ALLOWED_HOSTS=*
       - GO_EMAIL_DOMAIN=@masonlive.gmu.edu
       - GO_CAS_URL=https://login.gmu.edu/
@@ -29,8 +30,7 @@ services:
       - superuser=zwood2
 
   db:
-    image: mysql:8
-    command: --default-authentication-plugin=mysql_native_password
+    image: registry.srct.gmu.edu/srct/go/db
     environment:
       MYSQL_DATABASE: go
       MYSQL_USER: go

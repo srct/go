@@ -50,6 +50,8 @@ class URLFormTest(TestCase):
         print(form.errors)
         self.assertTrue(form.is_valid())
 
+    # Uncomment when custom forms are implemented again
+    #
     # def test_valid_form_custom(self):
     #     """
     #     Test that form fields are validated correctly given valid data.

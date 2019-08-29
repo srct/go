@@ -75,24 +75,6 @@ def handle_regUser_creation(sender, instance, created, **kwargs):
 
     if created:
         RegisteredUser.objects.create(user=instance)
-        # Don't send mail for now
-        #
-        # user_mail = instance.username + settings.EMAIL_DOMAIN
-        # send_mail(
-        #             'We have received your Go application!',
-        #             ######################
-        #             'Hey there %s,\n\n'
-        #             'The Go admins have received your application and are '
-        #             'currently in the process of reviewing it.\n\n'
-        #             'You will receive another email when you have been '
-        #             'approved.\n\n'
-        #             '- Go Admins'
-        #             % (str(instance.username)),
-        #             ######################
-        #             settings.EMAIL_FROM,
-        #             [user_mail]
-        #         )
-
 
 class URL(models.Model):
     """
