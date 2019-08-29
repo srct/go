@@ -2,7 +2,7 @@ FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update
-RUN apt-get install netcat -y
+RUN apt-get install netcat python3-dev default-libmysqlclient-dev -y
 
 RUN mkdir /go
 WORKDIR /go
