@@ -15,6 +15,7 @@ before_script:
   - pip install -r requirements/ci.txt
   - nohup redis-server &
   - cd go/
+  - export GO_ENV="test"
   - export GO_SECRET_KEY="secret"
   - export GO_DB_NAME="go"
   - export GO_DB_USER="root"
