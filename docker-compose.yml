@@ -1,11 +1,12 @@
 version: '3.7'
 services:
   web:
-    build: .
+    # build: .
     restart: always
     ports:
       - '8000:8000'
-    command: /bin/bash ./startup.sh -python go/manage.py runserver 0.0.0.0:8000
+    command: /bin/bash ./startup_prod.sh
+    image: go-prod
     volumes:
       - .:/go
     depends_on:
