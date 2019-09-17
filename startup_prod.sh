@@ -6,3 +6,4 @@ python go/manage.py createsuperuser --noinput --username=$superuser --email=$sup
 echo "from django.contrib.auth import get_user_model; User = get_user_model(); me = User.objects.get(username='$superuser'); me.first_name = 'David'; me.last_name = 'Haynes'; me.save(); " | python go/manage.py shell
 python go/manage.py collectstatic --noinput
 gunicorn -b ":8000" --chdir /go/go settings.wsgi
+
