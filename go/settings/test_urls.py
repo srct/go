@@ -62,14 +62,6 @@ class UrlsTest(TestCase):
         url = reverse('about')
         self.assertEqual(url, '/about')
 
-    def test_signup_reverse(self):
-        """
-        /signup - Signup page for access.
-        """
-
-        url = reverse('signup')
-        self.assertEqual(url, '/signup')
-
     def test_my_links_reverse(self):
         """
         /myLinks - My-Links page, view and review links.
