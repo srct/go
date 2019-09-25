@@ -271,7 +271,7 @@ class EditForm(URLForm):
             HTML("""
                 <br />"""),
             StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
-    
+
     class Meta(URLForm.Meta):
         # what attributes are included
         fields = URLForm.Meta.fields

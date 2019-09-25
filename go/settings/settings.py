@@ -9,7 +9,7 @@ import os
 import sys
 
 # DEV vs PROD
-if os.environ["GO_ENV"] != "production":
+if os.getenv('GO_ENV') != "production":
     DEBUG = True
 else:
     DEBUG = False

@@ -1,17 +1,17 @@
 version: '3.7'
 services:
   web:
-    # build: .
+    build: .
     restart: always
     ports:
       - '8000:8000'
-    command: /bin/bash ./startup_prod.sh
-    image: go-prod
+    command: /bin/bash ./startup.sh
     volumes:
       - .:/go
     depends_on:
       - db
     environment:
+      - DOCKER=true
       - GO_ENV=development
       - GO_ALLOWED_HOSTS=*
       - GO_EMAIL_DOMAIN=@masonlive.gmu.edu

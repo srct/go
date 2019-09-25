@@ -68,32 +68,35 @@ def new_link(request):
     if request.method == 'POST':
         # Now we initialize the form again but this time we have the POST
         # request
-        url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
-
-        # Django will check the form to make sure it's valid
-        if url_form.is_valid():
-            # Call our post method to assemble our new URL object
-            res = post(request, url_form)
-
-            # If there is a 500 error returned, handle it
-            if res == 500:
-                return HttpResponseServerError(render(request, '500.html'))
-
-            # Redirect to the shiny new URL
-            return redirect('view', res.short)
-
-        # Else, there is an error, redisplay the form with the validation errors
-        else:
-            # Render index.html passing the form to the template
-            return render(request, 'core/new_link.html', {
-                'form': url_form,
-            })
-
+        return _new_link_post(request)
 
     # Render index.html passing the form to the template
     return render(request, 'core/new_link.html', {
         'form': url_form,
     })
+
+def _new_link_post(request):
+    """
+    This view handles when a POST is received from the new_link form.
+    """
+    url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
+
+    if not url_form.is_valid():
+        # there is an error, redisplay the form with the validation errors
+        # Render index.html passing the form to the template
+        return render(request, 'core/new_link.html', {
+            'form': url_form,
+        })
+
+    # Call our post method to assemble our new URL object
+    res = post(request, url_form)
+
+    # If there is a 500 error returned, handle it
+    if res == 500:
+        return HttpResponseServerError(render(request, '500.html'))
+
+    # Redirect to the shiny new URL
+    return redirect('view', res.short)
 
 @login_required
 def my_links(request):
@@ -135,8 +138,8 @@ def post(request, url_form):
 
         if random_short is None:
             return 500
-        else:
-            url.short = random_short
+
+        url.short = random_short
 
     # Grab the expiration field value. It's currently an unsable
     # string value, so we need to parse it into a datetime object
@@ -195,107 +198,104 @@ def edit(request, short):
     url = get_object_or_404(URL, short__iexact=short)
 
     # If the RegisteredUser is the owner of the URL
-    if url.owner == request.user.registereduser:
-
-        # If a POST request is received, then the user has submitted a form and it's
-        # time to parse the form and edit that URL object
-        if request.method == 'POST':
-            # Now we initialize the form again but this time we have the POST
-            # request
-            url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
-
-            # Make a copy of the old URL
-            copy = url
-            # Remove the old one
-            url.delete()
-
-            # Django will check the form to make sure it's valid
-            if url_form.is_valid():
-                # If the short changed then we need to create a new object and
-                # migrate some data over
-                if url_form.cleaned_data.get('short').strip() != copy.short:
-                    # Parse the form and create a new URL object
-                    res = post(request, url_form)
-
-                    # If there is a 500 error returned, handle it
-                    if res == 500:
-                        return HttpResponseServerError(render(request, '500.html'))
-
-                    # We can procede with the editing process
-                    else:
-                        # Migrate clicks data
-                        res.clicks = copy.clicks
-                        res.qrclicks = copy.qrclicks
-                        res.socialclicks = copy.socialclicks
-
-                        # Save the new URL
-                        res.save()
-
-                        # Redirect to the shiny new *edited URL
-                        return redirect('view', res.short)
-
-                # The short was not edited and thus, we can directly edit the url
-                else:
-                    if url_form.cleaned_data.get('target').strip() != copy.target:
-                        copy.target = url_form.cleaned_data.get('target').strip()
-                        copy.save()
-
-                    # Grab the expiration field value. It's currently an unsable
-                    # string value, so we need to parse it into a datetime object
-                    # relative to right now.
-                    expires = url_form.cleaned_data.get('expires')
-
-                    # Determine what the expiration date is
-                    if expires == URLForm.DAY:
-                        edited_expires = timezone.now() + timedelta(days=1)
-                    elif expires == URLForm.WEEK:
-                        edited_expires = timezone.now() + timedelta(weeks=1)
-                    elif expires == URLForm.MONTH:
-                        edited_expires = timezone.now() + timedelta(weeks=3)
-                    elif expires == URLForm.CUSTOM:
-                        edited_expires = url_form.cleaned_data.get('expires_custom')
-                    else:
-                        pass  # leave the field NULL
-
-                    if edited_expires != copy.expires:
-                        copy.expires = edited_expires
-                        copy.save()
-
-                    # Redirect to the shiny new *edited URL
-                    return redirect('view', copy.short)
-
-            # Else, there is an error, redisplay the form with the validation errors
-            else:
-                # Render index.html passing the form to the template
-                return render(request, 'core/edit_link.html', {
-                    'form': url_form
-                })
-        else:
-            # Initial data set here
-            if url.expires != None:
-                # Initialize a URL form with an expire date
-                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
-                    'target': url.target,
-                    'short': url.short,
-                    'expires': 'Custom Date',
-                    'expires_custom': url.expires
-                })  # unbound form
-            else:
-                # Initialize a URL form without an expire date
-                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
-                    'target': url.target,
-                    'short': url.short,
-                    'expires': 'Never',
-                })  # unbound form
-
-            # Render index.html passing the form to the template
-            return render(request, 'core/edit_link.html', {
-                'form': url_form
-            })
-    else:
+    if url.owner != request.user.registereduser:
         # do not allow them to edit
         raise PermissionDenied()
 
+    # If a POST request is received, then the user has submitted a form and it's
+    # time to parse the form and edit that URL object
+    if request.method == 'POST':
+        return _edit_post(request, url)
+
+    # Initial data set here
+    if url.expires != None:
+        # Initialize a URL form with an expire date
+        url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
+            'target': url.target,
+            'short': url.short,
+            'expires': 'Custom Date',
+            'expires_custom': url.expires
+        })  # unbound form
+    else:
+        # Initialize a URL form without an expire date
+        url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
+            'target': url.target,
+            'short': url.short,
+            'expires': 'Never',
+        })  # unbound form
+
+    # Render index.html passing the form to the template
+    return render(request, 'core/edit_link.html', {
+        'form': url_form
+    })
+
+def _edit_post(request, url):
+    # Now we initialize the form again but this time we have the POST
+    # request
+    url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
+
+    # Make a copy of the old URL
+    copy = url
+    # Remove the old one
+    url.delete()
+
+    # Django will check the form to make sure it's valid
+    if not url_form.is_valid():
+        # Render index.html passing the form to the template
+        return render(request, 'core/edit_link.html', {
+            'form': url_form
+        })
+
+    # If the short changed then we need to create a new object and
+    # migrate some data over
+    if url_form.cleaned_data.get('short').strip() != copy.short:
+        # Parse the form and create a new URL object
+        res = post(request, url_form)
+
+        # If there is a 500 error returned, handle it
+        if res == 500:
+            return HttpResponseServerError(render(request, '500.html'))
+
+        # Else we can procede with the editing process
+        # Migrate clicks data
+        res.clicks = copy.clicks
+        res.qrclicks = copy.qrclicks
+        res.socialclicks = copy.socialclicks
+
+        # Save the new URL
+        res.save()
+
+        # Redirect to the shiny new *edited URL
+        return redirect('view', res.short)
+
+    # The short was not edited and thus, we can directly edit the url
+    if url_form.cleaned_data.get('target').strip() != copy.target:
+        copy.target = url_form.cleaned_data.get('target').strip()
+        copy.save()
+
+    # Grab the expiration field value. It's currently an unsable
+    # string value, so we need to parse it into a datetime object
+    # relative to right now.
+    expires = url_form.cleaned_data.get('expires')
+
+    # Determine what the expiration date is
+    if expires == URLForm.DAY:
+        edited_expires = timezone.now() + timedelta(days=1)
+    elif expires == URLForm.WEEK:
+        edited_expires = timezone.now() + timedelta(weeks=1)
+    elif expires == URLForm.MONTH:
+        edited_expires = timezone.now() + timedelta(weeks=3)
+    elif expires == URLForm.CUSTOM:
+        edited_expires = url_form.cleaned_data.get('expires_custom')
+    else:
+        pass  # leave the field NULL
+
+    if edited_expires != copy.expires:
+        copy.expires = edited_expires
+        copy.save()
+
+    # Redirect to the shiny new *edited URL
+    return redirect('view', copy.short)
 
 @login_required
 def delete(request, short):
@@ -303,19 +303,16 @@ def delete(request, short):
     This view deletes a URL if you have the permission to. User must be
     logged in and registered, and must also be the owner of the URL.
     """
-    
+
     # Get the URL that is going to be deleted
     url = get_object_or_404(URL, short__iexact=short)
 
-    # If the RegisteredUser is the owner of the URL
-    if url.owner == request.user.registereduser:
-        # remove the URL
-        url.delete()
-        # redirect to my_links
-        return redirect('my_links')
-    else:
+    if url.owner != request.user.registereduser:
         # do not allow them to delete
         raise PermissionDenied()
+
+    url.delete()
+    return redirect('my_links')
 
 @login_required
 def signup(request):
@@ -426,7 +423,7 @@ def redirection(request, short):
 
     # Get the current domain info
     domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
-    
+
     # Get the URL object that relates to the requested Go link
     url = get_object_or_404(URL, short__iexact=short)
     # Increment our clicks by one
@@ -473,137 +470,65 @@ def useradmin(request):
 
     # If we receive a POST request
     if request.POST:
-        # Get a list of the potential victims (users)
-        userlist = request.POST.getlist('username')
-        # If we're approving users
-        if '_approve' in request.POST:
-            for name in userlist:
-                to_approve = RegisteredUser.objects.get(user__username__exact=name)
-                to_approve.approved = True
-                to_approve.save()
-
-                # Send an email letting them know they are approved
-                if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = to_approve.user.username + settings.EMAIL_DOMAIN
-                    send_mail(
-                        'Your Account has been Approved!',
-                        ######################
-                        'Hey there %s,\n\n'
-                        'The Go admins have reviewed your application and have '
-                        'approved you to use Go!\n\n'
-                        'Head over to go.gmu.edu to create your first address.\n\n'
-                        '- Go Admins'
-                        % (str(to_approve.full_name)),
-                        ######################
-                        settings.EMAIL_FROM,
-                        [user_mail]
-                    )
-
-        # If we're denying users
-        elif '_deny' in request.POST:
-            for name in userlist:
-                to_deny = RegisteredUser.objects.get(user__username__exact=name)
-                if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = to_deny.user.username + settings.EMAIL_DOMAIN
-                    # Send an email letting them know they are denied
-                    send_mail(
-                        'Your Account has been Denied!',
-                        ######################
-                        'Hey there %s,\n\n'
-                        'The Go admins have reviewed your application and have '
-                        'decided to not approve you to use Go.\n\n'
-                        'Please reach out to srct@gmu.edu to appeal '
-                        'this decision.\n\n'
-                        '- Go Admins'
-                        % (str(to_deny.full_name)),
-                        ######################
-                        settings.EMAIL_FROM,
-                        [user_mail]
-                    )
-                # Delete their associated RegisteredUsers
-                to_deny.user.delete()
-                return HttpResponseRedirect('useradmin')
-
-        # If we're blocking users
-        elif '_block' in request.POST:
-            for name in userlist:
-                to_block = RegisteredUser.objects.get(user__username__exact=name)
-                if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = to_block.user.username + settings.EMAIL_DOMAIN
-                    send_mail(
-                        'Your Account has been Blocked!',
-                        ######################
-                        'Hey there %s,\n\n'
-                        'The Go admins have reviewed your application and have '
-                        'blocked you from using Go.\n\n'
-                        'Please reach out to srct@gmu.edu to appeal '
-                        'this decision.\n\n'
-                        '- Go Admins'
-                        % (str(to_block.full_name)),
-                        ######################
-                        settings.EMAIL_FROM,
-                        [user_mail]
-                    )
-                to_block.blocked = True
-                to_block.save()
-
-        # If we're un-blocking users
-        elif '_unblock' in request.POST:
-            for name in userlist:
-                to_un_block = RegisteredUser.objects.get(user__username__exact=name)
-                if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = to_un_block.user.username + settings.EMAIL_DOMAIN
-                    send_mail(
-                        'Your Account has been Un-Blocked!',
-                        ######################
-                        'Hey there %s,\n\n'
-                        'The Go admins have reviewed your application and have '
-                        'Un-Blocked you from using Go.\n\n'
-                        'Congratulations! '
-                        '- Go Admins'
-                        % (str(to_un_block.full_name)),
-                        ######################
-                        settings.EMAIL_FROM,
-                        [user_mail]
-                    )
-                to_un_block.blocked = False
-                to_un_block.save()
-                return HttpResponseRedirect('useradmin')
-
-        # If we're removing existing users
-        elif '_remove' in request.POST:
-            for name in userlist:
-                to_remove = RegisteredUser.objects.get(user__username__exact=name)
-                if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                    user_mail = to_remove.user.username + settings.EMAIL_DOMAIN
-                    send_mail(
-                        'Your Account has been Deleted!',
-                        ######################
-                        'Hey there %s,\n\n'
-                        'The Go admins have decided to remove you from Go. \n\n'
-                        'Please reach out to srct@gmu.edu to appeal '
-                        'this decision.\n\n'
-                        '- Go Admins'
-                        % (str(to_remove.full_name)),
-                        ######################
-                        settings.EMAIL_FROM,
-                        [user_mail]
-                    )
-                to_remove.user.delete()
-                return HttpResponseRedirect('useradmin')
+        return _useradmin_post(request)
 
     # Get a list of all RegisteredUsers that need to be approved
-    need_approval = RegisteredUser.objects.filter(registered=True).filter(
-        approved=False).filter(blocked=False)
-    # Get a list of all RegisteredUsers that are currently users
-    current_users = RegisteredUser.objects.filter(approved=True).filter(
-        registered=True).filter(blocked=False)
+    current_users = RegisteredUser.objects.filter(blocked=False)
     # Get a list of all RegisteredUsers that are blocked
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
     return render(request, 'admin/useradmin.html', {
-        'need_approval': need_approval,
         'current_users': current_users,
         'blocked_users': blocked_users
     })
+
+def _useradmin_post(request):
+    # Get a list of the potential victims (users)
+    userlist = request.POST.getlist('username')
+
+    # If we're blocking users
+    if '_block' in request.POST:
+        for name in userlist:
+            to_block = RegisteredUser.objects.get(user__username__exact=name)
+            if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                user_mail = to_block.user.username + settings.EMAIL_DOMAIN
+                send_mail(
+                    'Your Account has been Blocked!',
+                    ######################
+                    'Hey there %s,\n\n'
+                    'The Go admins have reviewed your application and have '
+                    'blocked you from using Go.\n\n'
+                    'Please reach out to srct@gmu.edu to appeal '
+                    'this decision.\n\n'
+                    '- Go Admins'
+                    % (str(to_block.full_name)),
+                    ######################
+                    settings.EMAIL_FROM,
+                    [user_mail]
+                )
+            to_block.blocked = True
+            to_block.save()
+
+    # If we're un-blocking users
+    elif '_unblock' in request.POST:
+        for name in userlist:
+            to_un_block = RegisteredUser.objects.get(user__username__exact=name)
+            if settings.EMAIL_HOST and settings.EMAIL_PORT:
+                user_mail = to_un_block.user.username + settings.EMAIL_DOMAIN
+                send_mail(
+                    'Your Account has been Un-Blocked!',
+                    ######################
+                    'Hey there %s,\n\n'
+                    'The Go admins have reviewed your application and have '
+                    'Un-Blocked you from using Go.\n\n'
+                    'Congratulations! '
+                    '- Go Admins'
+                    % (str(to_un_block.full_name)),
+                    ######################
+                    settings.EMAIL_FROM,
+                    [user_mail]
+                )
+            to_un_block.blocked = False
+            to_un_block.save()
+            return HttpResponseRedirect('useradmin')
