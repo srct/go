@@ -135,14 +135,6 @@ class UrlsTest(TestCase):
         url = reverse('delete', args=['dhaynes123_-'])
         self.assertEqual(url, '/delete/dhaynes123_-')
 
-    def test_registered_reverse(self):
-        """
-        /registered - registration complete page
-        """
-
-        url = reverse('registered')
-        self.assertEqual(url, '/registered')
-
     # The /admin URL is not tested as it is never resolves in source and generally
     # Django yells at you if the admin page breaks
 
