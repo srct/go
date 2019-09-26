@@ -198,7 +198,7 @@ class RegisteredUserTest(TestCase):
 
         self.assertTrue(get_registered_user.blocked)
 
-    def test_approved_default(self):
+    def test_blocked_default(self):
         """
         test the blocked bool default
         """
