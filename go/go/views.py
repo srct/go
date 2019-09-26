@@ -20,7 +20,7 @@ from django.utils import timezone
 from ratelimit.decorators import ratelimit
 
 # App Imports
-from .forms import SignupForm, URLForm, EditForm
+from .forms import URLForm, EditForm
 from .models import URL, RegisteredUser
 
 
@@ -51,9 +51,7 @@ def new_link(request):
     """
     This view handles the homepage that the user is presented with when
     they request '/newLink'. If they're not logged in, they're redirected to
-    login. If they're logged in but not registered, they're given the
-    not_registered error page. If they are logged in AND registered, they
-    get the URL registration form.
+    login.
     """
 
     # If the user is blocked, then display the you're blocked page.
@@ -313,108 +311,6 @@ def delete(request, short):
 
     url.delete()
     return redirect('my_links')
-
-@login_required
-def signup(request):
-    """
-    This view presents the user with a registration form. You can register
-    yourself.
-    """
-
-    # Do not display signup page to registered or approved users
-    if request.user.registereduser.blocked:
-        return render(request, 'banned.html')
-    elif request.user.registereduser.approved:
-        return redirect('/')
-    elif request.user.registereduser.registered:
-        return redirect('registered')
-
-    # Initialize our signup form
-    signup_form = SignupForm(
-        request,
-        initial={
-            'full_name': request.user.first_name + " " + request.user.last_name
-        }
-    )
-
-    # Set the full_name field to readonly since CAS will fill that in for them
-    signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
-
-    # If a POST request is received, then the user has submitted a form and it's
-    # time to parse the form and create a new RegisteredUser
-    if request.method == 'POST':
-        # Now we initialize the form again but this time we have the POST
-        # request
-        signup_form = SignupForm(
-            request, request.POST, instance=request.user.registereduser,
-            initial={
-                'full_name': request.user.first_name + " " + request.user.last_name
-            }
-        )
-
-        # set the readonly flag again for good measure
-        signup_form.fields['full_name'].widget.attrs['readonly'] = 'readonly'
-
-        # Django will check the form to make sure it's valid
-        if signup_form.is_valid():
-            # Grab data from the form and store into variables
-            description = signup_form.cleaned_data.get('description')
-            full_name = signup_form.cleaned_data.get('full_name')
-            organization = signup_form.cleaned_data.get('organization')
-
-            # Only send mail if we've defined the mailserver
-            if settings.EMAIL_HOST and settings.EMAIL_PORT:
-                user_mail = request.user.username + settings.EMAIL_DOMAIN
-                # Email sent to notify Admins
-                to_admin = EmailMessage(
-                    'Signup from %s' % (request.user.registereduser.user),
-                    ######################
-                    '%s signed up at %s\n\n'
-                    'Username: %s\n'
-                    'Organization: %s\n\n'
-                    'Message: %s\n\n'
-                    'You can contact the user directly by replying to this email or '
-                    'reply all to contact the user and notfiy the mailing list.\n'
-                    'Please head to go.gmu.edu/useradmin to approve or '
-                    'deny this application.'
-                    %(
-                        str(full_name), str(timezone.now()).strip(),
-                        str(request.user.registereduser.user), str(organization),
-                        str(description)
-                    ),
-                    ######################
-                    settings.EMAIL_FROM,
-                    [settings.EMAIL_TO],
-                    reply_to=[user_mail]
-                )
-                to_admin.send()
-                # Confirmation email sent to Users
-                send_mail(
-                    'We have received your Go application!',
-                    ######################
-                    'Hey there %s,\n\n'
-                    'The Go admins have received your application and are '
-                    'currently in the process of reviewing it.\n\n'
-                    'You will receive another email when you have been '
-                    'approved.\n\n'
-                    '- Go Admins'
-                    % (str(full_name)),
-                    ######################
-                    settings.EMAIL_FROM,
-                    [user_mail]
-                )
-
-            # Make sure that our new RegisteredUser object is clean, then save
-            # it and let's redirect to tell the user they have registered.
-            signup_form.save()
-            return redirect('registered')
-
-    # render signup.html passing along the form and the current registered
-    # status
-    return render(request, 'core/signup.html', {
-        'form': signup_form,
-        'registered': False,
-    })
 
 def redirection(request, short):
     """

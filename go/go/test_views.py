@@ -153,19 +153,6 @@ class DeleteTest(TestCase):
         response = self.client.get('/delete/test')
         self.assertEqual(response.status_code, 302)
 
-class SignupTest(TestCase):
-    """
-    Test cases for the signup view
-    """
-
-    def test_signup_get_anon(self):
-        """
-        Test that the signup view redirects anons to login with cas on an EXTERNAL
-        CAS link, so 302 REDIRECT.
-        """
-
-        response = self.client.get('/signup')
-        self.assertEqual(response.status_code, 302)
 
 class RedirectionTest(TestCase):
     """

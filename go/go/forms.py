@@ -14,7 +14,7 @@ from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 # App Imports
-from .models import URL, RegisteredUser
+from .models import URL
 
 # Other Imports
 # from bootstrap3_datetime.widgets import DateTimePicker
@@ -275,85 +275,3 @@ class EditForm(URLForm):
     class Meta(URLForm.Meta):
         # what attributes are included
         fields = URLForm.Meta.fields
-
-class SignupForm(ModelForm):
-    """
-    The form that is used when a user is signing up to be a RegisteredUser
-    """
-
-    # The full name of the RegisteredUser
-    full_name = CharField(
-        required=True,
-        label='Full Name (Required)',
-        max_length=100,
-        widget=TextInput(),
-        help_text="We can fill in this field based on information provided by https://peoplefinder.gmu.edu.",
-    )
-
-    # The RegisteredUser's chosen organization
-    organization = CharField(
-        required=True,
-        label='Organization (Required)',
-        max_length=100,
-        widget=TextInput(),
-        help_text="Or whatever \"group\" you would associate with on campus.",
-    )
-
-    # The RegisteredUser's reason for signing up to us Go
-    description = CharField(
-        required=False,
-        label='Description (Optional)',
-        max_length=200,
-        widget=Textarea(),
-        help_text="Describe what type of links you would intend to create with Go.",
-    )
-
-    # A user becomes registered when they agree to the TOS
-    registered = BooleanField(
-        required=True,
-        # ***Need to replace lower url with production URL***
-        # ie. go.gmu.edu/about#terms
-        label=mark_safe(
-            'Do you accept the <a href="http://127.0.0.1:8000/about#terms">Terms of Service</a>?'
-        ),
-        help_text="Esssentially the GMU Responsible Use of Computing policies.",
-    )
-
-    def __init__(self, request, *args, **kwargs):
-        """
-        On initialization of the form, crispy forms renders this layout
-        """
-
-        # Necessary to call request in forms.py, is otherwise restricted to
-        # views.py and models.py
-        self.request = request
-        super(SignupForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-4'
-        self.helper.field_class = 'col-md-6'
-
-        self.helper.layout = Layout(
-            Fieldset('',
-                Div(
-                    # Place in form fields
-                    Div(
-                        'full_name',
-                        'organization',
-                        'description',
-                        'registered',
-                        css_class='well'),
-
-                    # Extras at bottom
-                    StrictButton('Submit',css_class='btn btn-primary btn-md col-md-4', type='submit'),
-                    css_class='col-md-6')))
-
-    class Meta:
-        """
-        Metadata about this ModelForm
-        """
-
-        # what model this form is for
-        model = RegisteredUser
-        # what attributes are included
-        fields = ['full_name', 'organization', 'description', 'registered']
