@@ -1,0 +1,13 @@
+FROM python:3.7
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update
+RUN apt-get install netcat python3-dev default-libmysqlclient-dev -y
+
+RUN mkdir /go
+WORKDIR /go
+ADD /requirements/ /go/
+RUN pip install -r prod.txt
+ADD . /go/
+
+RUN mkdir /static

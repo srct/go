@@ -1,6 +1,6 @@
 # Go 2
 
-[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-2.7,3.4+-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-1.11-brightgreen.svg)]() [![SemVer version](https://img.shields.io/badge/SemVer Version-2.2.3-yellowgreen.svg)]()
+[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-3.4+-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-2.2-brightgreen.svg)]()
 
 
 #### A project of [GMU SRCT](https://srct.gmu.edu).
@@ -65,29 +65,13 @@ Finally we can install git with:
 
     brew install git
 
-### On Windows
 
-We recommend that if you are on Windows 10 AE (Anniversary Edition) or above to make use of the
-Windows Subsystem for Linux (WSL). The following link should get you up and running: 
+### Windows
 
-[https://msdn.microsoft.com/en-us/commandline/wsl/install_guide](https://msdn.microsoft.com/en-us/commandline/wsl/install_guide)
-
-
-#### Contributing with Windows
-
-After that is setup, you should be able to follow the Linux instructions for _manual setup_ to
-contribute to the project. 
-
-If you are not on Windows 10 or would rather prefer to not use the WSL you may download Git for
-Windows here:
+Download Git for Windows here:
 
 [https://git-scm.com/download/win](https://git-scm.com/download/win)
 
-You'll want to follow the Vagrant setup method as it is designed to run on all platforms 
-including Windows. 
-
-I have also successfully ran the project with Docker, though you need
-access to Hyper-V which is only available on "Professional" versions of Windows. 
 
 ## 2) Clone the Go codebase.
 
@@ -145,49 +129,20 @@ Cons:
     interact with the database.
 
 There are instructions on how to setup/develop with Docker at the [docker-configuration page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/docker-configuration).
-
-### Vagrant + Ansible
-
-Vagrant boots up a full virtual machine (VM) through VirtualBox that then runs Go. A
-script written with Ansible will then run on that VM to automate the setup process
-for you. It is similar in a way to running Go on a legitimate server.
-
-Pros:
-
-  - Very similar to a production environment
-  - Can use `vagrant ssh` to "ssh" into the VM to debug things such as the
-    database.
-  - Relatively straightforward and easy setup.
-    - One Command.
-  - Can easily destroy and rebuild the VM.
-  - Loads in changes to code on the fly.
-  - Fast-ish (Initial provision takes a bit).
-
-Cons:
-
-  - Heavier on resources.
-    - It's literally a full VM.
-  - Occasional issues/hiccups.
-    - Documented fixes are in the wiki.
-
-There are instructions on how to setup with Vagrant at the [vagrant-configuration
-page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/vagrant-configuration).
-
-Additionally, there is documentation about developing with Vagrant at
-the [vagrant-usage page in the Go project wiki](https://git.gmu.edu/srct/go/wikis/vagrant-usage).
+**NOTE**: On Windows, Docker only works if you have Windows 10 Eductaion or Pro,
+as it requires HyperV.
 
 ### Manual Setup
 
 Manual setup (or: the old fashioned way) is where you install all dependecies on
 your system and run Go as a local server with Django. Granted you are technically
-doing that with Vagrant and Docker except those platforms automate the steps that
+doing that with Docker except those platforms automate the steps that
 are laid out in this section.
 
 Pros:
   - Experience setting up a Django project for local development
 
 Cons:
-  - Greater potential for things to go wrong
   - Way more steps
 
 Head to:
@@ -215,15 +170,6 @@ rely on. Here's how to run them locally:
 Docker is not supported currently for running unit tests. If you're able to get
 it set up, open a merge request and I'll merge it in.
 
-#### Vagrant
-
-    vagrant up
-    vagrant ssh
-    cd /vagrant
-    source venv/bin/activate
-    cd go
-    source sourceme.sh
-    python manage.py test
 
 #### Manual Setup
 
@@ -240,16 +186,6 @@ opinions about using `git`.
 
 There is a template for issue descriptions located on the new issue page. I will
 close issues with poor descriptions or who do not follow the standard.
-
-## Authentication
-
-The authentication service used for Go is CAS. In local development however we
-utilize a test server. You can log in with just your CAS username to simulate logging
-in. By default, the Django superuser is set to `dhaynes3`.
-
-In order to approve yourself to be an 'approved user' you must navigate to 127.0.0.1:8000/admin and log in.
-Once in the admin page go to "registered users", and create a new registered user in the top right. Be sure to
-use the same username and Full Name as your main account and select "approved" in the bottom row.
 
 ## Coding style
 
