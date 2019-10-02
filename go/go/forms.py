@@ -16,21 +16,7 @@ from django.utils.safestring import mark_safe
 # App Imports
 from .models import URL
 
-# Other Imports
-# from bootstrap3_datetime.widgets import DateTimePicker
-from crispy_forms.bootstrap import (Accordion, AccordionGroup, PrependedText,
-                                    StrictButton)
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Div, Field, Fieldset, Layout
-
-
 class URLForm(ModelForm):
-    """
-    The form that is used in URL creation.
-    """
-
-    # target -------------------------------------------------------------------
-
     def clean_target(self):
         """
         Prevent redirect loop links
@@ -45,7 +31,8 @@ class URLForm(ModelForm):
         label='Long URL (Required)',
         max_length=1000,
         widget=URLInput(attrs={
-            'placeholder': 'https://yoursite.com/'
+            'placeholder': 'https://yoursite.com/',
+            'class': 'urlinput form-control',
         })
     )
 
@@ -60,16 +47,20 @@ class URLForm(ModelForm):
             # if we're able to get a URL with the same short url
             URL.objects.get(short__iexact=value)
         except URL.DoesNotExist as ex:
-            return
+            return 
 
         # then raise a ValidationError
-        raise ValidationError('Short url already exists.')
+        raise ValidationError('Short URL already exists.')
 
     # Custom short-url field with validators.
     short = SlugField(
         required=False,
         label='Short URL (Optional)',
-        widget=TextInput(),
+        widget=TextInput(
+            attrs={
+                'class': 'urlinput form-control',
+            }
+        ),
         validators=[unique_short],
         max_length=20,
         min_length=3,
@@ -99,7 +90,7 @@ class URLForm(ModelForm):
         label='Expiration (Required)',
         choices=EXPIRATION_CHOICES,
         initial=NEVER,
-        widget=RadioSelect(),
+        widget=RadioSelect(attrs={'class': 'radios'}),
     )
 
     def valid_date(value):
@@ -114,25 +105,6 @@ class URLForm(ModelForm):
         else:
             raise ValidationError('Date must be after today.')
 
-
-    # Add a custom expiration choice.
-    # expires_custom = DateTimeField(
-    #     required=False,
-    #     label='Custom Date',
-    #     input_formats=['%m-%d-%Y'],
-    #     validators=[valid_date],
-    #     initial=lambda: datetime.now() + timedelta(days=1),
-    #     widget=DateTimePicker(
-    #         options={
-    #             "format": "MM-DD-YYYY",
-    #             "pickTime": False,
-    #         },
-    #         icon_attrs={
-    #             "class": "fa fa-calendar",
-    #         },
-    #     )
-    # )
-
     def __init__(self, *args, **kwargs):
         """
         On initialization of the form, crispy forms renders this layout
@@ -141,60 +113,10 @@ class URLForm(ModelForm):
         # Grab that host info
         self.host = kwargs.pop('host', None)
         super(URLForm, self).__init__(*args, **kwargs)
-        # Define the basics for crispy-forms
-        self.helper = FormHelper()
-        self.helper.form_method = 'POST'
 
-        # Some xtra vars for form css purposes
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-1'
-        self.helper.field_class = 'col-md-6'
-
-        # The main "layout" defined
-        self.helper.layout = Layout(
-            Fieldset('',
-            #######################
-                Accordion(
-                    # Step 1: Long URL
-                    AccordionGroup('Step 1: Long URL',
-                        Div(
-                            HTML("""
-                                <h4>Paste the URL you would like to shorten:</h4>
-                                <br />"""),
-                            'target',
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
-
-                    # Step 2: Short URL
-                    AccordionGroup('Step 2: Short URL',
-                        Div(
-                            HTML("""
-                                <h4>Create a custom Go address:</h4>
-                                <br />"""),
-                            PrependedText(
-                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html',),
-
-                    # Step 3: Expiration
-                    AccordionGroup('Step 3: URL Expiration',
-                        Div(
-                            HTML("""
-                                <h4>Set when you would like your Go address to expire:</h4>
-                                <br />"""),
-                            'expires',
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
-
-                # FIN
-                template='crispy/accordian.html'),
-            #######################
-            HTML("""
-                <br />"""),
-            StrictButton('Shorten', css_class="btn btn-primary btn-md col-md-4", type='submit')))
+        self.target_title = 'Paste the URL you would like to shorten:'
+        self.short_title = 'Create a custom Go address:'
+        self.expires_title = 'Set when you would like your Go address to expire:'
 
     class Meta:
         """
@@ -207,71 +129,9 @@ class URLForm(ModelForm):
         fields = ['target']
 
 class EditForm(URLForm):
-
     def __init__(self, *args, **kwargs):
-        """
-        On initialization of the form, crispy forms renders this layout
-        """
+        super(EditForm, self).__init__(*args, **kwargs)
 
-        # Grab that host info
-        self.host = kwargs.pop('host', None)
-        super(URLForm, self).__init__(*args, **kwargs)
-        # Define the basics for crispy-forms
-        self.helper = FormHelper()
-        self.helper.form_method = 'POST'
-
-        # Some xtra vars for form css purposes
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-1'
-        self.helper.field_class = 'col-md-6'
-
-        # The main "layout" defined
-        self.helper.layout = Layout(
-            Fieldset('',
-            #######################
-                Accordion(
-                    # Step 1: Long URL
-                    AccordionGroup('Step 1: Long URL',
-                        Div(
-                            HTML("""
-                                <h4>Modify the URL you would like to shorten:</h4>
-                                <br />"""),
-                            'target',
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
-
-                    # Step 2: Short URL
-                    AccordionGroup('Step 2: Short URL',
-                        Div(
-                            HTML("""
-                                <h4>Modify the Go address:</h4>
-                                <br />"""),
-                            PrependedText(
-                            'short', 'https://go.gmu.edu/', template='crispy/customPrepended.html'),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html',),
-
-                    # Step 3: Expiration
-                    AccordionGroup('Step 3: URL Expiration',
-                        Div(
-                            HTML("""
-                                <h4>Modify the expiration date:</h4>
-                                <br />"""),
-                            'expires',
-                            Field('expires_custom', template="crispy/customDateField.html"),
-                        style="background: rgb(#F6F6F6);"),
-                    active=True,
-                    template='crispy/accordian-group.html'),
-
-                # FIN
-                template='crispy/accordian.html'),
-            #######################
-            HTML("""
-                <br />"""),
-            StrictButton('Submit Changes', css_class="btn btn-primary btn-md col-md-4", type='submit')))
-
-    class Meta(URLForm.Meta):
-        # what attributes are included
-        fields = URLForm.Meta.fields
+        self.target_title = 'Modify the URL you would like to shorten:'
+        self.short_title = 'Modify the Go address:'
+        self.expires_title = 'Modify the expiration date:'

@@ -23,7 +23,6 @@ from ratelimit.decorators import ratelimit
 from .forms import URLForm, EditForm
 from .models import URL, RegisteredUser
 
-
 def index(request):
     """
     If a user is logged in, this view displays all the information about all
@@ -35,13 +34,13 @@ def index(request):
         return render(request, 'public_landing.html')
 
     # Get the current domain info
-    domain = "%ss://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
+    domain = "%s://%s" % (request.scheme, request.META.get('HTTP_HOST')) + "/"
 
     # Grab a list of all the URL's that are currently owned by the user
     urls = URL.objects.filter(owner=request.user.registereduser)
 
     # Render my_links passing the list of URL's and Domain to the template
-    return render(request, 'core/index.html', {
+    return render(request, 'index.html', {
         'urls': urls,
         'domain': domain,
     })
@@ -69,20 +68,20 @@ def new_link(request):
         return _new_link_post(request)
 
     # Render index.html passing the form to the template
-    return render(request, 'core/new_link.html', {
+    return render(request, 'link.html', {
         'form': url_form,
     })
 
 def _new_link_post(request):
     """
-    This view handles when a POST is received from the new_link form.
+    This view handles when a POST is received from the link form.
     """
     url_form = URLForm(request.POST, host=request.META.get('HTTP_HOST'))
 
     if not url_form.is_valid():
         # there is an error, redisplay the form with the validation errors
         # Render index.html passing the form to the template
-        return render(request, 'core/new_link.html', {
+        return render(request, 'link.html', {
             'form': url_form,
         })
 
@@ -223,7 +222,7 @@ def edit(request, short):
         })  # unbound form
 
     # Render index.html passing the form to the template
-    return render(request, 'core/edit_link.html', {
+    return render(request, 'link.html', {
         'form': url_form
     })
 
@@ -240,7 +239,7 @@ def _edit_post(request, url):
     # Django will check the form to make sure it's valid
     if not url_form.is_valid():
         # Render index.html passing the form to the template
-        return render(request, 'core/edit_link.html', {
+        return render(request, 'link.html', {
             'form': url_form
         })
 
@@ -374,7 +373,7 @@ def useradmin(request):
     blocked_users = RegisteredUser.objects.filter(blocked=True)
 
     # Pass that list to the template
-    return render(request, 'admin/useradmin.html', {
+    return render(request, 'useradmin.html', {
         'current_users': current_users,
         'blocked_users': blocked_users
     })

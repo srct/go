@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^view/(?P<short>[-\w]+)$', cache_page(60*15)(go.views.view), name='view'),
 
     # /about - About page. Cached for 15 minutes
-    url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='core/about.html')),
+    url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='about.html')),
         name='about'),
 
     # /newLink - My-Links page, view and review links.

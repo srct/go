@@ -122,12 +122,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'go',
     'qrcode',
-    'crispy_forms',
     'bootstrap_datepicker',
     'cas',
 )
-
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # LOGGING
 LOGGING = {

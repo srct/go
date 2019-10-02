@@ -1,5 +1,4 @@
 Django>=2.2, < 2.3
-django-crispy-forms
 django-ratelimit
 django-redis-cache
 git+https://github.com/dhaynespls/django-qrcode.git
