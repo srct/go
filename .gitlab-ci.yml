@@ -5,6 +5,7 @@ services:
 stages:
   - test
   - lint
+  - build
 
 variables:
   MYSQL_DATABASE: go
