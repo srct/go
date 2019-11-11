@@ -117,6 +117,7 @@ class URLForm(ModelForm):
         self.target_title = 'Paste the URL you would like to shorten:'
         self.short_title = 'Create a custom Go address:'
         self.expires_title = 'Set when you would like your Go address to expire:'
+        self.action = '/newLink'
 
     class Meta:
         """
@@ -135,3 +136,5 @@ class EditForm(URLForm):
         self.target_title = 'Modify the URL you would like to shorten:'
         self.short_title = 'Modify the Go address:'
         self.expires_title = 'Modify the expiration date:'
+        if 'initial' in kwargs:
+            self.action = '/edit/' + kwargs['initial']['short']

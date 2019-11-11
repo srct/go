@@ -27,7 +27,7 @@ SRCT Go &bull; New Link
   </div>
 </div>
 
-<form class="form-horizontal" action="/newLink" method="post">
+<form class="form-horizontal" action="{{ form.action }}" method="post">
     {% csrf_token %}
 
 		{{ form.non_field_errors }}

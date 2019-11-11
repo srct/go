@@ -195,104 +195,106 @@ def edit(request, short):
     url = get_object_or_404(URL, short__iexact=short)
 
     # If the RegisteredUser is the owner of the URL
-    if url.owner != request.user.registereduser:
+    if url.owner == request.user.registereduser:
+
+        # If a POST request is received, then the user has submitted a form and it's
+        # time to parse the form and edit that URL object
+        if request.method == 'POST':
+            # Now we initialize the form again but this time we have the POST
+            # request
+            url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
+
+            # Make a copy of the old URL
+            copy = url
+            # Remove the old one
+            url.delete()
+
+            # Django will check the form to make sure it's valid
+            if url_form.is_valid():
+                # If the short changed then we need to create a new object and
+                # migrate some data over
+                if url_form.cleaned_data.get('short').strip() != copy.short:
+                    # Parse the form and create a new URL object
+                    res = post(request, url_form)
+
+                    # If there is a 500 error returned, handle it
+                    if res == 500:
+                        return HttpResponseServerError(render(request, '500.html'))
+
+                    # We can procede with the editing process
+                    else:
+                        # Migrate clicks data
+                        res.clicks = copy.clicks
+                        res.qrclicks = copy.qrclicks
+                        res.socialclicks = copy.socialclicks
+
+                        # Save the new URL
+                        res.save()
+
+                        # Redirect to the shiny new *edited URL
+                        return redirect('view', res.short)
+
+                # The short was not edited and thus, we can directly edit the url
+                else:
+                    if url_form.cleaned_data.get('target').strip() != copy.target:
+                        copy.target = url_form.cleaned_data.get('target').strip()
+                        copy.save()
+
+                    # Grab the expiration field value. It's currently an unsable
+                    # string value, so we need to parse it into a datetime object
+                    # relative to right now.
+                    expires = url_form.cleaned_data.get('expires')
+
+                    # Determine what the expiration date is
+                    if expires == URLForm.DAY:
+                        edited_expires = timezone.now() + timedelta(days=1)
+                    elif expires == URLForm.WEEK:
+                        edited_expires = timezone.now() + timedelta(weeks=1)
+                    elif expires == URLForm.MONTH:
+                        edited_expires = timezone.now() + timedelta(weeks=3)
+                    elif expires == URLForm.CUSTOM:
+                        edited_expires = url_form.cleaned_data.get('expires_custom')
+                    else:
+                        pass  # leave the field NULL
+
+                    if edited_expires != copy.expires:
+                        copy.expires = edited_expires
+                        copy.save()
+
+                    # Redirect to the shiny new *edited URL
+                    return redirect('view', copy.short)
+
+            # Else, there is an error, redisplay the form with the validation errors
+            else:
+                # Render index.html passing the form to the template
+                return render(request, 'link.html', {
+                    'form': url_form
+                })
+        else:
+            # Initial data set here
+            if url.expires != None:
+                # Initialize a URL form with an expire date
+                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
+                    'target': url.target,
+                    'short': url.short,
+                    'expires': 'Custom Date',
+                    'expires_custom': url.expires
+                })  # unbound form
+            else:
+                # Initialize a URL form without an expire date
+                url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
+                    'target': url.target,
+                    'short': url.short,
+                    'expires': 'Never',
+                })  # unbound form
+
+            # Render index.html passing the form to the template
+            return render(request, 'link.html', {
+                'form': url_form
+            })
+    else:
         # do not allow them to edit
         raise PermissionDenied()
-
-    # If a POST request is received, then the user has submitted a form and it's
-    # time to parse the form and edit that URL object
-    if request.method == 'POST':
-        return _edit_post(request, url)
-
-    # Initial data set here
-    if url.expires != None:
-        # Initialize a URL form with an expire date
-        url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
-            'target': url.target,
-            'short': url.short,
-            'expires': 'Custom Date',
-            'expires_custom': url.expires
-        })  # unbound form
-    else:
-        # Initialize a URL form without an expire date
-        url_form = EditForm(host=request.META.get('HTTP_HOST'), initial={
-            'target': url.target,
-            'short': url.short,
-            'expires': 'Never',
-        })  # unbound form
-
-    # Render index.html passing the form to the template
-    return render(request, 'link.html', {
-        'form': url_form
-    })
-
-def _edit_post(request, url):
-    # Now we initialize the form again but this time we have the POST
-    # request
-    url_form = EditForm(request.POST, host=request.META.get('HTTP_HOST'))
-
-    # Make a copy of the old URL
-    copy = url
-    # Remove the old one
-    url.delete()
-
-    # Django will check the form to make sure it's valid
-    if not url_form.is_valid():
-        # Render index.html passing the form to the template
-        return render(request, 'link.html', {
-            'form': url_form
-        })
-
-    # If the short changed then we need to create a new object and
-    # migrate some data over
-    if url_form.cleaned_data.get('short').strip() != copy.short:
-        # Parse the form and create a new URL object
-        res = post(request, url_form)
-
-        # If there is a 500 error returned, handle it
-        if res == 500:
-            return HttpResponseServerError(render(request, '500.html'))
-
-        # Else we can procede with the editing process
-        # Migrate clicks data
-        res.clicks = copy.clicks
-        res.qrclicks = copy.qrclicks
-        res.socialclicks = copy.socialclicks
-
-        # Save the new URL
-        res.save()
-
-        # Redirect to the shiny new *edited URL
-        return redirect('view', res.short)
-
-    # The short was not edited and thus, we can directly edit the url
-    if url_form.cleaned_data.get('target').strip() != copy.target:
-        copy.target = url_form.cleaned_data.get('target').strip()
-        copy.save()
-
-    # Grab the expiration field value. It's currently an unsable
-    # string value, so we need to parse it into a datetime object
-    # relative to right now.
-    expires = url_form.cleaned_data.get('expires')
-
-    # Determine what the expiration date is
-    if expires == URLForm.DAY:
-        edited_expires = timezone.now() + timedelta(days=1)
-    elif expires == URLForm.WEEK:
-        edited_expires = timezone.now() + timedelta(weeks=1)
-    elif expires == URLForm.MONTH:
-        edited_expires = timezone.now() + timedelta(weeks=3)
-    elif expires == URLForm.CUSTOM:
-        edited_expires = url_form.cleaned_data.get('expires_custom')
-    else:
-        pass  # leave the field NULL
-
-    if edited_expires != copy.expires:
-        copy.expires = edited_expires
-        copy.save()
-
-    # Redirect to the shiny new *edited URL
-    return redirect('view', copy.short)
 
 @login_required
 def delete(request, short):
