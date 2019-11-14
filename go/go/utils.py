@@ -1,11 +1,6 @@
 import requests
 from django.conf import settings
-import logging
-import sys
-import functools
 from threading import Thread
-
-logger = logging.getLogger(__name__)
 
 def build_msg(request):
     target = request.POST['target']
