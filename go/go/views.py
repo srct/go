@@ -18,10 +18,12 @@ from django.utils import timezone
 
 # Other imports
 from ratelimit.decorators import ratelimit
+import requests
 
 # App Imports
 from .forms import URLForm, EditForm
 from .models import URL, RegisteredUser
+from .utils import build_msg, send_slack_message
 
 def index(request):
     """
@@ -87,6 +89,9 @@ def _new_link_post(request):
 
     # Call our post method to assemble our new URL object
     res = post(request, url_form)
+
+    if settings.SLACK_URL:
+        send_slack_message(build_msg(request))
 
     # If there is a 500 error returned, handle it
     if res == 500:

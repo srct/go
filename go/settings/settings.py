@@ -193,3 +193,5 @@ EMAIL_TO = os.environ["GO_EMAIL_TO"]
 # Domain used to email to users. See implementation in views.py
 # ie. '@gmu.edu'
 EMAIL_DOMAIN = os.environ["GO_EMAIL_DOMAIN"]
+
+SLACK_URL = os.environ.get("GO_SLACK_URL", "")
