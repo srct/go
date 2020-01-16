@@ -7,7 +7,7 @@ django-bootstrap-datepicker
 hashids
 mysqlclient
 redis==2.10.6
-requests==2.18.4
+requests==2.20.0
 simplejson==3.11.1
 six
 setuptools==36.4.0
