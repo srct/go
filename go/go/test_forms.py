@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 # App Imports
-from .forms import SignupForm, URLForm, EditForm
+from .forms import URLForm, EditForm
 from .models import URL, RegisteredUser
 
 class URLFormTest(TestCase):
@@ -146,88 +146,3 @@ class EditForm(TestCase):
         """
 
         self.assertEqual("Hello World!", "Hello World!")
-
-class SignupFormTest(TestCase):
-    """
-    Test cases for the Signup form
-    """
-
-    def test_valid_form(self):
-        """
-        Test that forms are validated correctly given valid data.
-        """
-
-        form_data = {
-            'full_name': 'David Haynes',
-            'organization': 'SRCT',
-            'description': 'the big brown fox jumps over the lazy dog',
-            'registered': 'True'
-        }
-
-        form = SignupForm(request=None, data=form_data)
-        print(form.errors)
-        self.assertTrue(form.is_valid())
-
-    def test_invalid_full_name(self):
-        """
-        Test invalid full_name field
-        """
-
-        form_data = {
-            'full_name': '',
-            'organization': 'SRCT',
-            'description': 'the big brown fox jumps over the lazy dog',
-            'registered': 'True'
-        }
-
-        form = SignupForm(request=None, data=form_data)
-        print(form.errors)
-        self.assertFalse(form.is_valid())
-
-    def test_invalid_organization(self):
-        """
-        Test invalid organization field
-        """
-
-        form_data = {
-            'full_name': 'David Haynes',
-            'organization': '',
-            'description': 'the big brown fox jumps over the lazy dog',
-            'registered': 'True'
-        }
-
-        form = SignupForm(request=None, data=form_data)
-        print(form.errors)
-        self.assertFalse(form.is_valid())
-
-    def test_blank_description(self):
-        """
-        Test blank description field
-        """
-
-        form_data = {
-            'full_name': 'David Haynes',
-            'organization': 'SRCT',
-            'description': '',
-            'registered': 'True'
-        }
-
-        form = SignupForm(request=None, data=form_data)
-        print(form.errors)
-        self.assertTrue(form.is_valid())
-
-    def test_invalid_registered(self):
-        """
-        Test invalid registered field
-        """
-
-        form_data = {
-            'full_name': 'David Haynes',
-            'organization': 'SRCT',
-            'description': 'the big brown fox jumps over the lazy dog',
-            'registered': 'False'
-        }
-
-        form = SignupForm(request=None, data=form_data)
-        print(form.errors)
-        self.assertFalse(form.is_valid())

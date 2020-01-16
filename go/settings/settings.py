@@ -9,7 +9,7 @@ import os
 import sys
 
 # DEV vs PROD
-if os.environ["GO_ENV"] != "production":
+if os.getenv('GO_ENV') != "production":
     DEBUG = True
 else:
     DEBUG = False
@@ -50,7 +50,7 @@ MEDIAFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
-STATIC_ROOT = ''
+STATIC_ROOT = '/static'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
@@ -122,12 +122,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'go',
     'qrcode',
-    'crispy_forms',
     'bootstrap_datepicker',
     'cas',
 )
-
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # LOGGING
 LOGGING = {
@@ -196,3 +193,5 @@ EMAIL_TO = os.environ["GO_EMAIL_TO"]
 # Domain used to email to users. See implementation in views.py
 # ie. '@gmu.edu'
 EMAIL_DOMAIN = os.environ["GO_EMAIL_DOMAIN"]
+
+SLACK_URL = os.environ.get("GO_SLACK_URL", "")

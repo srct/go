@@ -1,5 +1,4 @@
 Django>=2.2, < 2.3
-django-crispy-forms
 django-ratelimit
 django-redis-cache
 git+https://github.com/dhaynespls/django-qrcode.git
@@ -12,3 +11,4 @@ requests==2.18.4
 simplejson==3.11.1
 six
 setuptools==36.4.0
+django-dotenv

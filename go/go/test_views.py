@@ -112,10 +112,11 @@ class EditTest(TestCase):
         """
 
         # Setup a blank URL object with an owner
-        User.objects.create(username='dhaynes', password='password')
-        get_user = User.objects.get(username='dhaynes')
-        get_registered_user = RegisteredUser.objects.get(user=get_user)
-        URL.objects.create(owner=get_registered_user, short='test')
+        self.user = User.objects.create(username='dhaynes')
+        self.user.set_password('test')
+        self.user.save()
+        ru = RegisteredUser.objects.get(user=self.user)
+        URL.objects.create(owner=ru, short='test', target='https://google.com')
 
     def test_edit_get_anon(self):
         """
@@ -126,6 +127,28 @@ class EditTest(TestCase):
         response = self.client.get('/edit/test')
         self.assertEqual(response.status_code, 302)
 
+    def test_edit_get_authed(self):
+        c = Client()
+        self.assertTrue(c.login(username='dhaynes', password='test'))
+        response = c.get('/edit/test')
+        self.assertEqual(response.status_code, 200)
+
+    def test_deletes_old_link(self):
+        c = Client()
+        self.assertTrue(c.login(username='dhaynes', password='test'))
+        c.post('/edit/test', {'short': 'newtest', 'target': 'https://google.com', 'expires': 'Never'})
+        self.assertEqual(0, URL.objects.filter(short='test').count())
+        self.assertEqual(1, URL.objects.filter(short='newtest').count())
+
+    def test_wrong_user(self):
+        u = User.objects.create(username='zwood2')
+        u.set_password('test')
+        u.save()
+
+        c = Client()
+        self.assertTrue(c.login(username='zwood2', password='test'))
+        response = c.get('/edit/test')
+        self.assertEqual(403, response.status_code)
 
 class DeleteTest(TestCase):
     """
@@ -138,11 +161,11 @@ class DeleteTest(TestCase):
         testing methods
         """
 
-        # Setup a blank URL object with an owner
-        User.objects.create(username='dhaynes', password='password')
-        get_user = User.objects.get(username='dhaynes')
-        get_registered_user = RegisteredUser.objects.get(user=get_user)
-        URL.objects.create(owner=get_registered_user, short='test')
+        self.user = User.objects.create(username='dhaynes')
+        self.user.set_password('test')
+        self.user.save()
+        ru = RegisteredUser.objects.get(user=self.user)
+        URL.objects.create(owner=ru, short='test', target='https://google.com')
 
     def test_delete_get_anon(self):
         """
@@ -153,19 +176,23 @@ class DeleteTest(TestCase):
         response = self.client.get('/delete/test')
         self.assertEqual(response.status_code, 302)
 
-class SignupTest(TestCase):
-    """
-    Test cases for the signup view
-    """
+    def test_deletes_link(self):
+        c = Client()
+        self.assertTrue(c.login(username='dhaynes', password='test'))
+        self.assertEqual(1, URL.objects.filter(short='test').count())
+        c.get('/delete/test')
+        self.assertEqual(0, URL.objects.filter(short='test').count())
 
-    def test_signup_get_anon(self):
-        """
-        Test that the signup view redirects anons to login with cas on an EXTERNAL
-        CAS link, so 302 REDIRECT.
-        """
+    def test_wrong_user(self):
+        u = User.objects.create(username='zwood2')
+        u.set_password('test')
+        u.save()
 
-        response = self.client.get('/signup')
-        self.assertEqual(response.status_code, 302)
+        c = Client()
+        self.assertTrue(c.login(username='zwood2', password='test'))
+        response = c.get('/delete/test')
+        self.assertEqual(403, response.status_code)
+
 
 class RedirectionTest(TestCase):
     """

@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 import os
 import sys
+import dotenv
 
 if __name__ == "__main__":
+    if not os.getenv('DOCKER'):
+        dotenv.read_dotenv('./.env')
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
     from django.core.management import execute_from_command_line
