@@ -27,11 +27,8 @@ urlpatterns = [
     url(r'^view/(?P<short>[-\w]+)$', cache_page(60*15)(go.views.view), name='view'),
 
     # /about - About page. Cached for 15 minutes
-    url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='core/about.html')),
+    url(r'^about/?$', cache_page(60*15)(TemplateView.as_view(template_name='about.html')),
         name='about'),
-
-    # /signup - Signup page for access. Cached for 15 minutes
-    url(r'^signup/?$', cache_page(60*15)(go.views.signup), name='signup'),
 
     # /newLink - My-Links page, view and review links.
     url(r'^newLink/?$', go.views.new_link, name='new_link'),
@@ -44,10 +41,6 @@ urlpatterns = [
 
     # /delete/<short> - Delete a link, no content display.
     url(r'^delete/(?P<short>[-\w]+)$', go.views.delete, name='delete'),
-
-    # /registered - registration complete page. Cached for 15 minutes
-    url(r'^registered/?$', cache_page(60*15)(TemplateView.as_view(template_name='registered.html')),
-        name='registered'),
 
     # /admin - Administrator interface.
     url(r'^admin/?', admin.site.urls, name='go_admin'),
