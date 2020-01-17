@@ -5,7 +5,6 @@ services:
 stages:
   - test
   - lint
-  - build
 
 variables:
   MYSQL_DATABASE: go
@@ -26,13 +25,14 @@ before_script:
   - export GO_DB_PORT=3306
   - export GO_ALLOWED_HOSTS="*"
   - export GO_EMAIL_DOMAIN="@masonlive.gmu.edu"
-  - export GO_CAS_URL="https://cas.srct.gmu.edu/"
+  - export GO_CAS_URL="https://login.gmu.edu"
   - export GO_EMAIL_HOST=
   - export GO_EMAIL_PORT=
   - export GO_EMAIL_HOST_USER=
   - export GO_EMAIL_HOST_PASSWORD=
   - export GO_EMAIL_FROM=
   - export GO_EMAIL_TO=
+  - export GO_STATIC_ROOT=/static
   - python manage.py makemigrations
   - python manage.py makemigrations go
   - python manage.py migrate
@@ -50,15 +50,3 @@ Go-flake8:
   script:
     - pip install flake8
     - flake8 go/ --statistics --exit-zero
-
-build:
-  stage: build
-  retry: 2
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.prod --destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-  only:
-    - tags
