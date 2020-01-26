@@ -1,6 +1,6 @@
 # Go 2
 
-[![build status](https://git.gmu.edu/srct/go/badges/master/build.svg)](https://git.gmu.edu/srct/go/commits/master) [![coverage report](https://git.gmu.edu/srct/go/badges/master/coverage.svg)](https://git.gmu.edu/srct/go/commits/master) [![python version](https://img.shields.io/badge/python-3.4+-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-2.2-brightgreen.svg)]()
+[![python version](https://img.shields.io/badge/python-3.4+-blue.svg)]() [![Django version](https://img.shields.io/badge/Django-2.2-brightgreen.svg)]()
 
 
 #### A project of [GMU SRCT](https://srct.gmu.edu).
@@ -15,8 +15,8 @@ Go is currently a `Python 3` project written in the `Django` web framework, with
 # Setup instructions for local development
 
 Go currently supports developers on Linux, macOS and Windows platforms. Please follow the setup instructions for your operating system:
-- [Windows](https://git.gmu.edu/srct/go/-/wikis/Initial-Setup/Windows)
-- [Mac](https://git.gmu.edu/srct/go/-/wikis/Initial-Setup/Mac)
+- [Windows](https://github.com/srct/go/wiki/Initial-Setup:-Windows)
+- [Mac](https://github.com/srct/go/wiki/Initial-Setup:-Mac)
 - Linux (TODO. For now follow the Mac instructions with your disto's package manager instead of Homebrew)
 
 
