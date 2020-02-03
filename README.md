@@ -22,6 +22,8 @@ Go currently supports developers on Linux, macOS and Windows platforms. Please f
 
 # Some words about contributing to Go.
 
+If this is your first time contributing to a web application written in a framework like Django, it is highly recommended that you complete at least part of the [Official Django Tutorial](https://docs.djangoproject.com/en/3.0/intro/tutorial01/). This tutorial will teach you how Django projects are organized and will allow you to have a much easier time figuring out what's going on in the Go codebase. If you have any questions about the Django tutorial or Python, feel free to ask in the #go channel in Slack.
+
 ## Testing
 
 You are _very strongly_ encouraged to write test cases where applicible for
