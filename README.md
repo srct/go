@@ -17,7 +17,7 @@ Go is currently a `Python 3` project written in the `Django` web framework, with
 Go currently supports developers on Linux, macOS and Windows platforms. Please follow the setup instructions for your operating system:
 - [Windows](https://github.com/srct/go/wiki/Initial-Setup:-Windows)
 - [Mac](https://github.com/srct/go/wiki/Initial-Setup:-Mac)
-- Linux (TODO. For now follow the Mac instructions with your disto's package manager instead of Homebrew)
+- [Linux](https://github.com/srct/go/wiki/Initial-Setup:-Linux)
 
 
 # Some words about contributing to Go.
